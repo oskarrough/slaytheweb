@@ -2,7 +2,8 @@
   "name": "kortgame",
   "version": "0.0.0",
   "scripts": {
-    "start": "browser-sync src --watch --no-notify"
+    "start": "browser-sync src --watch --no-notify",
+    "lint": "eslint src"
   },
   "license": "MIT",
   "devDependencies": {
