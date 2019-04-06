@@ -9,10 +9,12 @@ class App extends Component {
 		return html`
 			<div class="App">
 				<div class="u-flex">
-					<${Player} name="1" />
+					<${Player} name="1">
+					</Player>
 					<${Player} name="2" />
 				</div>
 				<${Cards} cards=${models.cards} />
+				<div class="DiscardPile">Disard here</div>
 			</div>
 		`
 	}
@@ -26,3 +28,27 @@ render(
 	`,
 	rootEl
 )
+
+const playerDeck = document.querySelector('.Cards')
+const discardPile = document.querySelector('.DiscardPile')
+
+dragula([playerDeck, discardPile], {
+	copy: function (el, source) {
+	  return source === playerDeck
+	},
+	accepts: function (el, target) {
+	  return target !== playerDeck
+	}
+})
+	.on('drag', function(el) {
+		el.className = el.className.replace('ex-moved', '')
+	})
+	.on('drop', function(el) {
+		el.className += ' ex-moved'
+	})
+	.on('over', function(el, container) {
+		container.className += ' ex-over'
+	})
+	.on('out', function(el, container) {
+		container.className = container.className.replace('ex-over', '')
+	})
