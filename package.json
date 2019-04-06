@@ -1,0 +1,19 @@
+{
+  "name": "kortgame",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "browser-sync src --watch --no-notify"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "browser-sync": "^2.26.3",
+    "eslint": "^5.13.0",
+    "eslint-config-prettier": "^4.0.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "prettier": "1.16.4"
+  },
+  "dependencies": {
+    "htm": "^2.0.0",
+    "popmotion": "^8.6.2"
+  }
+}
