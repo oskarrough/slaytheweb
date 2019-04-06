@@ -41,6 +41,7 @@ export function dragndrop(ball) {
 
 	const stopTracking = () => {
 		if (!pointerTracker) return
+		console.log(ballXY.get())
 		pointerTracker.stop()
 		spring({
 			from: ballXY.get(),

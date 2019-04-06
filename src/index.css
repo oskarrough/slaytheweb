@@ -1,6 +1,5 @@
 html {
 	font-size: 1.3em;
-	/* font-size: 1.6vw; */
 	line-height: 1.2;
 	background: black;
 	color: antiquewhite;
@@ -53,6 +52,7 @@ center[vertical] {
 	text-align: center;
 	margin-left: -2rem;
 	box-shadow: 0 0 0.5em cyan;
+	font-size: smaller;
 }
 
 .Card:hover {
@@ -71,16 +71,17 @@ center[vertical] {
 	text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.8);
 }
 
+.Card-type {
+}
+
 .Card-effects {
 	margin: 0 0.8em 1em;
-	font-size: smaller;
 }
 
 .Card-energy {
 	position: absolute;
 	top: -0.5em;
 	left: -0.3em;
-
 	width: 1.3em;
 	height: 1.3em;
 	margin: 0;
@@ -136,4 +137,12 @@ center[vertical] {
 	flex-flow: column;
 	min-height: 100vh;
 	overflow-y: hidden;
+}
+
+.u-flex {
+	display: flex;
+}
+
+.Player {
+	flex: 1;
 }
