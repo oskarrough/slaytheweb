@@ -6,7 +6,7 @@ export default class Cards extends Component {
 	}
 	render({cards}) {
 		if (!cards) {
-			return html`<div class="Cards dropzone"></div> `
+			return html`<div class="Cards Cards--discard dropzone"></div>`
 		}
 		return html`
 			<div class="Cards dropzone">
@@ -17,7 +17,7 @@ export default class Cards extends Component {
 }
 
 export const Card = ({name, type, energy, effects}) => html`
-	<article class="Card draggable">
+	<article class="Card">
 		<h3 class="Card-title">${name}</h3>
 		<p class="Card-type">${type}</p>
 		<p class="Card-energy">${energy}</p>
