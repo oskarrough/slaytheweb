@@ -1,6 +1,7 @@
 module.exports = {
 	parserOptions: {
-		sourceType: 'module'
+		ecmaVersion: 6,
+		sourceType: "module"
 	},
 	plugins: ["prettier"],
 	// rules: {
