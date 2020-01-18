@@ -28,7 +28,8 @@ export default class App extends Component {
 			console.log('sortable:stop', event)
 			const draggedElement = event.data.dragEvent.originalSource
 			const {newContainer, oldContainer} = event.data
-			console.log({draggedElement, oldContainer, newContainer})
+			const wasDiscarded = newContainer.classList.contains('Cards--discard')
+			console.log({draggedElement, oldContainer, newContainer, wasDiscarded})
 		})
 	}
 	render(props, state) {
