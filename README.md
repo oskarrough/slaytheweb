@@ -38,6 +38,7 @@ actionQueue[]
 
 
 ## Anytime
+
 * `gold add [amount]` gain gold
 * `gold lose [amount]` lose gold
 * `info toggle` Settings.isInfo
@@ -47,52 +48,56 @@ actionQueue[]
 * `maxhp add [amount]` gain max hp
 * `maxhp remove [amount]` lose max hp
 * `debug [true/false]` sets `Settings.isDebug`
+
 ## Relics
+
 * `relic add [id]` generate relic
 * `relic list` logs all relic pools
 * `relic remove [id]` lose relic
 
 ## Unlocks
+
 * `unlock always` always gain an unlock on death
 * `unlock level [level]` set the gained unlock to be the specified level
 
+## Cards
 
-cards
-
+```python
 public enum CardTarget {
-/*  257 */     ENEMY, ALL_ENEMY, SELF, NONE, SELF_AND_ENEMY, ALL;
-/*      */   }
-/*      */   
-/*      */   public enum CardColor {
-/*  261 */     RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE;
-/*      */   }
-/*      */   
-/*      */   public enum CardRarity {
-/*  265 */     BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE;
-/*      */   }
-/*      */   
-/*      */   public enum CardType {
-/*  269 */     ATTACK, SKILL, POWER, STATUS, CURSE;
-/*      */   }
-/*      */   
-/*      */   public enum CardTags {
-/*  273 */     HEALING, STRIKE, EMPTY, STARTER_DEFEND, STARTER_STRIKE;
-/*      */   }
+	ENEMY, ALL_ENEMY, SELF, NONE, SELF_AND_ENEMY, ALL;
+}
 
-*/   public enum GameMode
-/*      */   {
-/* 1415 */     CHAR_SELECT, GAMEPLAY, DUNGEON_TRANSITION, SPLASH;
-/*      */   }
-/*      */ 
+public enum CardColor {
+	RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE;
+}
 
-# Console Commands
+public enum CardRarity {
+	BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE;
+}
 
-## Deck Modification
+public enum CardType {
+	ATTACK, SKILL, POWER, STATUS, CURSE;
+}
+
+public enum CardTags {
+	HEALING, STRIKE, EMPTY, STARTER_DEFEND, STARTER_STRIKE;
+}
+
+enum GameMode {
+	CHAR_SELECT, GAMEPLAY, DUNGEON_TRANSITION, SPLASH;
+}
+```
+
+## Console Commands
+
+### Deck Modification
+
 * `deck add [id] {cardcount} {upgrades}` add card to deck (optional: integer # of times you want to add this card) (optional: integer # of upgrades)
 * `deck remove [id]` remove card from deck
 * `deck remove all` remove all cards from deck
 
-## During Combat
+### During Combat
+
 * `draw [num]` draw cards
 * `energy add [amount]` gain energy
 * `energy inf` toggles infinite energy
@@ -104,11 +109,13 @@ public enum CardTarget {
 * `kill self` kills your character
 * `power [id] [amount]` bring up a targetting reticle to apply amount stacks of a power to either the player or an enemy
 
-## Outside of Combat
+### Outside of Combat
+
 * `fight [name]` enter combat with the specified encounter
 * `event [name]` start event with the specified name
 
-## Anytime
+### Anytime
+
 * `gold add [amount]` gain gold
 * `gold lose [amount]` lose gold
 * `info toggle` Settings.isInfo
@@ -118,44 +125,50 @@ public enum CardTarget {
 * `maxhp add [amount]` gain max hp
 * `maxhp remove [amount]` lose max hp
 * `debug [true/false]` sets `Settings.isDebug`
-## Relics
+
+### Relics
+
 * `relic add [id]` generate relic
 * `relic list` logs all relic pools
 * `relic remove [id]` lose relic
 
-## Unlocks
+### Unlocks
+
 * `unlock always` always gain an unlock on death
 * `unlock level [level]` set the gained unlock to be the specified level
 
-## Acts
+### Acts
+
 * `act boss` brings you directly to the bossroom of your current act
 * `act [actname]` brings you to the start of the specified act
 
-## Keys to Act 4
+### Keys to Act 4
+
 * `key add [color | all]` adds the corresponding key/s to your current run
 * `key lose [color | all]` removes the corresponding key/s from your current run
 
-## History
+### History
+
 * `history random` gives you the relics and deck of a past successful run with your current character at random
 * `history last` gives you the relics and deck of the last successful run with your current character
 
 ## Links
 
-https://kinopio.club/cardcrawl-UL_lam2QrnMLIw9meGOmX
-https://github.com/nathanwentworth/deck-dungeon/
-https://nathanwentworth.itch.io/deck-dungeon
-https://github.com/hundredrabbits/Donsol/tree/master/desktop/sources/scripts
-https://hundredrabbits.itch.io/donsol
-http://stfj.net/index2.php?project=art/2011/Scoundrel.pdf
-http://www.cardofdarkness.com/
-https://twitter.com/fabynou/status/1212534790672408578
-http://stfj.net/index2.php?year=2018&project=art/2018/Pocket-Run%20Pool
-https://pollywog.games/rgdb/
-http://www.cardcrawl.com/
-https://pollywog.games/ card crusade
-https://itch.io/games/tag-card-game/tag-roguelike
-https://github.com/daviscook477/BaseMod/wiki/Hooks
-https://github.com/daviscook477/BaseMod/wiki/Console
-https://slay-the-spire.fandom.com/wiki/Slay_the_Spire_Wiki
-https://freesound.org/
+- https://kinopio.club/cardcrawl-UL_lam2QrnMLIw9meGOmX
+- https://github.com/nathanwentworth/deck-dungeon/
+- https://nathanwentworth.itch.io/deck-dungeon
+- https://github.com/hundredrabbits/Donsol/tree/master/desktop/sources/scripts
+- https://hundredrabbits.itch.io/donsol
+- http://stfj.net/index2.php?project=art/2011/Scoundrel.pdf
+- http://www.cardofdarkness.com/
+- https://twitter.com/fabynou/status/1212534790672408578
+- http://stfj.net/index2.php?year=2018&project=art/2018/Pocket-Run%20Pool
+- https://pollywog.games/rgdb/
+- http://www.cardcrawl.com/
+- https://pollywog.games/ card crusade
+- https://itch.io/games/tag-card-game/tag-roguelike
+- https://github.com/daviscook477/BaseMod/wiki/Hooks
+- https://github.com/daviscook477/BaseMod/wiki/Console
+- https://slay-the-spire.fandom.com/wiki/Slay_the_Spire_Wiki
+- https://freesound.org/
 
