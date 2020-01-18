@@ -1,4 +1,4 @@
-import {html, render, Component} from '../htm-preact-standalone.mjs'
+import {html, render, Component} from '../vendor/htm-preact-standalone.mjs'
 
 const Healthbar = ({max, value}) => html`
 	<div class="Healthbar">
@@ -18,9 +18,10 @@ export default class Player extends Component {
 		}
 	}
 	render(props, state) {
+		const name = props.name ? props.name : 'Anonymous'
 		return html`
 			<div class="Player">
-				<p>Player ${props.name}</p>
+				<p>${name}</p>
 				<p class="Energy"><i>${state.currentEnergy}</i> / ${state.maxEnergy}</p>
 				<${Healthbar} max=${state.maxHealth} value=${state.currentHealth} />
 			</div>
