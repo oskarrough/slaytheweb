@@ -1,4 +1,4 @@
-import {html, render, Component} from '../vendor/htm-preact-standalone.mjs'
+import {Component, html} from '../vendor/htm-preact-standalone.mjs'
 
 export default class Cards extends Component {
 	componentDidMount() {
@@ -6,7 +6,9 @@ export default class Cards extends Component {
 	}
 	render({cards}) {
 		if (!cards) {
-			return html`<div class="Cards Cards--discard dropzone"></div>`
+			return html`
+				<div class="Cards Cards--discard dropzone"></div>
+			`
 		}
 		return html`
 			<div class="Cards dropzone">

@@ -1,4 +1,4 @@
-import {html, render, Component} from '../vendor/htm-preact-standalone.mjs'
+import {html, Component} from '../vendor/htm-preact-standalone.mjs'
 
 const Healthbar = ({max, value}) => html`
 	<div class="Healthbar">
@@ -28,4 +28,3 @@ export default class Player extends Component {
 		`
 	}
 }
-
