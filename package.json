@@ -2,19 +2,21 @@
   "name": "kortgame",
   "version": "0.0.0",
   "scripts": {
-    "start": "browser-sync src --watch --no-notify",
-    "test": "eslint src"
+    "start": "browser-sync public --watch --no-notify",
+    "test": "eslint public",
+    "build": "echo building..."
   },
   "license": "MIT",
   "devDependencies": {
-    "browser-sync": "^2.26.3",
-    "eslint": "^5.13.0",
-    "eslint-config-prettier": "^4.0.0",
-    "eslint-plugin-prettier": "^3.0.1",
-    "prettier": "1.16.4"
+    "browser-sync": "^2.26.7",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "1.19.1"
   },
   "dependencies": {
-    "htm": "^2.0.0",
-    "popmotion": "^8.6.2"
+    "@shopify/draggable": "^1.0.0-beta.8",
+    "htm": "^2.2.1",
+    "popmotion": "^8.7.1"
   }
 }

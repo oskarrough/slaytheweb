@@ -14,7 +14,7 @@ class Card {
 const cards = [
 	{name: 'Bash', energy: 2, type: 'Attack', effects: 'Deal 8 damage. Apply 2 Vulnerable.'},
 	{name: 'Defend', energy: 1, type: 'Skill', effects: 'Gain 5 Block.'},
-	{name: 'Strike', energy: 1, type: 'Power', effects: 'Deal 6 Damage.'},
+	{name: 'Strike', energy: 1, type: 'Attack', effects: 'Deal 6 Damage.'},
 	{name: 'Body Slam', energy: 1, type: 'Attack', effects: 'Deal Damage equal to your Block'},
 	{name: 'Clash', energy: 0, type: 'Attack', effects: 'Can only be played if every card in your hand is an Attack. Deal 14 damage.'},
 	{name: 'Cleave', energy: 1, type: 'Attack', effects: 'Deal 8 damage to ALL enemies.'},
