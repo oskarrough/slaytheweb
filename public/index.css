@@ -66,8 +66,7 @@ center[vertical] {
 	margin-left: -2rem;
 	box-shadow: 0 0 0.5em cyan;
 	font-size: smaller;
-
-	transition-duration: 100ms;
+	/* transition-duration: 100ms; */
 }
 
 .Card:hover {
@@ -78,10 +77,6 @@ center[vertical] {
 	box-shadow: 0 0 1em cyan;
 }
 
-.Card.draggable-mirror {
-	max-width: var(--card-width);
-}
-
 .Card-title {
 	margin: 0 0 0.5em;
 	padding: 0.2em 1em 0.08em;
@@ -90,8 +85,7 @@ center[vertical] {
 	text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.8);
 }
 
-.Card-type {
-}
+.Card-type {}
 
 .Card-effects {
 	margin: 0 0.8em 1em;
@@ -168,23 +162,11 @@ center[vertical] {
 }
 
 .draggable-source--is-dragging {
-	visibility: hidden;
+	opacity: 0.5;
+	/* visibility: hidden; */
 }
 
-/* Dragula styles */
-.gu-mirror {
-	position: fixed !important;
-	margin: 0 !important;
-	z-index: 9999 !important;
-	opacity: 0.8;
-}
-.gu-hide {
-	display: none !important;
-}
-.gu-unselectable {
-	user-select: none !important;
-}
-.gu-transit {
-	opacity: 0.2;
+.Card.draggable-mirror {
+	max-width: var(--card-width);
 }
 
