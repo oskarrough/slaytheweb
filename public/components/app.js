@@ -14,17 +14,23 @@ export default class App extends Component {
 		this.enableDrop()
 	}
 	enableDrop() {
-		const drop = new Sortable.default(this.base.querySelectorAll('.dropzone'), {
+		const drop = new window.Sortable.default(this.base.querySelectorAll('.dropzone'), {
 			draggable: '.Card',
 			mirror: {constrainDimensions: true}
 		})
 		drop.on('drag:start', () => console.log('drag:start'))
 		drop.on('drag:move', () => console.log('drag:move'))
 		drop.on('drag:stop', () => console.log('drag:stop'))
-		drop.on('sortable:start', () => { console.log('sortable:start') })
-		drop.on('sortable:sort', () => { console.log('sortable:sort') })
-		drop.on('sortable:sorted', () => { console.log('sortable:sorted') })
-		drop.on('sortable:stop', (event) => {
+		drop.on('sortable:start', () => {
+			console.log('sortable:start')
+		})
+		drop.on('sortable:sort', () => {
+			console.log('sortable:sort')
+		})
+		drop.on('sortable:sorted', () => {
+			console.log('sortable:sorted')
+		})
+		drop.on('sortable:stop', event => {
 			console.log('sortable:stop', event)
 			const draggedElement = event.data.dragEvent.originalSource
 			const {newContainer, oldContainer} = event.data
@@ -45,4 +51,3 @@ export default class App extends Component {
 		`
 	}
 }
-
