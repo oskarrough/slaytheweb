@@ -14,6 +14,7 @@
     "prettier": "1.16.4"
   },
   "dependencies": {
+    "@shopify/draggable": "^1.0.0-beta.8",
     "htm": "^2.0.0",
     "popmotion": "^8.6.2"
   }
