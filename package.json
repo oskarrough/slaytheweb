@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "start": "browser-sync src --watch --no-notify",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "build": "echo building..."
   },
   "license": "MIT",
   "devDependencies": {
