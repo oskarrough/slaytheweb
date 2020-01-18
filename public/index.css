@@ -44,6 +44,7 @@ center[vertical] {
 	border: 1px dotted yellow;
 	padding: 1rem;
 	margin: 1rem;
+	min-height: 6em;
 	/* overflow: auto; */
 
 	display: grid;
