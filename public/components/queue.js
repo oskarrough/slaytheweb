@@ -31,7 +31,7 @@ export default class Queue extends Component {
 				<ol class="Queue">
 					${props.queue.map(
 						item => html`
-							<li>${item.callback.name}(${item.args})</li>
+							<li key=${item.id}>${item.callback.name}(${item.args.name})</li>
 						`
 					)}
 				</ol>
