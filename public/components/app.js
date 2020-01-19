@@ -20,9 +20,6 @@ const starterDeck = [
 export default class App extends Component {
 	constructor(props) {
 		super(props)
-
-		queue.add('pickCard', 'Strike')
-
 		this.state = {cards: starterDeck}
 		// console.log(this.state.cards)
 	}

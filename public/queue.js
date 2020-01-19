@@ -1,5 +1,16 @@
 import actions from './actions.js'
 
+// var queue = (() => {
+//   var arr = [];
+
+//   return {
+//     isEmpty: () => arr.length == 0,
+//     add: item => arr.push(item),
+//     remove: () => arr.shift(),
+//     removeAll: filter => arr = arr.filter(x => !filter(x))
+//   };
+// })();
+
 class Queue {
 	constructor(items = []) {
 		this.list = items
@@ -17,8 +28,6 @@ class Queue {
 	// addToBottom() {
 	// 	this.items.unshift(item)
 	// }
-
-	// queue.addToTop('pickCard')
 }
 
 const queue = new Queue()
