@@ -17,8 +17,6 @@ export const cards = [
 	{name: 'Sucker Punch', cost: 1, type: 'Attack', effects: 'Deal 7 damage. Apply 1 Weak.'}
 ]
 
-// export default {cards, pickCard}
-
 export class Card {
 	constructor(props) {
 		// console.log(props)

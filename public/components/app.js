@@ -1,11 +1,15 @@
-import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
+import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 import Player from './player.js'
 import History from './history.js'
 import Cards from './cards.js'
-import queue from '../game/queue.js'
+import Queue from '../game/queue.js'
 import {drawStarterDeck} from '../game/actions.js'
 
-queue.add('drawStarterDeck')
+const queue = new Queue()
+window.queue = queue
+
+// queue.add('drawStarterDeck')
+
 const starterDeck = drawStarterDeck()
 
 export default class App extends Component {

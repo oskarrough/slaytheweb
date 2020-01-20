@@ -1,29 +1,29 @@
 import {cards, Card} from './cards.js'
 
-export function pickCard(name) {
+export function drawCard(name) {
 	return new Card(cards.find(card => card.name === name))
+}
+
+export function drawStarterDeck() {
+	return [
+		drawCard('Bash'),
+		drawCard('Defend'),
+		drawCard('Defend'),
+		drawCard('Defend'),
+		drawCard('Defend'),
+		drawCard('Strike'),
+		drawCard('Strike'),
+		drawCard('Strike'),
+		drawCard('Strike')
+	]
 }
 
 export function playCard(card) {
 	return card
 }
 
-export function drawStarterDeck() {
-	return [
-		pickCard('Bash'),
-		pickCard('Defend'),
-		pickCard('Defend'),
-		pickCard('Defend'),
-		pickCard('Defend'),
-		pickCard('Strike'),
-		pickCard('Strike'),
-		pickCard('Strike'),
-		pickCard('Strike')
-	]
-}
-
 export default {
-	pickCard,
+	drawCard,
 	drawStarterDeck,
 	playCard
 }
@@ -40,7 +40,6 @@ export default {
 
 // * `gold add [amount]` gain gold
 // * `gold lose [amount]` lose gold
-// * `info toggle` Settings.isInfo
 // * `potion [pos] [id]` gain specified potion in specified slot (0, 1, or 2)
 // * `hp add [amount]` heal amount
 // * `hp remove [amount]` hp loss

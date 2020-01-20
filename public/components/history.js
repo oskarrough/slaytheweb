@@ -27,9 +27,7 @@ export default class Queue extends Component {
 				<span>Game state history ${time}</span>
 				<ol class="Queue">
 					${props.queue.map(
-						item => html`
-							<li key=${item.id}>${item.callback.name}(${item.args.name})</li>
-						`
+						item => html`<li key=${item.id}>${item}</li>`
 					)}
 				</ol>
 			</div>
