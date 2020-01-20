@@ -110,13 +110,13 @@ center[vertical] {
 }
 
 .Card-energy,
-.Energy {
+.Energybar {
 	background: teal;
 	color: antiquewhite;
 	text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.8);
 }
 
-.Energy {
+.Energybar {
 	display: inline-block;
 	padding: 0.2em 0.3em 0.1em;
 	border-radius: 0.2em;
@@ -170,4 +170,3 @@ center[vertical] {
 .Card.draggable-mirror {
 	max-width: var(--card-width);
 }
-

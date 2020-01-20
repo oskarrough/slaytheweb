@@ -3,7 +3,6 @@ import Player from './player.js'
 import History from './history.js'
 import Cards from './cards.js'
 import queue from '../game/queue.js'
-
 import {drawStarterDeck} from '../game/actions.js'
 
 queue.add('drawStarterDeck')
@@ -12,8 +11,22 @@ const starterDeck = drawStarterDeck()
 export default class App extends Component {
 	constructor(props) {
 		super(props)
-		this.state = {cards: starterDeck}
-		// console.log(this.state.cards)
+		this.state = {
+			cards: starterDeck,
+			player1: {
+				maxEnergy: 3,
+				currentEnergy: 3,
+				maxHealth: 100,
+				currentHealth: 10
+			},
+			player2: {
+				maxEnergy: 3,
+				currentEnergy: 3,
+				maxHealth: 100,
+				currentHealth: 10
+			}
+		}
+		console.log({gameState: this.state})
 	}
 	componentDidMount() {
 		this.enableDrop()
@@ -27,7 +40,6 @@ export default class App extends Component {
 		// drop.on('drag:move', () => console.log('drag:move'))
 		// drop.on('drag:stop', () => console.log('drag:stop'))
 		drop.on('sortable:start', event => {
-			// @todo: check if we have enough energy
 			console.log('sortable:start', event)
 			// const wasDiscarded = event.data.dragEvent.startContainer.classList.contains('Cards--discard')
 			// console.log(wasDiscarded)
@@ -54,8 +66,8 @@ export default class App extends Component {
 		return html`
 			<div class="App">
 				<div class="u-flex">
-					<${Player} name="Angelicka" />
-					<${Player} name="Mr. T" />
+					<${Player} player=${state.player1} />
+					<${Player} player=${state.player2} name="Mr. T" />
 				</div>
 				<${Cards} />
 				<${History} queue=${queue.list} />
