@@ -145,6 +145,8 @@ center[vertical] {
 
 .Healthbar p {
 	margin: 0.2em 0 0.1em;
+	position: relative;
+	z-index: 1;
 }
 
 .App {

@@ -15,12 +15,12 @@ export default class Player extends Component {
 }
 
 const Energybar = ({max, value}) => html`
-	<div class="Energybar"><i>${value}</i> / ${max}</div>
+	<div class="Energybar">${value}/${max}</div>
 `
 
 const Healthbar = ({max, value}) => html`
 	<div class="Healthbar">
-		<p>${value} / ${max}</p>
-		<div class="Healthbar-value" style=${`width: ${value}%`}></div>
+		<p>${value}/${max}</p>
+		<div class="Healthbar-value" style=${`width: ${value/max*100}%`}></div>
 	</div>
 `
