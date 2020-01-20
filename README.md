@@ -31,6 +31,8 @@ enum GameMode {
  	CHAR_SELECT, GAMEPLAY, DUNGEON_TRANSITION, SPLASH;
 }
 
+We want the game library/api to be independent of the UI?!
+
 ### Console
 
 by this I mean being able to play the game with (almost) no gui. write the commands, see the effect directly on game state.
@@ -85,3 +87,5 @@ by this I mean being able to play the game with (almost) no gui. write the comma
 - https://freesound.org/
 - https://www.gamasutra.com/blogs/JoshGe/20181029/329512/How_to_Make_a_Roguelike.php
 - https://www.reddit.com/r/roguelikedev/
+- https://game-icons.net/
+
