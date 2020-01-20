@@ -1,5 +1,17 @@
 # Kortgame
 
+A simplified, browser-based Slay The Spire inspired game that may or may not evolve into something else.
+
+## Todo
+
+Which parts do we want to do
+
+- Game state logic (player, actions)
+- First class console cli support
+- A deck of cards (draw, random methods)
+
+We can close this once we are able to draw a card onto an enemy and see the effects on game state.
+
 Many ways to go. This is the first.
 
 We need
@@ -11,32 +23,46 @@ We need
 
 Let's figure out how to draw a deck, play it console-style no ui.
 
-## Notes
+### Game state
+
+use immer, supports undo and redo, store in local storage or even better, serialize and store everything in the url?
 
 enum GameMode {
  	CHAR_SELECT, GAMEPLAY, DUNGEON_TRANSITION, SPLASH;
 }
 
-## Encounters
+### Console
 
-encounter
-add monster
-start encounter
+by this I mean being able to play the game with (almost) no gui. write the commands, see the effect directly on game state.
 
-## Basics
+### Deck of cards
 
-deck
-draw
-fight
-gold
-hand
-player
-maxHealth = startingHealth
-currentHealth
-energy
-gold
-Cards
-card.use()
+- list of cards
+- a deck is some of the cards
+- a hand is the currently picked cards from your deck
+
+## Notes for later
+
+### Basics
+
+- deck
+- draw
+- fight
+- gold
+- hand
+- player
+- maxHealth = startingHealth
+- currentHealth
+- energy
+- gold
+- Cards
+- card.use()
+
+### Encounters
+
+- encounter
+- add monster
+- start encounter
 
 ## Links
 
