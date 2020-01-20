@@ -1,4 +1,5 @@
 import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
+import produce from '../web_modules/immer.js'
 import Player from './player.js'
 import History from './history.js'
 import Cards from './cards.js'
@@ -12,28 +13,35 @@ window.queue = queue
 
 const starterDeck = drawStarterDeck()
 
-export default class App extends Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-			cards: starterDeck,
-			player1: {
-				maxEnergy: 3,
-				currentEnergy: 3,
-				maxHealth: 100,
-				currentHealth: 10
-			},
-			player2: {
-				maxEnergy: 3,
-				currentEnergy: 3,
-				maxHealth: 100,
-				currentHealth: 10
-			}
-		}
-		console.log({gameState: this.state})
+const gameState = {
+	cards: starterDeck,
+	player1: {
+		maxEnergy: 3,
+		currentEnergy: 3,
+		maxHealth: 100,
+		currentHealth: 100
+	},
+	player2: {
+		maxEnergy: 3,
+		currentEnergy: 3,
+		maxHealth: 42,
+		currentHealth: 42
 	}
+}
+
+export default class App extends Component {
+	state = gameState
+
 	componentDidMount() {
 		this.enableDrop()
+	}
+
+	doIt() {
+		const nextState = produce(this.state, draft => {
+			// This is what matters
+			draft.player1.currentHealth = 10
+		})
+		this.setState(nextState)
 	}
 	enableDrop() {
 		const drop = new window.Sortable.default(this.base.querySelectorAll('.dropzone'), {
@@ -73,6 +81,9 @@ export default class App extends Component {
 					<${Player} player=${state.player1} />
 					<${Player} player=${state.player2} name="Mr. T" />
 				</div>
+				<p>
+					<button onclick=${() => this.doIt()}>do it</button>
+				</p>
 				<${Cards} />
 				<${History} queue=${queue.list} />
 				<${Cards} cards=${state.cards} />
