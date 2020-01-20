@@ -8,12 +8,25 @@ export function playCard(card) {
 	return card
 }
 
-const actions = {
-	pickCard,
-	playCard
+export function drawStarterDeck() {
+	return [
+		pickCard('Bash'),
+		pickCard('Defend'),
+		pickCard('Defend'),
+		pickCard('Defend'),
+		pickCard('Defend'),
+		pickCard('Strike'),
+		pickCard('Strike'),
+		pickCard('Strike'),
+		pickCard('Strike')
+	]
 }
 
-export default actions
+export default {
+	pickCard,
+	drawStarterDeck,
+	playCard
+}
 
 // ### Deck Modification
 

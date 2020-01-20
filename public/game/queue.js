@@ -15,11 +15,9 @@ class Queue {
 	constructor(items = []) {
 		this.list = items
 	}
-	add(action, args) {
-		this.list.push({
-			callback: actions[action],
-			args
-		})
+	add(action, args = {}) {
+		const callback = actions[action]
+		this.list.push({callback, args})
 		console.log('added to queue', this.list)
 	}
 	next() {

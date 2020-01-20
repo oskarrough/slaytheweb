@@ -1,8 +1,6 @@
 import {Component, html} from '../vendor/htm-preact-standalone.mjs'
 
 export default class Queue extends Component {
-	// state = {time: Date.now()}
-
 	constructor(props) {
 		super(props)
 		console.log({props})
@@ -27,7 +25,7 @@ export default class Queue extends Component {
 		let time = new Date(this.state.time).toLocaleTimeString()
 		return html`
 			<div>
-				<span>${time}</span>
+				<span>Game state history ${time}</span>
 				<ol class="Queue">
 					${props.queue.map(
 						item => html`

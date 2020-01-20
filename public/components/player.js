@@ -1,12 +1,5 @@
 import {html, Component} from '../vendor/htm-preact-standalone.mjs'
 
-const Healthbar = ({max, value}) => html`
-	<div class="Healthbar">
-		<p>${value} / ${max}</p>
-		<div class="Healthbar-value" style=${`width: ${value}%`}></div>
-	</div>
-`
-
 export default class Player extends Component {
 	constructor(props) {
 		super(props)
@@ -28,3 +21,10 @@ export default class Player extends Component {
 		`
 	}
 }
+
+const Healthbar = ({max, value}) => html`
+	<div class="Healthbar">
+		<p>${value} / ${max}</p>
+		<div class="Healthbar-value" style=${`width: ${value}%`}></div>
+	</div>
+`
