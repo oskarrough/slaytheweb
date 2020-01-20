@@ -1,4 +1,4 @@
-import {html, Component} from '../vendor/htm-preact-standalone.mjs'
+import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
 
 export default class Player extends Component {
 	constructor(props) {

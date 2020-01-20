@@ -1,4 +1,4 @@
-import {Component, html} from '../vendor/htm-preact-standalone.mjs'
+import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
 
 export default class Cards extends Component {
 	componentDidMount() {

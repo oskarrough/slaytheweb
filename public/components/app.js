@@ -1,5 +1,4 @@
-import {html, Component} from './../vendor/htm-preact-standalone.mjs'
-
+import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
 import Player from './player.js'
 import History from './history.js'
 import Cards from './cards.js'
