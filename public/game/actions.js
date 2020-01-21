@@ -43,11 +43,13 @@ export function drawStarterDeck({state}) {
 
 export function playCard({state, card}) {
 	if (!card) throw new Error('No card to play')
+	if (state.player1.currentEnergy < card.cost) throw new Error('Not enough energy to play card')
 	return produce(state, draft => {
 		// Recaclculate energy.
 		draft.player1.currentEnergy = state.player1.currentEnergy - card.cost
 		// Remove the card from our hand.
 		draft.cards = state.cards.filter(c => c.id !== card.id)
+		card.use()
 	})
 }
 

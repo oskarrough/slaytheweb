@@ -39,15 +39,15 @@ export default class App extends Component {
 		// drop.on('drag:move', () => console.log('drag:move'))
 		// drop.on('drag:stop', () => console.log('drag:stop'))
 		drop.on('sortable:start', event => {
-			console.log('sortable:start', event)
+			// console.log('sortable:start', event)
 			// const wasDiscarded = event.data.dragEvent.startContainer.classList.contains('Cards--discard')
 			// console.log(wasDiscarded)
 		})
 		drop.on('sortable:sort', event => {
-			console.log('sortable:sort', event)
+			// console.log('sortable:sort', event)
 			const wasDiscarded = event.data.dragEvent.overContainer.classList.contains('Cards--discard')
 			const card = this.state.cards.find(card => card.id === event.data.dragEvent.originalSource.dataset.id)
-			console.log({card, wasDiscarded})
+			// console.log({card, wasDiscarded})
 			if (!wasDiscarded) {
 				event.cancel()
 			} else {
