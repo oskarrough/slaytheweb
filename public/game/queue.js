@@ -7,7 +7,6 @@ export default class Queue {
 		console.log('added to queue', this.list)
 	}
 	next() {
-		if (!this.list.length) return
 		return this.list.pop()
 	}
 	// addToBottom() {

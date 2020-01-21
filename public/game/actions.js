@@ -28,12 +28,12 @@ export function drawStarterDeck({state}) {
 	const deck = [
 		drawCard('Bash'),
 		drawCard('Defend'),
-		drawCard('Defend'),
-		drawCard('Defend'),
-		drawCard('Defend'),
-		drawCard('Strike'),
-		drawCard('Strike'),
-		drawCard('Strike'),
+		// drawCard('Defend'),
+		// drawCard('Defend'),
+		// drawCard('Defend'),
+		// drawCard('Strike'),
+		// drawCard('Strike'),
+		// drawCard('Strike'),
 		drawCard('Strike')
 	]
 	return produce(state, draft => {
@@ -42,8 +42,12 @@ export function drawStarterDeck({state}) {
 }
 
 export function playCard({state, card}) {
+	if (!card) throw new Error('No card to play')
 	return produce(state, draft => {
+		// Recaclculate energy.
 		draft.player1.currentEnergy = state.player1.currentEnergy - card.cost
+		// Remove the card from our hand.
+		draft.cards = state.cards.filter(c => c.id !== card.id)
 	})
 }
 

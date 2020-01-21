@@ -11,8 +11,6 @@ const queue = new Queue()
 window.queue = queue
 window.actions = actions
 
-// queue.add('drawStarterDeck')
-
 export default class App extends Component {
 	constructor() {
 		super()
@@ -25,9 +23,10 @@ export default class App extends Component {
 
 	runQueue() {
 		const action = queue.next()
+		if (!action) return
 		// Actions have a "type" and a "state". They always return a new, modified state.
 		const nextState = actions[action.type](action)
-		console.log(nextState)
+		console.log({nextState})
 		this.setState(nextState)
 	}
 
