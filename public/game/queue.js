@@ -14,4 +14,3 @@ export default class Queue {
 	// 	this.items.unshift(item)
 	// }
 }
-

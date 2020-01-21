@@ -1,5 +1,4 @@
 import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
-import produce from '../web_modules/immer.js'
 import Player from './player.js'
 import History from './history.js'
 import Cards from './cards.js'
@@ -15,7 +14,10 @@ window.actions = actions
 // queue.add('drawStarterDeck')
 
 export default class App extends Component {
-	state = actions.createNewGame()
+	constructor() {
+		super()
+		this.state = actions.createNewGame()
+	}
 
 	componentDidMount() {
 		this.enableDrop()

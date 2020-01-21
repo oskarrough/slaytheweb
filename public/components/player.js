@@ -21,6 +21,6 @@ const Energybar = ({max, value}) => html`
 const Healthbar = ({max, value}) => html`
 	<div class="Healthbar">
 		<p>${value}/${max}</p>
-		<div class="Healthbar-value" style=${`width: ${value/max*100}%`}></div>
+		<div class="Healthbar-value" style=${`width: ${(value / max) * 100}%`}></div>
 	</div>
 `
