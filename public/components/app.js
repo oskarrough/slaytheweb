@@ -4,45 +4,31 @@ import Player from './player.js'
 import History from './history.js'
 import Cards from './cards.js'
 import Queue from '../game/queue.js'
-import {drawStarterDeck} from '../game/actions.js'
+import actions from '../game/actions.js'
 
 const queue = new Queue()
+
+// to test via the browser console
 window.queue = queue
+window.actions = actions
 
 // queue.add('drawStarterDeck')
 
-const starterDeck = drawStarterDeck()
-
-const gameState = {
-	cards: starterDeck,
-	player1: {
-		maxEnergy: 3,
-		currentEnergy: 3,
-		maxHealth: 100,
-		currentHealth: 100
-	},
-	player2: {
-		maxEnergy: 3,
-		currentEnergy: 3,
-		maxHealth: 42,
-		currentHealth: 42
-	}
-}
-
 export default class App extends Component {
-	state = gameState
+	state = actions.createNewGame()
 
 	componentDidMount() {
 		this.enableDrop()
 	}
 
-	doIt() {
-		const nextState = produce(this.state, draft => {
-			// This is what matters
-			draft.player1.currentHealth = 10
-		})
+	runQueue() {
+		const action = queue.next()
+		// Actions have a "type" and a "state". They always return a new, modified state.
+		const nextState = actions[action.type](action)
+		console.log(nextState)
 		this.setState(nextState)
 	}
+
 	enableDrop() {
 		const drop = new window.Sortable.default(this.base.querySelectorAll('.dropzone'), {
 			draggable: '.Card',
@@ -64,7 +50,7 @@ export default class App extends Component {
 			if (!wasDiscarded) {
 				event.cancel()
 			} else {
-				queue.add('playCard', {card, dragEvent: event})
+				queue.add({type: 'playCard', state: this.state, card, dragEvent: event})
 			}
 		})
 		// drop.on('sortable:sorted', event => {
@@ -82,7 +68,9 @@ export default class App extends Component {
 					<${Player} player=${state.player2} name="Mr. T" />
 				</div>
 				<p>
-					<button onclick=${() => this.doIt()}>do it</button>
+					<button onclick=${() => queue.add({type: 'drawStarterDeck', state})}>Draw starter deck</button>
+					<button onclick=${() => queue.add({type: 'playCard', state, card: state.cards[0]})}>Play first card</button>
+					<button onclick=${() => this.runQueue()}>Run queue</button>
 				</p>
 				<${Cards} />
 				<${History} queue=${queue.list} />

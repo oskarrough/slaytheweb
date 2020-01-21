@@ -1,11 +1,31 @@
 import {cards, Card} from './cards.js'
+import produce from '../web_modules/immer.js'
+
+// This is the big object of game state. Everything should start here.
+export function createNewGame() {
+	return {
+		cards: [],
+		player1: {
+			maxEnergy: 3,
+			currentEnergy: 3,
+			maxHealth: 100,
+			currentHealth: 100
+		},
+		player2: {
+			maxEnergy: 3,
+			currentEnergy: 3,
+			maxHealth: 42,
+			currentHealth: 42
+		}
+	}
+}
 
 export function drawCard(name) {
 	return new Card(cards.find(card => card.name === name))
 }
 
-export function drawStarterDeck() {
-	return [
+export function drawStarterDeck({state}) {
+	const deck = [
 		drawCard('Bash'),
 		drawCard('Defend'),
 		drawCard('Defend'),
@@ -16,13 +36,19 @@ export function drawStarterDeck() {
 		drawCard('Strike'),
 		drawCard('Strike')
 	]
+	return produce(state, draft => {
+		draft.cards = deck
+	})
 }
 
-export function playCard(card) {
-	return card
+export function playCard({state, card}) {
+	return produce(state, draft => {
+		draft.player1.currentEnergy = state.player1.currentEnergy - card.cost
+	})
 }
 
 export default {
+	createNewGame,
 	drawCard,
 	drawStarterDeck,
 	playCard
