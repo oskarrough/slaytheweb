@@ -30,6 +30,13 @@ export default class App extends Component {
 		this.setState(nextState)
 	}
 
+	enqueue(what) {
+		queue.add(what)
+		const nextState = this.state
+		nextState.history = queue.list
+		this.setState(nextState)
+	}
+
 	enableDrop() {
 		const drop = new window.Sortable.default(this.base.querySelectorAll('.dropzone'), {
 			draggable: '.Card',
@@ -69,12 +76,14 @@ export default class App extends Component {
 					<${Player} player=${state.player2} name="Mr. T" />
 				</div>
 				<p>
-					<button onclick=${() => queue.add({type: 'drawStarterDeck', state})}>Draw starter deck</button>
-					<button onclick=${() => queue.add({type: 'playCard', state, card: state.cards[0]})}>Play first card</button>
+					<button onclick=${() => this.enqueue({type: 'drawStarterDeck', state})}>Draw starter deck</button>
+					<button onclick=${() => this.enqueue({type: 'playCard', state, card: state.cards[0]})}>
+						Play first card
+					</button>
 					<button onclick=${() => this.runQueue()}>Run queue</button>
 				</p>
 				<${Cards} />
-				<${History} queue=${queue.list} />
+				<${History} history=${state.history} />
 				<${Cards} cards=${state.cards} />
 			</div>
 		`

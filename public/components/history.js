@@ -20,13 +20,14 @@ export default class Queue extends Component {
 		clearInterval(this.timer)
 	}
 
-	render(props) {
-		let time = new Date(this.state.time).toLocaleTimeString()
+	render(props, state) {
+		let time = new Date(state.time).toLocaleTimeString()
+		// console.log({props})
 		return html`
 			<div>
-				<span>Game state history ${time}</span>
+				<p>Game state history ${time}</p>
 				<ol class="Queue">
-					${props.queue.map(
+					${props.history.map(
 						(item, index) =>
 							html`
 								<li key=${index}>${item.type}</li>
