@@ -21,10 +21,15 @@ export default class App extends Component {
 		this.enableDrop()
 	}
 
+	enqueue(what) {
+		queue.add(what)
+	}
+
 	runQueue() {
 		const action = queue.next()
 		if (!action) return
-		// Actions have a "type" and a "state". They always return a new, modified state.
+		// Actions have a "type" and a "state". They return a new, modified state.
+		console.log('runQueue', {action})
 		const nextState = actions[action.type](action)
 		console.log({nextState})
 		this.setState(nextState)
@@ -38,29 +43,22 @@ export default class App extends Component {
 		// drop.on('drag:start', () => console.log('drag:start'))
 		// drop.on('drag:move', () => console.log('drag:move'))
 		// drop.on('drag:stop', () => console.log('drag:stop'))
-		drop.on('sortable:start', () => {
-			// console.log('sortable:start', event)
-			// const wasDiscarded = event.data.dragEvent.startContainer.classList.contains('Cards--discard')
-			// console.log(wasDiscarded)
-		})
-		drop.on('sortable:sort', event => {
-			// console.log('sortable:sort', event)
-			const wasDiscarded = event.data.dragEvent.overContainer.classList.contains('Cards--discard')
-			const card = this.state.cards.find(card => card.id === event.data.dragEvent.originalSource.dataset.id)
-			// console.log({card, wasDiscarded})
+		// drop.on('sortable:start', event => { console.log('sortable:start', event) })
+		// drop.on('sortable:sort', event => { console.log('sortable:sort', event) })
+		// drop.on('sortable:sorted', event => { console.log('sortable:sorted', event) })
+		drop.on('sortable:stop', event => {
+			// console.log('sortable:stop', event)
+			const {newContainer, oldContainer} = event.data
+			const wasDiscarded = newContainer.classList.contains('Cards--discard') && newContainer !== oldContainer
 			if (!wasDiscarded) {
 				event.cancel()
 			} else {
-				queue.add({type: 'playCard', state: this.state, card, dragEvent: event})
+				const card = this.state.cards.find(card => card.id === event.data.dragEvent.originalSource.dataset.id)
+				this.enqueue({type: 'playCard', state: this.state, card})
 			}
 		})
-		// drop.on('sortable:sorted', event => {
-		// 	console.log('sortable:sorted', event)
-		// })
-		// drop.on('sortable:stop', event => {
-		// 	console.log('sortable:stop', event)
-		// })
 	}
+
 	render(props, state) {
 		return html`
 			<div class="App">
@@ -69,12 +67,15 @@ export default class App extends Component {
 					<${Player} player=${state.player2} name="Mr. T" />
 				</div>
 				<p>
-					<button onclick=${() => queue.add({type: 'drawStarterDeck', state})}>Draw starter deck</button>
-					<button onclick=${() => queue.add({type: 'playCard', state, card: state.cards[0]})}>Play first card</button>
-					<button onclick=${() => this.runQueue()}>Run queue</button>
+					<button onclick=${() => this.enqueue({type: 'drawStarterDeck', state})}>Draw starter deck</button>
+					<button onclick=${() => this.enqueue({type: 'playCard', state, card: state.cards[0]})}>
+						Play first card
+					</button>
 				</p>
 				<${Cards} />
-				<${History} queue=${queue.list} />
+				<${History} history=${queue.list} />
+				<p><button onclick=${() => this.runQueue()}>Run queue</button></p>
+				<p><button onclick=${() => this.enqueue({type: 'endTurn', state})}>End turn</button></p>
 				<${Cards} cards=${state.cards} />
 			</div>
 		`

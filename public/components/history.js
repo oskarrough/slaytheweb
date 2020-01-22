@@ -6,27 +6,25 @@ export default class Queue extends Component {
 		this.state = {time: Date.now()}
 	}
 
-	// Called whenever our component is created
 	componentDidMount() {
-		// update time every second
+		// Update time every second. Also serves the issue of
+		// properly keeping the props.history up to date.
 		this.timer = setInterval(() => {
 			this.setState({time: Date.now()})
 		}, 1000)
 	}
 
-	// Called just before our component will be destroyed
 	componentWillUnmount() {
-		// stop when not renderable
 		clearInterval(this.timer)
 	}
 
-	render(props) {
-		let time = new Date(this.state.time).toLocaleTimeString()
+	render(props, state) {
+		const time = new Date(state.time).toLocaleTimeString()
 		return html`
 			<div>
-				<span>Game state history ${time}</span>
-				<ol class="Queue">
-					${props.queue.map(
+				<p>Game state history ${time}</p>
+				<ol>
+					${props.history.map(
 						(item, index) =>
 							html`
 								<li key=${index}>${item.type}</li>

@@ -53,11 +53,18 @@ export function playCard({state, card}) {
 	})
 }
 
+export function endTurn({state}) {
+	return produce(state, draft => {
+		draft.player1.currentEnergy = 3
+	})
+}
+
 export default {
 	createNewGame,
 	drawCard,
 	drawStarterDeck,
-	playCard
+	playCard,
+	endTurn
 }
 
 // ### Deck Modification
