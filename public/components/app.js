@@ -38,7 +38,7 @@ export default class App extends Component {
 		// drop.on('drag:start', () => console.log('drag:start'))
 		// drop.on('drag:move', () => console.log('drag:move'))
 		// drop.on('drag:stop', () => console.log('drag:stop'))
-		drop.on('sortable:start', event => {
+		drop.on('sortable:start', () => {
 			// console.log('sortable:start', event)
 			// const wasDiscarded = event.data.dragEvent.startContainer.classList.contains('Cards--discard')
 			// console.log(wasDiscarded)
