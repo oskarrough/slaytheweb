@@ -1,5 +1,0 @@
-{
-  "imports": {
-    "htm/preact/standalone.module": "./htm/preact/standalone.module.js"
-  }
-}
