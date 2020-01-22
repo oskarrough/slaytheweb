@@ -1,5 +1,6 @@
 {
   "imports": {
-    "htm/preact/standalone.module": "./htm/preact/standalone.module.js"
+    "htm/preact/standalone.module": "./htm/preact/standalone.module.js",
+    "immer": "./immer.js"
   }
 }

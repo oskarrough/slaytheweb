@@ -4,7 +4,7 @@
   "scripts": {
     "start": "browser-sync public --watch --no-notify",
     "test": "eslint public",
-    "build": "snowpack --include public/**/*.js ---clean --dest public/web_modules"
+    "build": "snowpack --include 'public/**/*.js' --clean --dest public/web_modules"
   },
   "license": "MIT",
   "devDependencies": {
