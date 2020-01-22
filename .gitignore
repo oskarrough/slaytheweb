@@ -1,5 +1,4 @@
 node_modules/
-public/web_modules/
 .DS_Store
 *.swp
 yarn-error.log
