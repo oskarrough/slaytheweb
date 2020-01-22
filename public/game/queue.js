@@ -7,7 +7,8 @@ export default class Queue {
 		console.log('added to queue', this.list)
 	}
 	next() {
-		return this.list.pop()
+		// return this.list.pop() // returns last/newest
+		return this.list.shift() // returns first/oldest
 	}
 	// addToBottom() {
 	// 	this.items.unshift(item)

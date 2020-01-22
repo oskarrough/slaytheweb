@@ -28,7 +28,8 @@ export default class App extends Component {
 	runQueue() {
 		const action = queue.next()
 		if (!action) return
-		// Actions have a "type" and a "state". They always return a new, modified state.
+		// Actions have a "type" and a "state". They return a new, modified state.
+		console.log('runQueue', {action})
 		const nextState = actions[action.type](action)
 		console.log({nextState})
 		this.setState(nextState)
@@ -74,6 +75,7 @@ export default class App extends Component {
 				<${Cards} />
 				<${History} history=${queue.list} />
 				<p><button onclick=${() => this.runQueue()}>Run queue</button></p>
+				<p><button onclick=${() => this.enqueue({type: 'endTurn', state})}>End turn</button></p>
 				<${Cards} cards=${state.cards} />
 			</div>
 		`
