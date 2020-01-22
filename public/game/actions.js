@@ -16,8 +16,7 @@ export function createNewGame() {
 			currentEnergy: 3,
 			maxHealth: 42,
 			currentHealth: 42
-		},
-		history: []
+		}
 	}
 }
 
