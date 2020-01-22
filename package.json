@@ -13,11 +13,11 @@
     "eslint-config-prettier": "^6.9.0",
     "eslint-plugin-prettier": "^3.1.2",
     "prettier": "1.19.1",
-    "snowpack": "^1.0.5"
+    "snowpack": "^1.1.0"
   },
   "dependencies": {
     "@shopify/draggable": "^1.0.0-beta.8",
-    "htm": "^2.2.1",
+    "htm": "^3.0.1",
     "immer": "^5.3.2",
     "popmotion": "^8.7.1",
     "preact": "^10.2.1"

@@ -2223,10 +2223,10 @@ hosted-git-info@^2.1.4:
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.7.1.tgz#97f236977bd6e125408930ff6de3eec6281ec047"
   integrity sha512-7T/BxH19zbcCTa8XkMlbK5lTo1WtgkFi3GvdWEyNuc4Vex7/9Dqbnpsf4JMydcfj9HCg4zUWFTL3Za6lapg5/w==
 
-htm@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/htm/-/htm-2.2.1.tgz#02ae7459901b3956aeaf6c7ae627fb6905dc7607"
-  integrity sha512-nPWqBlSbdSHaT2d/cpFRpZLqH5BcdaRcXaicyAtXbkIsIiXLnstPPg0fEX3I8SrlY16FSzb1FLK44uk25xhMvw==
+htm@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/htm/-/htm-3.0.1.tgz#403a47f657da7a5033e1e9e868522b994adede7e"
+  integrity sha512-7oDEoYBb/HjKRV0GDpqpxo3pqjv0HaacextljYYd/Nb0JJONDY/Cj4m6dlcFtg52V9kPLlN2FXNs2svilvGUaw==
 
 http-errors@1.6.3, http-errors@~1.6.2:
   version "1.6.3"
@@ -3760,10 +3760,10 @@ snapdragon@^0.8.1:
     source-map-resolve "^0.5.0"
     use "^3.1.0"
 
-snowpack@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/snowpack/-/snowpack-1.0.5.tgz#fdafd80f140b73472e9954ee351fd73f33330fa0"
-  integrity sha512-LVJQtRw04xg8t6E3YavjrUlxzcPND+8aJonBoM1F8i1P8HCqwTqg29dr2Rie1DsZJa/D0AzdBFhhLD3KlmlV1g==
+snowpack@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/snowpack/-/snowpack-1.1.0.tgz#622e210cfd4607b0e3229d4eb332bc1f3e9d58e7"
+  integrity sha512-tq9RA4i1QPNDH2oVsD76S1SkJMpAzD/2wdQLk8OMNdO93+WapQCrh4GRGYWyTI3NrkxQ7iA+CDWm7JUOZ8/m1w==
   dependencies:
     "@babel/core" "^7.6.4"
     "@babel/parser" "^7.6.4"
