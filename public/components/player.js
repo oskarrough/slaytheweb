@@ -1,30 +1,26 @@
-import {html, Component} from '../vendor/htm-preact-standalone.mjs'
-
-const Healthbar = ({max, value}) => html`
-	<div class="Healthbar">
-		<p>${value} / ${max}</p>
-		<div class="Healthbar-value" style=${`width: ${value}%`}></div>
-	</div>
-`
+import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
 
 export default class Player extends Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-			maxEnergy: 3,
-			currentEnergy: 3,
-			maxHealth: 100,
-			currentHealth: 10
-		}
-	}
-	render(props, state) {
+	render(props) {
 		const name = props.name ? props.name : 'Anonymous'
+		const {player} = props
 		return html`
 			<div class="Player">
 				<p>${name}</p>
-				<p class="Energy"><i>${state.currentEnergy}</i> / ${state.maxEnergy}</p>
-				<${Healthbar} max=${state.maxHealth} value=${state.currentHealth} />
+				<${Energybar} max=${player.maxEnergy} value=${player.currentEnergy} />
+				<${Healthbar} max=${player.maxHealth} value=${player.currentHealth} />
 			</div>
 		`
 	}
 }
+
+const Energybar = ({max, value}) => html`
+	<div class="Energybar">${value}/${max}</div>
+`
+
+const Healthbar = ({max, value}) => html`
+	<div class="Healthbar">
+		<p>${value}/${max}</p>
+		<div class="Healthbar-value" style=${`width: ${(value / max) * 100}%`}></div>
+	</div>
+`

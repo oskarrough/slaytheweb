@@ -44,6 +44,7 @@ center[vertical] {
 	border: 1px dotted yellow;
 	padding: 1rem;
 	margin: 1rem;
+	min-height: 6em;
 	/* overflow: auto; */
 
 	display: grid;
@@ -109,13 +110,13 @@ center[vertical] {
 }
 
 .Card-energy,
-.Energy {
+.Energybar {
 	background: teal;
 	color: antiquewhite;
 	text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.8);
 }
 
-.Energy {
+.Energybar {
 	display: inline-block;
 	padding: 0.2em 0.3em 0.1em;
 	border-radius: 0.2em;
@@ -144,6 +145,8 @@ center[vertical] {
 
 .Healthbar p {
 	margin: 0.2em 0 0.1em;
+	position: relative;
+	z-index: 1;
 }
 
 .App {
@@ -169,4 +172,3 @@ center[vertical] {
 .Card.draggable-mirror {
 	max-width: var(--card-width);
 }
-

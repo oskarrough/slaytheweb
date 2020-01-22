@@ -1,5 +1,17 @@
 # Kortgame
 
+A simplified, browser-based Slay The Spire inspired game that may or may not evolve into something else.
+
+## Todo
+
+Which parts do we want to do
+
+- Game state logic (player, actions)
+- First class console cli support
+- A deck of cards (draw, random methods)
+
+We can close this once we are able to draw a card onto an enemy and see the effects on game state.
+
 Many ways to go. This is the first.
 
 We need
@@ -9,148 +21,50 @@ We need
 - An action could be draw a card, deal damage, everything is an action
 - All actions are queued
 
-## Encounters
+Let's figure out how to draw a deck, play it console-style no ui.
 
-encounter
-add monster
-start encounter
+### Game state
 
-## Basics
-
-deck
-draw
-fight
-gold
-hand
-player
-maxHealth = startingHealth
-currentHealth
-energy
-gold
-Cards
-card.use()
-
-## Queue
-
-actionQueue[]
-.addToTop()
-.addToBottom()
-
-
-## Anytime
-
-* `gold add [amount]` gain gold
-* `gold lose [amount]` lose gold
-* `info toggle` Settings.isInfo
-* `potion [pos] [id]` gain specified potion in specified slot (0, 1, or 2)
-* `hp add [amount]` heal amount
-* `hp remove [amount]` hp loss
-* `maxhp add [amount]` gain max hp
-* `maxhp remove [amount]` lose max hp
-* `debug [true/false]` sets `Settings.isDebug`
-
-## Relics
-
-* `relic add [id]` generate relic
-* `relic list` logs all relic pools
-* `relic remove [id]` lose relic
-
-## Unlocks
-
-* `unlock always` always gain an unlock on death
-* `unlock level [level]` set the gained unlock to be the specified level
-
-## Cards
-
-```python
-public enum CardTarget {
-	ENEMY, ALL_ENEMY, SELF, NONE, SELF_AND_ENEMY, ALL;
-}
-
-public enum CardColor {
-	RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE;
-}
-
-public enum CardRarity {
-	BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE;
-}
-
-public enum CardType {
-	ATTACK, SKILL, POWER, STATUS, CURSE;
-}
-
-public enum CardTags {
-	HEALING, STRIKE, EMPTY, STARTER_DEFEND, STARTER_STRIKE;
-}
+use immer, supports undo and redo, store in local storage or even better, serialize and store everything in the url?
 
 enum GameMode {
-	CHAR_SELECT, GAMEPLAY, DUNGEON_TRANSITION, SPLASH;
+ 	CHAR_SELECT, GAMEPLAY, DUNGEON_TRANSITION, SPLASH;
 }
-```
 
-## Console Commands
+We want the game library/api to be independent of the UI?!
 
-### Deck Modification
+### Console
 
-* `deck add [id] {cardcount} {upgrades}` add card to deck (optional: integer # of times you want to add this card) (optional: integer # of upgrades)
-* `deck remove [id]` remove card from deck
-* `deck remove all` remove all cards from deck
+by this I mean being able to play the game with (almost) no gui. write the commands, see the effect directly on game state.
 
-### During Combat
+### Deck of cards
 
-* `draw [num]` draw cards
-* `energy add [amount]` gain energy
-* `energy inf` toggles infinite energy
-* `energy remove [amount]` lose energy
-* `hand add [id] {cardcount} {upgrades}` add card to hand with (optional: integer # of times to add the card) (optional: integer # of upgrades)
-* `hand remove all` exhaust entire hand
-* `hand remove [id]` exhaust card from hand
-* `kill all` kills all enemies in the current combat
-* `kill self` kills your character
-* `power [id] [amount]` bring up a targetting reticle to apply amount stacks of a power to either the player or an enemy
+- list of cards
+- a deck is some of the cards
+- a hand is the currently picked cards from your deck
 
-### Outside of Combat
+## Notes for later
 
-* `fight [name]` enter combat with the specified encounter
-* `event [name]` start event with the specified name
+### Basics
 
-### Anytime
+- deck
+- draw
+- fight
+- gold
+- hand
+- player
+- maxHealth = startingHealth
+- currentHealth
+- energy
+- gold
+- Cards
+- card.use()
 
-* `gold add [amount]` gain gold
-* `gold lose [amount]` lose gold
-* `info toggle` Settings.isInfo
-* `potion [pos] [id]` gain specified potion in specified slot (0, 1, or 2)
-* `hp add [amount]` heal amount
-* `hp remove [amount]` hp loss
-* `maxhp add [amount]` gain max hp
-* `maxhp remove [amount]` lose max hp
-* `debug [true/false]` sets `Settings.isDebug`
+### Encounters
 
-### Relics
-
-* `relic add [id]` generate relic
-* `relic list` logs all relic pools
-* `relic remove [id]` lose relic
-
-### Unlocks
-
-* `unlock always` always gain an unlock on death
-* `unlock level [level]` set the gained unlock to be the specified level
-
-### Acts
-
-* `act boss` brings you directly to the bossroom of your current act
-* `act [actname]` brings you to the start of the specified act
-
-### Keys to Act 4
-
-* `key add [color | all]` adds the corresponding key/s to your current run
-* `key lose [color | all]` removes the corresponding key/s from your current run
-
-### History
-
-* `history random` gives you the relics and deck of a past successful run with your current character at random
-* `history last` gives you the relics and deck of the last successful run with your current character
+- encounter
+- add monster
+- start encounter
 
 ## Links
 
@@ -173,3 +87,5 @@ enum GameMode {
 - https://freesound.org/
 - https://www.gamasutra.com/blogs/JoshGe/20181029/329512/How_to_Make_a_Roguelike.php
 - https://www.reddit.com/r/roguelikedev/
+- https://game-icons.net/
+

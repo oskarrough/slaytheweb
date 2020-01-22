@@ -2,3 +2,4 @@ node_modules/
 .DS_Store
 *.swp
 yarn-error.log
+public/web_modules/
