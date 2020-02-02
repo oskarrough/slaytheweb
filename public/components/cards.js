@@ -38,4 +38,3 @@ export const Card = ({id, name, type, energy, effects}) => html`
 // 		card.style.transform = cardTransform(offset, handWidth)
 // 	})
 // }
-

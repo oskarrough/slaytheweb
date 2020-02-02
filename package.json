@@ -3,11 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "start": "browser-sync public --watch --no-notify",
-    "test": "eslint public",
+    "test": "eslint public; ava",
     "build": "snowpack --include 'public/**/*.js' --clean --dest 'public/web_modules'"
   },
   "license": "MIT",
   "devDependencies": {
+    "ava": "^3.2.0",
     "browser-sync": "^2.26.7",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.9.0",
