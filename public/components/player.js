@@ -6,7 +6,7 @@ export default class Player extends Component {
 		const {player} = props
 		return html`
 			<div class="Player">
-				<p>${name}</p>
+				<h2>${name}</h2>
 				<${Energybar} max=${player.maxEnergy} value=${player.currentEnergy} />
 				<${Healthbar} max=${player.maxHealth} value=${player.currentHealth} />
 			</div>

@@ -7,14 +7,16 @@ import actions from '../game/actions.js'
 
 const queue = new Queue()
 
-// to test via the browser console
-window.queue = queue
-window.actions = actions
-
 export default class App extends Component {
 	constructor() {
 		super()
 		this.state = actions.createNewGame()
+		// Debugging in the browser console.
+		window.kortgame = {
+			state: this.state,
+			queue,
+			actions
+		}
 	}
 
 	componentDidMount() {
@@ -31,8 +33,8 @@ export default class App extends Component {
 		// Actions have a "type" and a "state". They return a new, modified state.
 		console.log('runQueue', {action})
 		const nextState = actions[action.type](action)
-		console.log({nextState})
 		this.setState(nextState)
+		console.table(nextState)
 	}
 
 	enableDrop() {
@@ -72,11 +74,18 @@ export default class App extends Component {
 						Play first card
 					</button>
 				</p>
-				<${Cards} />
+
+				<h2>Discard</h2>
+				<${Cards} cards=${state.discardPile} isDiscardPile=${true} />
+
 				<${History} history=${queue.list} />
 				<p><button onclick=${() => this.runQueue()}>Run queue</button></p>
 				<p><button onclick=${() => this.enqueue({type: 'endTurn', state})}>End turn</button></p>
-				<${Cards} cards=${state.cards} />
+				<h2>Hand</h2>
+				<${Cards} cards=${state.hand} />
+
+				<h2>Deck</h2>
+				<${Cards} cards=${state.deck} />
 			</div>
 		`
 	}

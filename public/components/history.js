@@ -22,7 +22,7 @@ export default class Queue extends Component {
 		const time = new Date(state.time).toLocaleTimeString()
 		return html`
 			<div>
-				<p>Game state history ${time}</p>
+				<h2>Game state history ${time}</h2>
 				<ol>
 					${props.history.map(
 						(item, index) =>

@@ -3,7 +3,7 @@
 }
 
 html {
-	font-size: 18px;
+	font-size: 16px;
 	line-height: 1.2;
 	background: black;
 	color: antiquewhite;
@@ -20,33 +20,26 @@ body {
 }
 
 button {
-	font-size: large;
-	padding: 0.1em 0.7em 0.18em;
+	font-size: 1rem;
+	padding: 0.1em 0.7em 0.1em;
 	border: 3px solid beige;
 	border-radius: 0.3em;
 	background: lightblue;
 	color: hsla(0, 0%, 0%, 0.9);
 }
 
-center[vertical] {
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-	place-content: center;
+h2 {
+	font-size: 1em;
+	margin: 1rem 0;
 }
 
 .Cards {
 	position: relative;
-	margin-top: auto;
-	margin-bottom: -1.5rem;
-
 	padding: 0.6em 0 1em 1em;
 	border: 1px dotted yellow;
 	padding: 1rem;
 	margin: 1rem;
 	min-height: 6em;
-	/* overflow: auto; */
-
 	display: grid;
 	/* grid-auto-columns: minmax(6em, var(--card-width)); */
 	grid-auto-columns: var(--card-width);
@@ -120,13 +113,12 @@ center[vertical] {
 	display: inline-block;
 	padding: 0.2em 0.3em 0.1em;
 	border-radius: 0.2em;
-	margin: 0 1rem;
 	border: 3px solid;
 }
 
 .Healthbar {
 	position: relative;
-	margin: 1rem 1rem 2rem;
+	margin: 1rem 0;
 	border: 1px solid;
 	border-radius: 1em;
 	text-align: center;
@@ -162,6 +154,7 @@ center[vertical] {
 
 .Player {
 	flex: 1;
+	padding: 0 1rem;
 }
 
 .draggable-source--is-dragging {

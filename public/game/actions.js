@@ -4,7 +4,9 @@ import produce from '../web_modules/immer.js'
 // This is the big object of game state. Everything should start here.
 export function createNewGame() {
 	return {
-		cards: [],
+		deck: [],
+		hand: [],
+		discardPile: [],
 		player1: {
 			maxEnergy: 3,
 			currentEnergy: 3,
@@ -20,24 +22,24 @@ export function createNewGame() {
 	}
 }
 
-export function drawCard(name) {
+export function createCard(name) {
 	return new Card(cards.find(card => card.name === name))
 }
 
 export function drawStarterDeck({state}) {
 	const deck = [
-		drawCard('Bash'),
-		drawCard('Defend'),
-		// drawCard('Defend'),
-		// drawCard('Defend'),
-		// drawCard('Defend'),
-		// drawCard('Strike'),
-		// drawCard('Strike'),
-		// drawCard('Strike'),
-		drawCard('Strike')
+		createCard('Bash'),
+		createCard('Defend'),
+		createCard('Defend'),
+		createCard('Defend'),
+		createCard('Defend'),
+		createCard('Strike'),
+		createCard('Strike'),
+		createCard('Strike'),
+		createCard('Strike')
 	]
 	return produce(state, draft => {
-		draft.cards = deck
+		draft.deck = deck
 	})
 }
 
@@ -53,6 +55,13 @@ export function playCard({state, card}) {
 	})
 }
 
+// Move X cards from deck to hand
+export function drawCards({state, amount = 4}) {
+	return produce(state, draft => {
+		draft.hand = state.deck.splice(0, amount)
+	})
+}
+
 export function endTurn({state}) {
 	return produce(state, draft => {
 		draft.player1.currentEnergy = 3
@@ -61,8 +70,9 @@ export function endTurn({state}) {
 
 export default {
 	createNewGame,
-	drawCard,
+	createCard,
 	drawStarterDeck,
+	drawCards,
 	playCard,
 	endTurn
 }
