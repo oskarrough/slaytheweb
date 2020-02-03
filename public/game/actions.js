@@ -14,8 +14,6 @@ export function createNewGame() {
 			currentHealth: 100
 		},
 		player2: {
-			maxEnergy: 3,
-			currentEnergy: 3,
 			maxHealth: 42,
 			currentHealth: 42
 		}
