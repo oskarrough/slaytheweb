@@ -52,4 +52,5 @@ test('drawing a starter deck actually adds it to the deck', t => {
 // })
 
 test.todo('can draw cards from deck into hand')
-test.todo('can play a card from hand and see the effects on state')
+test.todo('can play a strike card from hand and see the effects on state')
+test.todo('can play a defend card from hand and see the effects on state')

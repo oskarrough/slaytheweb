@@ -1,4 +1,4 @@
-import {cards, Card} from './cards.js'
+import {createCard} from './cards.js'
 import produce from '../web_modules/immer.js'
 
 // This is the big object of game state. Everything should start here.
@@ -18,12 +18,6 @@ export function createNewGame() {
 			currentHealth: 42
 		}
 	}
-}
-
-export function createCard(name) {
-	const baseCard = cards.find(card => card.name === name)
-	if (!baseCard) throw new Error(`Card not found: ${name}`)
-	return new Card(baseCard)
 }
 
 export function drawStarterDeck({state}) {

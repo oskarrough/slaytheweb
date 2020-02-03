@@ -77,3 +77,11 @@ export class Card {
 		console.log('use', this.effects)
 	}
 }
+
+// Turns the plain object cards into a class-based one.
+export function createCard(name) {
+	const baseCard = cards.find(card => card.name === name)
+	if (!baseCard) throw new Error(`Card not found: ${name}`)
+	return new Card(baseCard)
+}
+
