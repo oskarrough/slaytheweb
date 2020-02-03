@@ -59,7 +59,7 @@ test('can draw cards from deck to hand', t => {
 	t.is(state3.deck.length, 7, 'cards have been removed from deck')
 })
 
-test('can manipulate hp', t => {
+test('can manipulate player hp', t => {
 	const state = actions.createNewGame()
 	t.is(state.player1.currentHealth, 100)
 	const state2 = actions.removeHealth({state, amount: 10})
@@ -68,10 +68,17 @@ test('can manipulate hp', t => {
 	t.is(state3.player1.currentHealth, 92)
 })
 
-// test('bar', async t => {
-// 	const bar = Promise.resolve('bar')
-// 	t.is(await bar, 'bar')
-// })
+test.failing('can play a strike card from hand and see the effects on state', t => {
+	const state1 = actions.createNewGame()
+	t.is(state1.player2.currentHealth, 42)
 
-test.todo('can play a strike card from hand and see the effects on state')
+	const state2 = actions.drawStarterDeck({state: state1})
+	const card = state2.deck.find(card => card.name === 'Strike')
+	t.is(card.damage, 6)
+
+	const state3 = actions.playCard({state: state2, card})
+	// state3.player2.currentHealth = 36
+	t.is(state3.player2.currentHealth, 42 - card.damage)
+})
+
 test.todo('can play a defend card from hand and see the effects on state')
