@@ -37,22 +37,41 @@ export function drawStarterDeck({state}) {
 	})
 }
 
+// Move X cards from deck to hand
+export function drawCards({state, amount = 4}) {
+	return produce(state, draft => {
+		const newCards = state.deck.slice(0, amount)
+		// Take the first X cards from deck and add to hand
+		draft.hand = draft.hand.concat(newCards)
+		// and remove them from deck
+		for (let i = 0; i < amount; i++) {
+			draft.deck.shift()
+		}
+	})
+}
+
 export function playCard({state, card}) {
 	if (!card) throw new Error('No card to play')
 	if (state.player1.currentEnergy < card.cost) throw new Error('Not enough energy to play card')
 	return produce(state, draft => {
-		// Recaclculate energy.
+		// Move card from hand to discard pile.
+		draft.hand = state.hand.filter(c => c.id !== card.id)
+		draft.discardPile.push(card)
+		// And play it...
 		draft.player1.currentEnergy = state.player1.currentEnergy - card.cost
-		// Remove the card from our hand.
-		draft.cards = state.cards.filter(c => c.id !== card.id)
 		card.use()
 	})
 }
 
-// Move X cards from deck to hand
-export function drawCards({state, amount = 4}) {
+export function removeHealth({state, amount}) {
 	return produce(state, draft => {
-		draft.hand = state.deck.splice(0, amount)
+		draft.player1.currentHealth = state.player1.currentHealth - amount
+	})
+}
+
+export function addHealth({state, amount}) {
+	return produce(state, draft => {
+		draft.player1.currentHealth = state.player1.currentHealth + amount
 	})
 }
 
@@ -68,7 +87,9 @@ export default {
 	drawStarterDeck,
 	drawCards,
 	playCard,
-	endTurn
+	endTurn,
+	removeHealth,
+	addHealth
 }
 
 // ### Deck Modification
