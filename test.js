@@ -1,13 +1,23 @@
 const test = require('ava')
 import actions from './public/game/actions'
 
-test('foo', t => {
-	t.pass()
+test('can create an attack card', t => {
+	const card = actions.createCard('Strike')
+	t.is(card.name, 'Strike')
+	t.is(card.type, 'Attack')
+	t.is(typeof card.damage, 'number')
+	t.is(typeof card.cost, 'number')
+	t.true(card.hasOwnProperty('effects'))
 })
 
-test('bar', async t => {
-	const bar = Promise.resolve('bar')
-	t.is(await bar, 'bar')
+test('can create a skill card', t => {
+	const card = actions.createCard('Defend')
+	t.is(card.type, 'Skill')
+	t.is(typeof card.block, 'number')
+})
+
+test('card name must be exact', t => {
+	t.throws(() => actions.createCard('Naaaah doesnt exist'))
 })
 
 test('new game state is ok', t => {

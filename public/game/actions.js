@@ -21,7 +21,9 @@ export function createNewGame() {
 }
 
 export function createCard(name) {
-	return new Card(cards.find(card => card.name === name))
+	const baseCard = cards.find(card => card.name === name)
+	if (!baseCard) throw new Error(`Card not found: ${name}`)
+	return new Card(baseCard)
 }
 
 export function drawStarterDeck({state}) {
