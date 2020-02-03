@@ -84,4 +84,3 @@ export function createCard(name) {
 	if (!baseCard) throw new Error(`Card not found: ${name}`)
 	return new Card(baseCard)
 }
-
