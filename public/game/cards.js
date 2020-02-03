@@ -68,9 +68,11 @@ export class Card {
 		this.id = uuid()
 		this.name = props.name
 		this.cost = props.cost
-		this.damage = props.damage
-		this.block = props.block
 		this.type = props.type
+
+		if (props.damage) this.damage = props.damage
+		if (props.block) this.block = props.block
+
 		this.effects = props.effects
 	}
 	use() {
