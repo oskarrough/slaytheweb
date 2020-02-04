@@ -23,16 +23,16 @@ test('card name must be exact', t => {
 test('new game state is ok', t => {
 	const state = actions.createNewGame()
 	t.deepEqual(state, {
-		deck: [],
+		drawPile: [],
 		hand: [],
 		discardPile: [],
-		player1: {
+		player: {
 			maxEnergy: 3,
 			currentEnergy: 3,
 			maxHealth: 100,
 			currentHealth: 100
 		},
-		player2: {
+		monster: {
 			maxHealth: 42,
 			currentHealth: 42
 		}
@@ -41,14 +41,14 @@ test('new game state is ok', t => {
 
 test('drawing a starter deck actually adds it to the deck', t => {
 	const state = actions.createNewGame()
-	t.is(state.deck.length, 0)
+	t.is(state.drawPile.length, 0)
 	const newState = actions.drawStarterDeck({state})
-	t.is(newState.deck.length, 9)
+	t.is(newState.drawPile.length, 9)
 })
 
 test.todo('starter deck is shuffled')
 
-test('can draw cards from deck to hand', t => {
+test('can draw cards from drawPile to hand', t => {
 	const state1 = actions.createNewGame()
 	const state2 = actions.drawStarterDeck({state: state1})
 	t.is(state2.hand.length, 0, 'hand is empty to start with')
@@ -56,7 +56,7 @@ test('can draw cards from deck to hand', t => {
 	t.is(state1.hand.length, 0, 'immutable, should not be modified')
 	t.is(state2.hand.length, 0, 'immutable, should not be modified')
 	t.is(state3.hand.length, 2, 'cards have been added to the hand')
-	t.is(state3.deck.length, 7, 'cards have been removed from deck')
+	t.is(state3.drawPile.length, 7, 'cards have been removed from deck')
 })
 
 test('can manipulate player hp', t => {

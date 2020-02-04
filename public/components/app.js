@@ -68,8 +68,8 @@ export default class App extends Component {
 		return html`
 			<div class="App">
 				<div class="u-flex">
-					<${Player} player=${state.player1} />
-					<${Player} player=${state.player2} name="Mr. T" />
+					<${Player} player=${state.player} />
+					<${Player} player=${state.monster} name="Mr. T" />
 				</div>
 
 				<p>
@@ -89,7 +89,7 @@ export default class App extends Component {
 				<${Cards} cards=${state.hand} />
 
 				<h2>Deck</h2>
-				<${Cards} cards=${state.deck} />
+				<${Cards} cards=${state.drawPile} />
 			</div>
 		`
 	}

@@ -4,16 +4,16 @@ import produce from '../web_modules/immer.js'
 // This is the big object of game state. Everything should start here.
 export function createNewGame() {
 	return {
-		deck: [],
 		hand: [],
+		drawPile: [],
 		discardPile: [],
-		player1: {
+		player: {
 			maxEnergy: 3,
 			currentEnergy: 3,
 			maxHealth: 100,
 			currentHealth: 100
 		},
-		player2: {
+		monster: {
 			maxHealth: 42,
 			currentHealth: 42
 		}
@@ -33,26 +33,26 @@ export function drawStarterDeck({state}) {
 		createCard('Strike')
 	]
 	return produce(state, draft => {
-		draft.deck = deck
+		draft.drawPile = deck
 	})
 }
 
 // Move X cards from deck to hand
 export function drawCards({state, amount = 4}) {
 	return produce(state, draft => {
-		const newCards = state.deck.slice(0, amount)
+		const newCards = state.drawPile.slice(0, amount)
 		// Take the first X cards from deck and add to hand
 		draft.hand = draft.hand.concat(newCards)
 		// and remove them from deck
 		for (let i = 0; i < amount; i++) {
-			draft.deck.shift()
+			draft.drawPile.shift()
 		}
 	})
 }
 
 export function playCard({state, card}) {
 	if (!card) throw new Error('No card to play')
-	if (state.player1.currentEnergy < card.cost) throw new Error('Not enough energy to play card')
+	if (state.player.currentEnergy < card.cost) throw new Error('Not enough energy to play card')
 	return produce(state, draft => {
 		// Move card from hand to discard pile.
 		draft.hand = state.hand.filter(c => c.id !== card.id)
@@ -77,7 +77,7 @@ export function addHealth({state, amount}) {
 
 export function endTurn({state}) {
 	return produce(state, draft => {
-		draft.player1.currentEnergy = 3
+		draft.player.currentEnergy = 3
 	})
 }
 
