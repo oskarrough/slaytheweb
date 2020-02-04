@@ -77,13 +77,17 @@ test('can manipulate monster hp', t => {
 	t.is(state3.monster.currentHealth, 0)
 })
 
+test('can play a strike card from hand and see the effects on state', t => {
+	const state1 = actions.createNewGame()
+	t.is(state1.monster.currentHealth, 42)
 	const state2 = actions.drawStarterDeck({state: state1})
-	const card = state2.deck.find(card => card.name === 'Strike')
+	const card = state2.drawPile.find(card => card.name === 'Strike')
 	t.is(card.damage, 6)
-
 	const state3 = actions.playCard({state: state2, card})
-	// state3.player2.currentHealth = 36
-	t.is(state3.player2.currentHealth, 42 - card.damage)
+	t.is(state3.monster.currentHealth, 42 - card.damage)
 })
 
 test.todo('can play a defend card from hand and see the effects on state')
+test.todo('ending a turn refreshes energy')
+test.todo('ending a turn discards your hand')
+test.todo('ending a turn draws again')
