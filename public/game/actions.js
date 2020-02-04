@@ -11,7 +11,8 @@ function createNewGame() {
 			maxEnergy: 3,
 			currentEnergy: 3,
 			maxHealth: 100,
-			currentHealth: 100
+			currentHealth: 100,
+			block: 0
 		},
 		monster: {
 			maxHealth: 42,
@@ -64,6 +65,9 @@ function playCard({state, card}) {
 			// changeHealth({state, target: 'monster', amount: card.damage})
 			draft.monster.currentHealth = state.monster.currentHealth - card.damage
 		}
+		if (card.block) {
+			draft.player.block = state.player.block + card.block
+		}
 		// card.use()
 	})
 }
@@ -78,6 +82,7 @@ function changeHealth({state, target, amount}) {
 function endTurn({state}) {
 	return produce(state, draft => {
 		draft.player.currentEnergy = 3
+		draft.player.block = 0
 		// move cards from hand to bottom of drawpile
 		// draw again
 	})

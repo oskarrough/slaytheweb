@@ -31,7 +31,8 @@ test('new game state is ok', t => {
 			maxEnergy: 3,
 			currentEnergy: 3,
 			maxHealth: 100,
-			currentHealth: 100
+			currentHealth: 100,
+			block: 0
 		},
 		monster: {
 			maxHealth: 42,
@@ -86,8 +87,38 @@ test('can play a strike card from hand and see the effects on state', t => {
 	t.is(newState.monster.currentHealth, originalHealth - card.damage)
 })
 
-test.todo('can play a defend card from hand and see the effects on state')
-test.todo('ending a turn refreshes energy')
-test.todo('ending a turn removes any block')
+test('can play a defend card from hand and see the effects on state', t => {
+	const game = actions.createNewGame()
+	t.is(game.player.block, 0)
+	const card = createCard('Defend')
+	const v2 = actions.playCard({state: game, card})
+	t.is(v2.player.block, 5)
+	const v3 = actions.playCard({state: v2, card})
+	t.is(v3.player.block, 10)
+})
+
+test.only('ending a turn refreshes energy', t => {
+	const game = actions.createNewGame()
+	t.is(game.player.currentEnergy, 3)
+	const card = createCard('Defend')
+	const v2 = actions.playCard({state: game, card})
+	t.is(v2.player.currentEnergy, 2)
+	const v3 = actions.playCard({state: v2, card})
+	t.is(v3.player.currentEnergy, 1)
+	const newTurn = actions.endTurn({state: v3})
+	t.is(newTurn.player.currentEnergy, 3)
+})
+
+test('ending a turn removes any block', t => {
+	const game = actions.createNewGame()
+	t.is(game.player.block, 0)
+	const card = createCard('Defend')
+	const v2 = actions.playCard({state: game, card})
+	t.is(v2.player.block, 5)
+	const v3 = actions.playCard({state: v2, card})
+	t.is(v3.player.block, 10)
+	const newTurn = actions.endTurn({state: v3})
+	t.is(newTurn.player.block, 0)
+})
 test.todo('ending a turn discards your hand')
 test.todo('ending a turn draws a new hand')
