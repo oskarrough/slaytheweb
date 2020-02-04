@@ -11,7 +11,9 @@ html {
 
 html,
 button {
-	font-family: Alegreya, serif;
+	/* font-family: 'Kreon', serif; */
+	/* font-family: 'B612', sans-serif; */
+	font-family: 'Port Lligat Slab', serif;
 	font-display: swap;
 }
 
