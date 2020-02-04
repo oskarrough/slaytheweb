@@ -61,16 +61,21 @@ test('can draw cards from drawPile to hand', t => {
 
 test('can manipulate player hp', t => {
 	const state = actions.createNewGame()
-	t.is(state.player1.currentHealth, 100)
-	const state2 = actions.removeHealth({state, amount: 10})
-	t.is(state2.player1.currentHealth, 90)
-	const state3 = actions.addHealth({state: state2, amount: 2})
-	t.is(state3.player1.currentHealth, 92)
+	t.is(state.player.currentHealth, 100)
+	const state2 = actions.changeHealth({state, target: 'player', amount: -10})
+	t.is(state2.player.currentHealth, 90)
+	const state3 = actions.changeHealth({state: state2, target: 'player', amount: 10})
+	t.is(state3.player.currentHealth, 100)
 })
 
-test.failing('can play a strike card from hand and see the effects on state', t => {
-	const state1 = actions.createNewGame()
-	t.is(state1.player2.currentHealth, 42)
+test('can manipulate monster hp', t => {
+	const state = actions.createNewGame()
+	t.is(state.monster.currentHealth, 42)
+	const state2 = actions.changeHealth({state, target: 'monster', amount: 8})
+	t.is(state2.monster.currentHealth, 50)
+	const state3 = actions.changeHealth({state: state2, target: 'monster', amount: -50})
+	t.is(state3.monster.currentHealth, 0)
+})
 
 	const state2 = actions.drawStarterDeck({state: state1})
 	const card = state2.deck.find(card => card.name === 'Strike')

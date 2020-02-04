@@ -63,15 +63,20 @@ export function playCard({state, card}) {
 	})
 }
 
-export function removeHealth({state, amount}) {
-	return produce(state, draft => {
-		draft.player1.currentHealth = state.player1.currentHealth - amount
+		draft.player.currentEnergy = state.player.currentEnergy - card.cost
+		// not sure about this way...
+		if (card.damage) {
+			// changeHealth({state, target: 'monster', amount: card.damage})
+			draft.monster.currentHealth = state.monster.currentHealth - card.damage
+		}
+		// card.use()
 	})
 }
 
-export function addHealth({state, amount}) {
+function changeHealth({state, target, amount}) {
+	// if (target !== ('player' || 'monster')) throw new Error(`Invalid target: ${target}`)
 	return produce(state, draft => {
-		draft.player1.currentHealth = state.player1.currentHealth + amount
+		draft[target].currentHealth = state[target].currentHealth + amount
 	})
 }
 
@@ -88,8 +93,7 @@ export default {
 	drawCards,
 	playCard,
 	endTurn,
-	removeHealth,
-	addHealth
+	changeHealth
 }
 
 // ### Deck Modification

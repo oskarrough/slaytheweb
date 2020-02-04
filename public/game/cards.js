@@ -69,11 +69,9 @@ export class Card {
 		this.name = props.name
 		this.cost = props.cost
 		this.type = props.type
-
+		this.effects = props.effects
 		if (props.damage) this.damage = props.damage
 		if (props.block) this.block = props.block
-
-		this.effects = props.effects
 	}
 	use() {
 		console.log('use', this.effects)
