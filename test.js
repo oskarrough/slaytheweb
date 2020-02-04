@@ -87,5 +87,6 @@ test('can play a strike card from hand and see the effects on state', t => {
 
 test.todo('can play a defend card from hand and see the effects on state')
 test.todo('ending a turn refreshes energy')
+test.todo('ending a turn removes any block')
 test.todo('ending a turn discards your hand')
 test.todo('ending a turn draws again')
