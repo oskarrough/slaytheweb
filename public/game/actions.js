@@ -85,7 +85,6 @@ function endTurn({state}) {
 
 export default {
 	createNewGame,
-	createCard,
 	drawStarterDeck,
 	drawCards,
 	playCard,

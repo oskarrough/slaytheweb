@@ -1,8 +1,9 @@
 const test = require('ava')
 import actions from './public/game/actions'
+import {createCard} from './public/game/cards'
 
 test('can create an attack card', t => {
-	const card = actions.createCard('Strike')
+	const card = createCard('Strike')
 	t.is(card.name, 'Strike')
 	t.is(card.type, 'Attack')
 	t.is(typeof card.damage, 'number')
@@ -11,13 +12,13 @@ test('can create an attack card', t => {
 })
 
 test('can create a skill card', t => {
-	const card = actions.createCard('Defend')
+	const card = createCard('Defend')
 	t.is(card.type, 'Skill')
 	t.is(typeof card.block, 'number')
 })
 
 test('card name must be exact', t => {
-	t.throws(() => actions.createCard('Naaaah doesnt exist'))
+	t.throws(() => createCard('Naaaah doesnt exist'))
 })
 
 test('new game state is ok', t => {
@@ -39,7 +40,7 @@ test('new game state is ok', t => {
 	})
 })
 
-test('drawing a starter deck actually adds it to the deck', t => {
+test('drawing a starter deck adds it to the deck', t => {
 	const state = actions.createNewGame()
 	t.is(state.drawPile.length, 0)
 	const newState = actions.drawStarterDeck({state})
@@ -80,7 +81,7 @@ test('can manipulate monster hp', t => {
 test('can play a strike card from hand and see the effects on state', t => {
 	const state = actions.createNewGame()
 	const originalHealth = state.monster.currentHealth
-	const card = actions.createCard('Strike')
+	const card = createCard('Strike')
 	const newState = actions.playCard({state, card})
 	t.is(newState.monster.currentHealth, originalHealth - card.damage)
 })
@@ -89,4 +90,4 @@ test.todo('can play a defend card from hand and see the effects on state')
 test.todo('ending a turn refreshes energy')
 test.todo('ending a turn removes any block')
 test.todo('ending a turn discards your hand')
-test.todo('ending a turn draws again')
+test.todo('ending a turn draws a new hand')
