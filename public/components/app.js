@@ -72,23 +72,25 @@ export default class App extends Component {
 					<${Player} player=${state.monster} name="Mr. T" />
 				</div>
 
-				<p>
-					<button onclick=${() => this.enqueue({type: 'drawStarterDeck'})}>Draw starter deck</button>
-					<button onclick=${() => this.enqueue({type: 'drawCards', amount: 5})}>Draw 5 cards</button>
-					<button onclick=${() => this.enqueue({type: 'playCard', card: state.hand[0]})}>Play first card</button>
-				</p>
-
-				<h2>Discard</h2>
+				<h2>Discard pile</h2>
 				<${Cards} cards=${state.discardPile} isDiscardPile=${true} />
 
 				<${History} history=${queue.list} />
-				<p><button onclick=${() => this.runQueue()}>Run queue</button></p>
-				<p><button onclick=${() => this.enqueue({type: 'endTurn'})}>End turn</button></p>
+
+				<p>
+					Test actions ➙ <button onclick=${() => this.enqueue({type: 'drawStarterDeck'})}>Draw starter deck</button>
+					<button onclick=${() => this.enqueue({type: 'drawCards', amount: 5})}>Draw 5 cards</button>
+					<button onclick=${() => this.enqueue({type: 'playCard', card: state.hand[0]})}>Play first card</button>
+				</p>
+				<p>
+					<button onclick=${() => this.runQueue()}>Run queue</button>
+					<button onclick=${() => this.enqueue({type: 'endTurn'})}>End turn</button>
+				</p>
 
 				<h2>Hand</h2>
 				<${Cards} cards=${state.hand} />
 
-				<h2>Deck</h2>
+				<h2>Draw pile</h2>
 				<${Cards} cards=${state.drawPile} />
 			</div>
 		`
