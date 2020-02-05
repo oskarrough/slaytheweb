@@ -155,4 +155,12 @@ test('ending a turn discards your hand', t => {
 	t.is(game4.discardPile.length, 5)
 })
 
-test.todo('ending a turn draws a new hand')
+test('ending a turn draws a new hand', t => {
+	let state = actions.createNewGame()
+	state = actions.drawStarterDeck({state})
+	state = actions.drawCards({state, amount: 4})
+	t.is(state.hand.length, 4)
+	state = actions.drawCards({state, amount: 4})
+	t.is(state.hand.length, 8)
+	// console.log(state2)
+})

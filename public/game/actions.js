@@ -102,7 +102,6 @@ function endTurn({state}) {
 		// reset energy and block
 		draft.player.currentEnergy = 3
 		draft.player.block = 0
-		// @todo move cards from hand to bottom of drawpile
 		// @todo draw again
 	})
 }
