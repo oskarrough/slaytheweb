@@ -1,6 +1,8 @@
 # Kortgame
 
-A simplified, browser-based Slay The Spire inspired game that may or may not evolve into something else.
+A simplified, browser-based [Slay The Spire](https://www.megacrit.com/) inspired card crawl game that may or may not evolve into something else.
+
+Does it bring you joy to clone another game? Yes.
 
 ## Todo
 
@@ -65,6 +67,18 @@ by this I mean being able to play the game with (almost) no gui. write the comma
 - encounter
 - add monster
 - start encounter
+
+## Development setup
+
+The `public` folder is meant to be deployed to any static web server and runs without the need of compiling anything.
+
+- `yarn start` for a local, development server that reloads on file changes
+
+All scripts are checked with eslint, formatted with prettier and tested with ava.
+
+- `yarn test`
+
+Run `yarn ava --watch` if you prefer while developing.
 
 ## Links
 
