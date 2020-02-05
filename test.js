@@ -97,7 +97,7 @@ test('can play a defend card from hand and see the effects on state', t => {
 	t.is(v3.player.block, 10)
 })
 
-test.only('ending a turn refreshes energy', t => {
+test('ending a turn refreshes energy', t => {
 	const game = actions.createNewGame()
 	t.is(game.player.currentEnergy, 3)
 	const card = createCard('Defend')
@@ -120,5 +120,39 @@ test('ending a turn removes any block', t => {
 	const newTurn = actions.endTurn({state: v3})
 	t.is(newTurn.player.block, 0)
 })
-test.todo('ending a turn discards your hand')
+
+test('we can discard a single card from hand', t => {
+	const game = actions.createNewGame()
+	const game2 = actions.drawStarterDeck({state: game})
+	const game3 = actions.drawCards({state: game2, amount: 5})
+	t.is(game3.hand.length, 5)
+	t.is(game3.discardPile.length, 0)
+	const cardToDiscard = game3.hand[0]
+	const game4 = actions.discardCard({state: game3, card: cardToDiscard})
+	t.is(game4.hand.length, 4)
+	t.is(game4.discardPile.length, 1)
+})
+
+test('we can discard the entire hand', t => {
+	const game = actions.createNewGame()
+	const game2 = actions.drawStarterDeck({state: game})
+	const game3 = actions.drawCards({state: game2, amount: 5})
+	t.is(game3.hand.length, 5)
+	t.is(game3.discardPile.length, 0)
+	const game4 = actions.discardHand({state: game3})
+	t.is(game4.hand.length, 0)
+	t.is(game4.discardPile.length, 5)
+})
+
+test('ending a turn discards your hand', t => {
+	const game = actions.createNewGame()
+	const game2 = actions.drawStarterDeck({state: game})
+	const game3 = actions.drawCards({state: game2, amount: 5})
+	t.is(game3.hand.length, 5)
+	t.is(game3.discardPile.length, 0)
+	const game4 = actions.endTurn({state: game3})
+	t.is(game4.hand.length, 0)
+	t.is(game4.discardPile.length, 5)
+})
+
 test.todo('ending a turn draws a new hand')

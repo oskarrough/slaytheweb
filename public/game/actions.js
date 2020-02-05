@@ -51,6 +51,23 @@ function drawCards({state, amount = 4}) {
 	})
 }
 
+// Discard a single card from hand.
+const discardCard = ({state, card}) =>
+	produce(state, draft => {
+		// console.log(state.hand)
+		draft.hand = state.hand.filter(c => c.id !== card.id)
+		draft.discardPile.push(card)
+	})
+
+// Discard entire hand.
+const discardHand = ({state}) =>
+	produce(state, draft => {
+		draft.hand.forEach(card => {
+			draft.discardPile.push(card)
+		})
+		draft.hand = []
+	})
+
 function playCard({state, card}) {
 	if (!card) throw new Error('No card to play')
 	if (state.player.currentEnergy < card.cost) throw new Error('Not enough energy to play card')
@@ -80,11 +97,13 @@ function changeHealth({state, target, amount}) {
 }
 
 function endTurn({state}) {
-	return produce(state, draft => {
+	const newState = discardHand({state})
+	return produce(newState, draft => {
+		// reset energy and block
 		draft.player.currentEnergy = 3
 		draft.player.block = 0
-		// move cards from hand to bottom of drawpile
-		// draw again
+		// @todo move cards from hand to bottom of drawpile
+		// @todo draw again
 	})
 }
 
@@ -92,6 +111,8 @@ export default {
 	createNewGame,
 	drawStarterDeck,
 	drawCards,
+	discardCard,
+	discardHand,
 	playCard,
 	endTurn,
 	changeHealth
