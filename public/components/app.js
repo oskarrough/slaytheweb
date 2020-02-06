@@ -32,10 +32,8 @@ export default class App extends Component {
 	runQueue() {
 		const action = queue.next()
 		if (!action) return
-		// Actions have a "type" and a "state". They return a new, modified state.
-		action.state = this.state
 		console.log('runQueue', {action})
-		const nextState = actions[action.type](action)
+		const nextState = actions[action.type](this.state, action)
 		this.setState(nextState)
 		console.table(nextState)
 	}
@@ -81,10 +79,10 @@ export default class App extends Component {
 					Test actions ➙ <button onclick=${() => this.enqueue({type: 'drawStarterDeck'})}>Draw starter deck</button>
 					<button onclick=${() => this.enqueue({type: 'drawCards', amount: 5})}>Draw 5 cards</button>
 					<button onclick=${() => this.enqueue({type: 'playCard', card: state.hand[0]})}>Play first card</button>
+					<button onclick=${() => this.enqueue({type: 'endTurn'})}>End turn</button>
 				</p>
 				<p>
 					<button onclick=${() => this.runQueue()}>Run queue</button>
-					<button onclick=${() => this.enqueue({type: 'endTurn'})}>End turn</button>
 				</p>
 
 				<h2>Hand</h2>
