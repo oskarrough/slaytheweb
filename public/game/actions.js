@@ -65,7 +65,7 @@ const discardCard = (state, {card}) =>
 	})
 
 // Discard entire hand.
-const discardHand = (state) =>
+const discardHand = state =>
 	produce(state, draft => {
 		draft.hand.forEach(card => {
 			draft.discardPile.push(card)
@@ -75,13 +75,13 @@ const discardHand = (state) =>
 
 function playCard(state, {card}) {
 	if (!card) throw new Error('No card to play')
-	if (state.player.currentEnergy < card.cost) throw new Error('Not enough energy to play card')
+	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
 	return produce(state, draft => {
 		// Move card from hand to discard pile.
 		draft.hand = state.hand.filter(c => c.id !== card.id)
 		draft.discardPile.push(card)
 		// And play it...
-		draft.player.currentEnergy = state.player.currentEnergy - card.cost
+		draft.player.currentEnergy = state.player.currentEnergy - card.energy
 		// not sure about this way...
 		if (card.damage) {
 			// changeHealth({state, target: 'monster', amount: card.damage})

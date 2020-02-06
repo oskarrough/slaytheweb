@@ -11,7 +11,7 @@ export default class Queue extends Component {
 		// properly keeping the props.history up to date.
 		this.timer = setInterval(() => {
 			this.setState({time: Date.now()})
-		}, 1000)
+		}, 500)
 	}
 
 	componentWillUnmount() {

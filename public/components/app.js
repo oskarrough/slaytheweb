@@ -10,7 +10,13 @@ const queue = new Queue()
 export default class App extends Component {
 	constructor() {
 		super()
-		this.state = actions.createNewGame()
+
+		// Prepare the game.
+		let game = actions.createNewGame()
+		game = actions.drawStarterDeck(game)
+		game = actions.drawCards(game, {amount: 5})
+		this.state = game
+
 		// Debugging in the browser console.
 		window.kortgame = {
 			state: this.state,
@@ -24,18 +30,19 @@ export default class App extends Component {
 	}
 
 	enqueue(what) {
-		// pass the current state along
-		// what.state = this.state
 		queue.add(what)
 	}
 
 	runQueue() {
 		const action = queue.next()
 		if (!action) return
-		console.log('runQueue', {action})
-		const nextState = actions[action.type](this.state, action)
-		this.setState(nextState)
-		console.table(nextState)
+		try {
+			const nextState = actions[action.type](this.state, action)
+			this.setState(nextState)
+			console.table(nextState)
+		} catch (err) {
+			alert(err)
+		}
 	}
 
 	enableDrop() {
@@ -47,17 +54,26 @@ export default class App extends Component {
 		// drop.on('drag:move', () => console.log('drag:move'))
 		// drop.on('drag:stop', () => console.log('drag:stop'))
 		// drop.on('sortable:start', event => { console.log('sortable:start', event) })
-		// drop.on('sortable:sort', event => { console.log('sortable:sort', event) })
+		drop.on('sortable:sort', event => {
+			// console.log('sortable:sort', event.dragEvent.data, drop.containers)
+			// Only allow drop on discard pile.
+			if (event.dragEvent.data.overContainer !== drop.containers[0]) {
+				event.cancel()
+			}
+		})
 		// drop.on('sortable:sorted', event => { console.log('sortable:sorted', event) })
 		drop.on('sortable:stop', event => {
 			// console.log('sortable:stop', event)
 			const {newContainer, oldContainer} = event.data
-			const wasDiscarded = newContainer.classList.contains('Cards--discard') && newContainer !== oldContainer
+			// const wasDiscarded = newContainer.classList.contains('Cards--discard') && newContainer !== oldContainer
+			const wasDiscarded = newContainer === drop.containers[0] && newContainer !== oldContainer
+			console.log({wasDiscarded})
 			if (!wasDiscarded) {
-				event.cancel()
+				return
 			} else {
-				const card = this.state.cards.find(card => card.id === event.data.dragEvent.originalSource.dataset.id)
-				this.enqueue({type: 'playCard', state: this.state, card})
+				const card = this.state.hand.find(card => card.id === event.data.dragEvent.originalSource.dataset.id)
+				this.enqueue({type: 'playCard', card})
+				this.runQueue()
 			}
 		})
 	}
@@ -71,12 +87,19 @@ export default class App extends Component {
 				</div>
 
 				<h2>Discard pile</h2>
-				<${Cards} cards=${state.discardPile} isDiscardPile=${true} />
+				<${Cards} cards=${state.discardPile} canDrag=${true} isDiscardPile=${true} />
 
-				<${History} history=${queue.list} />
+				<h2>
+					Hand
+					<div class="Energybar">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
+				</h2>
+				<${Cards} cards=${state.hand} canDrag=${true} />
+
+				<h2>Draw pile</h2>
+				<${Cards} cards=${state.drawPile} />
 
 				<p>
-					Test actions ➙ <button onclick=${() => this.enqueue({type: 'drawStarterDeck'})}>Draw starter deck</button>
+					Test actions ➙ <button onclick=${() => this.enqueue({type: 'drawStarterDeck'})}>Draw deck</button>
 					<button onclick=${() => this.enqueue({type: 'drawCards', amount: 5})}>Draw 5 cards</button>
 					<button onclick=${() => this.enqueue({type: 'playCard', card: state.hand[0]})}>Play first card</button>
 					<button onclick=${() => this.enqueue({type: 'endTurn'})}>End turn</button>
@@ -84,12 +107,7 @@ export default class App extends Component {
 				<p>
 					<button onclick=${() => this.runQueue()}>Run queue</button>
 				</p>
-
-				<h2>Hand</h2>
-				<${Cards} cards=${state.hand} />
-
-				<h2>Draw pile</h2>
-				<${Cards} cards=${state.drawPile} />
+				<${History} history=${queue.list} />
 			</div>
 		`
 	}

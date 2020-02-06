@@ -1,8 +1,8 @@
 import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
 
 export default class Cards extends Component {
-	render({cards, isDiscardPile}) {
-		const classNames = `Cards dropzone ${isDiscardPile ? 'Cards--discard' : ''}`
+	render({cards, canDrag, isDiscardPile}) {
+		const classNames = `Cards ${canDrag ? 'dropzone' : ''} ${isDiscardPile ? 'Cards--discard' : ''}`
 		return html`
 			<div class=${classNames}>
 				${cards.map(Card)}
@@ -14,8 +14,8 @@ export default class Cards extends Component {
 export const Card = ({id, name, type, energy, effects}) => html`
 	<article class="Card" data-id=${id}>
 		<h3 class="Card-title">${name}</h3>
-		<p class="Card-type">${type}</p>
 		<p class="Card-energy">${energy}</p>
+		<!-- <p class="Card-type">${type}</p> -->
 		<p class="Card-effects">${effects}</p>
 	</article>
 `
