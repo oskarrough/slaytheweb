@@ -3,11 +3,13 @@
   "version": "0.0.0",
   "scripts": {
     "start": "browser-sync public --watch --no-notify",
-    "test": "eslint public",
+    "test": "eslint public; ava",
+    "test:watch": "ava --watch --verbose",
     "build": "snowpack --include 'public/**/*.js' --clean --dest 'public/web_modules'"
   },
   "license": "MIT",
   "devDependencies": {
+    "ava": "^3.2.0",
     "browser-sync": "^2.26.7",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.9.0",
@@ -17,9 +19,15 @@
   },
   "dependencies": {
     "@shopify/draggable": "^1.0.0-beta.8",
+    "esm": "^3.2.25",
     "htm": "^3.0.1",
     "immer": "^5.3.2",
     "popmotion": "^8.7.1",
     "preact": "^10.2.1"
+  },
+  "ava": {
+    "require": [
+      "esm"
+    ]
   }
 }

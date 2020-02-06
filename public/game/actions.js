@@ -1,32 +1,28 @@
-import {cards, Card} from './cards.js'
+import {createCard} from './cards.js'
 import produce from '../web_modules/immer.js'
+import {shuffle} from './utils.js'
 
 // This is the big object of game state. Everything should start here.
-export function createNewGame() {
+function createNewGame() {
 	return {
-		deck: [],
 		hand: [],
+		drawPile: [],
 		discardPile: [],
-		player1: {
+		player: {
 			maxEnergy: 3,
 			currentEnergy: 3,
 			maxHealth: 100,
-			currentHealth: 100
+			currentHealth: 100,
+			block: 0
 		},
-		player2: {
-			maxEnergy: 3,
-			currentEnergy: 3,
+		monster: {
 			maxHealth: 42,
 			currentHealth: 42
 		}
 	}
 }
 
-export function createCard(name) {
-	return new Card(cards.find(card => card.name === name))
-}
-
-export function drawStarterDeck({state}) {
+function drawStarterDeck({state}) {
 	const deck = [
 		createCard('Bash'),
 		createCard('Defend'),
@@ -39,42 +35,87 @@ export function drawStarterDeck({state}) {
 		createCard('Strike')
 	]
 	return produce(state, draft => {
-		draft.deck = deck
-	})
-}
-
-export function playCard({state, card}) {
-	if (!card) throw new Error('No card to play')
-	if (state.player1.currentEnergy < card.cost) throw new Error('Not enough energy to play card')
-	return produce(state, draft => {
-		// Recaclculate energy.
-		draft.player1.currentEnergy = state.player1.currentEnergy - card.cost
-		// Remove the card from our hand.
-		draft.cards = state.cards.filter(c => c.id !== card.id)
-		card.use()
+		draft.drawPile = shuffle(deck)
 	})
 }
 
 // Move X cards from deck to hand
-export function drawCards({state, amount = 4}) {
+function drawCards({state, amount = 4}) {
 	return produce(state, draft => {
-		draft.hand = state.deck.splice(0, amount)
+		const newCards = state.drawPile.slice(0, amount)
+		// Take the first X cards from deck and add to hand
+		draft.hand = draft.hand.concat(newCards)
+		// and remove them from deck
+		for (let i = 0; i < amount; i++) {
+			draft.drawPile.shift()
+		}
 	})
 }
 
-export function endTurn({state}) {
+// Discard a single card from hand.
+const discardCard = ({state, card}) =>
+	produce(state, draft => {
+		// console.log(state.hand)
+		draft.hand = state.hand.filter(c => c.id !== card.id)
+		draft.discardPile.push(card)
+	})
+
+// Discard entire hand.
+const discardHand = ({state}) =>
+	produce(state, draft => {
+		draft.hand.forEach(card => {
+			draft.discardPile.push(card)
+		})
+		draft.hand = []
+	})
+
+function playCard({state, card}) {
+	if (!card) throw new Error('No card to play')
+	if (state.player.currentEnergy < card.cost) throw new Error('Not enough energy to play card')
 	return produce(state, draft => {
-		draft.player1.currentEnergy = 3
+		// Move card from hand to discard pile.
+		draft.hand = state.hand.filter(c => c.id !== card.id)
+		draft.discardPile.push(card)
+		// And play it...
+		draft.player.currentEnergy = state.player.currentEnergy - card.cost
+		// not sure about this way...
+		if (card.damage) {
+			// changeHealth({state, target: 'monster', amount: card.damage})
+			draft.monster.currentHealth = state.monster.currentHealth - card.damage
+		}
+		if (card.block) {
+			draft.player.block = state.player.block + card.block
+		}
+		// card.use()
+	})
+}
+
+function changeHealth({state, target, amount}) {
+	// if (target !== ('player' || 'monster')) throw new Error(`Invalid target: ${target}`)
+	return produce(state, draft => {
+		draft[target].currentHealth = state[target].currentHealth + amount
+	})
+}
+
+function endTurn({state}) {
+	const newState = discardHand({state})
+	return produce(newState, draft => {
+		// reset energy and block
+		draft.player.currentEnergy = 3
+		draft.player.block = 0
+		// @todo draw again
 	})
 }
 
 export default {
 	createNewGame,
-	createCard,
 	drawStarterDeck,
 	drawCards,
+	discardCard,
+	discardHand,
 	playCard,
-	endTurn
+	endTurn,
+	changeHealth
 }
 
 // ### Deck Modification

@@ -24,6 +24,8 @@ export default class App extends Component {
 	}
 
 	enqueue(what) {
+		// pass the current state along
+		// what.state = this.state
 		queue.add(what)
 	}
 
@@ -31,6 +33,7 @@ export default class App extends Component {
 		const action = queue.next()
 		if (!action) return
 		// Actions have a "type" and a "state". They return a new, modified state.
+		action.state = this.state
 		console.log('runQueue', {action})
 		const nextState = actions[action.type](action)
 		this.setState(nextState)
@@ -65,27 +68,30 @@ export default class App extends Component {
 		return html`
 			<div class="App">
 				<div class="u-flex">
-					<${Player} player=${state.player1} />
-					<${Player} player=${state.player2} name="Mr. T" />
+					<${Player} player=${state.player} />
+					<${Player} player=${state.monster} name="Mr. T" />
 				</div>
-				<p>
-					<button onclick=${() => this.enqueue({type: 'drawStarterDeck', state})}>Draw starter deck</button>
-					<button onclick=${() => this.enqueue({type: 'playCard', state, card: state.cards[0]})}>
-						Play first card
-					</button>
-				</p>
 
-				<h2>Discard</h2>
+				<h2>Discard pile</h2>
 				<${Cards} cards=${state.discardPile} isDiscardPile=${true} />
 
 				<${History} history=${queue.list} />
-				<p><button onclick=${() => this.runQueue()}>Run queue</button></p>
-				<p><button onclick=${() => this.enqueue({type: 'endTurn', state})}>End turn</button></p>
+
+				<p>
+					Test actions ➙ <button onclick=${() => this.enqueue({type: 'drawStarterDeck'})}>Draw starter deck</button>
+					<button onclick=${() => this.enqueue({type: 'drawCards', amount: 5})}>Draw 5 cards</button>
+					<button onclick=${() => this.enqueue({type: 'playCard', card: state.hand[0]})}>Play first card</button>
+				</p>
+				<p>
+					<button onclick=${() => this.runQueue()}>Run queue</button>
+					<button onclick=${() => this.enqueue({type: 'endTurn'})}>End turn</button>
+				</p>
+
 				<h2>Hand</h2>
 				<${Cards} cards=${state.hand} />
 
-				<h2>Deck</h2>
-				<${Cards} cards=${state.deck} />
+				<h2>Draw pile</h2>
+				<${Cards} cards=${state.drawPile} />
 			</div>
 		`
 	}

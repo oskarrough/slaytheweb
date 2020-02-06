@@ -26,6 +26,7 @@ button {
 	padding: 0.1em 0.7em 0.1em;
 	border: 3px solid beige;
 	border-radius: 0.3em;
+	margin: 0 0.1em;
 	background: lightblue;
 	color: hsla(0, 0%, 0%, 0.9);
 }
