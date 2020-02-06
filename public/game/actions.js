@@ -2,6 +2,10 @@ import {createCard} from './cards.js'
 import produce from '../web_modules/immer.js'
 import {shuffle} from './utils.js'
 
+// The idea is that we have one big object with game state.
+// Whenever we want to change something, we call an "action" from this file.
+// Each actions takes two arguments. First the current state, next an object of arguments.
+
 // This is the big object of game state. Everything should start here.
 function createNewGame() {
 	return {
@@ -22,7 +26,7 @@ function createNewGame() {
 	}
 }
 
-function drawStarterDeck({state}) {
+function drawStarterDeck(state) {
 	const deck = [
 		createCard('Bash'),
 		createCard('Defend'),
@@ -40,7 +44,7 @@ function drawStarterDeck({state}) {
 }
 
 // Move X cards from deck to hand
-function drawCards({state, amount = 4}) {
+function drawCards(state, {amount = 4}) {
 	return produce(state, draft => {
 		const newCards = state.drawPile.slice(0, amount)
 		// Take the first X cards from deck and add to hand
@@ -53,7 +57,7 @@ function drawCards({state, amount = 4}) {
 }
 
 // Discard a single card from hand.
-const discardCard = ({state, card}) =>
+const discardCard = (state, {card}) =>
 	produce(state, draft => {
 		// console.log(state.hand)
 		draft.hand = state.hand.filter(c => c.id !== card.id)
@@ -61,7 +65,7 @@ const discardCard = ({state, card}) =>
 	})
 
 // Discard entire hand.
-const discardHand = ({state}) =>
+const discardHand = (state) =>
 	produce(state, draft => {
 		draft.hand.forEach(card => {
 			draft.discardPile.push(card)
@@ -69,7 +73,7 @@ const discardHand = ({state}) =>
 		draft.hand = []
 	})
 
-function playCard({state, card}) {
+function playCard(state, {card}) {
 	if (!card) throw new Error('No card to play')
 	if (state.player.currentEnergy < card.cost) throw new Error('Not enough energy to play card')
 	return produce(state, draft => {
@@ -90,15 +94,15 @@ function playCard({state, card}) {
 	})
 }
 
-function changeHealth({state, target, amount}) {
+function changeHealth(state, {target, amount}) {
 	// if (target !== ('player' || 'monster')) throw new Error(`Invalid target: ${target}`)
 	return produce(state, draft => {
 		draft[target].currentHealth = state[target].currentHealth + amount
 	})
 }
 
-function endTurn({state}) {
-	const newState = discardHand({state})
+function endTurn(state) {
+	const newState = discardHand(state)
 	return produce(newState, draft => {
 		// reset energy and block
 		draft.player.currentEnergy = 3
