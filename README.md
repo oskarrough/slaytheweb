@@ -4,6 +4,19 @@ A simplified, browser-based [Slay The Spire](https://www.megacrit.com/) inspired
 
 Does it bring you joy to clone another game? Yes.
 
+## Development setup
+
+The `public` folder is meant to be deployed to any static web server and runs without the need of compiling anything.
+
+While developing locally, run 
+
+- `yarn start` for a server that reloads on file change
+
+All scripts are checked with eslint, formatted with prettier and tested with ava.
+
+- `yarn test`
+- `yarn test:watch`
+
 ## Todo
 
 Which parts do we want to do
@@ -67,18 +80,6 @@ by this I mean being able to play the game with (almost) no gui. write the comma
 - encounter
 - add monster
 - start encounter
-
-## Development setup
-
-The `public` folder is meant to be deployed to any static web server and runs without the need of compiling anything.
-
-- `yarn start` for a local, development server that reloads on file changes
-
-All scripts are checked with eslint, formatted with prettier and tested with ava.
-
-- `yarn test`
-
-Run `yarn ava --watch` if you prefer while developing.
 
 ## Links
 
