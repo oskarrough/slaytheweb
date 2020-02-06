@@ -1,8 +1,8 @@
 import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
 
 export default class Cards extends Component {
-	render({cards, isDiscardPile}) {
-		const classNames = `Cards dropzone ${isDiscardPile ? 'Cards--discard' : ''}`
+	render({cards, canDrag, isDiscardPile}) {
+		const classNames = `Cards ${canDrag ? 'dropzone' : ''} ${isDiscardPile ? 'Cards--discard' : ''}`
 		return html`
 			<div class=${classNames}>
 				${cards.map(Card)}
