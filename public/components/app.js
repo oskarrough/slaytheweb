@@ -24,15 +24,12 @@ export default class App extends Component {
 	}
 
 	enqueue(what) {
-		// pass the current state along
-		// what.state = this.state
 		queue.add(what)
 	}
 
 	runQueue() {
 		const action = queue.next()
 		if (!action) return
-		console.log('runQueue', {action})
 		const nextState = actions[action.type](this.state, action)
 		this.setState(nextState)
 		console.table(nextState)

@@ -65,7 +65,7 @@ const discardCard = (state, {card}) =>
 	})
 
 // Discard entire hand.
-const discardHand = (state) =>
+const discardHand = state =>
 	produce(state, draft => {
 		draft.hand.forEach(card => {
 			draft.discardPile.push(card)
