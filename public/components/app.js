@@ -73,10 +73,17 @@ export default class App extends Component {
 				<h2>Discard pile</h2>
 				<${Cards} cards=${state.discardPile} isDiscardPile=${true} />
 
-				<${History} history=${queue.list} />
+				<h2>
+					Hand
+					<div class="Energybar">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
+				</h2>
+				<${Cards} cards=${state.hand} />
+
+				<h2>Draw pile</h2>
+				<${Cards} cards=${state.drawPile} />
 
 				<p>
-					Test actions ➙ <button onclick=${() => this.enqueue({type: 'drawStarterDeck'})}>Draw starter deck</button>
+					Test actions ➙ <button onclick=${() => this.enqueue({type: 'drawStarterDeck'})}>Draw deck</button>
 					<button onclick=${() => this.enqueue({type: 'drawCards', amount: 5})}>Draw 5 cards</button>
 					<button onclick=${() => this.enqueue({type: 'playCard', card: state.hand[0]})}>Play first card</button>
 					<button onclick=${() => this.enqueue({type: 'endTurn'})}>End turn</button>
@@ -84,12 +91,7 @@ export default class App extends Component {
 				<p>
 					<button onclick=${() => this.runQueue()}>Run queue</button>
 				</p>
-
-				<h2>Hand</h2>
-				<${Cards} cards=${state.hand} />
-
-				<h2>Draw pile</h2>
-				<${Cards} cards=${state.drawPile} />
+				<${History} history=${queue.list} />
 			</div>
 		`
 	}

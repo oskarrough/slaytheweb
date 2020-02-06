@@ -5,7 +5,7 @@
 html {
 	font-size: 16px;
 	line-height: 1.2;
-	background: black;
+	background: #1e0a05;
 	color: antiquewhite;
 }
 
@@ -26,9 +26,12 @@ button {
 	padding: 0.1em 0.7em 0.1em;
 	border: 3px solid beige;
 	border-radius: 0.3em;
-	margin: 0 0.1em;
 	background: lightblue;
 	color: hsla(0, 0%, 0%, 0.9);
+}
+
+button + button {
+	margin-left: 0.2em;
 }
 
 h2 {
@@ -36,13 +39,30 @@ h2 {
 	margin: 1rem 0;
 }
 
+.App {
+	display: flex;
+	flex-flow: column;
+	min-height: 100vh;
+	overflow-y: hidden;
+	padding: 0 0.5rem;
+}
+
+.u-flex {
+	display: flex;
+	gap: 1rem;
+}
+
+.Player {
+	flex: 1;
+}
+
 .Cards {
 	position: relative;
 	padding: 0.6em 0 1em 1em;
 	border: 1px dotted yellow;
+	border-radius: 1em;
 	padding: 1rem;
-	margin: 1rem;
-	min-height: 6em;
+	min-height: 4em;
 	display: grid;
 	/* grid-auto-columns: minmax(6em, var(--card-width)); */
 	grid-auto-columns: var(--card-width);
@@ -113,16 +133,16 @@ h2 {
 }
 
 .Energybar {
-	display: inline-block;
-	padding: 0.2em 0.3em 0.1em;
-	border-radius: 0.2em;
-	border: 3px solid;
+	display: inline-flex;
+	padding: 0.2em 0.3em 0.2em;
+	border-radius: 1em;
+	border: 2px solid;
+	margin-left: 0.7rem;
 }
 
 .Healthbar {
 	position: relative;
-	margin: 1rem 0;
-	border: 1px solid;
+	border: 2px solid;
 	border-radius: 1em;
 	text-align: center;
 	background: darkslategrey;
@@ -142,22 +162,6 @@ h2 {
 	margin: 0.2em 0 0.1em;
 	position: relative;
 	z-index: 1;
-}
-
-.App {
-	display: flex;
-	flex-flow: column;
-	min-height: 100vh;
-	overflow-y: hidden;
-}
-
-.u-flex {
-	display: flex;
-}
-
-.Player {
-	flex: 1;
-	padding: 0 1rem;
 }
 
 .draggable-source--is-dragging {
