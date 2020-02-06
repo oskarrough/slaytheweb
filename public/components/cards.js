@@ -14,8 +14,8 @@ export default class Cards extends Component {
 export const Card = ({id, name, type, energy, effects}) => html`
 	<article class="Card" data-id=${id}>
 		<h3 class="Card-title">${name}</h3>
-		<p class="Card-type">${type}</p>
 		<p class="Card-energy">${energy}</p>
+		<!-- <p class="Card-type">${type}</p> -->
 		<p class="Card-effects">${effects}</p>
 	</article>
 `

@@ -35,7 +35,7 @@ button + button {
 }
 
 h2 {
-	font-size: 1em;
+	font-size: 1rem;
 	margin: 1rem 0;
 }
 
@@ -59,15 +59,15 @@ h2 {
 .Cards {
 	position: relative;
 	padding: 0.6em 0 1em 1em;
-	border: 1px dotted yellow;
+	border: 1px dotted #ffff0080;
 	border-radius: 1em;
-	padding: 1rem;
+	padding: 1rem 1rem 1rem 2rem;
 	min-height: 4em;
 	display: grid;
 	/* grid-auto-columns: minmax(6em, var(--card-width)); */
 	grid-auto-columns: var(--card-width);
 	grid-auto-flow: column;
-	gap: 1em;
+	/* gap: 1em; */
 }
 
 .Cards:last-of-type {
@@ -75,15 +75,15 @@ h2 {
 }
 
 .Card {
+	display: flex;
+	flex-flow: column;
 	position: relative;
 	border: 3px solid sandybrown;
 	border-radius: 3px;
 	background: #716664;
 	text-align: center;
-	margin-left: -2rem;
-	box-shadow: 0 0 0.5em cyan;
-	font-size: smaller;
-	/* transition-duration: 100ms; */
+	box-shadow: 1px 2px 3px #00000080;
+	margin-left: -1rem;
 }
 
 .Card:hover {
@@ -95,17 +95,20 @@ h2 {
 }
 
 .Card-title {
-	margin: 0 0 0.5em;
-	padding: 0.2em 1em 0.08em;
+	margin: 0;
+	padding: 0.1em 1em 0.15em;
 	background: darkgray;
 	color: whitesmoke;
 	text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.8);
 }
 
-.Card-type {}
+.Card-type {
+	font-size: smaller;
+	margin-top: 0.3em;
+}
 
 .Card-effects {
-	margin: 0 0.8em 1em;
+	margin: 1rem;
 }
 
 .Card-energy {
@@ -119,7 +122,6 @@ h2 {
 	display: flex;
 	place-content: center;
 	place-items: center;
-	font-size: x-large;
 	font-weight: bold;
 	border-radius: 50%;
 	line-height: 1;
