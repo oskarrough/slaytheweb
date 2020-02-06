@@ -2,8 +2,14 @@ import test from 'ava'
 import actions from '../public/game/actions'
 import {createCard} from '../public/game/cards'
 
+test.beforeEach(t => {
+	t.context = {
+		state: actions.createNewGame()
+	}
+})
+
 test('new game state is ok', t => {
-	const state = actions.createNewGame()
+	const {state} = t.context
 	t.deepEqual(state, {
 		drawPile: [],
 		hand: [],
@@ -23,14 +29,14 @@ test('new game state is ok', t => {
 })
 
 test('drawing a starter deck adds it to the draw pile', t => {
-	const state = actions.createNewGame()
+	const {state} = t.context
 	t.is(state.drawPile.length, 0)
-	const newState = actions.drawStarterDeck({state})
-	t.is(newState.drawPile.length, 9)
+	const state2 = actions.drawStarterDeck({state})
+	t.is(state2.drawPile.length, 9)
 })
 
 test('starter deck is shuffled', t => {
-	const state = actions.createNewGame()
+	const {state} = t.context
 	const removeIds = arr =>
 		arr.map(card => {
 			delete card.id
@@ -46,7 +52,7 @@ test('starter deck is shuffled', t => {
 })
 
 test('can draw cards from drawPile to hand', t => {
-	const state = actions.createNewGame()
+	const {state} = t.context
 	const state2 = actions.drawStarterDeck({state})
 	t.is(state2.hand.length, 0, 'hand is empty to start with')
 	const state3 = actions.drawCards({state: state2, amount: 2})
@@ -57,7 +63,7 @@ test('can draw cards from drawPile to hand', t => {
 })
 
 test('can manipulate player hp', t => {
-	const state = actions.createNewGame()
+	const {state} = t.context
 	t.is(state.player.currentHealth, 100)
 	const state2 = actions.changeHealth({state, target: 'player', amount: -10})
 	t.is(state2.player.currentHealth, 90)
@@ -66,7 +72,7 @@ test('can manipulate player hp', t => {
 })
 
 test('can manipulate monster hp', t => {
-	const state = actions.createNewGame()
+	const {state} = t.context
 	t.is(state.monster.currentHealth, 42)
 	const state2 = actions.changeHealth({state, target: 'monster', amount: 8})
 	t.is(state2.monster.currentHealth, 50)
@@ -75,7 +81,7 @@ test('can manipulate monster hp', t => {
 })
 
 test('can not play a card without enough energy', t => {
-	const state = actions.createNewGame()
+	const {state} = t.context
 	const card = createCard('Strike')
 	t.is(state.player.currentEnergy, 3)
 	state.player.currentEnergy = 0
@@ -83,25 +89,25 @@ test('can not play a card without enough energy', t => {
 })
 
 test('can play a strike card from hand and see the effects on state', t => {
-	const state = actions.createNewGame()
+	const {state} = t.context
 	const originalHealth = state.monster.currentHealth
 	const card = createCard('Strike')
-	const newState = actions.playCard({state, card})
-	t.is(newState.monster.currentHealth, originalHealth - card.damage)
+	const state2 = actions.playCard({state, card})
+	t.is(state2.monster.currentHealth, originalHealth - card.damage)
 })
 
 test('can play a defend card from hand and see the effects on state', t => {
-	const state = actions.createNewGame()
+	const {state} = t.context
 	t.is(state.player.block, 0)
 	const card = createCard('Defend')
-	const state2 = actions.playCard({state: state, card})
+	const state2 = actions.playCard({state, card})
 	t.is(state2.player.block, 5)
 	const state3 = actions.playCard({state: state2, card})
 	t.is(state3.player.block, 10)
 })
 
 test('can discard a single card from hand', t => {
-	const state = actions.createNewGame()
+	const {state} = t.context
 	const state2 = actions.drawStarterDeck({state})
 	const state3 = actions.drawCards({state: state2, amount: 5})
 	t.is(state3.hand.length, 5)
@@ -113,7 +119,7 @@ test('can discard a single card from hand', t => {
 })
 
 test('can discard the entire hand', t => {
-	const state = actions.createNewGame()
+	const {state} = t.context
 	const state2 = actions.drawStarterDeck({state: state})
 	const state3 = actions.drawCards({state: state2, amount: 5})
 	t.is(state3.hand.length, 5)
@@ -124,7 +130,7 @@ test('can discard the entire hand', t => {
 })
 
 test('ending a turn refreshes energy', t => {
-	const state = actions.createNewGame()
+	const {state} = t.context
 	t.is(state.player.currentEnergy, 3)
 	const card = createCard('Defend')
 	const state2 = actions.playCard({state, card})
@@ -135,8 +141,8 @@ test('ending a turn refreshes energy', t => {
 	t.is(newTurn.player.currentEnergy, 3)
 })
 
-test('ending a turn removes player\'s block', t => {
-	const state = actions.createNewGame()
+test("ending a turn removes player's block", t => {
+	const {state} = t.context
 	t.is(state.player.block, 0)
 	const card = createCard('Defend')
 	const state2 = actions.playCard({state: state, card})
@@ -148,7 +154,7 @@ test('ending a turn removes player\'s block', t => {
 })
 
 test('ending a turn discards your hand', t => {
-	const state = actions.createNewGame()
+	const {state} = t.context
 	const state2 = actions.drawStarterDeck({state})
 	const state3 = actions.drawCards({state: state2, amount: 5})
 	t.is(state3.hand.length, 5)
