@@ -1,26 +1,6 @@
-const test = require('ava')
-import actions from './public/game/actions'
-import {createCard} from './public/game/cards'
-import {shuffle} from './public/game/utils'
-
-test('can create an attack card', t => {
-	const card = createCard('Strike')
-	t.is(card.name, 'Strike')
-	t.is(card.type, 'Attack')
-	t.is(typeof card.damage, 'number')
-	t.is(typeof card.cost, 'number')
-	t.true(card.hasOwnProperty('effects'))
-})
-
-test('can create a skill card', t => {
-	const card = createCard('Defend')
-	t.is(card.type, 'Skill')
-	t.is(typeof card.block, 'number')
-})
-
-test('card name must be exact', t => {
-	t.throws(() => createCard('Naaaah doesnt exist'))
-})
+import test from 'ava'
+import actions from '../public/game/actions'
+import {createCard} from '../public/game/cards'
 
 test('new game state is ok', t => {
 	const state = actions.createNewGame()
@@ -50,11 +30,12 @@ test('drawing a starter deck adds it to the draw pile', t => {
 })
 
 test('starter deck is shuffled', t => {
-	const removeIds = (arr) => arr.map(card => {
-		delete card.id
-		return card
-	})
 	const state = actions.createNewGame()
+	const removeIds = arr =>
+		arr.map(card => {
+			delete card.id
+			return card
+		})
 	const tries = Array(10)
 	t.plan(tries.length)
 	for (const index of tries) {
@@ -65,11 +46,11 @@ test('starter deck is shuffled', t => {
 })
 
 test('can draw cards from drawPile to hand', t => {
-	const state1 = actions.createNewGame()
-	const state2 = actions.drawStarterDeck({state: state1})
+	const state = actions.createNewGame()
+	const state2 = actions.drawStarterDeck({state})
 	t.is(state2.hand.length, 0, 'hand is empty to start with')
 	const state3 = actions.drawCards({state: state2, amount: 2})
-	t.is(state1.hand.length, 0, 'immutable, should not be modified')
+	t.is(state.hand.length, 0, 'immutable, should not be modified')
 	t.is(state2.hand.length, 0, 'immutable, should not be modified')
 	t.is(state3.hand.length, 2, 'cards have been added to the hand')
 	t.is(state3.drawPile.length, 7, 'cards have been removed from deck')
@@ -102,71 +83,71 @@ test('can play a strike card from hand and see the effects on state', t => {
 })
 
 test('can play a defend card from hand and see the effects on state', t => {
-	const game = actions.createNewGame()
-	t.is(game.player.block, 0)
+	const state = actions.createNewGame()
+	t.is(state.player.block, 0)
 	const card = createCard('Defend')
-	const v2 = actions.playCard({state: game, card})
-	t.is(v2.player.block, 5)
-	const v3 = actions.playCard({state: v2, card})
-	t.is(v3.player.block, 10)
+	const state2 = actions.playCard({state: state, card})
+	t.is(state2.player.block, 5)
+	const state3 = actions.playCard({state: state2, card})
+	t.is(state3.player.block, 10)
+})
+
+test('can discard a single card from hand', t => {
+	const state = actions.createNewGame()
+	const state2 = actions.drawStarterDeck({state})
+	const state3 = actions.drawCards({state: state2, amount: 5})
+	t.is(state3.hand.length, 5)
+	t.is(state3.discardPile.length, 0)
+	const cardToDiscard = state3.hand[0]
+	const state4 = actions.discardCard({state: state3, card: cardToDiscard})
+	t.is(state4.hand.length, 4)
+	t.is(state4.discardPile.length, 1)
+})
+
+test('can discard the entire hand', t => {
+	const state = actions.createNewGame()
+	const state2 = actions.drawStarterDeck({state: state})
+	const state3 = actions.drawCards({state: state2, amount: 5})
+	t.is(state3.hand.length, 5)
+	t.is(state3.discardPile.length, 0)
+	const state4 = actions.discardHand({state: state3})
+	t.is(state4.hand.length, 0)
+	t.is(state4.discardPile.length, 5)
 })
 
 test('ending a turn refreshes energy', t => {
-	const game = actions.createNewGame()
-	t.is(game.player.currentEnergy, 3)
+	const state = actions.createNewGame()
+	t.is(state.player.currentEnergy, 3)
 	const card = createCard('Defend')
-	const v2 = actions.playCard({state: game, card})
-	t.is(v2.player.currentEnergy, 2)
-	const v3 = actions.playCard({state: v2, card})
-	t.is(v3.player.currentEnergy, 1)
-	const newTurn = actions.endTurn({state: v3})
+	const state2 = actions.playCard({state, card})
+	t.is(state2.player.currentEnergy, 2)
+	const state3 = actions.playCard({state: state2, card})
+	t.is(state3.player.currentEnergy, 1)
+	const newTurn = actions.endTurn({state: state3})
 	t.is(newTurn.player.currentEnergy, 3)
 })
 
-test('ending a turn removes any block', t => {
-	const game = actions.createNewGame()
-	t.is(game.player.block, 0)
+test('ending a turn removes player\'s block', t => {
+	const state = actions.createNewGame()
+	t.is(state.player.block, 0)
 	const card = createCard('Defend')
-	const v2 = actions.playCard({state: game, card})
-	t.is(v2.player.block, 5)
-	const v3 = actions.playCard({state: v2, card})
-	t.is(v3.player.block, 10)
-	const newTurn = actions.endTurn({state: v3})
+	const state2 = actions.playCard({state: state, card})
+	t.is(state2.player.block, 5)
+	const state3 = actions.playCard({state: state2, card})
+	t.is(state3.player.block, 10)
+	const newTurn = actions.endTurn({state: state3})
 	t.is(newTurn.player.block, 0)
 })
 
-test('we can discard a single card from hand', t => {
-	const game = actions.createNewGame()
-	const game2 = actions.drawStarterDeck({state: game})
-	const game3 = actions.drawCards({state: game2, amount: 5})
-	t.is(game3.hand.length, 5)
-	t.is(game3.discardPile.length, 0)
-	const cardToDiscard = game3.hand[0]
-	const game4 = actions.discardCard({state: game3, card: cardToDiscard})
-	t.is(game4.hand.length, 4)
-	t.is(game4.discardPile.length, 1)
-})
-
-test('we can discard the entire hand', t => {
-	const game = actions.createNewGame()
-	const game2 = actions.drawStarterDeck({state: game})
-	const game3 = actions.drawCards({state: game2, amount: 5})
-	t.is(game3.hand.length, 5)
-	t.is(game3.discardPile.length, 0)
-	const game4 = actions.discardHand({state: game3})
-	t.is(game4.hand.length, 0)
-	t.is(game4.discardPile.length, 5)
-})
-
 test('ending a turn discards your hand', t => {
-	const game = actions.createNewGame()
-	const game2 = actions.drawStarterDeck({state: game})
-	const game3 = actions.drawCards({state: game2, amount: 5})
-	t.is(game3.hand.length, 5)
-	t.is(game3.discardPile.length, 0)
-	const game4 = actions.endTurn({state: game3})
-	t.is(game4.hand.length, 0)
-	t.is(game4.discardPile.length, 5)
+	const state = actions.createNewGame()
+	const state2 = actions.drawStarterDeck({state})
+	const state3 = actions.drawCards({state: state2, amount: 5})
+	t.is(state3.hand.length, 5)
+	t.is(state3.discardPile.length, 0)
+	const state4 = actions.endTurn({state: state3})
+	t.is(state4.hand.length, 0)
+	t.is(state4.discardPile.length, 5)
 })
 
 test('ending a turn draws a new hand', t => {
@@ -176,5 +157,4 @@ test('ending a turn draws a new hand', t => {
 	t.is(state.hand.length, 4)
 	state = actions.drawCards({state, amount: 4})
 	t.is(state.hand.length, 8)
-	// console.log(state2)
 })
