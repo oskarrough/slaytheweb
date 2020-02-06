@@ -32,7 +32,7 @@ Many ways to go. This is the first.
 We need
 
 - A deck of cards
-- Cards have different cost and actions
+- Cards have different energy cost and actions
 - An action could be draw a card, deal damage, everything is an action
 - All actions are queued
 
