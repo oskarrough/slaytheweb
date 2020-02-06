@@ -74,6 +74,14 @@ test('can manipulate monster hp', t => {
 	t.is(state3.monster.currentHealth, 0)
 })
 
+test('can not play a card without enough energy', t => {
+	const state = actions.createNewGame()
+	const card = createCard('Strike')
+	t.is(state.player.currentEnergy, 3)
+	state.player.currentEnergy = 0
+	t.throws(() => actions.playCard({state, card}))
+})
+
 test('can play a strike card from hand and see the effects on state', t => {
 	const state = actions.createNewGame()
 	const originalHealth = state.monster.currentHealth
