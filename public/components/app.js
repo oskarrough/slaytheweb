@@ -10,7 +10,13 @@ const queue = new Queue()
 export default class App extends Component {
 	constructor() {
 		super()
-		this.state = actions.createNewGame()
+
+		// Prepare the game.
+		let game = actions.createNewGame()
+		game = actions.drawStarterDeck(game)
+		game = actions.drawCards(game, {amount: 5})
+		this.state = game
+
 		// Debugging in the browser console.
 		window.kortgame = {
 			state: this.state,
