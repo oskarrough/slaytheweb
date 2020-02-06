@@ -1,5 +1,6 @@
 import {createCard} from './cards.js'
 import produce from '../web_modules/immer.js'
+import {shuffle} from './utils.js'
 
 // This is the big object of game state. Everything should start here.
 function createNewGame() {
@@ -34,7 +35,7 @@ function drawStarterDeck({state}) {
 		createCard('Strike')
 	]
 	return produce(state, draft => {
-		draft.drawPile = deck
+		draft.drawPile = shuffle(deck)
 	})
 }
 

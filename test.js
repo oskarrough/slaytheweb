@@ -1,6 +1,7 @@
 const test = require('ava')
 import actions from './public/game/actions'
 import {createCard} from './public/game/cards'
+import {shuffle} from './public/game/utils'
 
 test('can create an attack card', t => {
 	const card = createCard('Strike')
@@ -41,14 +42,27 @@ test('new game state is ok', t => {
 	})
 })
 
-test('drawing a starter deck adds it to the deck', t => {
+test('drawing a starter deck adds it to the draw pile', t => {
 	const state = actions.createNewGame()
 	t.is(state.drawPile.length, 0)
 	const newState = actions.drawStarterDeck({state})
 	t.is(newState.drawPile.length, 9)
 })
 
-test.todo('starter deck is shuffled')
+test('starter deck is shuffled', t => {
+	const removeIds = (arr) => arr.map(card => {
+		delete card.id
+		return card
+	})
+	const state = actions.createNewGame()
+	const tries = Array(10)
+	t.plan(tries.length)
+	for (const index of tries) {
+		let draw1 = actions.drawStarterDeck({state})
+		let draw2 = actions.drawStarterDeck({state})
+		t.notDeepEqual(removeIds(draw1.drawPile), removeIds(draw2.drawPile))
+	}
+})
 
 test('can draw cards from drawPile to hand', t => {
 	const state1 = actions.createNewGame()

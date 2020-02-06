@@ -6,6 +6,8 @@ export function uuid(a) {
 
 // https://bost.ocks.org/mike/shuffle/
 export function shuffle(array) {
+	// Make a copy
+	array = array.slice()
 	var m = array.length
 	var t
 	var i
