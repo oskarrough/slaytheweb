@@ -45,10 +45,13 @@ function drawStarterDeck(state) {
 }
 
 // Move X cards from deck to hand
-function drawCards(state, amount) {
-	if (!amount) amount = 5
+function drawCards(state, amount = 5) {
 	return produce(state, draft => {
-		const newCards = state.drawPile.slice(0, amount)
+		if (state.drawPile.length < amount) {
+			// Not enough cards to draw. Time to recycle.
+			draft.drawPile = state.drawPile.concat(state.discardPile)
+		}
+		const newCards = draft.drawPile.slice(0, amount)
 		// Take the first X cards from deck and add to hand
 		draft.hand = draft.hand.concat(newCards)
 		// and remove them from deck
