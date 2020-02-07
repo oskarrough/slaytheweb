@@ -103,12 +103,12 @@ function changeHealth(state, {target, amount}) {
 }
 
 function endTurn(state) {
-	const newState = discardHand(state)
+	let newState = discardHand(state)
+	newState = drawCards(newState)
 	return produce(newState, draft => {
 		// reset energy and block
 		draft.player.currentEnergy = 3
 		draft.player.block = 0
-		// @todo draw again
 	})
 }
 

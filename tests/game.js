@@ -159,15 +159,15 @@ test('ending a turn discards your hand', t => {
 	t.is(state3.hand.length, 5)
 	t.is(state3.discardPile.length, 0)
 	const state4 = actions.endTurn(state3)
-	t.is(state4.hand.length, 0)
+	t.is(state4.hand.length, 5)
 	t.is(state4.discardPile.length, 5)
 })
 
 test('ending a turn draws a new hand', t => {
 	let {state} = t.context
 	state = actions.drawStarterDeck(state)
-	state = actions.drawCards(state, 4)
-	t.is(state.hand.length, 4)
-	state = actions.drawCards(state, 4)
-	t.is(state.hand.length, 8)
+	state = actions.drawCards(state, 1)
+	t.is(state.hand.length, 1)
+	state = actions.endTurn(state)
+	t.is(state.hand.length, 5)
 })
