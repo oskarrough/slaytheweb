@@ -53,7 +53,15 @@ export default class App extends Component {
 		// drop.on('drag:start', () => console.log('drag:start'))
 		// drop.on('drag:move', () => console.log('drag:move'))
 		// drop.on('drag:stop', () => console.log('drag:stop'))
-		// drop.on('sortable:start', event => { console.log('sortable:start', event) })
+		drop.on('sortable:start', event => {
+			console.log('sortable:start', event)
+			const card = this.state.hand.find(card => card.id === event.data.dragEvent.data.source.dataset.id)
+			console.log(card.energy)
+			if (card.energy > this.state.player.currentEnergy) {
+				event.cancel()
+				alert('not enough eng')
+			}
+		})
 		drop.on('sortable:sort', event => {
 			// console.log('sortable:sort', event.dragEvent.data, drop.containers)
 			// Only allow drop on discard pile.
