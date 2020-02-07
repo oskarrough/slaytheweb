@@ -15,6 +15,7 @@ export default class App extends Component {
 		let game = actions.createNewGame()
 		game = actions.drawStarterDeck(game)
 		game = actions.drawCards(game)
+
 		this.state = game
 
 		// Debugging in the browser console.
@@ -43,6 +44,11 @@ export default class App extends Component {
 		} catch (err) {
 			alert(err)
 		}
+	}
+
+	endTurn() {
+		this.enqueue({type: 'endTurn'})
+		this.runQueue()
 	}
 
 	enableDrop() {
@@ -107,14 +113,14 @@ export default class App extends Component {
 				<${Cards} cards=${state.drawPile} />
 
 				<p>
-					Test actions ➙ <button onclick=${() => this.enqueue({type: 'drawStarterDeck'})}>Draw deck</button>
-					<button onclick=${() => this.enqueue({type: 'drawCards', amount: 5})}>Draw 5 cards</button>
-					<button onclick=${() => this.enqueue({type: 'playCard', card: state.hand[0]})}>Play first card</button>
-					<button onclick=${() => this.enqueue({type: 'endTurn'})}>End turn</button>
+					<!-- Test actions ➙ <button onclick=${() => this.enqueue({type: 'drawStarterDeck'})}>Draw deck</button> -->
+					<!-- <button onclick=${() => this.enqueue({type: 'drawCards', amount: 5})}>Draw 5 cards</button> -->
+					<!-- <button onclick=${() => this.enqueue({type: 'playCard', card: state.hand[0]})}>Play first card</button> -->
+					<button onclick=${() => this.endTurn()}>End turn</button>
 				</p>
-				<p>
+				<!-- <p>
 					<button onclick=${() => this.runQueue()}>Run queue</button>
-				</p>
+				</p> -->
 				<${History} history=${queue.list} />
 			</div>
 		`

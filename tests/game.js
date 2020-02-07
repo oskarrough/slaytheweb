@@ -154,18 +154,7 @@ test("ending a turn removes player's block", t => {
 	t.is(newTurn.player.block, 0)
 })
 
-test('ending a turn discards your hand', t => {
-	const {state} = t.context
-	const state2 = a.drawStarterDeck(state)
-	const state3 = a.drawCards(state2)
-	t.is(state3.hand.length, 5)
-	t.is(state3.discardPile.length, 0)
-	const state4 = a.endTurn(state3)
-	t.is(state4.hand.length, 5)
-	t.is(state4.discardPile.length, 5)
-})
-
-test('ending a turn draws a new hand and recycles discard pile when needed', t => {
+test('ending a turn draws a new hand and recycles discard pile', t => {
 	let {state} = t.context
 
 	state = a.drawStarterDeck(state)
