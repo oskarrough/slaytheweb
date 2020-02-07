@@ -45,7 +45,8 @@ function drawStarterDeck(state) {
 }
 
 // Move X cards from deck to hand
-function drawCards(state, amount = 5) {
+function drawCards(state, amount) {
+	if (!amount) amount = 5
 	return produce(state, draft => {
 		const newCards = state.drawPile.slice(0, amount)
 		// Take the first X cards from deck and add to hand
@@ -96,7 +97,6 @@ function playCard(state, {card}) {
 }
 
 function changeHealth(state, {target, amount}) {
-	// if (target !== ('player' || 'monster')) throw new Error(`Invalid target: ${target}`)
 	return produce(state, draft => {
 		draft[target].currentHealth = state[target].currentHealth + amount
 	})

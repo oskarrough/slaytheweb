@@ -14,7 +14,7 @@ export default class App extends Component {
 		// Prepare the game.
 		let game = actions.createNewGame()
 		game = actions.drawStarterDeck(game)
-		game = actions.drawCards(game, {amount: 5})
+		game = actions.drawCards(game)
 		this.state = game
 
 		// Debugging in the browser console.
