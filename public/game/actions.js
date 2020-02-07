@@ -36,6 +36,7 @@ function drawStarterDeck(state) {
 		createCard('Strike'),
 		createCard('Strike'),
 		createCard('Strike'),
+		createCard('Strike'),
 		createCard('Strike')
 	]
 	return produce(state, draft => {
@@ -44,7 +45,7 @@ function drawStarterDeck(state) {
 }
 
 // Move X cards from deck to hand
-function drawCards(state, {amount = 4}) {
+function drawCards(state, amount = 5) {
 	return produce(state, draft => {
 		const newCards = state.drawPile.slice(0, amount)
 		// Take the first X cards from deck and add to hand

@@ -31,7 +31,7 @@ test('drawing a starter deck adds it to the draw pile', t => {
 	const {state} = t.context
 	t.is(state.drawPile.length, 0)
 	const state2 = actions.drawStarterDeck(state)
-	t.is(state2.drawPile.length, 9)
+	t.is(state2.drawPile.length, 10)
 })
 
 test('starter deck is shuffled', t => {
@@ -54,11 +54,11 @@ test('can draw cards from drawPile to hand', t => {
 	const {state} = t.context
 	const state2 = actions.drawStarterDeck(state)
 	t.is(state2.hand.length, 0, 'hand is empty to start with')
-	const state3 = actions.drawCards(state2, {amount: 2})
+	const state3 = actions.drawCards(state2)
 	t.is(state.hand.length, 0, 'immutable, should not be modified')
 	t.is(state2.hand.length, 0, 'immutable, should not be modified')
-	t.is(state3.hand.length, 2, 'cards have been added to the hand')
-	t.is(state3.drawPile.length, 7, 'cards have been removed from deck')
+	t.is(state3.hand.length, 5, 'cards have been added to the hand')
+	t.is(state3.drawPile.length, 5, 'cards have been removed from deck')
 })
 
 test('can manipulate player hp', t => {
@@ -108,7 +108,7 @@ test('can play a defend card from hand and see the effects on state', t => {
 test('can discard a single card from hand', t => {
 	const {state} = t.context
 	const state2 = actions.drawStarterDeck(state)
-	const state3 = actions.drawCards(state2, {amount: 5})
+	const state3 = actions.drawCards(state2)
 	t.is(state3.hand.length, 5)
 	t.is(state3.discardPile.length, 0)
 	const cardToDiscard = state3.hand[0]
@@ -120,7 +120,7 @@ test('can discard a single card from hand', t => {
 test('can discard the entire hand', t => {
 	const {state} = t.context
 	const state2 = actions.drawStarterDeck(state)
-	const state3 = actions.drawCards(state2, {amount: 5})
+	const state3 = actions.drawCards(state2)
 	t.is(state3.hand.length, 5)
 	t.is(state3.discardPile.length, 0)
 	const state4 = actions.discardHand(state3)
@@ -155,7 +155,7 @@ test("ending a turn removes player's block", t => {
 test('ending a turn discards your hand', t => {
 	const {state} = t.context
 	const state2 = actions.drawStarterDeck(state)
-	const state3 = actions.drawCards(state2, {amount: 5})
+	const state3 = actions.drawCards(state2)
 	t.is(state3.hand.length, 5)
 	t.is(state3.discardPile.length, 0)
 	const state4 = actions.endTurn(state3)
@@ -166,8 +166,8 @@ test('ending a turn discards your hand', t => {
 test('ending a turn draws a new hand', t => {
 	let {state} = t.context
 	state = actions.drawStarterDeck(state)
-	state = actions.drawCards(state, {amount: 4})
+	state = actions.drawCards(state, 4)
 	t.is(state.hand.length, 4)
-	state = actions.drawCards(state, {amount: 4})
+	state = actions.drawCards(state, 4)
 	t.is(state.hand.length, 8)
 })
