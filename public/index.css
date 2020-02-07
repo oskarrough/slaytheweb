@@ -67,14 +67,12 @@ h2 {
 	/* grid-auto-columns: minmax(6em, var(--card-width)); */
 	grid-auto-columns: var(--card-width);
 	grid-auto-flow: column;
-	/* gap: 1em; */
+	justify-content: center;
 }
 
-.Cards:last-of-type {
-	margin-top: auto;
-}
+.Card {}
 
-.Card {
+.Card-inner {
 	display: flex;
 	flex-flow: column;
 	position: relative;
@@ -83,15 +81,15 @@ h2 {
 	background: #716664;
 	text-align: center;
 	box-shadow: 1px 2px 3px #00000080;
-	margin-left: -1rem;
+	/* margin-left: -1rem; */
 }
 
-.dropzone .Card:hover {
+.dropzone .Card:hover .Card-inner {
 	z-index: 101;
 	cursor: grab;
-	transition-duration: 30ms;
-	transform: translate3d(0, -1rem, 0) scale(1.1) !important;
-	box-shadow: 0 0 1em cyan;
+	transition-duration: 60ms;
+	transform: translate3d(0, -1rem, 0) scale(1.5);
+	box-shadow: 0 0 0.5em cyan;
 }
 
 .Card-title {
