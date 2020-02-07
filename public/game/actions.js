@@ -48,8 +48,9 @@ function drawStarterDeck(state) {
 function drawCards(state, amount = 5) {
 	return produce(state, draft => {
 		if (state.drawPile.length < amount) {
-			// Not enough cards to draw. Time to recycle.
+			// Not enough cards to draw. Move all cards from discard to draw.
 			draft.drawPile = state.drawPile.concat(state.discardPile)
+			draft.discardPile = []
 		}
 		const newCards = draft.drawPile.slice(0, amount)
 		// Take the first X cards from deck and add to hand

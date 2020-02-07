@@ -165,25 +165,28 @@ test('ending a turn discards your hand', t => {
 	t.is(state4.discardPile.length, 5)
 })
 
-test('ending a turn draws a new hand', t => {
+test('ending a turn draws a new hand and recycles discard pile when needed', t => {
 	let {state} = t.context
-	state = a.drawStarterDeck(state)
-	state = a.drawCards(state, 1)
-	t.is(state.hand.length, 1)
-	state = a.endTurn(state)
-	t.is(state.hand.length, 5)
-})
 
-test('drawing cards cycles the draw pile', t => {
-	let {state} = t.context
 	state = a.drawStarterDeck(state)
+	t.is(state.drawPile.length, 10)
+	t.is(state.hand.length, 0)
+	t.is(state.discardPile.length, 0)
+
 	state = a.drawCards(state)
+	t.is(state.drawPile.length, 5)
 	t.is(state.hand.length, 5)
-	state = a.drawCards(state)
-	t.is(state.hand.length, 10)
-	state = a.drawCards(state)
-	t.is(state.hand.length, 10, 'because our deck has 10 cards total')
+	t.is(state.discardPile.length, 0)
+
 	state = a.endTurn(state)
-	t.is(state.hand.length, 5, 'works because discard pile was moved to draw pile')
+	t.is(state.drawPile.length, 0)
+	t.is(state.hand.length, 5)
+	t.is(state.discardPile.length, 5)
+
+	// now there is nothing in draw pile, so it should recycle discard pile.
+	state = a.endTurn(state)
+	t.is(state.drawPile.length, 5)
+	t.is(state.hand.length, 5)
+	t.is(state.discardPile.length, 0)
 })
 
