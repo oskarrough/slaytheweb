@@ -110,37 +110,41 @@ summary {
 	display: flex;
 	flex-flow: column;
 	position: relative;
-	border: 4px solid sandybrown;
-	border-radius: 3px;
-	background: #716664;
+	border: 0.5em ridge #53b5a8;
+	border-radius: 0.5em;
+	background: #065046;
+	background: #0a3540;
 	text-align: center;
 	box-shadow: 1px 2px 3px #00000080;
 }
 
-.dropzone .Card:hover .Card-inner {
+.dropzone .Card:hover {
 	z-index: 101;
 	cursor: grab;
+}
+
+.dropzone .Card:hover .Card-inner {
 	transition-duration: 60ms;
-	transform: translate3d(0, -1rem, 0) scale(1.5);
-	box-shadow: 0 0 0.5em cyan;
+	transform: translate3d(0, -1rem, 0) scale(1.25);
+	box-shadow: 0 0 0.75em gold;
 }
 
 .Card-title {
+	border-top-left-radius: 0.5em;
+	border-top-right-radius: 0.5em;
 	margin: 0;
-	padding: 0.1em 1em 0.15em;
-	background: darkgray;
+	padding: 0.5em 1em 0.5em;
+	background: #96969617;
 	color: whitesmoke;
 	text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.8);
 }
 
 .Card-type {
-	font-size: smaller;
 	margin-top: 0.3em;
 }
 
 .Card-effects {
 	margin: 1rem 0.2rem;
-	font-size: small;
 }
 
 .Card-energy {
