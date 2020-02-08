@@ -187,6 +187,10 @@ summary {
 	color: black;
 }
 
+.Healthbar--block .Healthbar-bar {
+	background: #afafff;
+}
+
 .Healthbar-label {
 	position: relative;
 	z-index: 1;
