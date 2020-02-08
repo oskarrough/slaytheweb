@@ -11,8 +11,6 @@ html {
 
 html,
 button {
-	/* font-family: 'Kreon', serif; */
-	/* font-family: 'B612', sans-serif; */
 	font-family: 'Port Lligat Slab', serif;
 	font-display: swap;
 }
@@ -106,7 +104,8 @@ h2 {
 }
 
 .Card-effects {
-	margin: 1rem;
+	margin: 1rem 0.2rem;
+	font-size: small;
 }
 
 .Card-energy {
