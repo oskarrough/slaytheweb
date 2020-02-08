@@ -1,5 +1,5 @@
 import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
-import Player from './player.js'
+import Player, {Healthbar} from './player.js'
 import History from './history.js'
 import Cards from './cards.js'
 import Queue from '../game/queue.js'
@@ -10,14 +10,11 @@ const queue = new Queue()
 export default class App extends Component {
 	constructor() {
 		super()
-
 		// Prepare the game.
 		let game = actions.createNewGame()
 		game = actions.drawStarterDeck(game)
 		game = actions.drawCards(game)
-
 		this.state = game
-
 		// Debugging in the browser console.
 		window.kortgame = {
 			state: this.state,
@@ -25,69 +22,59 @@ export default class App extends Component {
 			actions
 		}
 	}
-
 	componentDidMount() {
 		this.enableDrop()
 	}
-
 	enqueue(what) {
 		queue.add(what)
 	}
-
 	runQueue() {
 		const action = queue.next()
 		if (!action) return
 		try {
+			console.log({action})
 			const nextState = actions[action.type](this.state, action)
 			this.setState(nextState)
-			console.table(nextState)
+			// console.table(nextState)
 		} catch (err) {
 			alert(err)
 		}
 	}
-
 	endTurn() {
 		this.enqueue({type: 'endTurn'})
 		this.runQueue()
 	}
-
 	enableDrop() {
 		const drop = new window.Sortable.default(this.base.querySelectorAll('.dropzone'), {
 			draggable: '.Card',
 			mirror: {constrainDimensions: true}
 		})
-		// drop.on('drag:start', () => console.log('drag:start'))
-		// drop.on('drag:move', () => console.log('drag:move'))
-		// drop.on('drag:stop', () => console.log('drag:stop'))
 		drop.on('sortable:start', event => {
-			console.log('sortable:start', event)
+			// console.log('sortable:start', event)
 			const card = this.state.hand.find(card => card.id === event.data.dragEvent.data.source.dataset.id)
-			console.log(card.energy)
 			if (card.energy > this.state.player.currentEnergy) {
 				event.cancel()
-				alert('not enough eng')
+				alert('Not enough energy to play this card.')
 			}
 		})
 		drop.on('sortable:sort', event => {
-			// console.log('sortable:sort', event.dragEvent.data, drop.containers)
 			// Only allow drop on discard pile.
 			if (event.dragEvent.data.overContainer !== drop.containers[0]) {
+				console.log('canceled sortable:sort')
 				event.cancel()
 			}
 		})
 		// drop.on('sortable:sorted', event => { console.log('sortable:sorted', event) })
 		drop.on('sortable:stop', event => {
-			// console.log('sortable:stop', event)
 			const {newContainer, oldContainer} = event.data
-			// const wasDiscarded = newContainer.classList.contains('Cards--discard') && newContainer !== oldContainer
 			const wasDiscarded = newContainer === drop.containers[0] && newContainer !== oldContainer
 			console.log({wasDiscarded})
-			if (!wasDiscarded) {
-				return
-			} else {
+			if (wasDiscarded) {
+				event.cancel()
 				const card = this.state.hand.find(card => card.id === event.data.dragEvent.originalSource.dataset.id)
+				console.log(card)
 				this.enqueue({type: 'playCard', card})
-				this.runQueue()
+				this.runQueue() // play card immediately
 			}
 		})
 	}
@@ -95,32 +82,44 @@ export default class App extends Component {
 	render(props, state) {
 		return html`
 			<div class="App">
-				<div class="u-flex">
+				<div class="Split">
 					<${Player} player=${state.player} />
-					<${Player} player=${state.monster} name="Mr. T" />
+					<div class="Monster dropzone">
+						<h2>Evil Monster</h2>
+						<${Healthbar} max=${state.monster.maxHealth} value=${state.monster.currentHealth} />
+					</div>
 				</div>
 
-				<h2>Discard pile</h2>
-				<${Cards} cards=${state.discardPile} canDrag=${true} isDiscardPile=${true} />
-
-				<h2>
-					Hand
-					<div class="Energybar">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
-				</h2>
-				<${Cards} cards=${state.hand} canDrag=${true} />
-
-				<h2>Draw pile</h2>
-				<${Cards} cards=${state.drawPile} />
+				<div class="Hand">
+					<h2>
+						Hand
+						<div class="Energybar">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
+					</h2>
+					<${Cards} cards=${state.hand} isHand=${true} canDrag=${true} />
+				</div>
 
 				<p>
 					<!-- Test actions ➙ <button onclick=${() => this.enqueue({type: 'drawStarterDeck'})}>Draw deck</button> -->
 					<!-- <button onclick=${() => this.enqueue({type: 'drawCards', amount: 5})}>Draw 5 cards</button> -->
-					<!-- <button onclick=${() => this.enqueue({type: 'playCard', card: state.hand[0]})}>Play first card</button> -->
+					<!-- <button onclick=${() =>
+						this.enqueue({type: 'playCard', card: state.hand[0]})}>Play first card</button> -->
 					<button onclick=${() => this.endTurn()}>End turn</button>
 				</p>
 				<!-- <p>
 					<button onclick=${() => this.runQueue()}>Run queue</button>
 				</p> -->
+
+				<div class="Split" style="margin-top: auto">
+					<div>
+						<h2>Draw pile</h2>
+						<${Cards} cards=${state.drawPile} />
+					</div>
+					<div>
+						<h2>Discard pile</h2>
+						<${Cards} cards=${state.discardPile} isDiscardPile=${true} />
+					</div>
+				</div>
+
 				<${History} history=${queue.list} />
 			</div>
 		`

@@ -13,7 +13,7 @@ export default class Player extends Component {
 	}
 }
 
-function Healthbar({max, value, block}) {
+export function Healthbar({max, value, block}) {
 	return html`
 		<div class="Healthbar">
 			<p>${block ? `${block} block` : ''} ${value}/${max}</p>

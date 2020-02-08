@@ -1,5 +1,6 @@
 :root {
-	--card-width: 6em;
+	--card-width: 7rem;
+	--card-height: 9rem;
 }
 
 html {
@@ -32,7 +33,8 @@ button + button {
 	margin-left: 0.2em;
 }
 
-h2 {
+h2,
+summary {
 	font-size: 1rem;
 	margin: 1rem 0;
 }
@@ -45,41 +47,47 @@ h2 {
 	padding: 0 0.5rem;
 }
 
-.u-flex {
-	display: flex;
-	gap: 1rem;
+.Split {
+	display: grid;
+	grid-template-columns: 50% 50%;
+	/* gap: 2rem; */
 }
 
-.Player {
-	flex: 1;
+.Split .Cards {
+	overflow: auto;
 }
 
 .Cards {
-	position: relative;
-	padding: 0.6em 0 1em 1em;
-	border: 1px dotted #ffff0080;
-	border-radius: 1em;
-	padding: 1rem 1rem 1rem 2rem;
-	min-height: 4em;
+	min-height: var(--card-height);
 	display: grid;
-	/* grid-auto-columns: minmax(6em, var(--card-width)); */
 	grid-auto-columns: var(--card-width);
 	grid-auto-flow: column;
 	justify-content: center;
+	padding: 1rem 1rem 1rem 3rem;
+	border: 1px dotted #ffff0080;
+	border-radius: 1em;
+	position: relative;
 }
 
-.Card {}
+.Card {
+	display: flex;
+	/* width: var(--card-width); */
+	margin-left: -3rem;
+}
+
+.Card:not(:first-child) {
+}
 
 .Card-inner {
+	flex: 1;
 	display: flex;
 	flex-flow: column;
 	position: relative;
-	border: 3px solid sandybrown;
+	border: 4px solid sandybrown;
 	border-radius: 3px;
 	background: #716664;
 	text-align: center;
 	box-shadow: 1px 2px 3px #00000080;
-	/* margin-left: -1rem; */
 }
 
 .dropzone .Card:hover .Card-inner {
@@ -170,4 +178,9 @@ h2 {
 
 .Card.draggable-mirror {
 	max-width: var(--card-width);
+}
+
+.Monster {
+	height: var(--card-height);
+	overflow: hidden;
 }

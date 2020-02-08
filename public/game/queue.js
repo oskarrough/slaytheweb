@@ -4,7 +4,6 @@ export default class Queue {
 	}
 	add(item) {
 		this.list.push(item)
-		console.log('added to queue', this.list)
 	}
 	next() {
 		// return this.list.pop() // returns last/newest

@@ -21,8 +21,8 @@ export default class Queue extends Component {
 	render(props, state) {
 		const time = new Date(state.time).toLocaleTimeString()
 		return html`
-			<div>
-				<h2>Game state history ${time}</h2>
+			<details>
+				<summary>Kortgame v0 ${time}</summary>
 				<ol>
 					${props.history.map(
 						(item, index) =>
@@ -31,7 +31,7 @@ export default class Queue extends Component {
 							`
 					)}
 				</ol>
-			</div>
+			</details>
 		`
 	}
 }
