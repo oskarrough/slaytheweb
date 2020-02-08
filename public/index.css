@@ -14,7 +14,7 @@ html {
   background:
     radial-gradient(circle, transparent 50%, var(--color-v) 80%),
     linear-gradient(to right, var(--color), var(--color)),
-    var(--image2);
+    var(--image);
   background-position: center center;
   background-size: cover;
   background-blend-mode:
@@ -22,7 +22,7 @@ html {
     var(--blend-bottom, darken), normal;
 
   --image: url(bg.jpg);
-  --image2: url(bg2.jpg);
+  /* --image: url(bg2.jpg); */
   --color-v: #211c1b;
   --color: transparent;
 
