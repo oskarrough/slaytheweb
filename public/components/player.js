@@ -16,8 +16,8 @@ export default class Player extends Component {
 export function Healthbar({max, value, block}) {
 	return html`
 		<div class="Healthbar">
-			<p>${block ? `${block} block` : ''} ${value}/${max}</p>
-			<div class="Healthbar-value" style=${`width: ${(value / max) * 100}%`}></div>
+			<p class="Healthbar-label">${block ? `${block} block` : ''} ${value}/${max}</p>
+			<div class="Healthbar-bar" style=${`width: ${(value / max) * 100}%`}></div>
 		</div>
 	`
 }

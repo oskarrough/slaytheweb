@@ -115,7 +115,7 @@ export default class App extends Component {
 						<${Cards} cards=${state.drawPile} />
 					</div>
 					<div>
-						<h2>Discard pile</h2>
+						<h2 align-right>Discard pile</h2>
 						<${Cards} cards=${state.discardPile} isDiscardPile=${true} />
 					</div>
 				</div>

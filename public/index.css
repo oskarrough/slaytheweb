@@ -180,26 +180,30 @@ summary {
 
 .Healthbar {
 	position: relative;
-	border: 2px solid;
+	border: 3px solid;
 	border-radius: 1em;
 	text-align: center;
 	background: darkslategrey;
+	color: black;
 }
 
-.Healthbar-value {
+.Healthbar-label {
+	position: relative;
+	z-index: 1;
+	margin: 0.2em 0;
+	font-size: large;
+	text-shadow: 1px 0px 0px hsla(0, 0%, 100%, 0.8);
+}
+
+.Healthbar-bar {
 	position: absolute;
 	left: 0;
 	top: 0;
 	width: 0%;
 	height: 100%;
-	border-radius: 1em;
+	border-radius: 0.5rem;
 	background: red;
-}
-
-.Healthbar p {
-	margin: 0.2em 0 0.1em;
-	position: relative;
-	z-index: 1;
+	background: #ffc107;
 }
 
 .draggable-source--is-dragging {
@@ -214,4 +218,8 @@ summary {
 .Monster {
 	height: var(--card-height);
 	overflow: hidden;
+}
+
+[align-right] {
+	text-align: right;
 }
