@@ -6,8 +6,29 @@
 html {
 	font-size: 16px;
 	line-height: 1.2;
-	background: #1e0a05;
+	background: hsl(137, 80%, 13%) linear-gradient(hsl(137, 80%, 13%), hsl(137, 50%, 13%));
 	color: antiquewhite;
+}
+
+.Scene {
+	/* --image: url(bg.jpg); */
+	--color-v: #211c1b;
+	--color: transparent;
+	background:
+		radial-gradient(circle, transparent 50%, var(--color-v) 80%),
+		linear-gradient(to right, var(--color), var(--color)),
+		var(--image);
+	background-position: center center;
+	background-size: cover;
+	background-blend-mode:
+		var(--blend-top, normal),
+		var(--blend-bottom, darken), normal;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1;
 }
 
 html,
@@ -35,11 +56,13 @@ button + button {
 
 h2,
 summary {
-	font-size: 1rem;
+	font-size: 1.25rem;
 	margin: 1rem 0;
 }
 
 .App {
+	position: relative;
+	z-index: 2;
 	display: flex;
 	flex-flow: column;
 	min-height: 100vh;
@@ -83,37 +106,41 @@ summary {
 	display: flex;
 	flex-flow: column;
 	position: relative;
-	border: 4px solid sandybrown;
-	border-radius: 3px;
-	background: #716664;
+	border: 0.5em ridge #53b5a8;
+	border-radius: 0.5em;
+	background: #065046;
+	background: #0a3540;
 	text-align: center;
 	box-shadow: 1px 2px 3px #00000080;
 }
 
-.dropzone .Card:hover .Card-inner {
+.dropzone .Card:hover {
 	z-index: 101;
 	cursor: grab;
+}
+
+.dropzone .Card:hover .Card-inner {
 	transition-duration: 60ms;
-	transform: translate3d(0, -1rem, 0) scale(1.5);
-	box-shadow: 0 0 0.5em cyan;
+	transform: translate3d(0, -1rem, 0) scale(1.25);
+	box-shadow: 0 0 0.75em gold;
 }
 
 .Card-title {
+	border-top-left-radius: 0.5em;
+	border-top-right-radius: 0.5em;
 	margin: 0;
-	padding: 0.1em 1em 0.15em;
-	background: darkgray;
+	padding: 0.5em 1em 0.5em;
+	background: #96969617;
 	color: whitesmoke;
 	text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.8);
 }
 
 .Card-type {
-	font-size: smaller;
 	margin-top: 0.3em;
 }
 
 .Card-effects {
 	margin: 1rem 0.2rem;
-	font-size: small;
 }
 
 .Card-energy {
@@ -149,26 +176,34 @@ summary {
 
 .Healthbar {
 	position: relative;
-	border: 2px solid;
+	border: 3px solid;
 	border-radius: 1em;
 	text-align: center;
 	background: darkslategrey;
+	color: black;
 }
 
-.Healthbar-value {
+.Healthbar--block .Healthbar-bar {
+	background: #afafff;
+}
+
+.Healthbar-label {
+	position: relative;
+	z-index: 1;
+	margin: 0.2em 0;
+	font-size: large;
+	text-shadow: 1px 0px 0px hsla(0, 0%, 100%, 0.8);
+}
+
+.Healthbar-bar {
 	position: absolute;
 	left: 0;
 	top: 0;
 	width: 0%;
 	height: 100%;
-	border-radius: 1em;
+	border-radius: 0.5rem;
 	background: red;
-}
-
-.Healthbar p {
-	margin: 0.2em 0 0.1em;
-	position: relative;
-	z-index: 1;
+	background: #ffc107;
 }
 
 .draggable-source--is-dragging {
@@ -183,4 +218,8 @@ summary {
 .Monster {
 	height: var(--card-height);
 	overflow: hidden;
+}
+
+[align-right] {
+	text-align: right;
 }
