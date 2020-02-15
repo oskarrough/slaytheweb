@@ -179,7 +179,7 @@ test('ending a turn draws a new hand and recycles discard pile', t => {
 	t.is(state.discardPile.length, 0)
 })
 
-test.todo('when monster reaches 0 hp, you win!', t => {
+test('when monster reaches 0 hp, you win!', t => {
 	const {state} = t.context
 	t.is(state.monster.currentHealth, 42)
 	const newState = a.changeHealth(state, {target: 'monster', amount: -42})
