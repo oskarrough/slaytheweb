@@ -11,21 +11,18 @@ html {
 }
 
 .Scene {
-  background:
-    radial-gradient(circle, transparent 50%, var(--color-v) 80%),
-    linear-gradient(to right, var(--color), var(--color)),
-    var(--image);
-  background-position: center center;
-  background-size: cover;
-  background-blend-mode:
-    var(--blend-top, normal),
-    var(--blend-bottom, darken), normal;
-
-  --image: url(bg.jpg);
-  /* --image: url(bg2.jpg); */
-  --color-v: #211c1b;
-  --color: transparent;
-
+	/* --image: url(bg.jpg); */
+	--color-v: #211c1b;
+	--color: transparent;
+	background:
+		radial-gradient(circle, transparent 50%, var(--color-v) 80%),
+		linear-gradient(to right, var(--color), var(--color)),
+		var(--image);
+	background-position: center center;
+	background-size: cover;
+	background-blend-mode:
+		var(--blend-top, normal),
+		var(--blend-bottom, darken), normal;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -33,7 +30,6 @@ html {
 	bottom: 0;
 	z-index: 1;
 }
-
 
 html,
 button {
