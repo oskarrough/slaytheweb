@@ -6,7 +6,7 @@
 html {
 	font-size: 16px;
 	line-height: 1.2;
-	background: #441306;
+	background: hsl(137, 80%, 13%) linear-gradient(hsl(137, 80%, 13%), hsl(137, 50%, 13%));
 	color: antiquewhite;
 }
 
@@ -56,7 +56,7 @@ button + button {
 
 h2,
 summary {
-	font-size: 1rem;
+	font-size: 1.25rem;
 	margin: 1rem 0;
 }
 
