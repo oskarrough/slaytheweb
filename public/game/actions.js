@@ -90,8 +90,8 @@ function playCard(state, {card}) {
 		draft.player.currentEnergy = state.player.currentEnergy - card.energy
 		// not sure about this way...
 		if (card.damage) {
-			// changeHealth({state, target: 'monster', amount: card.damage})
-			draft.monster.currentHealth = state.monster.currentHealth - card.damage
+			const {monster} = changeHealth(state, {target: 'monster', amount: -card.damage})
+			draft.monster.currentHealth = monster.currentHealth
 		}
 		if (card.block) {
 			draft.player.block = state.player.block + card.block
@@ -102,7 +102,12 @@ function playCard(state, {card}) {
 
 function changeHealth(state, {target, amount}) {
 	return produce(state, draft => {
-		draft[target].currentHealth = state[target].currentHealth + amount
+		let newHealth = state[target].currentHealth + amount
+		if (newHealth <= 0) {
+			// alert('we won')
+			// newHealth = 0
+		}
+		draft[target].currentHealth = newHealth
 	})
 }
 

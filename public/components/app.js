@@ -80,6 +80,7 @@ export default class App extends Component {
 	}
 
 	render(props, state) {
+		const didWin = state.monster.currentHealth <= 0
 		return html`
 			<div class="App">
 				<div class="Split">
@@ -98,8 +99,11 @@ export default class App extends Component {
 					<${Cards} cards=${state.hand} isHand=${true} canDrag=${true} />
 				</div>
 
-				<p>
-					<button onclick=${() => this.endTurn()}>End turn</button>
+				<p class="Actions">
+					${didWin
+						? html`<button onClick=${props.onWin}>YOU WON! Try again?</button>`
+						: html`<button onclick=${() => this.endTurn()}>End turn</button>`
+					}
 				</p>
 
 				<div class="Split" style="margin-top: auto">
