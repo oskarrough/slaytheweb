@@ -97,9 +97,12 @@ export default class App extends Component {
 
 				<p class="Actions">
 					${didWin
-						? html`<button onClick=${props.onWin}>YOU WON! Try again?</button>`
-						: html`<button onclick=${() => this.endTurn()}>End turn</button>`
-					}
+						? html`
+								<button onClick=${props.onWin}>YOU WON! Try again?</button>
+						  `
+						: html`
+								<button onclick=${() => this.endTurn()}>End turn</button>
+						  `}
 				</p>
 
 				<div class="Split" style="margin-top: auto">

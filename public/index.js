@@ -19,9 +19,17 @@ class Main extends Component {
 		this.setState({isPlaying: false, didWin: true})
 	}
 	render(props, {didWin, isPlaying}) {
-		if (isPlaying) return html`<${App} onWin=${this.win} />`
-		if (didWin) return html`<${WinScreen} onNewGame=${this.newGame} />`
-		return html`<${SplashScreen} onNewGame=${this.newGame} />`
+		if (isPlaying)
+			return html`
+				<${App} onWin=${this.win} />
+			`
+		if (didWin)
+			return html`
+				<${WinScreen} onNewGame=${this.newGame} />
+			`
+		return html`
+			<${SplashScreen} onNewGame=${this.newGame} />
+		`
 	}
 }
 
@@ -39,4 +47,9 @@ const WinScreen = props => html`
 	</article>
 `
 
-render(html`<${Main} />`, document.querySelector('#root'))
+render(
+	html`
+		<${Main} />
+	`,
+	document.querySelector('#root')
+)
