@@ -65,7 +65,6 @@ function drawCards(state, amount = 5) {
 // Discard a single card from hand.
 const discardCard = (state, {card}) =>
 	produce(state, draft => {
-		// console.log(state.hand)
 		draft.hand = state.hand.filter(c => c.id !== card.id)
 		draft.discardPile.push(card)
 	})
@@ -90,8 +89,8 @@ function playCard(state, {card}) {
 		draft.player.currentEnergy = state.player.currentEnergy - card.energy
 		// not sure about this way...
 		if (card.damage) {
-			// changeHealth({state, target: 'monster', amount: card.damage})
-			draft.monster.currentHealth = state.monster.currentHealth - card.damage
+			const {monster} = changeHealth(state, {target: 'monster', amount: -card.damage})
+			draft.monster.currentHealth = monster.currentHealth
 		}
 		if (card.block) {
 			draft.player.block = state.player.block + card.block
@@ -102,7 +101,12 @@ function playCard(state, {card}) {
 
 function changeHealth(state, {target, amount}) {
 	return produce(state, draft => {
-		draft[target].currentHealth = state[target].currentHealth + amount
+		let newHealth = state[target].currentHealth + amount
+		if (newHealth <= 0) {
+			// alert('we won')
+			// newHealth = 0
+		}
+		draft[target].currentHealth = newHealth
 	})
 }
 

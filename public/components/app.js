@@ -32,7 +32,6 @@ export default class App extends Component {
 		const action = queue.next()
 		if (!action) return
 		try {
-			console.log({action})
 			const nextState = actions[action.type](this.state, action)
 			this.setState(nextState)
 			// console.table(nextState)
@@ -60,7 +59,7 @@ export default class App extends Component {
 		drop.on('sortable:sort', event => {
 			// Only allow drop on discard pile.
 			if (event.dragEvent.data.overContainer !== drop.containers[0]) {
-				console.log('canceled sortable:sort')
+				// console.log('canceled sortable:sort')
 				event.cancel()
 			}
 		})
@@ -68,18 +67,16 @@ export default class App extends Component {
 		drop.on('sortable:stop', event => {
 			const {newContainer, oldContainer} = event.data
 			const wasDiscarded = newContainer === drop.containers[0] && newContainer !== oldContainer
-			console.log({wasDiscarded})
 			if (wasDiscarded) {
 				event.cancel()
 				const card = this.state.hand.find(card => card.id === event.data.dragEvent.originalSource.dataset.id)
-				console.log(card)
 				this.enqueue({type: 'playCard', card})
 				this.runQueue() // play card immediately
 			}
 		})
 	}
-
 	render(props, state) {
+		const didWin = state.monster.currentHealth <= 0
 		return html`
 			<div class="App">
 				<div class="Split">
@@ -98,16 +95,15 @@ export default class App extends Component {
 					<${Cards} cards=${state.hand} isHand=${true} canDrag=${true} />
 				</div>
 
-				<p>
-					<!-- Test actions ➙ <button onclick=${() => this.enqueue({type: 'drawStarterDeck'})}>Draw deck</button> -->
-					<!-- <button onclick=${() => this.enqueue({type: 'drawCards', amount: 5})}>Draw 5 cards</button> -->
-					<!-- <button onclick=${() =>
-						this.enqueue({type: 'playCard', card: state.hand[0]})}>Play first card</button> -->
-					<button onclick=${() => this.endTurn()}>End turn</button>
+				<p class="Actions">
+					${didWin
+						? html`
+								<button onClick=${props.onWin}>YOU WON! Try again?</button>
+						  `
+						: html`
+								<button onclick=${() => this.endTurn()}>End turn</button>
+						  `}
 				</p>
-				<!-- <p>
-					<button onclick=${() => this.runQueue()}>Run queue</button>
-				</p> -->
 
 				<div class="Split" style="margin-top: auto">
 					<div>

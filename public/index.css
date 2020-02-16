@@ -4,10 +4,25 @@
 }
 
 html {
-	font-size: 16px;
-	line-height: 1.2;
 	background: hsl(137, 80%, 13%) linear-gradient(hsl(137, 80%, 13%), hsl(137, 50%, 13%));
 	color: antiquewhite;
+	font-size: 16px;
+	line-height: 1.2;
+}
+
+html,
+body {
+	min-height: 100%;
+}
+
+html,
+button {
+	font-family: 'Port Lligat Slab', serif;
+	font-display: swap;
+}
+
+body {
+	margin: 0;
 }
 
 .Scene {
@@ -31,19 +46,11 @@ html {
 	z-index: 1;
 }
 
-html,
-button {
-	font-family: 'Port Lligat Slab', serif;
-	font-display: swap;
-}
-
-body {
-	margin: 0;
-}
+a { color: inherit; }
 
 button {
-	font-size: 1rem;
-	padding: 0.1em 0.7em 0.1em;
+	font-size: 1.25rem;
+	padding: 0.4em 1em 0.4em;
 	border: 3px solid beige;
 	border-radius: 0.3em;
 	background: lightblue;
@@ -222,4 +229,9 @@ summary {
 
 [align-right] {
 	text-align: right;
+}
+
+.Actions {
+	text-align: right;
+	margin-right: 1rem;
 }

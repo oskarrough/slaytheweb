@@ -3,13 +3,31 @@ export default class Queue {
 		this.list = items
 	}
 	add(item) {
-		this.list.push(item)
+		this.list.push(item) // adds to end of array
 	}
+	// addToBottom() {
+	// 	this.items.unshift(item) // adds to beginning of array
+	// }
 	next() {
 		// return this.list.pop() // returns last/newest
 		return this.list.shift() // returns first/oldest
 	}
-	// addToBottom() {
-	// 	this.items.unshift(item)
-	// }
 }
+
+// Alternative implementation.
+// export function Deck(items = []) {
+// 	return {
+// 		addToTop: item => {
+// 			items.push(item) // adds to end of array
+// 		},
+// 		addToBottom: item => {
+// 			items.unshift(item) // adds to beginning of array
+// 		},
+// 		takeFromBottom: () => {
+// 			return items.shift() // returns first/oldest
+// 		},
+// 		takeFromTop: () => {
+// 			return items.pop() // returns last/newest
+// 		}
+// 	}
+// }

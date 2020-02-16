@@ -60,7 +60,6 @@ export const cards = [
 
 export class Card {
 	constructor(props) {
-		// console.log(props)
 		// this.target = [ENEMY, ALL_ENEMY, SELF, NONE, SELF_AND_ENEMY, ALL]
 		// this.type = [ATTACK, SKILL, POWER, STATUS, CURSE]
 		// this.color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
