@@ -6,7 +6,7 @@ class Main extends Component {
 	constructor() {
 		super()
 		this.state = {
-			isPlaying: false,
+			isPlaying: true,
 			didWin: false
 		}
 		this.win = this.win.bind(this)
