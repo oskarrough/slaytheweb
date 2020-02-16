@@ -65,7 +65,6 @@ function drawCards(state, amount = 5) {
 // Discard a single card from hand.
 const discardCard = (state, {card}) =>
 	produce(state, draft => {
-		// console.log(state.hand)
 		draft.hand = state.hand.filter(c => c.id !== card.id)
 		draft.discardPile.push(card)
 	})
