@@ -99,15 +99,8 @@ export default class App extends Component {
 				</div>
 
 				<p>
-					<!-- Test actions ➙ <button onclick=${() => this.enqueue({type: 'drawStarterDeck'})}>Draw deck</button> -->
-					<!-- <button onclick=${() => this.enqueue({type: 'drawCards', amount: 5})}>Draw 5 cards</button> -->
-					<!-- <button onclick=${() =>
-						this.enqueue({type: 'playCard', card: state.hand[0]})}>Play first card</button> -->
 					<button onclick=${() => this.endTurn()}>End turn</button>
 				</p>
-				<!-- <p>
-					<button onclick=${() => this.runQueue()}>Run queue</button>
-				</p> -->
 
 				<div class="Split" style="margin-top: auto">
 					<div>
