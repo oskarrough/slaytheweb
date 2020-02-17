@@ -46,6 +46,7 @@ function drawStarterDeck(state) {
 
 // Move X cards from deck to hand
 function drawCards(state, amount = 5) {
+	if (typeof amount !== 'number') amount = 5
 	return produce(state, draft => {
 		if (state.drawPile.length < amount) {
 			// Not enough cards to draw. Move all cards from discard to draw.
