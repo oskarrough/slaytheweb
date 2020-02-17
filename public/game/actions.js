@@ -86,10 +86,10 @@ function playCard(state, {card}) {
 		draft.discardPile.push(card)
 		// And play it...
 		draft.player.currentEnergy = state.player.currentEnergy - card.energy
-		// not sure about this way...
 		if (card.damage) {
 			const {monster} = changeHealth(state, {target: 'monster', amount: -card.damage})
 			draft.monster.currentHealth = monster.currentHealth
+			// could check for card.target and apply dmg to single monster or all
 		}
 		if (card.block) {
 			draft.player.block = state.player.block + card.block

@@ -21,12 +21,12 @@ export default class Queue extends Component {
 				<summary>Kortgame v0 ${time}</summary>
 				<h2>Queue</h2>
 				<ol>
-					${props.queue.map(HistoryItem)}
+					${props.future.map(HistoryItem)}
 				</ol>
 				<hr />
 				<h3>History</h3>
 				<ol>
-					${props.history.map(HistoryItem)}
+					${props.past.map(HistoryItem)}
 				</ol>
 			</details>
 		`

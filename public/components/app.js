@@ -5,49 +5,52 @@ import Cards from './cards.js'
 import Queue from '../game/queue.js'
 import actions from '../game/actions.js'
 
-const queue = new Queue()
-
 export default class App extends Component {
 	constructor() {
 		super()
+		// Set up our action manager.
+		this.future = new Queue()
+		this.past = new Queue()
 		// Prepare the game.
-		// let game = actions.createNewGame()
-		// this.state = game
 		this.enqueue({type: 'createNewGame'})
-		this.runQueue()
+		this.dequeue()
 		this.enqueue({type: 'drawStarterDeck'})
 		this.enqueue({type: 'drawCards'})
-		// Debugging in the browser console.
+		// Enable debugging in the browser.
 		window.kortgame = {
 			state: this.state,
-			queue,
+			future: this.future,
+			past: this.past,
 			actions
 		}
 	}
+
 	componentDidMount() {
 		this.enableDrop()
-		this.runQueue(this.runQueue)
+		this.dequeue(this.dequeue)
 	}
-	enqueue(what) {
-		queue.add(what)
-		console.log('queue length', queue.list.length)
+
+	enqueue(action) {
+		this.future.add(action)
 	}
-	runQueue(callback) {
-		const action = queue.next()
+
+	dequeue(callback) {
+		const action = this.future.next()
 		if (!action) return
 		try {
 			const nextState = actions[action.type](this.state, action)
-			console.log('popping queue', {nextState})
+			this.past.add(action)
 			this.setState(nextState, callback)
-			// console.table(nextState)
 		} catch (err) {
 			console.error(err)
 		}
 	}
+
 	endTurn() {
 		this.enqueue({type: 'endTurn'})
-		this.runQueue()
+		this.dequeue()
 	}
+
 	enableDrop() {
 		const drop = new window.Sortable.default(this.base.querySelectorAll('.dropzone'), {
 			draggable: '.Card',
@@ -76,10 +79,11 @@ export default class App extends Component {
 				event.cancel()
 				const card = this.state.hand.find(card => card.id === event.data.dragEvent.originalSource.dataset.id)
 				this.enqueue({type: 'playCard', card})
-				this.runQueue() // play card immediately
+				this.dequeue() // play card immediately
 			}
 		})
 	}
+
 	render(props, state) {
 		const didWin = state.monster.currentHealth <= 0
 		return html`
@@ -121,7 +125,7 @@ export default class App extends Component {
 					</details>
 				</div>
 
-				<${History} queue=${queue.list} history=${queue.history} />
+				<${History} future=${this.future.list} past=${this.past.list} />
 			</div>
 		`
 	}
