@@ -223,8 +223,13 @@ summary {
 }
 
 .Monster {
-	height: var(--card-height);
-	overflow: hidden;
+	position: relative;
+}
+
+.Monster .Card {
+	position: absolute;
+	top: 2rem;
+	left: 50%;
 }
 
 [align-right] {
