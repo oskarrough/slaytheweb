@@ -15,21 +15,32 @@ export default class Queue extends Component {
 	componentWillUnmount() {
 		clearInterval(this.timer)
 	}
-
 	render(props, state) {
 		const time = new Date(state.time).toLocaleTimeString()
 		return html`
-			<details>
+			<details open>
 				<summary>Kortgame v0 ${time}</summary>
 				<ol>
 					${props.history.map(
-						(item, index) =>
-							html`
-								<li key=${index}>${item.type}</li>
-							`
+						(item, index) => html`
+							<li key=${index}>
+								<${HistoryItem} item=${item} />
+							</li>
+						`
 					)}
 				</ol>
 			</details>
 		`
 	}
+}
+
+function HistoryItem({item}) {
+	if (item.type === 'playCard') {
+		return html`
+			${item.type}: ${item.card.name}
+		`
+	}
+	return html`
+		${item.type}
+	`
 }
