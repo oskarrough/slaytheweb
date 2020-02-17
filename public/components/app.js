@@ -11,10 +11,12 @@ export default class App extends Component {
 	constructor() {
 		super()
 		// Prepare the game.
-		let game = actions.createNewGame()
-		game = actions.drawStarterDeck(game)
-		game = actions.drawCards(game)
-		this.state = game
+		// let game = actions.createNewGame()
+		// this.state = game
+		this.enqueue({type: 'createNewGame'})
+		this.runQueue()
+		this.enqueue({type: 'drawStarterDeck'})
+		this.enqueue({type: 'drawCards'})
 		// Debugging in the browser console.
 		window.kortgame = {
 			state: this.state,
@@ -24,17 +26,19 @@ export default class App extends Component {
 	}
 	componentDidMount() {
 		this.enableDrop()
+		this.runQueue(this.runQueue)
 	}
 	enqueue(what) {
 		queue.add(what)
 		console.log('queue length', queue.list.length)
 	}
-	runQueue() {
+	runQueue(callback) {
 		const action = queue.next()
 		if (!action) return
 		try {
 			const nextState = actions[action.type](this.state, action)
-			this.setState(nextState)
+			console.log('popping queue', {nextState})
+			this.setState(nextState, callback)
 			// console.table(nextState)
 		} catch (err) {
 			console.error(err)
