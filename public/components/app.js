@@ -121,7 +121,7 @@ export default class App extends Component {
 					</div>
 				</div>
 
-				<${History} history=${queue.list} />
+				<${History} queue=${queue.list} history=${queue.history} />
 			</div>
 		`
 	}

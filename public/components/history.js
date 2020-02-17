@@ -1,13 +1,12 @@
 import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
 
-// The timer here also makes sure the component renders the newest history.
-
 export default class Queue extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {time: Date.now()}
 	}
 	componentDidMount() {
+		// The timer here also makes sure the component renders the newest history.
 		this.timer = setInterval(() => {
 			this.setState({time: Date.now()})
 		}, 500)
@@ -20,27 +19,30 @@ export default class Queue extends Component {
 		return html`
 			<details open>
 				<summary>Kortgame v0 ${time}</summary>
+				<h2>Queue</h2>
 				<ol>
-					${props.history.map(
-						(item, index) => html`
-							<li key=${index}>
-								<${HistoryItem} item=${item} />
-							</li>
-						`
-					)}
+					${props.queue.map(HistoryItem)}
+				</ol>
+				<hr />
+				<h3>History</h3>
+				<ol>
+					${props.history.map(HistoryItem)}
 				</ol>
 			</details>
 		`
 	}
 }
 
-function HistoryItem({item}) {
-	if (item.type === 'playCard') {
-		return html`
-			${item.type}: ${item.card.name}
-		`
-	}
+function HistoryItem(item) {
+	const cardDetails =
+		item.type === 'playCard'
+			? html`
+					: ${item.card.name}
+			  `
+			: ''
 	return html`
-		${item.type}
+		<li key=${item}>
+			${item.type} ${cardDetails}
+		</li>
 	`
 }

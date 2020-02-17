@@ -1,6 +1,7 @@
 export default class Queue {
 	constructor(items = []) {
 		this.list = items
+		this.history = []
 	}
 	add(item) {
 		this.list.push(item) // adds to end of array
@@ -10,7 +11,9 @@ export default class Queue {
 	// }
 	next() {
 		// return this.list.pop() // returns last/newest
-		return this.list.shift() // returns first/oldest
+		const item = this.list.shift() // returns first/oldest
+		this.history.push(item)
+		return item
 	}
 }
 
