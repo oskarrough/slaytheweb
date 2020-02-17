@@ -17,6 +17,19 @@ export default class Queue {
 	}
 }
 
+// https://immerjs.github.io/immer/docs/patches
+// https://medium.com/@mweststrate/distributing-state-changes-using-snapshots-patches-and-actions-part-2-2f50d8363988
+
+// handleAddPatch = (patch, inversePatches) => {
+// 	this.undo.push(inversePatches)
+// }
+
+// handleUndo = () => {
+// 	const undo = this.undo.pop()
+// 	if (!undo) return
+// 	this.setState(applyPatches(this.state, undo))
+// }
+
 // Alternative implementation.
 // export function Deck(items = []) {
 // 	return {

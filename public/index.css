@@ -232,6 +232,10 @@ summary {
 	left: 50%;
 }
 
+.Hand {
+	/* margin: auto; */
+}
+
 [align-right] {
 	text-align: right;
 }
