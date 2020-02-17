@@ -84,17 +84,10 @@ by this I mean being able to play the game with (almost) no gui. write the comma
 ## Links
 
 - https://kinopio.club/cardcrawl-UL_lam2QrnMLIw9meGOmX
-- https://github.com/nathanwentworth/deck-dungeon/
-- https://nathanwentworth.itch.io/deck-dungeon
-- https://github.com/hundredrabbits/Donsol/tree/master/desktop/sources/scripts
-- https://hundredrabbits.itch.io/donsol
-- http://stfj.net/index2.php?project=art/2011/Scoundrel.pdf
-- http://www.cardofdarkness.com/
 - https://twitter.com/fabynou/status/1212534790672408578
+- http://stfj.net/index2.php?project=art/2011/Scoundrel.pdf
 - http://stfj.net/index2.php?year=2018&project=art/2018/Pocket-Run%20Pool
-- https://pollywog.games/rgdb/
-- http://www.cardcrawl.com/
-- https://pollywog.games/ card crusade
+- [Pollywog Games: A history of roguelite deck building games](https://pollywog.games/rgdb/)
 - https://itch.io/games/tag-card-game/tag-roguelike
 - https://github.com/daviscook477/BaseMod/wiki/Hooks
 - https://github.com/daviscook477/BaseMod/wiki/Console
@@ -104,3 +97,12 @@ by this I mean being able to play the game with (almost) no gui. write the comma
 - https://www.reddit.com/r/roguelikedev/
 - https://game-icons.net/
 
+### Other games
+
+- http://www.cardofdarkness.com/
+- https://nathanwentworth.itch.io/deck-dungeon [Source](https://github.com/nathanwentworth/deck-dungeon/)
+- https://hundredrabbits.itch.io/donsol [Source](https://github.com/hundredrabbits/Donsol/tree/master/desktop/sources/scripts)
+- https://pollywog.games/
+- http://www.cardcrawl.com/
+- FTL, Into The Breach, Darkest Dungeon, Dungeon of the Endless, Spelunky, Rogue Legacy,
+- https://www.reddit.com/r/slaythespire/comments/a7lhpq/any_recommended_games_similar_to_slay_the_spire/
