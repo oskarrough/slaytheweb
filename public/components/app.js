@@ -27,6 +27,7 @@ export default class App extends Component {
 	}
 	enqueue(what) {
 		queue.add(what)
+		console.log('queue length', queue.list.length)
 	}
 	runQueue() {
 		const action = queue.next()
@@ -36,7 +37,7 @@ export default class App extends Component {
 			this.setState(nextState)
 			// console.table(nextState)
 		} catch (err) {
-			alert(err)
+			console.error(err)
 		}
 	}
 	endTurn() {
@@ -107,11 +108,11 @@ export default class App extends Component {
 
 				<div class="Split" style="margin-top: auto">
 					<div>
-						<h2>Draw pile</h2>
+						<h2>Draw pile ${state.drawPile.length}</h2>
 						<${Cards} cards=${state.drawPile} />
 					</div>
 					<div>
-						<h2 align-right>Discard pile</h2>
+						<h2 align-right>Discard pile ${state.discardPile.length}</h2>
 						<${Cards} cards=${state.discardPile} isDiscardPile=${true} />
 					</div>
 				</div>

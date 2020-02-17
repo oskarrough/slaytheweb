@@ -1,19 +1,17 @@
 import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
 
+// The timer here also makes sure the component renders the newest history.
+
 export default class Queue extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {time: Date.now()}
 	}
-
 	componentDidMount() {
-		// Update time every second. Also serves the issue of
-		// properly keeping the props.history up to date.
 		this.timer = setInterval(() => {
 			this.setState({time: Date.now()})
 		}, 500)
 	}
-
 	componentWillUnmount() {
 		clearInterval(this.timer)
 	}
