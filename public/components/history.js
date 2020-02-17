@@ -19,14 +19,18 @@ export default class Queue extends Component {
 		return html`
 			<details open>
 				<summary>Kortgame v0 ${time}</summary>
-				<h2>Queue</h2>
+				<h2>Future</h2>
 				<ol>
 					${props.future.map(HistoryItem)}
 				</ol>
 				<hr />
-				<h3>History</h3>
+				<h3>Past</h3>
 				<ol>
-					${props.past.map(HistoryItem)}
+					${props.past.map(item => html`
+						<li key=${item}>
+							${item.action.type}
+						</li>
+					`)}
 				</ol>
 			</details>
 		`

@@ -2,25 +2,25 @@ import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 import Player, {Healthbar} from './player.js'
 import History from './history.js'
 import Cards from './cards.js'
-import Queue from '../game/queue.js'
 import actions from '../game/actions.js'
+import ActionManager from '../game/action-manager.js'
 
 export default class App extends Component {
 	constructor() {
 		super()
 		// Set up our action manager.
-		this.future = new Queue()
-		this.past = new Queue()
+		this.am = ActionManager()
 		// Prepare the game.
-		this.enqueue({type: 'createNewGame'})
-		this.dequeue()
-		this.enqueue({type: 'drawStarterDeck'})
-		this.enqueue({type: 'drawCards'})
+		// this.state = actions.createNewGame()
+		this.am.enqueue({type: 'createNewGame'})
+		this.state = this.am.dequeue({})
+		this.am.enqueue({type: 'drawStarterDeck'})
+		this.am.enqueue({type: 'drawCards'})
 		// Enable debugging in the browser.
 		window.kortgame = {
 			state: this.state,
-			future: this.future,
-			past: this.past,
+			future: this.am.future,
+			past: this.am.past,
 			actions
 		}
 	}
@@ -31,35 +31,23 @@ export default class App extends Component {
 	}
 
 	enqueue(action) {
-		console.log({action})
-		this.future.add(action)
+		this.am.enqueue(action)
 	}
 
 	dequeue(callback) {
-		const action = this.future.next()
-		if (!action) return
-		try {
-			const nextState = actions[action.type](this.state, action)
-			this.past.add(this.state || {})
-			this.setState(nextState, callback)
-			console.log('dequeued', action, nextState)
-		} catch (err) {
-			console.error(err)
-		}
+		const nextState = this.am.dequeue(this.state)
+		this.setState(nextState, callback)
 	}
 
 	undo() {
-		// const action = this.past.takeFromTop()
-		// if (!action) return
-		// const nextState = actions[action.type](this.state, action)
-		// this.past.add(action)
-		const previousState = this.past.takeFromTop()
-		this.setState(previousState)
-		console.log('undid?', previousState)
+		console.log('undo')
+		const prev = this.am.past.takeFromTop()
+		if (!prev) return
+		this.setState(prev.state)
 	}
 
 	endTurn() {
-		this.enqueue({type: 'endTurn'})
+		this.am.enqueue({type: 'endTurn'})
 		this.dequeue()
 	}
 
@@ -138,7 +126,7 @@ export default class App extends Component {
 					</details>
 				</div>
 
-				<${History} future=${this.future.list} past=${this.past.list} />
+				<${History} future=${this.am.future.list} past=${this.am.past.list} />
 			</div>
 		`
 	}

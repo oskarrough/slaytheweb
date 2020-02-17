@@ -1,32 +1,40 @@
-function actionManager() {
+import Queue from '../game/queue.js'
+import actions from '../game/actions.js'
+
+export default function() {
 	const future = new Queue()
 	const past = new Queue()
 
 	function enqueue(action) {
 		future.add(action)
 	}
-	function dequeue() {
+
+	function dequeue(state) {
 		const action = future.next()
 		if (!action) return
-		runAction(action)
-	}
-	function undo() {
-		const action = past.next()
-		if (!action) return
-		runAction(action)
-	}
-	function runAction(action) {
-		past.add(action)
+		let nextState
+
 		try {
-			return actions[action.type](this.state, action)
+			nextState = actions[action.type](state, action)
 		} catch (err) {
-			console.error(err)
+			throw new Error(err)
 		}
+
+		console.log({state, action, nextState})
+		past.add({state, action})
+		return nextState
 	}
+
+	function undo() {
+		return this.past.takeFromTop()
+	}
+
 	return {
 		enqueue,
 		dequeue,
-		undo
+		undo,
+		future,
+		past
 	}
 }
 
