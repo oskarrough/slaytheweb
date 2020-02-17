@@ -111,14 +111,14 @@ export default class App extends Component {
 				</p>
 
 				<div class="Split" style="margin-top: auto">
-					<div>
-						<h2>Draw pile ${state.drawPile.length}</h2>
+					<details>
+						<summary>Draw pile ${state.drawPile.length}</summary>
 						<${Cards} cards=${state.drawPile} />
-					</div>
-					<div>
-						<h2 align-right>Discard pile ${state.discardPile.length}</h2>
+					</details>
+					<details>
+						<summary align-right>Discard pile ${state.discardPile.length}</summary>
 						<${Cards} cards=${state.discardPile} isDiscardPile=${true} />
-					</div>
+					</details>
 				</div>
 
 				<${History} queue=${queue.list} history=${queue.history} />
