@@ -2,9 +2,7 @@ import {createCard} from './cards.js'
 import produce from '../web_modules/immer.js'
 import {shuffle} from './utils.js'
 
-// The idea is that we have one big object with game state.
-// Whenever we want to change something, we call an "action" from this file.
-// Each actions takes two arguments. First the current state, next an object of arguments.
+// The idea is that we have one big object with game state. Whenever we want to change something, we call an "action" from this file. Each action takes two arguments: 1) the current state, 2) an object of arguments.
 
 // This is the big object of game state. Everything should start here.
 function createNewGame() {
@@ -132,12 +130,6 @@ export default {
 	changeHealth
 }
 
-// ### Deck Modification
-
-// * `deck add [id] {cardcount} {upgrades}` add card to deck (optional: integer # of times you want to add this card) (optional: integer # of upgrades)
-// * `deck remove [id]` remove card from deck
-// * `deck remove all` remove all cards from deck
-
 // ## Console Commands
 
 // ### Anytime
@@ -186,3 +178,9 @@ export default {
 // * `relic add [id]` generate relic
 // * `relic list` logs all relic pools
 // * `relic remove [id]` lose relic
+
+// ### Deck Modification
+
+// * `deck add [id] {cardcount} {upgrades}` add card to deck (optional: integer # of times you want to add this card) (optional: integer # of upgrades)
+// * `deck remove [id]` remove card from deck
+// * `deck remove all` remove all cards from deck
