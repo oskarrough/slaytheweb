@@ -8,6 +8,9 @@ export default class Queue {
 	next() {
 		return this.list.shift() // returns first/oldest
 	}
+	takeFromTop() {
+		return this.list.pop() // returns last/newest
+	}
 }
 
 // Alternative implementation.

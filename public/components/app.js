@@ -31,6 +31,7 @@ export default class App extends Component {
 	}
 
 	enqueue(action) {
+		console.log({action})
 		this.future.add(action)
 	}
 
@@ -39,11 +40,22 @@ export default class App extends Component {
 		if (!action) return
 		try {
 			const nextState = actions[action.type](this.state, action)
-			this.past.add(action)
+			this.past.add(this.state || {})
 			this.setState(nextState, callback)
+			console.log('dequeued', action, nextState)
 		} catch (err) {
 			console.error(err)
 		}
+	}
+
+	undo() {
+		// const action = this.past.takeFromTop()
+		// if (!action) return
+		// const nextState = actions[action.type](this.state, action)
+		// this.past.add(action)
+		const previousState = this.past.takeFromTop()
+		this.setState(previousState)
+		console.log('undid?', previousState)
 	}
 
 	endTurn() {
@@ -112,6 +124,7 @@ export default class App extends Component {
 						: html`
 								<button onclick=${() => this.endTurn()}>End turn</button>
 						  `}
+					<button onclick=${() => this.undo()}>Undo</button>
 				</p>
 
 				<div class="Split" style="margin-top: auto">
