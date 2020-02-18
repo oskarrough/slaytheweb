@@ -1,9 +1,8 @@
 import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
-import Player, {Healthbar} from './player.js'
-import History from './history.js'
-import Cards from './cards.js'
-import actions from '../game/actions.js'
 import ActionManager from '../game/action-manager.js'
+import Player, {Healthbar} from './player.js'
+import Cards from './cards.js'
+import History from './history.js'
 
 export default class App extends Component {
 	constructor() {
@@ -11,7 +10,6 @@ export default class App extends Component {
 		// Set up our action manager.
 		this.am = ActionManager()
 		// Prepare the game.
-		// this.state = actions.createNewGame()
 		this.am.enqueue({type: 'createNewGame'})
 		this.state = this.am.dequeue({})
 		this.am.enqueue({type: 'drawStarterDeck'})
@@ -19,14 +17,13 @@ export default class App extends Component {
 		// Enable debugging in the browser.
 		window.kortgame = {
 			state: this.state,
-			future: this.am.future,
-			past: this.am.past,
-			actions
+			actionManager: this.am
 		}
 	}
 
 	componentDidMount() {
 		this.enableDrop()
+		// Dequeuing twice because of what we did in constructor.
 		this.dequeue(this.dequeue)
 	}
 
