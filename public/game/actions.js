@@ -86,13 +86,18 @@ function playCard(state, {card}) {
 		draft.discardPile.push(card)
 		// And play it...
 		draft.player.currentEnergy = state.player.currentEnergy - card.energy
+		if (card.block) {
+			draft.player.block = state.player.block + card.block
+		}
 		if (card.damage) {
-			const {monster} = changeHealth(state, {target: 'monster', amount: -card.damage})
+			let amount = card.damage * -1
+			if (draft.monster.vulnerable) amount = amount * 2
+			const {monster} = changeHealth(state, {target: 'monster', amount})
 			draft.monster.currentHealth = monster.currentHealth
 			// could check for card.target and apply dmg to single monster or all
 		}
-		if (card.block) {
-			draft.player.block = state.player.block + card.block
+		if (card.vulnerable) {
+			draft.monster.vulnerable = 2
 		}
 		// card.use()
 	})
@@ -116,6 +121,10 @@ function endTurn(state) {
 		// reset energy and block
 		draft.player.currentEnergy = 3
 		draft.player.block = 0
+		// remove effects?
+		if (state.monster.vulnerable) {
+			draft.monster.vulnerable = state.monster.vulnerable - 1
+		}
 	})
 }
 

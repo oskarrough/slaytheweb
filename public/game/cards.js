@@ -71,6 +71,7 @@ export class Card {
 		this.effects = props.effects
 		if (props.damage) this.damage = props.damage
 		if (props.block) this.block = props.block
+		if (props.vulnerable) this.vulnerable = props.vulnerable
 	}
 	use() {
 		console.log('use', this.effects)

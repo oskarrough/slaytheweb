@@ -185,3 +185,24 @@ test('when monster reaches 0 hp, you win!', t => {
 	const newState = a.changeHealth(state, {target: 'monster', amount: -42})
 	t.is(newState.monster.currentHealth, 0)
 })
+
+test.only('bash applies vulnerable and it doubles damage', t => {
+	let {state} = t.context
+	const bashCard = createCard('Bash')
+	const strikeCard = createCard('Strike')
+
+	state = a.playCard(state, {card: bashCard})
+	t.is(state.monster.currentHealth, 34)
+	t.is(state.monster.vulnerable, 2)
+	state = a.endTurn(state)
+	t.is(state.monster.vulnerable, 1)
+	state = a.endTurn(state)
+	t.falsy(state.monster.vulnerable)
+
+	state = a.playCard(state, {card: bashCard})
+	t.is(state.monster.currentHealth, 26)
+	t.truthy(state.monster.vulnerable)
+	state = a.playCard(state, {card: strikeCard})
+	t.is(state.monster.currentHealth, 14)
+})
+
