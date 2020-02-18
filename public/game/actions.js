@@ -84,11 +84,13 @@ function playCard(state, {card}) {
 		// Move card from hand to discard pile.
 		draft.hand = state.hand.filter(c => c.id !== card.id)
 		draft.discardPile.push(card)
-		// And play it...
+		// Use energy
 		draft.player.currentEnergy = state.player.currentEnergy - card.energy
+		// Block
 		if (card.block) {
 			draft.player.block = state.player.block + card.block
 		}
+		// Deal damage
 		if (card.damage) {
 			let amount = card.damage * -1
 			if (draft.monster.vulnerable) amount = amount * 2
@@ -96,8 +98,9 @@ function playCard(state, {card}) {
 			draft.monster.currentHealth = monster.currentHealth
 			// could check for card.target and apply dmg to single monster or all
 		}
+		// Apply powers
 		if (card.vulnerable) {
-			draft.monster.vulnerable = 2
+			draft.monster.vulnerable = card.vulnerable
 		}
 		// card.use()
 	})
