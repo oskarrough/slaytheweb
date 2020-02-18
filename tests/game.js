@@ -186,7 +186,7 @@ test('when monster reaches 0 hp, you win!', t => {
 	t.is(newState.monster.currentHealth, 0)
 })
 
-test.only('bash applies vulnerable and it doubles damage', t => {
+test('bash applies vulnerable and it doubles damage', t => {
 	let {state} = t.context
 	const bashCard = createCard('Bash')
 	const strikeCard = createCard('Strike')
@@ -198,11 +198,31 @@ test.only('bash applies vulnerable and it doubles damage', t => {
 	t.is(state.monster.vulnerable, 1)
 	state = a.endTurn(state)
 	t.falsy(state.monster.vulnerable)
-
 	state = a.playCard(state, {card: bashCard})
 	t.is(state.monster.currentHealth, 26)
 	t.truthy(state.monster.vulnerable)
 	state = a.playCard(state, {card: strikeCard})
 	t.is(state.monster.currentHealth, 14)
 })
+
+test.skip('Sucker Punch applies weak', t => {
+	let {state} = t.context
+	const card = createCard('Sucker Punch')
+	state = a.playCard(state, {card})
+})
+
+test.skip('Cleave damages all monsters', t => {
+	let {state} = t.context
+	const card = createCard('Cleave')
+	state = a.playCard(state, {card})
+})
+
+// test.only('Clash can only be played if it\'s the only attack', t => {
+// 	let {state} = t.context
+// 	const clashCard = createCard('Clash')
+// 	const defendCard = createCard('Defend')
+// 	state.hand.push(clashCard)
+// 	state.hand.push(defendCard)
+// 	t.throws(() => a.playCard(state, {card: clashCard}))
+// })
 

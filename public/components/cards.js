@@ -22,7 +22,7 @@ export const Card = ({id, name, type, energy, effects}) => html`
 			<h3 class="Card-title">${name}</h3>
 			<p class="Card-energy">${energy}</p>
 			<!-- <p class="Card-type">${type}</p> -->
-			<p class="Card-effects">${effects}</p>
+			<p class="Card-description">${description}</p>
 		</div>
 	</article>
 `

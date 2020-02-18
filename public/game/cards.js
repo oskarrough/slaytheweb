@@ -2,33 +2,33 @@ import {uuid} from './utils.js'
 
 export const cards = [
 	{
-		name: 'Bash',
-		energy: 2,
-		type: 'Attack',
-		damage: 8,
-		vulnerable: 2,
-		effects: 'Deal 8 damage. Apply 2 Vulnerable.'
-	},
-	{
 		name: 'Defend',
 		energy: 1,
 		type: 'Skill',
 		block: 5,
-		effects: 'Gain 5 Block.'
+		description: 'Gain 5 Block.'
 	},
 	{
 		name: 'Strike',
 		energy: 1,
 		type: 'Attack',
 		damage: 6,
-		effects: 'Deal 6 Damage.'
+		description: 'Deal 6 Damage.'
+	},
+	{
+		name: 'Bash',
+		energy: 2,
+		type: 'Attack',
+		damage: 8,
+		vulnerable: 2,
+		description: 'Deal 8 damage. Apply 2 Vulnerable.'
 	},
 	{
 		name: 'Clash',
 		energy: 0,
 		type: 'Attack',
 		damage: 14,
-		effects: 'Can only be played if every card in your hand is an Attack. Deal 14 damage.'
+		description: 'Can only be played if every card in your hand is an Attack. Deal 14 damage.'
 	},
 	{
 		name: 'Cleave',
@@ -36,7 +36,7 @@ export const cards = [
 		type: 'Attack',
 		damage: 8,
 		target: 'all',
-		effects: 'Deal 8 damage to ALL enemies.'
+		description: 'Deal 8 damage to ALL enemies.'
 	},
 	{
 		name: 'Iron Wave',
@@ -44,7 +44,7 @@ export const cards = [
 		type: 'Skill',
 		damage: 5,
 		block: 5,
-		effects: 'Gain 5 Block. Deal 5 damage.'
+		description: 'Gain 5 Block. Deal 5 damage.'
 	},
 	{
 		name: 'Sucker Punch',
@@ -52,10 +52,10 @@ export const cards = [
 		type: 'Attack',
 		damage: 7,
 		weak: 1,
-		effects: 'Deal 7 damage. Apply 1 Weak.'
+		description: 'Deal 7 damage. Apply 1 Weak.'
 	}
-	// {name: 'Flex', energy: 0, type: 'Skill', effects: 'Gain 2 Strength.'},
-	// {name: 'Body Slam', energy: 1, type: 'Attack', effects: 'Deal Damage equal to your Block'},
+	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
+	// {name: 'Body Slam', energy: 1, type: 'Attack', description: 'Deal Damage equal to your Block'},
 ]
 
 export class Card {
@@ -68,13 +68,13 @@ export class Card {
 		this.name = props.name
 		this.energy = props.energy
 		this.type = props.type
-		this.effects = props.effects
+		this.description = props.description
 		if (props.damage) this.damage = props.damage
 		if (props.block) this.block = props.block
 		if (props.vulnerable) this.vulnerable = props.vulnerable
 	}
 	use() {
-		console.log('use', this.effects)
+		console.log('use', this.description)
 	}
 }
 
