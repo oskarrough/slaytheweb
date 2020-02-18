@@ -1,6 +1,6 @@
 :root {
 	--card-width: 7rem;
-	--card-height: 9rem;
+	--card-height: 10rem;
 }
 
 html {
@@ -25,40 +25,29 @@ body {
 	margin: 0;
 }
 
-.Scene {
-	/* --image: url(bg.jpg); */
-	--color-v: #211c1b;
-	--color: transparent;
-	background:
-		radial-gradient(circle, transparent 50%, var(--color-v) 80%),
-		linear-gradient(to right, var(--color), var(--color)),
-		var(--image);
-	background-position: center center;
-	background-size: cover;
-	background-blend-mode:
-		var(--blend-top, normal),
-		var(--blend-bottom, darken), normal;
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	z-index: 1;
-}
-
 a { color: inherit; }
 
 button {
 	font-size: 1.25rem;
 	padding: 0.4em 1em 0.4em;
-	border: 3px solid beige;
+	border: 2px solid black;
 	border-radius: 0.3em;
 	background: lightblue;
 	color: hsla(0, 0%, 0%, 0.9);
+	box-shadow: 0 0.2em hsl(0, 0%, 0%, 0.9);
 }
 
 button + button {
 	margin-left: 0.2em;
+}
+
+button:hover,
+button:focus {
+	box-shadow: 0 0.1em hsl(0, 0%, 0%, 0.9);
+}
+
+button:active {
+	box-shadow: none;
 }
 
 h2,
@@ -107,9 +96,6 @@ summary {
 	display: flex;
 }
 
-.Card:not(:first-child) {
-}
-
 .Card-inner {
 	flex: 1;
 	display: flex;
@@ -121,6 +107,18 @@ summary {
 	background: #0a3540;
 	text-align: center;
 	box-shadow: 1px 2px 3px #00000080;
+
+	image-rendering: -webkit-optimize-contrast;
+	image-rendering: -webkit-crisp-edges;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: -o-crisp-edges;
+	image-rendering: pixelated;
+	border-style: solid;
+	border-image-source: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAA7ElEQVRYhe2YMQ6DMAxFcwBGRtaeoFUv0K2qOAa36NYDVmLjMmHB0VfqEJbG3xKRvkTiAE+OnYBD2FrfDdFSAVvfDfH7vpsqQQnMMk9xmad0jWOacJ4o79fGVSgEEsPnda1qbx7a8mdifxcIJ7aKm6qHBOZxuTURQsm7i0Djc/y7fAHhYEsgTCYqD6lZRrVk1h6iAZIYoglqOg/RAflZMtwLKDZGOg+dQe0OiO60t8oyutP+/B5yF9R0QH6yTEiplgxJW+jQv30urHagJ0v22n2lSkjyEF196EjRqlRK0cowaNfmaLYfGOuyHjKsYnCffLyABLkAAAAASUVORK5CYII=);
+	border-image-repeat: repeat;
+	border-image-slice: 6 6 6 6;
+	border-image-width: 18px;
+	border-width: 15px;
 }
 
 .dropzone .Card:hover {
@@ -135,8 +133,6 @@ summary {
 }
 
 .Card-title {
-	border-top-left-radius: 0.5em;
-	border-top-right-radius: 0.5em;
 	margin: 0;
 	padding: 0.5em 1em 0.5em;
 	background: #96969617;

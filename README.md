@@ -96,6 +96,7 @@ by this I mean being able to play the game with (almost) no gui. write the comma
 - https://www.gamasutra.com/blogs/JoshGe/20181029/329512/How_to_Make_a_Roguelike.php
 - https://www.reddit.com/r/roguelikedev/
 - https://game-icons.net/
+- https://github.com/RonenNess/RPGUI
 
 ### Other games
 
