@@ -80,7 +80,6 @@ summary {
 .Split {
 	display: grid;
 	grid-template-columns: 50% 50%;
-	/* gap: 2rem; */
 }
 
 .Split .Cards {
@@ -99,10 +98,13 @@ summary {
 	position: relative;
 }
 
+.Cards .Card {
+	margin-left: -3rem;
+}
+
+
 .Card {
 	display: flex;
-	/* width: var(--card-width); */
-	margin-left: -3rem;
 }
 
 .Card:not(:first-child) {

@@ -20,33 +20,30 @@ export default class Queue extends Component {
 			<details open>
 				<summary>Kortgame v0 ${time}</summary>
 				<h2>Future</h2>
-				<ol>
-					${props.future.map(HistoryItem)}
-				</ol>
-				<hr />
+				<${FutureList} items=${props.future} />
 				<h3>Past</h3>
-				<ol>
-					${props.past.map(item => html`
-						<li key=${item}>
-							${item.action.type}
-						</li>
-					`)}
-				</ol>
+				<${FutureList} items=${props.past} />
 			</details>
 		`
 	}
 }
 
-function HistoryItem(item) {
-	const cardDetails =
-		item.type === 'playCard'
-			? html`
-					: ${item.card.name}
-			  `
-			: ''
+function FutureList({items}) {
+	if (!items.length)
+		return html`
+			<p>nothing yet</p>
+		`
+	return html`
+		<ol>
+			${items.map(Item)}
+		</ol>
+	`
+}
+
+function Item(item) {
 	return html`
 		<li key=${item}>
-			${item.type} ${cardDetails}
+			${item.action.type} ${item.action.card && item.action.card.name}
 		</li>
 	`
 }

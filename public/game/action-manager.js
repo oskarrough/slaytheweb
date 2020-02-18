@@ -6,21 +6,21 @@ export default function() {
 	const past = new Queue()
 
 	function enqueue(action) {
-		future.add(action)
+		future.add({action})
 	}
 
 	function dequeue(state) {
-		const action = future.next()
+		const {action} = future.next()
 		if (!action) return
-		let nextState
 
+		let nextState
 		try {
 			nextState = actions[action.type](state, action)
 		} catch (err) {
 			throw new Error(err)
 		}
 
-		console.log({state, action, nextState})
+		console.log('dequeue', {state, action, nextState})
 		past.add({state, action})
 		return nextState
 	}

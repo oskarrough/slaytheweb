@@ -40,9 +40,9 @@ export default class App extends Component {
 	}
 
 	undo() {
-		console.log('undo')
 		const prev = this.am.past.takeFromTop()
 		if (!prev) return
+		console.log('Undoing', prev.action.type)
 		this.setState(prev.state)
 	}
 
@@ -112,7 +112,6 @@ export default class App extends Component {
 						: html`
 								<button onclick=${() => this.endTurn()}>End turn</button>
 						  `}
-					<button onclick=${() => this.undo()}>Undo</button>
 				</p>
 
 				<div class="Split" style="margin-top: auto">
@@ -127,6 +126,7 @@ export default class App extends Component {
 				</div>
 
 				<${History} future=${this.am.future.list} past=${this.am.past.list} />
+				<p><button onclick=${() => this.undo()}>Undo</button></p>
 			</div>
 		`
 	}
