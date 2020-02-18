@@ -9,18 +9,16 @@ export default function() {
 		future.add({action})
 	}
 
+	// Runs the oldest actions and returns a new state.
 	function dequeue(state) {
 		const {action} = future.takeFromBottom()
-		if (!action) return
-
 		let nextState
+		if (!action) return
 		try {
 			nextState = actions[action.type](state, action)
 		} catch (err) {
 			throw new Error(err)
 		}
-
-		console.log('dequeue', {state, action, nextState})
 		past.add({state, action})
 		return nextState
 	}
@@ -37,4 +35,3 @@ export default function() {
 		past
 	}
 }
-
