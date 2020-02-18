@@ -2,9 +2,7 @@ import {createCard} from './cards.js'
 import produce from '../web_modules/immer.js'
 import {shuffle} from './utils.js'
 
-// The idea is that we have one big object with game state.
-// Whenever we want to change something, we call an "action" from this file.
-// Each actions takes two arguments. First the current state, next an object of arguments.
+// The idea is that we have one big object with game state. Whenever we want to change something, we call an "action" from this file. Each action takes two arguments: 1) the current state, 2) an object of arguments.
 
 // This is the big object of game state. Everything should start here.
 function createNewGame() {
@@ -46,6 +44,7 @@ function drawStarterDeck(state) {
 
 // Move X cards from deck to hand
 function drawCards(state, amount = 5) {
+	if (typeof amount !== 'number') amount = 5
 	return produce(state, draft => {
 		if (state.drawPile.length < amount) {
 			// Not enough cards to draw. Move all cards from discard to draw.
@@ -87,10 +86,10 @@ function playCard(state, {card}) {
 		draft.discardPile.push(card)
 		// And play it...
 		draft.player.currentEnergy = state.player.currentEnergy - card.energy
-		// not sure about this way...
 		if (card.damage) {
 			const {monster} = changeHealth(state, {target: 'monster', amount: -card.damage})
 			draft.monster.currentHealth = monster.currentHealth
+			// could check for card.target and apply dmg to single monster or all
 		}
 		if (card.block) {
 			draft.player.block = state.player.block + card.block
@@ -130,12 +129,6 @@ export default {
 	endTurn,
 	changeHealth
 }
-
-// ### Deck Modification
-
-// * `deck add [id] {cardcount} {upgrades}` add card to deck (optional: integer # of times you want to add this card) (optional: integer # of upgrades)
-// * `deck remove [id]` remove card from deck
-// * `deck remove all` remove all cards from deck
 
 // ## Console Commands
 
@@ -185,3 +178,9 @@ export default {
 // * `relic add [id]` generate relic
 // * `relic list` logs all relic pools
 // * `relic remove [id]` lose relic
+
+// ### Deck Modification
+
+// * `deck add [id] {cardcount} {upgrades}` add card to deck (optional: integer # of times you want to add this card) (optional: integer # of upgrades)
+// * `deck remove [id]` remove card from deck
+// * `deck remove all` remove all cards from deck

@@ -1,48 +1,53 @@
 import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
+import ActionManager from '../game/action-manager.js'
 import Player, {Healthbar} from './player.js'
-import History from './history.js'
 import Cards from './cards.js'
-import Queue from '../game/queue.js'
-import actions from '../game/actions.js'
-
-const queue = new Queue()
+import History from './history.js'
 
 export default class App extends Component {
 	constructor() {
 		super()
+		// Set up our action manager.
+		this.am = ActionManager()
 		// Prepare the game.
-		let game = actions.createNewGame()
-		game = actions.drawStarterDeck(game)
-		game = actions.drawCards(game)
-		this.state = game
-		// Debugging in the browser console.
+		this.am.enqueue({type: 'createNewGame'})
+		this.state = this.am.dequeue({})
+		this.am.enqueue({type: 'drawStarterDeck'})
+		this.am.enqueue({type: 'drawCards'})
+		// Enable debugging in the browser.
 		window.kortgame = {
 			state: this.state,
-			queue,
-			actions
+			actionManager: this.am
 		}
 	}
+
 	componentDidMount() {
 		this.enableDrop()
+		// Dequeuing twice because of what we did in constructor.
+		this.dequeue(this.dequeue)
 	}
-	enqueue(what) {
-		queue.add(what)
+
+	enqueue(action) {
+		this.am.enqueue(action)
 	}
-	runQueue() {
-		const action = queue.next()
-		if (!action) return
-		try {
-			const nextState = actions[action.type](this.state, action)
-			this.setState(nextState)
-			// console.table(nextState)
-		} catch (err) {
-			alert(err)
-		}
+
+	dequeue(callback) {
+		const nextState = this.am.dequeue(this.state)
+		this.setState(nextState, callback)
 	}
+
+	undo() {
+		const prev = this.am.past.takeFromTop()
+		if (!prev) return
+		console.log('Undoing', prev.action.type)
+		this.setState(prev.state)
+	}
+
 	endTurn() {
-		this.enqueue({type: 'endTurn'})
-		this.runQueue()
+		this.am.enqueue({type: 'endTurn'})
+		this.dequeue()
 	}
+
 	enableDrop() {
 		const drop = new window.Sortable.default(this.base.querySelectorAll('.dropzone'), {
 			draggable: '.Card',
@@ -71,10 +76,11 @@ export default class App extends Component {
 				event.cancel()
 				const card = this.state.hand.find(card => card.id === event.data.dragEvent.originalSource.dataset.id)
 				this.enqueue({type: 'playCard', card})
-				this.runQueue() // play card immediately
+				this.dequeue() // play card immediately
 			}
 		})
 	}
+
 	render(props, state) {
 		const didWin = state.monster.currentHealth <= 0
 		return html`
@@ -106,17 +112,18 @@ export default class App extends Component {
 				</p>
 
 				<div class="Split" style="margin-top: auto">
-					<div>
-						<h2>Draw pile</h2>
+					<details>
+						<summary>Draw pile ${state.drawPile.length}</summary>
 						<${Cards} cards=${state.drawPile} />
-					</div>
-					<div>
-						<h2 align-right>Discard pile</h2>
+					</details>
+					<details>
+						<summary align-right>Discard pile ${state.discardPile.length}</summary>
 						<${Cards} cards=${state.discardPile} isDiscardPile=${true} />
-					</div>
+					</details>
 				</div>
 
-				<${History} history=${queue.list} />
+				<${History} future=${this.am.future.list} past=${this.am.past.list} />
+				<p><button onclick=${() => this.undo()}>Undo</button></p>
 			</div>
 		`
 	}

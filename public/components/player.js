@@ -1,9 +1,8 @@
 import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
 
 export default class Player extends Component {
-	render(props) {
-		const {player} = props
-		const name = props.name ? props.name : 'You'
+	render({player}) {
+		const name = player.name ? player.name : 'You'
 		return html`
 			<div class="Player">
 				<h2>${name}</h2>

@@ -5,33 +5,45 @@ export default class Queue extends Component {
 		super(props)
 		this.state = {time: Date.now()}
 	}
-
 	componentDidMount() {
-		// Update time every second. Also serves the issue of
-		// properly keeping the props.history up to date.
+		// The timer here also makes sure the component renders the newest history.
 		this.timer = setInterval(() => {
 			this.setState({time: Date.now()})
 		}, 500)
 	}
-
 	componentWillUnmount() {
 		clearInterval(this.timer)
 	}
-
 	render(props, state) {
 		const time = new Date(state.time).toLocaleTimeString()
 		return html`
 			<details>
 				<summary>Kortgame v0 ${time}</summary>
-				<ol>
-					${props.history.map(
-						(item, index) =>
-							html`
-								<li key=${index}>${item.type}</li>
-							`
-					)}
-				</ol>
+				<h2>Future</h2>
+				<${FutureList} items=${props.future} />
+				<h3>Past</h3>
+				<${FutureList} items=${props.past} />
 			</details>
 		`
 	}
+}
+
+function FutureList({items}) {
+	if (!items.length)
+		return html`
+			<p>nothing yet</p>
+		`
+	return html`
+		<ol>
+			${items.map(Item)}
+		</ol>
+	`
+}
+
+function Item(item) {
+	return html`
+		<li key=${item}>
+			${item.action.type} ${item.action.card && item.action.card.name}
+		</li>
+	`
 }
