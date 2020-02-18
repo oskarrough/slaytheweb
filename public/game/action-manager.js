@@ -10,7 +10,7 @@ export default function() {
 	}
 
 	function dequeue(state) {
-		const {action} = future.next()
+		const {action} = future.takeFromBottom()
 		if (!action) return
 
 		let nextState

@@ -5,11 +5,11 @@ export default class Queue {
 	add(item) {
 		this.list.push(item) // adds to end of array
 	}
-	next() {
-		return this.list.shift() // returns first/oldest
-	}
 	takeFromTop() {
 		return this.list.pop() // returns last/newest
+	}
+	takeFromBottom() {
+		return this.list.shift() // returns first/oldest
 	}
 }
 
