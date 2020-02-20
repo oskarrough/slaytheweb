@@ -24,6 +24,7 @@ function createNewGame() {
 	}
 }
 
+// Draws a "starter" deck to your discard pile. Normally you'd run this as you start the game.
 function drawStarterDeck(state) {
 	const deck = [
 		createCard('Bash'),
@@ -42,19 +43,18 @@ function drawStarterDeck(state) {
 	})
 }
 
-// Move X cards from deck to hand
+// Move X cards from deck to hand.
 function drawCards(state, amount = 5) {
 	if (typeof amount !== 'number') amount = 5
 	return produce(state, draft => {
+		// When there aren't enough cards to draw, we recycle all cards from the discard pile to the draw pile.
 		if (state.drawPile.length < amount) {
-			// Not enough cards to draw. Move all cards from discard to draw.
 			draft.drawPile = state.drawPile.concat(state.discardPile)
 			draft.discardPile = []
 		}
 		const newCards = draft.drawPile.slice(0, amount)
-		// Take the first X cards from deck and add to hand
+		// Take the first X cards from deck and add to hand and remove them from the deck.
 		draft.hand = draft.hand.concat(newCards)
-		// and remove them from deck
 		for (let i = 0; i < amount; i++) {
 			draft.drawPile.shift()
 		}
@@ -80,21 +80,19 @@ const discardHand = state =>
 function playCard(state, {card}) {
 	if (!card) throw new Error('No card to play')
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
+	// Move card from hand to discard pile.
+	state = discardCard(state, {card})
 	return produce(state, draft => {
-		// Move card from hand to discard pile.
-		draft.hand = state.hand.filter(c => c.id !== card.id)
-		draft.discardPile.push(card)
-		// And play it...
+		// Take energy.
 		draft.player.currentEnergy = state.player.currentEnergy - card.energy
 		if (card.damage) {
 			const {monster} = changeHealth(state, {target: 'monster', amount: -card.damage})
 			draft.monster.currentHealth = monster.currentHealth
-			// could check for card.target and apply dmg to single monster or all
+			// @todo could check for card.target and apply dmg to single monster or all
 		}
 		if (card.block) {
 			draft.player.block = state.player.block + card.block
 		}
-		// card.use()
 	})
 }
 
@@ -109,11 +107,12 @@ function changeHealth(state, {target, amount}) {
 	})
 }
 
+// Ending a turn means 1) discarding your hand 2) drawing new cards and 3) resetting different state things.
 function endTurn(state) {
 	let newState = discardHand(state)
 	newState = drawCards(newState)
 	return produce(newState, draft => {
-		// reset energy and block
+		// Reset energy and block
 		draft.player.currentEnergy = 3
 		draft.player.block = 0
 	})
