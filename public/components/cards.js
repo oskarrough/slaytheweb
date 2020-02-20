@@ -15,7 +15,7 @@ export default class Cards extends Component {
 	}
 }
 
-export const Card = ({id, name, type, energy, effects}) => html`
+export const Card = ({id, name, type, energy, description}) => html`
 	<article class="Card" key=${id} data-id=${id}>
 		<div class="Card-inner">
 			<!-- <p>${id.substr(0, 3)}</p> -->
