@@ -1,8 +1,8 @@
 # Kortgame
 
-A simplified, browser-based [Slay The Spire](https://www.megacrit.com/) inspired card crawl game that may or may not evolve into something else.
+This is a much simplified, browser-based [Slay The Spire](https://www.megacrit.com/) inspired card crawl game that may or may not evolve into something else. Phew. It mostly exists because it is/was fun to program.
 
-Does it bring you joy to clone another game? Yes.
+All credit goes to Mega Crit and their fantastic job designing Slay The Spire. So much fun to be had in that game.
 
 ## Development setup
 
@@ -77,9 +77,7 @@ by this I mean being able to play the game with (almost) no gui. write the comma
 
 ### Encounters
 
-- encounter
-- add monster
-- start encounter
+- Dungeon > Encounters > Monsters
 
 ## Links
 
@@ -97,6 +95,9 @@ by this I mean being able to play the game with (almost) no gui. write the comma
 - https://www.reddit.com/r/roguelikedev/
 - https://game-icons.net/
 - https://github.com/RonenNess/RPGUI
+- https://spirelogs.com/
+-	https://github.com/daviscook477/BaseMod
+- https://github.com/daviscook477/BaseMod/wiki/Console
 
 ### Other games
 

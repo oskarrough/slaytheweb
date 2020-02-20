@@ -1,5 +1,6 @@
 import {uuid} from './utils.js'
 
+// A list of all the cards we have.
 export const cards = [
 	{
 		name: 'Defend',
@@ -60,18 +61,18 @@ export const cards = [
 
 export class Card {
 	constructor(props) {
-		// this.target = [ENEMY, ALL_ENEMY, SELF, NONE, SELF_AND_ENEMY, ALL]
-		// this.type = [ATTACK, SKILL, POWER, STATUS, CURSE]
-		// this.color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
-		// this.rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
 		this.id = uuid()
 		this.name = props.name
 		this.energy = props.energy
+		// this.type = [ATTACK, SKILL, POWER, STATUS, CURSE]
 		this.type = props.type
 		this.description = props.description
 		if (props.damage) this.damage = props.damage
 		if (props.block) this.block = props.block
 		if (props.vulnerable) this.vulnerable = props.vulnerable
+		// this.target = [ENEMY, ALL_ENEMY, SELF, NONE, SELF_AND_ENEMY, ALL]
+		// this.color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
+		// this.rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
 	}
 	use() {
 		console.log('use', this.description)

@@ -3,3 +3,4 @@ node_modules/
 *.swp
 yarn-error.log
 public/web_modules/
+docs/
