@@ -109,7 +109,7 @@ function playCard(state, {card}) {
 			draft.monster.vulnerable = card.vulnerable
 		}
 		if (card.regen) {
-			draft.player.regen = card.regen
+			draft.player.regen = (state.player.regen || 0) + card.regen
 		}
 	})
 }

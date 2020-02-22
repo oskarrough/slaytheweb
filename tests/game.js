@@ -230,7 +230,15 @@ test('Flourish card adds a working "regen" buff', t => {
 	state = a.endTurn(state)
 	t.is(state.player.currentHealth, 115)
 })
+
+test('You can stack regen power', t => {
+	let {state} = t.context
+	const card = createCard('Flourish')
+	t.is(state.player.currentHealth, 100)
+	state.player.currentEnergy = 999
 	state = a.playCard(state, {card})
+	state = a.playCard(state, {card})
+	t.is(state.player.regen, card.regen * 2)
 })
 
 // test.skip('Sucker Punch applies weak', t => {
