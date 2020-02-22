@@ -52,6 +52,14 @@ test('starter deck is shuffled', t => {
 	}
 })
 
+test('can add a card to hand', t => {
+	let {state} = t.context
+	const strike = createCard('Strike')
+	state = a.addCardToHand(state, {card: strike})
+	t.is(state.hand.length, 1)
+	t.is(state.hand[0].id, strike.id)
+})
+
 test('can draw cards from drawPile to hand', t => {
 	const {state} = t.context
 	const state2 = a.drawStarterDeck(state)

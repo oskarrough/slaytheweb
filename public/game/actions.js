@@ -61,6 +61,11 @@ function drawCards(state, amount = 5) {
 	})
 }
 
+const addCardToHand = (state, {card}) =>
+	produce(state, draft => {
+		draft.hand.push(card)
+	})
+
 // Discard a single card from hand.
 const discardCard = (state, {card}) =>
 	produce(state, draft => {
@@ -149,6 +154,7 @@ export default {
 	createNewGame,
 	drawStarterDeck,
 	drawCards,
+	addCardToHand,
 	discardCard,
 	discardHand,
 	playCard,
