@@ -1,5 +1,7 @@
 import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 import ActionManager from '../game/action-manager.js'
+import actions from './../game/actions.js'
+import {createCard} from './../game/cards.js'
 import Player, {Healthbar} from './player.js'
 import Cards from './cards.js'
 import History from './history.js'
@@ -16,8 +18,9 @@ export default class App extends Component {
 		this.am.enqueue({type: 'drawCards'})
 		// Enable debugging in the browser.
 		window.kortgame = {
-			state: this.state,
-			actionManager: this.am
+			component: this,
+			actions,
+			createCard
 		}
 	}
 
