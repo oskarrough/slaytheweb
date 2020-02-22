@@ -106,7 +106,7 @@ function playCard(state, {card}) {
 
 		// Apply powers
 		if (card.vulnerable) {
-			draft.monster.vulnerable = card.vulnerable
+			draft.monster.vulnerable = (state.player.vulnerable || 0) + card.vulnerable
 		}
 		if (card.regen) {
 			draft.player.regen = (state.player.regen || 0) + card.regen
