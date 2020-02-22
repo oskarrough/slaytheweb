@@ -186,7 +186,7 @@ test('when monster reaches 0 hp, you win!', t => {
 	t.is(newState.monster.currentHealth, 0)
 })
 
-test('bash applies vulnerable and it doubles damage', t => {
+test('Bash card adds a vulnerable power and it doubles damage', t => {
 	let {state} = t.context
 	const bashCard = createCard('Bash')
 	const strikeCard = createCard('Strike')
@@ -205,11 +205,39 @@ test('bash applies vulnerable and it doubles damage', t => {
 	t.is(state.monster.currentHealth, 14)
 })
 
-test.skip('Sucker Punch applies weak', t => {
+test('Flourish card adds a working "regen" buff', t => {
 	let {state} = t.context
-	const card = createCard('Sucker Punch')
+	const card = createCard('Flourish')
+	t.is(card.regen, 5, 'card has regen power')
+	t.is(state.player.currentHealth, 100)
+	state = a.playCard(state, {card})
+	t.is(state.player.regen, card.regen, 'regen is applied to player')
+	state = a.endTurn(state)
+	t.is(state.player.currentHealth, 105, 'ending your turn adds hp')
+	t.is(state.player.regen, 4, 'stacks go down')
+	state = a.endTurn(state)
+	t.is(state.player.currentHealth, 109)
+	t.is(state.player.regen, 3)
+	state = a.endTurn(state)
+	t.is(state.player.currentHealth, 112)
+	t.is(state.player.regen, 2)
+	state = a.endTurn(state)
+	t.is(state.player.currentHealth, 114)
+	t.is(state.player.regen, 1)
+	state = a.endTurn(state)
+	t.is(state.player.currentHealth, 115)
+	t.is(state.player.regen, 0)
+	state = a.endTurn(state)
+	t.is(state.player.currentHealth, 115)
+})
 	state = a.playCard(state, {card})
 })
+
+// test.skip('Sucker Punch applies weak', t => {
+// 	let {state} = t.context
+// 	const card = createCard('Sucker Punch')
+// 	state = a.playCard(state, {card})
+// })
 
 test.skip('Cleave damages all monsters', t => {
 	let {state} = t.context

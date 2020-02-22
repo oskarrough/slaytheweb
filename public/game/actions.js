@@ -85,21 +85,31 @@ function playCard(state, {card}) {
 	return produce(state, draft => {
 		// Use energy
 		draft.player.currentEnergy = state.player.currentEnergy - card.energy
+
+		card.use()
+
 		// Block
 		if (card.block) {
 			draft.player.block = state.player.block + card.block
 		}
-		// Deal damage
+
+		// Damage
 		if (card.damage) {
 			let amount = card.damage * -1
+
+			// Powers
 			if (draft.monster.vulnerable) amount = amount * 2
+
 			const {monster} = changeHealth(state, {target: 'monster', amount})
 			draft.monster.currentHealth = monster.currentHealth
-			// @todo could check for card.target and apply dmg to single monster or all
 		}
+
 		// Apply powers
 		if (card.vulnerable) {
 			draft.monster.vulnerable = card.vulnerable
+		}
+		if (card.regen) {
+			draft.player.regen = card.regen
 		}
 	})
 }
@@ -123,9 +133,14 @@ function endTurn(state) {
 		// Reset energy and block
 		draft.player.currentEnergy = 3
 		draft.player.block = 0
-		// remove effects?
+		// VulnerablePower
 		if (state.monster.vulnerable) {
 			draft.monster.vulnerable = state.monster.vulnerable - 1
+		}
+		// RegenPower
+		if (state.player.regen) {
+			draft.player.currentHealth = state.player.currentHealth + state.player.regen
+			draft.player.regen = state.player.regen - 1
 		}
 	})
 }

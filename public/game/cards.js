@@ -54,6 +54,13 @@ export const cards = [
 		damage: 7,
 		weak: 1,
 		description: 'Deal 7 damage. Apply 1 Weak.'
+	},
+	{
+		name: 'Flourish',
+		energy: 2,
+		type: 'Skill',
+		description: 'Gain 5 regen.',
+		regen: 5
 	}
 	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
 	// {name: 'Body Slam', energy: 1, type: 'Attack', description: 'Deal Damage equal to your Block'},
@@ -64,18 +71,28 @@ export class Card {
 		this.id = uuid()
 		this.name = props.name
 		this.energy = props.energy
-		// this.type = [ATTACK, SKILL, POWER, STATUS, CURSE]
 		this.type = props.type
 		this.description = props.description
-		if (props.damage) this.damage = props.damage
-		if (props.block) this.block = props.block
-		if (props.vulnerable) this.vulnerable = props.vulnerable
+		this.damage = props.damage
+		this.block = props.block
+		this.vulnerable = props.vulnerable
+		this.regen = props.regen
+		// this.type = [ATTACK, SKILL, POWER, STATUS, CURSE]
 		// this.target = [ENEMY, ALL_ENEMY, SELF, NONE, SELF_AND_ENEMY, ALL]
 		// this.color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
 		// this.rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
 	}
 	use() {
-		console.log('use', this.description)
+		// if (props.powers.vulnerable) this.powers.push(new VulnerablePower())
+		// const uses = []
+		// if (props.damage) uses.push({type: 'changeHealth', this.damage})
+		// if (props.block) uses.push({type: 'addBlock', this.block})
+		// if (props.damage) uses.push({type: 'applyPower', this.vulnerable})
+		// Here we could queue different actions. As example for bash:
+		// return [
+		// 	actions.dealDamage(target, amount),
+		// 	actions.applyPower('vulnerable', stacks)
+		// ]
 	}
 }
 
