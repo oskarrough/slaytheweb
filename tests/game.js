@@ -241,11 +241,11 @@ test('You can stack regen power', t => {
 	t.is(state.player.regen, card.regen * 2)
 })
 
-// test.skip('Sucker Punch applies weak', t => {
-// 	let {state} = t.context
-// 	const card = createCard('Sucker Punch')
-// 	state = a.playCard(state, {card})
-// })
+test.skip('Sucker Punch applies weak', t => {
+	let {state} = t.context
+	const card = createCard('Sucker Punch')
+	state = a.playCard(state, {card})
+})
 
 test.skip('Cleave damages all monsters', t => {
 	let {state} = t.context
@@ -253,12 +253,12 @@ test.skip('Cleave damages all monsters', t => {
 	state = a.playCard(state, {card})
 })
 
-// test.only('Clash can only be played if it\'s the only attack', t => {
-// 	let {state} = t.context
-// 	const clashCard = createCard('Clash')
-// 	const defendCard = createCard('Defend')
-// 	state.hand.push(clashCard)
-// 	state.hand.push(defendCard)
-// 	t.throws(() => a.playCard(state, {card: clashCard}))
-// })
+test.skip('Clash can only be played if it\'s the only attack', t => {
+	let {state} = t.context
+	const clashCard = createCard('Clash')
+	const defendCard = createCard('Defend')
+	state.hand.push(clashCard)
+	state.hand.push(defendCard)
+	t.throws(() => a.playCard(state, {card: clashCard}))
+})
 
