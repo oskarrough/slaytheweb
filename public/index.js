@@ -3,14 +3,15 @@ import App from '../components/app.js'
 
 // Decides what to render: splash screen, "win" screen or the game itself.
 class Main extends Component {
-	state = {
-			isPlaying: false,
-			didWin: false
+	constructor() {
+		super()
+		this.handleWin = this.handleWin.bind(this)
+		this.handleNewGame = this.handleNewGame.bind(this)
 	}
-	handleNewGame = () => {
+	handleNewGame() {
 		this.setState({isPlaying: true, didWin: false})
 	}
-	handleWin = () => {
+	handleWin() {
 		this.setState({isPlaying: false, didWin: true})
 	}
 	render(props, {didWin, isPlaying}) {
