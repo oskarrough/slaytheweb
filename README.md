@@ -83,32 +83,27 @@ by this I mean being able to play the game with (almost) no gui. write the comma
 
 ## Links
 
-- https://kinopio.club/cardcrawl-UL_lam2QrnMLIw9meGOmX
-- https://twitter.com/fabynou/status/1212534790672408578
+- FTL, Into The Breach, Darkest Dungeon, Dungeon of the Endless, Spelunky, Rogue Legacy,
+- [Pollywog Games: A history of roguelite deck building games](https://pollywog.games/rgdb/)
 - http://stfj.net/index2.php?project=art/2011/Scoundrel.pdf
 - http://stfj.net/index2.php?year=2018&project=art/2018/Pocket-Run%20Pool
-- [Pollywog Games: A history of roguelite deck building games](https://pollywog.games/rgdb/)
-- https://itch.io/games/tag-card-game/tag-roguelike
-- https://github.com/daviscook477/BaseMod/wiki/Hooks
-- https://github.com/daviscook477/BaseMod/wiki/Console
-- https://slay-the-spire.fandom.com/wiki/Slay_the_Spire_Wiki
-- https://freesound.org/
-- https://www.gamasutra.com/blogs/JoshGe/20181029/329512/How_to_Make_a_Roguelike.php
-- https://www.reddit.com/r/roguelikedev/
-- https://game-icons.net/
-- https://github.com/RonenNess/RPGUI
-- https://spirelogs.com/
--	https://github.com/daviscook477/BaseMod
-- https://github.com/daviscook477/BaseMod/wiki/Console
-- https://www.gdcvault.com/play/1025731/-Slay-the-Spire-Metrics
-- https://github.com/Gremious/StS-DefaultModBase
-
-### Other games
-
-- http://www.cardofdarkness.com/
-- https://nathanwentworth.itch.io/deck-dungeon [Source](https://github.com/nathanwentworth/deck-dungeon/)
-- https://hundredrabbits.itch.io/donsol [Source](https://github.com/hundredrabbits/Donsol/tree/master/desktop/sources/scripts)
-- https://pollywog.games/
 - http://www.cardcrawl.com/
-- FTL, Into The Breach, Darkest Dungeon, Dungeon of the Endless, Spelunky, Rogue Legacy,
+- http://www.cardofdarkness.com/
+- https://freesound.org/
+- https://game-icons.net/
+- https://github.com/Gremious/StS-DefaultModBase
+- https://github.com/RonenNess/RPGUI
+-	https://github.com/daviscook477/BaseMod
+- https://github.com/kiooeht/Hubris/
+- https://github.com/kiooeht/StSLib/wiki/Power-Hooks
+- https://hundredrabbits.itch.io/donsol [Source](https://github.com/hundredrabbits/Donsol/tree/master/desktop/sources/scripts)
+- https://itch.io/games/tag-card-game/tag-roguelike
+- https://kinopio.club/cardcrawl-UL_lam2QrnMLIw9meGOmX
+- https://nathanwentworth.itch.io/deck-dungeon [Source](https://github.com/nathanwentworth/deck-dungeon/)
+- https://slay-the-spire.fandom.com/wiki/Slay_the_Spire_Wiki
+- https://spirelogs.com/
+- https://twitter.com/fabynou/status/1212534790672408578
+- https://www.gamasutra.com/blogs/JoshGe/20181029/329512/How_to_Make_a_Roguelike.php
+- https://www.gdcvault.com/play/1025731/-Slay-the-Spire-Metrics
+- https://www.reddit.com/r/roguelikedev/
 - https://www.reddit.com/r/slaythespire/comments/a7lhpq/any_recommended_games_similar_to_slay_the_spire/
