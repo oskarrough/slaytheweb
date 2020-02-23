@@ -4,3 +4,5 @@ node_modules/
 yarn-error.log
 public/web_modules/
 docs/
+.nyc_output
+coverage/

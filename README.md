@@ -1,8 +1,10 @@
 # Kortgame
 
-This is a much simplified, browser-based [Slay The Spire](https://www.megacrit.com/) inspired card crawl game that may or may not evolve into something else. Phew. It mostly exists because it is/was fun to program.
+This is a much simplified, browser-based Slay The Spire inspired card crawl game that may or may not evolve into something else. It mostly exists because it was and is fun to develop.
 
-All credit goes to Mega Crit and their fantastic job designing Slay The Spire. So much fun to be had in that game.
+## Slay the Spire
+
+All credit goes to Mega Crit and their fantastic job designing [Slay The Spire](https://www.megacrit.com/). So much fun to be had in that game. I learned a lot by decompiling the game's source code and looking at the community's inspiring mods.
 
 ## Development setup
 
@@ -98,6 +100,8 @@ by this I mean being able to play the game with (almost) no gui. write the comma
 - https://spirelogs.com/
 -	https://github.com/daviscook477/BaseMod
 - https://github.com/daviscook477/BaseMod/wiki/Console
+- https://www.gdcvault.com/play/1025731/-Slay-the-Spire-Metrics
+- https://github.com/Gremious/StS-DefaultModBase
 
 ### Other games
 
