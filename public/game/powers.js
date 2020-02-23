@@ -1,25 +1,20 @@
 class Power {
-	constructor({type, stacks, use}) {
+	constructor({type, target, use}) {
 		this.type = type
-		this.stacks = stacks || 0
+		this.target = target
 		this.use = use
 	}
-
 	use() {
 		return null
 	}
 }
 
-// Regen is applied immediately to "self"
-// Regen needs to run its action after ending a turn
+// When played: apply to player
+// When end turn:  reduce stacks + do your thing e.g. add health
 export const regen = new Power({
 	type: 'buff',
-	stacks: 4,
 	target: 'self',
-	use(health) {
-		this.stacks = this.stacks - 1
-		return health + this.stacks + 1
-	}
+	use: (health, stacks) => health + stacks
 })
 
 export const vulnerable = new Power({
@@ -30,8 +25,4 @@ export const vulnerable = new Power({
 
 // export const weak = new Power({type: 'debuff', use: (amount) => amount * 2})
 
-export default {
-	regen,
-	vulnerable
-	// weak
-}
+export default {regen, vulnerable}

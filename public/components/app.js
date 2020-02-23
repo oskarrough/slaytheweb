@@ -93,7 +93,7 @@ export default class App extends Component {
 					<div class="Monster dropzone">
 						<h2>Evil Monster</h2>
 						<${Healthbar} max=${state.monster.maxHealth} value=${state.monster.currentHealth} />
-						${state.monster.vulnerable > 0 ? `Vulnerable ${state.monster.vulnerable}` : ''}
+						${state.monster.powers.vulnerable > 0 ? `Vulnerable ${state.monster.powers.vulnerable}` : ''}
 					</div>
 				</div>
 

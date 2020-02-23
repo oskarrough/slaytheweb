@@ -20,11 +20,13 @@ test('new game state is ok', t => {
 			currentEnergy: 3,
 			maxHealth: 100,
 			currentHealth: 100,
-			block: 0
+			block: 0,
+			powers: {}
 		},
 		monster: {
 			maxHealth: 42,
-			currentHealth: 42
+			currentHealth: 42,
+			powers: {}
 		}
 	})
 })
@@ -199,42 +201,50 @@ test('Bash card adds a vulnerable power and it doubles damage', t => {
 	const bashCard = createCard('Bash')
 	const strikeCard = createCard('Strike')
 
+	t.is(state.monster.currentHealth, 42, 'checking initial health to be sure')
+
 	state = a.playCard(state, {card: bashCard})
+	// console.log(bashCard, state.monster)
+	t.is(state.monster.powers.vulnerable, bashCard.powers.vulnerable, 'power is applied to monster before dealing damage')
+	t.is(state.monster.currentHealth, 34, '...and after dealing damage')
+
+	state = a.endTurn(state)
+	t.is(state.monster.powers.vulnerable, 1, 'power stacks go down')
 	t.is(state.monster.currentHealth, 34)
-	t.is(state.monster.vulnerable, 2)
+
 	state = a.endTurn(state)
-	t.is(state.monster.vulnerable, 1)
-	state = a.endTurn(state)
-	t.falsy(state.monster.vulnerable)
+	t.falsy(state.monster.powers.vulnerable, 'power stacks go down')
+
 	state = a.playCard(state, {card: bashCard})
 	t.is(state.monster.currentHealth, 26)
-	t.truthy(state.monster.vulnerable)
+	t.is(state.monster.powers.vulnerable, 2)
+
 	state = a.playCard(state, {card: strikeCard})
-	t.is(state.monster.currentHealth, 14)
+	t.is(state.monster.currentHealth, 14, 'deals double damage')
 })
 
 test('Flourish card adds a working "regen" buff', t => {
 	let {state} = t.context
 	const card = createCard('Flourish')
-	t.is(card.regen, 5, 'card has regen power')
+	t.is(card.powers.regen, 5, 'card has regen power')
 	t.is(state.player.currentHealth, 100)
 	state = a.playCard(state, {card})
-	t.is(state.player.regen, card.regen, 'regen is applied to player')
+	t.is(state.player.powers.regen, card.powers.regen, 'regen is applied to player')
 	state = a.endTurn(state)
 	t.is(state.player.currentHealth, 105, 'ending your turn adds hp')
-	t.is(state.player.regen, 4, 'stacks go down')
+	t.is(state.player.powers.regen, 4, 'stacks go down')
 	state = a.endTurn(state)
 	t.is(state.player.currentHealth, 109)
-	t.is(state.player.regen, 3)
+	t.is(state.player.powers.regen, 3)
 	state = a.endTurn(state)
 	t.is(state.player.currentHealth, 112)
-	t.is(state.player.regen, 2)
+	t.is(state.player.powers.regen, 2)
 	state = a.endTurn(state)
 	t.is(state.player.currentHealth, 114)
-	t.is(state.player.regen, 1)
+	t.is(state.player.powers.regen, 1)
 	state = a.endTurn(state)
 	t.is(state.player.currentHealth, 115)
-	t.is(state.player.regen, 0)
+	t.is(state.player.powers.regen, 0)
 	state = a.endTurn(state)
 	t.is(state.player.currentHealth, 115)
 })
@@ -245,8 +255,9 @@ test('You can stack regen power', t => {
 	t.is(state.player.currentHealth, 100)
 	state.player.currentEnergy = 999
 	state = a.playCard(state, {card})
+	t.is(state.player.powers.regen, card.powers.regen, 'regen applied once')
 	state = a.playCard(state, {card})
-	t.is(state.player.regen, card.regen * 2)
+	t.is(state.player.powers.regen, card.powers.regen * 2, 'regen applied twice')
 })
 
 test.skip('Sucker Punch applies weak', t => {

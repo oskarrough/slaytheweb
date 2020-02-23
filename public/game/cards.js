@@ -1,4 +1,5 @@
 import {uuid} from './utils.js'
+import {regen, vulnerable}  from './powers.js'
 
 // A list of all the cards we have.
 export const cards = [
@@ -21,7 +22,10 @@ export const cards = [
 		energy: 2,
 		type: 'Attack',
 		damage: 8,
-		vulnerable: 2,
+		target: 'enemy',
+		powers: {
+			vulnerable: 2
+		},
 		description: 'Deal 8 damage. Apply 2 Vulnerable.'
 	},
 	{
@@ -52,15 +56,20 @@ export const cards = [
 		energy: 1,
 		type: 'Attack',
 		damage: 7,
-		weak: 1,
+		powers: {
+			weak: 1
+		},
 		description: 'Deal 7 damage. Apply 1 Weak.'
 	},
 	{
 		name: 'Flourish',
 		energy: 2,
 		type: 'Skill',
+		target: 'self',
 		description: 'Gain 5 regen.',
-		regen: 5
+		powers: {
+			regen: 5
+		}
 	}
 	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
 	// {name: 'Body Slam', energy: 1, type: 'Attack', description: 'Deal Damage equal to your Block'},
@@ -71,19 +80,18 @@ export class Card {
 		this.id = uuid()
 		this.name = props.name
 		this.energy = props.energy
-		this.type = props.type
 		this.description = props.description
 		this.damage = props.damage
 		this.block = props.block
-		this.vulnerable = props.vulnerable
-		this.regen = props.regen
-		// this.type = [ATTACK, SKILL, POWER, STATUS, CURSE]
-		// this.target = [ENEMY, ALL_ENEMY, SELF, NONE, SELF_AND_ENEMY, ALL]
+		this.powers = props.powers
+		// type = [ATTACK, SKILL, POWER, STATUS, CURSE]
+		this.type = props.type
+		// target = [ENEMY, ALL_ENEMY, SELF, NONE, SELF_AND_ENEMY, ALL]
+		this.target = props.target
 		// this.color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
 		// this.rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
 	}
 	use() {
-		// if (props.powers.vulnerable) this.powers.push(new VulnerablePower())
 		// const uses = []
 		// if (props.damage) uses.push({type: 'changeHealth', this.damage})
 		// if (props.block) uses.push({type: 'addBlock', this.block})

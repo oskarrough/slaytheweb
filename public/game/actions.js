@@ -1,6 +1,7 @@
 import produce from '../web_modules/immer.js'
 import {createCard} from './cards.js'
 import {shuffle} from './utils.js'
+import powers from './powers.js'
 
 // The idea is that we have one big object with game state. Whenever we want to change something, we call an "action" from this file. Each action takes two arguments: 1) the current state, 2) an object of arguments.
 
@@ -15,11 +16,13 @@ function createNewGame() {
 			currentEnergy: 3,
 			maxHealth: 100,
 			currentHealth: 100,
-			block: 0
+			block: 0,
+			powers: {}
 		},
 		monster: {
 			maxHealth: 42,
-			currentHealth: 42
+			currentHealth: 42,
+			powers: {}
 		}
 	}
 }
@@ -87,39 +90,47 @@ function playCard(state, {card}) {
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
 	// Move card from hand to discard pile.
 	state = discardCard(state, {card})
-	return produce(state, draft => {
+	state = produce(state, draft => {
 		// Use energy
 		draft.player.currentEnergy = state.player.currentEnergy - card.energy
-
-		card.use()
-
+		// card.use()
 		// Block
 		if (card.block) {
 			draft.player.block = state.player.block + card.block
 		}
-
 		// Damage
 		if (card.damage) {
-			let amount = card.damage * -1
-
-			// Powers
-			if (draft.monster.vulnerable) amount = amount * 2
-
-			const {monster} = changeHealth(state, {target: 'monster', amount})
+			const {monster} = changeHealth(state, {target: 'monster', amount: card.damage * -1})
 			draft.monster.currentHealth = monster.currentHealth
 		}
+	})
+	// Powers
+	if (card.powers) state = applyPowers(state, {card})
+	return state
+}
 
-		// Apply powers
-		if (card.vulnerable) {
-			draft.monster.vulnerable = (state.player.vulnerable || 0) + card.vulnerable
-		}
-		if (card.regen) {
-			draft.player.regen = (state.player.regen || 0) + card.regen
-		}
+function applyPowers(state, {card}) {
+	return produce(state, draft => {
+		Object.keys(card.powers).forEach(powerName => {
+			let stacks = card.powers[powerName]
+			if (card.target === 'self') {
+				const newStacks = (state.player.powers[powerName] || 0) + stacks
+				draft.player.powers[powerName] = newStacks
+			}
+			if (card.target === 'enemy') {
+				const newStacks = (state.monster.powers[powerName] || 0) + stacks
+				draft.monster.powers[powerName] = newStacks
+			}
+		})
+		// draft.monster.powers.vulnerable = state.monster.powers.vulnerable || 0 + powers.vulnerable
 	})
 }
 
 function changeHealth(state, {target, amount}) {
+	// Powers
+	if (state[target].powers.vulnerable) {
+		amount = powers.vulnerable.use(amount)
+	}
 	return produce(state, draft => {
 		let newHealth = state[target].currentHealth + amount
 		if (newHealth <= 0) {
@@ -138,19 +149,22 @@ function endTurn(state) {
 		// Reset energy and block
 		draft.player.currentEnergy = 3
 		draft.player.block = 0
-		// VulnerablePower
-		if (state.monster.vulnerable) {
-			draft.monster.vulnerable = state.monster.vulnerable - 1
-		}
+		// Decrease all power stacks by one.
+		Object.keys(state.player.powers).forEach(p => {
+			draft.player.powers[p] = draft.player.powers[p] - 1
+		})
+		Object.keys(state.monster.powers).forEach(p => {
+			draft.monster.powers[p] = draft.monster.powers[p] - 1
+		})
 		// RegenPower
-		if (state.player.regen) {
-			draft.player.currentHealth = state.player.currentHealth + state.player.regen
-			draft.player.regen = state.player.regen - 1
+		if (state.player.powers.regen) {
+			draft.player.currentHealth = powers.regen.use(state.player.currentHealth, state.player.powers.regen)
 		}
 	})
 }
 
 export default {
+	applyPowers,
 	createNewGame,
 	drawStarterDeck,
 	drawCards,
