@@ -107,3 +107,4 @@ by this I mean being able to play the game with (almost) no gui. write the comma
 - https://www.gdcvault.com/play/1025731/-Slay-the-Spire-Metrics
 - https://www.reddit.com/r/roguelikedev/
 - https://www.reddit.com/r/slaythespire/comments/a7lhpq/any_recommended_games_similar_to_slay_the_spire/
+- https://www.gdcvault.com/play/1025731/-Slay-the-Spire-Metrics
