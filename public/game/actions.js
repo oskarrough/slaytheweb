@@ -104,11 +104,11 @@ function playCard(state, {card}) {
 		}
 	})
 	// Powers
-	if (card.powers) state = applyPowers(state, {card})
+	if (card.powers) state = applyCardPowers(state, {card})
 	return state
 }
 
-function applyPowers(state, {card}) {
+function applyCardPowers(state, {card}) {
 	return produce(state, draft => {
 		Object.keys(card.powers).forEach(powerName => {
 			let stacks = card.powers[powerName]
@@ -163,7 +163,7 @@ function endTurn(state) {
 }
 
 export default {
-	applyPowers,
+	applyCardPowers,
 	createNewGame,
 	drawStarterDeck,
 	drawCards,
