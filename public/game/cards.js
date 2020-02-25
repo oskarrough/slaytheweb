@@ -1,5 +1,4 @@
 import {uuid} from './utils.js'
-import {regen, vulnerable}  from './powers.js'
 
 // A list of all the cards we have.
 export const cards = [
