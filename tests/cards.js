@@ -7,7 +7,7 @@ test('can create an attack card', t => {
 	t.is(card.type, 'Attack')
 	t.is(typeof card.damage, 'number')
 	t.is(typeof card.energy, 'number')
-	t.true(card.hasOwnProperty('effects'))
+	t.true(card.hasOwnProperty('description'))
 })
 
 test('can create a skill card', t => {

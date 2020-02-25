@@ -1,6 +1,7 @@
-import {createCard} from './cards.js'
 import produce from '../web_modules/immer.js'
+import {createCard} from './cards.js'
 import {shuffle} from './utils.js'
+import powers from './powers.js'
 
 // The idea is that we have one big object with game state. Whenever we want to change something, we call an "action" from this file. Each action takes two arguments: 1) the current state, 2) an object of arguments.
 
@@ -15,11 +16,13 @@ function createNewGame() {
 			currentEnergy: 3,
 			maxHealth: 100,
 			currentHealth: 100,
-			block: 0
+			block: 0,
+			powers: {}
 		},
 		monster: {
 			maxHealth: 42,
-			currentHealth: 42
+			currentHealth: 42,
+			powers: {}
 		}
 	}
 }
@@ -27,16 +30,16 @@ function createNewGame() {
 // Draws a "starter" deck to your discard pile. Normally you'd run this as you start the game.
 function drawStarterDeck(state) {
 	const deck = [
+		createCard('Defend'),
+		createCard('Defend'),
+		createCard('Defend'),
+		createCard('Strike'),
+		createCard('Strike'),
+		createCard('Strike'),
+		createCard('Strike'),
+		createCard('Strike'),
 		createCard('Bash'),
-		createCard('Defend'),
-		createCard('Defend'),
-		createCard('Defend'),
-		createCard('Defend'),
-		createCard('Strike'),
-		createCard('Strike'),
-		createCard('Strike'),
-		createCard('Strike'),
-		createCard('Strike')
+		createCard('Flourish')
 	]
 	return produce(state, draft => {
 		draft.drawPile = shuffle(deck)
@@ -61,6 +64,11 @@ function drawCards(state, amount = 5) {
 	})
 }
 
+const addCardToHand = (state, {card}) =>
+	produce(state, draft => {
+		draft.hand.push(card)
+	})
+
 // Discard a single card from hand.
 const discardCard = (state, {card}) =>
 	produce(state, draft => {
@@ -82,27 +90,52 @@ function playCard(state, {card}) {
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
 	// Move card from hand to discard pile.
 	state = discardCard(state, {card})
-	return produce(state, draft => {
-		// Take energy.
+	state = produce(state, draft => {
+		// Use energy
 		draft.player.currentEnergy = state.player.currentEnergy - card.energy
-		if (card.damage) {
-			const {monster} = changeHealth(state, {target: 'monster', amount: -card.damage})
-			draft.monster.currentHealth = monster.currentHealth
-			// @todo could check for card.target and apply dmg to single monster or all
-		}
+		// Block
 		if (card.block) {
 			draft.player.block = state.player.block + card.block
 		}
+		// Damage
+		if (card.damage) {
+			const {monster} = changeHealth(state, {target: 'monster', amount: card.damage * -1})
+			draft.monster.currentHealth = monster.currentHealth
+		}
+	})
+	// Powers
+	if (card.powers) state = applyCardPowers(state, {card})
+	return state
+}
+
+function applyCardPowers(state, {card}) {
+	return produce(state, draft => {
+		Object.keys(card.powers).forEach(powerName => {
+			let stacks = card.powers[powerName]
+			if (card.target === 'self') {
+				const newStacks = (state.player.powers[powerName] || 0) + stacks
+				draft.player.powers[powerName] = newStacks
+			}
+			if (card.target === 'enemy') {
+				const newStacks = (state.monster.powers[powerName] || 0) + stacks
+				draft.monster.powers[powerName] = newStacks
+			}
+		})
 	})
 }
 
 function changeHealth(state, {target, amount}) {
+	const currHp = state[target].currentHealth
+	// @todo avoid hardcoding powers. Also, this should be in the deal damage action.
+	if (state[target].powers.vulnerable) {
+		amount = powers.vulnerable.use(amount)
+	}
 	return produce(state, draft => {
-		let newHealth = state[target].currentHealth + amount
-		if (newHealth <= 0) {
-			// alert('we won')
-			// newHealth = 0
-		}
+		let newHealth = currHp + amount
+		// if (newHealth <= 0) {
+		// 	alert('we won')
+		// 	newHealth = 0
+		// }
 		draft[target].currentHealth = newHealth
 	})
 }
@@ -111,17 +144,43 @@ function changeHealth(state, {target, amount}) {
 function endTurn(state) {
 	let newState = discardHand(state)
 	newState = drawCards(newState)
-	return produce(newState, draft => {
+	newState = decreasePowerStacks(newState)
+	newState = produce(newState, draft => {
 		// Reset energy and block
 		draft.player.currentEnergy = 3
 		draft.player.block = 0
+
+		// @todo avoid hardcoding individual powers.
+		if (state.player.powers.regen) {
+			let amount = powers.regen.use(state.player.powers.regen)
+			let x = changeHealth(newState, {
+				target: 'player',
+				amount
+			})
+			draft.player.currentHealth = x.player.currentHealth
+		}
+	})
+	return newState
+}
+
+// Decrease all power stacks by one.
+function decreasePowerStacks(state) {
+	return produce(state, draft => {
+		Object.entries(state.player.powers).forEach(([name, stacks]) => {
+			if (stacks > 0) draft.player.powers[name] = stacks - 1
+		})
+		Object.entries(state.monster.powers).forEach(([name, stacks]) => {
+			if (stacks > 0) draft.monster.powers[name] = stacks - 1
+		})
 	})
 }
 
 export default {
+	applyCardPowers,
 	createNewGame,
 	drawStarterDeck,
 	drawCards,
+	addCardToHand,
 	discardCard,
 	discardHand,
 	playCard,

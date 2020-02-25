@@ -20,11 +20,13 @@ test('new game state is ok', t => {
 			currentEnergy: 3,
 			maxHealth: 100,
 			currentHealth: 100,
-			block: 0
+			block: 0,
+			powers: {}
 		},
 		monster: {
 			maxHealth: 42,
-			currentHealth: 42
+			currentHealth: 42,
+			powers: {}
 		}
 	})
 })
@@ -50,6 +52,14 @@ test('starter deck is shuffled', t => {
 		let draw2 = a.drawStarterDeck(state)
 		t.notDeepEqual(removeIds(draw1.drawPile), removeIds(draw2.drawPile))
 	}
+})
+
+test('can add a card to hand', t => {
+	let {state} = t.context
+	const strike = createCard('Strike')
+	state = a.addCardToHand(state, {card: strike})
+	t.is(state.hand.length, 1)
+	t.is(state.hand[0].id, strike.id)
 })
 
 test('can draw cards from drawPile to hand', t => {
@@ -185,3 +195,91 @@ test('when monster reaches 0 hp, you win!', t => {
 	const newState = a.changeHealth(state, {target: 'monster', amount: -42})
 	t.is(newState.monster.currentHealth, 0)
 })
+
+test('Bash card adds a vulnerable power and it doubles damage', t => {
+	let {state} = t.context
+	const bashCard = createCard('Bash')
+	const strikeCard = createCard('Strike')
+	t.is(state.monster.currentHealth, 42, 'checking initial health to be sure')
+	state = a.playCard(state, {card: bashCard})
+	t.is(state.monster.powers.vulnerable, bashCard.powers.vulnerable, 'power is applied to monster before dealing damage')
+	t.is(state.monster.currentHealth, 34, '...and after dealing damage')
+
+	state = a.endTurn(state)
+	t.is(state.monster.powers.vulnerable, 1, 'power stacks go down')
+	t.is(state.monster.currentHealth, 34)
+
+	state = a.endTurn(state)
+	t.is(state.monster.powers.vulnerable, 0, 'power stacks go down')
+
+	state = a.playCard(state, {card: bashCard})
+	t.is(state.monster.currentHealth, 26)
+	t.is(state.monster.powers.vulnerable, 2)
+
+	state = a.playCard(state, {card: strikeCard})
+	t.is(state.monster.currentHealth, 14, 'deals double damage')
+	state = a.endTurn(state)
+	state = a.endTurn(state)
+	state = a.endTurn(state)
+	state = a.endTurn(state)
+	t.is(state.monster.powers.vulnerable, 0, 'stacks dont go negative')
+})
+
+test('Flourish card adds a working "regen" buff', t => {
+	let {state} = t.context
+	const card = createCard('Flourish')
+	t.is(card.powers.regen, 5, 'card has regen power')
+	t.is(state.player.currentHealth, 100)
+	state = a.playCard(state, {card})
+	t.is(state.player.powers.regen, card.powers.regen, 'regen is applied to player')
+	state = a.endTurn(state)
+	t.is(state.player.currentHealth, 105, 'ending your turn adds hp')
+	t.is(state.player.powers.regen, 4, 'stacks go down')
+	state = a.endTurn(state)
+	t.is(state.player.currentHealth, 109)
+	t.is(state.player.powers.regen, 3)
+	state = a.endTurn(state)
+	t.is(state.player.currentHealth, 112)
+	t.is(state.player.powers.regen, 2)
+	state = a.endTurn(state)
+	t.is(state.player.currentHealth, 114)
+	t.is(state.player.powers.regen, 1)
+	state = a.endTurn(state)
+	t.is(state.player.currentHealth, 115)
+	t.is(state.player.powers.regen, 0)
+	state = a.endTurn(state)
+	t.is(state.player.currentHealth, 115)
+})
+
+test('You can stack regen power', t => {
+	let {state} = t.context
+	const card = createCard('Flourish')
+	t.is(state.player.currentHealth, 100)
+	state.player.currentEnergy = 999
+	state = a.playCard(state, {card})
+	t.is(state.player.powers.regen, card.powers.regen, 'regen applied once')
+	state = a.playCard(state, {card})
+	t.is(state.player.powers.regen, card.powers.regen * 2, 'regen applied twice')
+})
+
+test.skip('Sucker Punch applies weak', t => {
+	let {state} = t.context
+	const card = createCard('Sucker Punch')
+	state = a.playCard(state, {card})
+})
+
+test.skip('Cleave damages all monsters', t => {
+	let {state} = t.context
+	const card = createCard('Cleave')
+	state = a.playCard(state, {card})
+})
+
+test.skip('Clash can only be played if it\'s the only attack', t => {
+	let {state} = t.context
+	const clashCard = createCard('Clash')
+	const defendCard = createCard('Defend')
+	state.hand.push(clashCard)
+	state.hand.push(defendCard)
+	t.throws(() => a.playCard(state, {card: clashCard}))
+})
+

@@ -7,6 +7,7 @@ export default class Player extends Component {
 			<div class="Player">
 				<h2>${name}</h2>
 				<${Healthbar} max=${player.maxHealth} value=${player.currentHealth} block=${player.block} />
+				${player.powers.regen > 0 ? `Regen ${player.powers.regen}` : ''}
 			</div>
 		`
 	}
