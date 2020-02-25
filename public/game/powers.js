@@ -14,7 +14,7 @@ class Power {
 export const regen = new Power({
 	type: 'buff',
 	target: 'self',
-	use: (health, stacks) => health + stacks
+	use: (stacks) => stacks
 })
 
 export const vulnerable = new Power({

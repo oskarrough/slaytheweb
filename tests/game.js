@@ -200,11 +200,8 @@ test('Bash card adds a vulnerable power and it doubles damage', t => {
 	let {state} = t.context
 	const bashCard = createCard('Bash')
 	const strikeCard = createCard('Strike')
-
 	t.is(state.monster.currentHealth, 42, 'checking initial health to be sure')
-
 	state = a.playCard(state, {card: bashCard})
-	// console.log(bashCard, state.monster)
 	t.is(state.monster.powers.vulnerable, bashCard.powers.vulnerable, 'power is applied to monster before dealing damage')
 	t.is(state.monster.currentHealth, 34, '...and after dealing damage')
 
@@ -213,7 +210,7 @@ test('Bash card adds a vulnerable power and it doubles damage', t => {
 	t.is(state.monster.currentHealth, 34)
 
 	state = a.endTurn(state)
-	t.falsy(state.monster.powers.vulnerable, 'power stacks go down')
+	t.is(state.monster.powers.vulnerable, 0, 'power stacks go down')
 
 	state = a.playCard(state, {card: bashCard})
 	t.is(state.monster.currentHealth, 26)
@@ -221,6 +218,11 @@ test('Bash card adds a vulnerable power and it doubles damage', t => {
 
 	state = a.playCard(state, {card: strikeCard})
 	t.is(state.monster.currentHealth, 14, 'deals double damage')
+	state = a.endTurn(state)
+	state = a.endTurn(state)
+	state = a.endTurn(state)
+	state = a.endTurn(state)
+	t.is(state.monster.powers.vulnerable, 0, 'stacks dont go negative')
 })
 
 test('Flourish card adds a working "regen" buff', t => {

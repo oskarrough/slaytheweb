@@ -121,21 +121,21 @@ function applyCardPowers(state, {card}) {
 				draft.monster.powers[powerName] = newStacks
 			}
 		})
-		// draft.monster.powers.vulnerable = state.monster.powers.vulnerable || 0 + powers.vulnerable
 	})
 }
 
 function changeHealth(state, {target, amount}) {
-	// Powers
+	const currHp = state[target].currentHealth
+	// @todo avoid hardcoding powers. Also, this should be in the deal damage action.
 	if (state[target].powers.vulnerable) {
 		amount = powers.vulnerable.use(amount)
 	}
 	return produce(state, draft => {
-		let newHealth = state[target].currentHealth + amount
-		if (newHealth <= 0) {
-			// alert('we won')
-			// newHealth = 0
-		}
+		let newHealth = currHp + amount
+		// if (newHealth <= 0) {
+		// 	alert('we won')
+		// 	newHealth = 0
+		// }
 		draft[target].currentHealth = newHealth
 	})
 }
@@ -144,21 +144,34 @@ function changeHealth(state, {target, amount}) {
 function endTurn(state) {
 	let newState = discardHand(state)
 	newState = drawCards(newState)
-	return produce(newState, draft => {
+	newState = decreasePowerStacks(newState)
+	newState = produce(newState, draft => {
 		// Reset energy and block
 		draft.player.currentEnergy = 3
 		draft.player.block = 0
-		// Decrease all power stacks by one.
-		Object.keys(state.player.powers).forEach(p => {
-			draft.player.powers[p] = draft.player.powers[p] - 1
-		})
-		Object.keys(state.monster.powers).forEach(p => {
-			draft.monster.powers[p] = draft.monster.powers[p] - 1
-		})
-		// RegenPower
+
+		// @todo avoid hardcoding individual powers.
 		if (state.player.powers.regen) {
-			draft.player.currentHealth = powers.regen.use(state.player.currentHealth, state.player.powers.regen)
+			let amount = powers.regen.use(state.player.powers.regen)
+			let x = changeHealth(newState, {
+				target: 'player',
+				amount
+			})
+			draft.player.currentHealth = x.player.currentHealth
 		}
+	})
+	return newState
+}
+
+// Decrease all power stacks by one.
+function decreasePowerStacks(state) {
+	return produce(state, draft => {
+		Object.entries(state.player.powers).forEach(([name, stacks]) => {
+			if (stacks > 0) draft.player.powers[name] = stacks - 1
+		})
+		Object.entries(state.monster.powers).forEach(([name, stacks]) => {
+			if (stacks > 0) draft.monster.powers[name] = stacks - 1
+		})
 	})
 }
 
