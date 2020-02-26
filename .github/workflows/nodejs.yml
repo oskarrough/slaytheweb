@@ -17,10 +17,14 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: install, build, and test
+    - name: install and build
       run: |
         yarn
         yarn build
+      env:
+        CI: true
+    - name: test
+      run: |
         yarn test
       env:
         CI: true
