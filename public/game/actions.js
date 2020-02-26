@@ -50,9 +50,10 @@ function drawStarterDeck(state) {
 function drawCards(state, amount = 5) {
 	if (typeof amount !== 'number') amount = 5
 	return produce(state, draft => {
-		// When there aren't enough cards to draw, we recycle all cards from the discard pile to the draw pile.
+		// When there aren't enough cards to draw, we recycle all cards from the discard pile to the draw pile. Should we shuffle?
 		if (state.drawPile.length < amount) {
 			draft.drawPile = state.drawPile.concat(state.discardPile)
+			draft.drawPile = shuffle(draft.drawPile)
 			draft.discardPile = []
 		}
 		const newCards = draft.drawPile.slice(0, amount)
