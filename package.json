@@ -16,12 +16,12 @@
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
-    "esm": "^3.2.25",
     "nyc": "^15.0.0",
     "prettier": "1.19.1",
     "snowpack": "^1.4.0"
   },
   "dependencies": {
+    "esm": "^3.2.25",
     "@shopify/draggable": "^1.0.0-beta.8",
     "htm": "^3.0.3",
     "immer": "^5.3.6"
