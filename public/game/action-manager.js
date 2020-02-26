@@ -6,7 +6,7 @@ export default function() {
 	const past = new Queue()
 
 	function enqueue(action) {
-		future.add({action})
+		future.addToTop({action})
 	}
 
 	// Runs the oldest actions and returns a new state.
@@ -19,7 +19,7 @@ export default function() {
 		} catch (err) {
 			throw new Error(err)
 		}
-		past.add({state, action})
+		past.addToTop({state, action})
 		return nextState
 	}
 

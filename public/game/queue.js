@@ -2,9 +2,13 @@ export default class Queue {
 	constructor(items = []) {
 		this.list = items
 	}
-	// Adds a new item to the end of the queue
-	add(item) {
+	// Add to the front
+	addToTop(item) {
 		this.list.push(item)
+	}
+	// Add to the end
+	addToBottom(item) {
+		this.list.unshift(item)
 	}
 	// Removes and returns the last/newest item
 	takeFromTop() {
