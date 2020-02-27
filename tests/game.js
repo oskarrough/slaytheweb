@@ -67,10 +67,18 @@ test('can draw cards from drawPile to hand', t => {
 	const state2 = a.drawStarterDeck(state)
 	t.is(state2.hand.length, 0, 'hand is empty to start with')
 	const state3 = a.drawCards(state2)
-	t.is(state.hand.length, 0, 'immutable, should not be modified')
-	t.is(state2.hand.length, 0, 'immutable, should not be modified')
 	t.is(state3.hand.length, 5, 'cards have been added to the hand')
 	t.is(state3.drawPile.length, 5, 'cards have been removed from deck')
+})
+
+test('recycling the discard pile is shuffled', t => {
+	const getIds = (arr) => arr.map(card => card.id)
+	let {state} = t.context
+	state = a.drawStarterDeck(state)
+	state = a.drawCards(state)
+	let thirdDraw = a.endTurn(state)
+	thirdDraw = a.endTurn(thirdDraw)
+	t.notDeepEqual(getIds(state.hand), getIds(thirdDraw.hand), 'order is maintained')
 })
 
 test('can manipulate player hp', t => {
