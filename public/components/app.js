@@ -52,9 +52,12 @@ export default class App extends Component {
 	}
 
 	enableDrop() {
-		const drop = new window.Sortable.default(this.base.querySelectorAll('.dropzone'), {
+		const dropzones = this.base.querySelectorAll('.dropzone')
+		const drop = new window.Sortable.default(dropzones, {
 			draggable: '.Card',
-			mirror: {constrainDimensions: true}
+			mirror: {
+				constrainDimensions: true
+			}
 		})
 		drop.on('sortable:start', event => {
 			// console.log('sortable:start', event)

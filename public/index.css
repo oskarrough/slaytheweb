@@ -139,6 +139,7 @@ summary {
 	background: #96969617;
 	color: whitesmoke;
 	text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.8);
+	user-select: none;
 }
 
 .Card-type {
@@ -147,6 +148,7 @@ summary {
 
 .Card-description {
 	margin: 1rem 0.2rem;
+	user-select: none;
 }
 
 .Card-energy {
@@ -213,12 +215,13 @@ summary {
 }
 
 .draggable-source--is-dragging {
+	/* Hide the original card while dragging the copy. */
 	opacity: 0.5;
 	/* visibility: hidden; */
 }
 
 .Card.draggable-mirror {
-	max-width: var(--card-width);
+	width: var(--card-width);
 }
 
 .Monster {
