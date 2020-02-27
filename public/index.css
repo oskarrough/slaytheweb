@@ -210,6 +210,7 @@ summary {
 	border-radius: 0.5rem;
 	background: red;
 	background: #ffc107;
+	transition: width 400ms, background 200ms;
 }
 
 .draggable-source--is-dragging {
