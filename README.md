@@ -1,4 +1,4 @@
-# Kortgame
+# Slay the Web
 
 This is a much simplified, browser-based Slay The Spire inspired card crawl game that may or may not evolve into something else. It mostly exists because it was and is fun to develop.
 

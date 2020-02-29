@@ -31,7 +31,7 @@ class Main extends Component {
 
 const SplashScreen = props => html`
 	<article class="Splash">
-		<h1>Kort Game</h1>
+		<h1>Slay the Web</h1>
 		<h2>A little card crawl adventure in your browser. Work in progress.</h2>
 		<p><button onClick=${props.onNewGame}>Start a new game</a></p>
 	</article>
