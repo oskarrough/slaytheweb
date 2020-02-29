@@ -5,6 +5,9 @@ import App from '../components/app.js'
 class Main extends Component {
 	constructor() {
 		super()
+		this.state = {
+			isPlaying: true
+		}
 		this.handleWin = this.handleWin.bind(this)
 		this.handleNewGame = this.handleNewGame.bind(this)
 	}
