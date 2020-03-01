@@ -2,6 +2,10 @@ import {html, render, Component} from './web_modules/htm/preact/standalone.modul
 import App from '../components/app.js'
 
 // Decides what to render: splash screen, "win" screen or the game itself.
+// enum GameMode {
+//  	CHAR_SELECT, GAMEPLAY, DUNGEON_TRANSITION, SPLASH;
+// }
+
 class Main extends Component {
 	constructor() {
 		super()
