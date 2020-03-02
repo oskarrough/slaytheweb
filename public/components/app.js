@@ -17,7 +17,7 @@ export default class App extends Component {
 		this.am.enqueue({type: 'drawStarterDeck'})
 		this.am.enqueue({type: 'drawCards'})
 		// Enable debugging in the browser.
-		window.kortgame = {
+		window.slaytheweb = {
 			component: this,
 			actions,
 			createCard

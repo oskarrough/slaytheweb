@@ -1,85 +1,66 @@
-# Kortgame
+# Slay the Web
 
-This is a much simplified, browser-based Slay The Spire inspired card crawl game that may or may not evolve into something else. It mostly exists because it was and is fun to develop.
+[Slay The Spire](https://www.megacrit.com/) by Mega Crit is a single player, roguelike deckbuilding video card game.
 
-## Slay the Spire
+> We fused card games and roguelikes together to make the best single player deckbuilder we could. Craft a unique deck, encounter bizarre creatures, discover relics of immense power, and Slay the Spire!
 
-All credit goes to Mega Crit and their fantastic job designing [Slay The Spire](https://www.megacrit.com/). So much fun to be had in that game. I learned a lot by decompiling the game's source code and looking at the community's inspiring mods.
+They did a fantastic job with the game design that I wanted to learn more, so I tried implementing my own version of the game, for the web. I've studied the source code of the decompiled game, looked at community mods and want to give credit to all the STS fans out there.
+
+This repository has two points of interest.
+
+1. A game engine in `./public/game` with tests in `./tests`. Use this to build your own game using actions. The engine does not concern with rendering.
+
+2. An example interface (website) in `./public/index.js` using the game engine
 
 ## Development setup
 
 The `public` folder is meant to be deployed to any static web server and runs without the need of compiling anything.
 
-While developing locally, run 
+To develop locally, do:
 
 - `yarn start` for a server that reloads on file change
 
 All scripts are checked with eslint, formatted with prettier and tested with ava.
 
-- `yarn test`
-- `yarn test:watch`
+- `yarn test` tests once
+- `yarn test:watch` tests continously
 
-## Todo
+## Game Engine 
 
-Which parts do we want to do
-
-- Game state logic (player, actions)
-- First class console cli support
-- A deck of cards (draw, random methods)
-
-We can close this once we are able to draw a card onto an enemy and see the effects on game state.
-
-Many ways to go. This is the first.
-
-We need
-
-- A deck of cards
-- Cards have different energy cost and actions
-- An action could be draw a card, deal damage, everything is an action
-- All actions are queued
-
-Let's figure out how to draw a deck, play it console-style no ui.
+Here I'll try to summarize the main concepts.
 
 ### Game state
 
-use immer, supports undo and redo, store in local storage or even better, serialize and store everything in the url?
+The main game state is a single, large object that stores everything needed to reproduce a certain state of the game. This is all you'll need to implement any interface for the game.
 
-enum GameMode {
- 	CHAR_SELECT, GAMEPLAY, DUNGEON_TRANSITION, SPLASH;
-}
+The state is always modified by using an action. Actions take a state, modifies it and returns the new one.
 
-We want the game library/api to be independent of the UI?!
+### Cards
 
-### Console
+You have a deck of cards. Cards have different energy cost and can trigger actions. Cards from from  the "draw pile" to the "hand" and finally to the "discard pile". Cards are reshuffled into the draw pile when needed.
 
-by this I mean being able to play the game with (almost) no gui. write the commands, see the effect directly on game state.
+### Actions
 
-### Deck of cards
+An action is anything that modifies the game state, be it drawing a card, dealing damage or applying a debuff.
 
-- list of cards
-- a deck is some of the cards
-- a hand is the currently picked cards from your deck
+All actions are enqueued and dequeued using an "action manager". This allows us to keep track of the history, undo things and control the flow of the game.
 
-## Notes for later
+### Dungeon
+
+You enter a dungeon. Every dungeon has a path
+
+- Dungeon > Encounters > Monsters, Campfire, Merchant
 
 ### Basics
 
-- deck
-- draw
 - fight
 - gold
 - hand
 - player
-- maxHealth = startingHealth
-- currentHealth
 - energy
 - gold
 - Cards
 - card.use()
-
-### Encounters
-
-- Dungeon > Encounters > Monsters
 
 ## Links
 
@@ -108,3 +89,5 @@ by this I mean being able to play the game with (almost) no gui. write the comma
 - https://www.reddit.com/r/roguelikedev/
 - https://www.reddit.com/r/slaythespire/comments/a7lhpq/any_recommended_games_similar_to_slay_the_spire/
 - https://www.gdcvault.com/play/1025731/-Slay-the-Spire-Metrics
+- https://github.com/Dementophobia/slay-the-spire-sensei
+- https://www.rockpapershotgun.com/2018/02/19/why-revealing-all-is-the-secret-of-slay-the-spires-success/

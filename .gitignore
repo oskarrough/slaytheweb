@@ -6,3 +6,4 @@ public/web_modules/
 docs/
 .nyc_output
 coverage/
+.now

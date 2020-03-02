@@ -2,6 +2,10 @@ import {html, render, Component} from './web_modules/htm/preact/standalone.modul
 import App from '../components/app.js'
 
 // Decides what to render: splash screen, "win" screen or the game itself.
+// enum GameMode {
+//  	CHAR_SELECT, GAMEPLAY, DUNGEON_TRANSITION, SPLASH;
+// }
+
 class Main extends Component {
 	constructor() {
 		super()
@@ -34,7 +38,7 @@ class Main extends Component {
 
 const SplashScreen = props => html`
 	<article class="Splash">
-		<h1>Kort Game</h1>
+		<h1>Slay the Web</h1>
 		<h2>A little card crawl adventure in your browser. Work in progress.</h2>
 		<p><button onClick=${props.onNewGame}>Start a new game</a></p>
 	</article>
