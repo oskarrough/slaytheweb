@@ -26,6 +26,7 @@ test('new game state is ok', t => {
 		monster: {
 			maxHealth: 42,
 			currentHealth: 42,
+			damage: 5,
 			powers: {}
 		}
 	})
@@ -84,18 +85,18 @@ test('recycling the discard pile is shuffled', t => {
 test('can manipulate player hp', t => {
 	const {state} = t.context
 	t.is(state.player.currentHealth, 100)
-	const state2 = a.changeHealth(state, {target: 'player', amount: -10})
+	const state2 = a.removeHealth(state, {target: 'player', amount: 10})
 	t.is(state2.player.currentHealth, 90)
-	const state3 = a.changeHealth(state2, {target: 'player', amount: 10})
+	const state3 = a.addHealth(state2, {target: 'player', amount: 10})
 	t.is(state3.player.currentHealth, 100)
 })
 
 test('can manipulate monster hp', t => {
 	const {state} = t.context
 	t.is(state.monster.currentHealth, 42)
-	const state2 = a.changeHealth(state, {target: 'monster', amount: 8})
+	const state2 = a.addHealth(state, {target: 'monster', amount: 8})
 	t.is(state2.monster.currentHealth, 50)
-	const state3 = a.changeHealth(state2, {target: 'monster', amount: -50})
+	const state3 = a.removeHealth(state2, {target: 'monster', amount: 50})
 	t.is(state3.monster.currentHealth, 0)
 })
 
@@ -110,8 +111,10 @@ test('can not play a card without enough energy', t => {
 test('can play a strike card from hand and see the effects on state', t => {
 	const {state} = t.context
 	const originalHealth = state.monster.currentHealth
+	t.is(state.monster.currentHealth, originalHealth)
 	const card = createCard('Strike')
 	const state2 = a.playCard(state, {card})
+	t.is(state.monster.currentHealth, originalHealth)
 	t.is(state2.monster.currentHealth, originalHealth - card.damage)
 })
 
@@ -123,6 +126,14 @@ test('can play a defend card from hand and see the effects on state', t => {
 	t.is(state2.player.block, 5)
 	const state3 = a.playCard(state2, {card})
 	t.is(state3.player.block, 10)
+})
+
+test('when monster reaches 0 hp, you win!', t => {
+	const {state} = t.context
+	t.is(state.monster.currentHealth, 42)
+	const newState = a.removeHealth(state, {target: 'monster', amount: 40})
+	t.is(state.monster.currentHealth, 42, 'original state is not modified')
+	t.is(newState.monster.currentHealth, 2, 'but new state is')
 })
 
 test('can discard a single card from hand', t => {
@@ -197,20 +208,17 @@ test('ending a turn draws a new hand and recycles discard pile', t => {
 	t.is(state.discardPile.length, 0)
 })
 
-test('when monster reaches 0 hp, you win!', t => {
-	const {state} = t.context
-	t.is(state.monster.currentHealth, 42)
-	const newState = a.changeHealth(state, {target: 'monster', amount: -42})
-	t.is(newState.monster.currentHealth, 0)
-})
-
 test('Bash card adds a vulnerable power and it doubles damage', t => {
 	let {state} = t.context
 	const bashCard = createCard('Bash')
 	const strikeCard = createCard('Strike')
 	t.is(state.monster.currentHealth, 42, 'checking initial health to be sure')
 	state = a.playCard(state, {card: bashCard})
-	t.is(state.monster.powers.vulnerable, bashCard.powers.vulnerable, 'power is applied to monster before dealing damage')
+	t.is(
+		state.monster.powers.vulnerable,
+		bashCard.powers.vulnerable,
+		'power is applied to monster before dealing damage'
+	)
 	t.is(state.monster.currentHealth, 34, '...and after dealing damage')
 
 	state = a.endTurn(state)
@@ -270,24 +278,24 @@ test('You can stack regen power', t => {
 	t.is(state.player.powers.regen, card.powers.regen * 2, 'regen applied twice')
 })
 
-test.skip('Sucker Punch applies weak', t => {
-	let {state} = t.context
-	const card = createCard('Sucker Punch')
-	state = a.playCard(state, {card})
-})
+// test.skip('Sucker Punch applies weak', t => {
+// 	let {state} = t.context
+// 	const card = createCard('Sucker Punch')
+// 	state = a.playCard(state, {card})
+// })
 
-test.skip('Cleave damages all monsters', t => {
-	let {state} = t.context
-	const card = createCard('Cleave')
-	state = a.playCard(state, {card})
-})
+// test.skip('Cleave damages all monsters', t => {
+// 	let {state} = t.context
+// 	const card = createCard('Cleave')
+// 	state = a.playCard(state, {card})
+// })
 
-test.skip('Clash can only be played if it\'s the only attack', t => {
-	let {state} = t.context
-	const clashCard = createCard('Clash')
-	const defendCard = createCard('Defend')
-	state.hand.push(clashCard)
-	state.hand.push(defendCard)
-	t.throws(() => a.playCard(state, {card: clashCard}))
-})
+// test.skip('Clash can only be played if it\'s the only attack', t => {
+// 	let {state} = t.context
+// 	const clashCard = createCard('Clash')
+// 	const defendCard = createCard('Defend')
+// 	state.hand.push(clashCard)
+// 	state.hand.push(defendCard)
+// 	t.throws(() => a.playCard(state, {card: clashCard}))
+// })
 

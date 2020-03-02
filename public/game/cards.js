@@ -92,7 +92,7 @@ export class Card {
 	}
 	use() {
 		// const uses = []
-		// if (props.damage) uses.push({type: 'changeHealth', this.damage})
+		// if (props.damage) uses.push({type: 'removeHealth', this.damage})
 		// if (props.block) uses.push({type: 'addBlock', this.block})
 		// if (props.damage) uses.push({type: 'applyPower', this.vulnerable})
 		// Here we could queue different actions. As example for bash:

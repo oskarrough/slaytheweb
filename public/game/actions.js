@@ -90,23 +90,25 @@ function playCard(state, {card}) {
 	if (!card) throw new Error('No card to play')
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
 	// Move card from hand to discard pile.
-	state = discardCard(state, {card})
-	state = produce(state, draft => {
+	let newState = discardCard(state, {card})
+	newState = produce(newState, draft => {
 		// Use energy
-		draft.player.currentEnergy = state.player.currentEnergy - card.energy
+		draft.player.currentEnergy = newState.player.currentEnergy - card.energy
 		// Block
 		if (card.block) {
-			draft.player.block = state.player.block + card.block
+			draft.player.block = newState.player.block + card.block
 		}
 		// Damage
 		if (card.damage) {
-			const {monster} = changeHealth(state, {target: 'monster', amount: card.damage * -1})
-			draft.monster.currentHealth = monster.currentHealth
+			draft.monster.currentHealth = removeHealth(newState, {
+				target: 'monster',
+				amount: card.damage
+			}).monster.currentHealth
 		}
 	})
 	// Powers
-	if (card.powers) state = applyCardPowers(state, {card})
-	return state
+	if (card.powers) newState = applyCardPowers(newState, {card})
+	return newState
 }
 
 function applyCardPowers(state, {card}) {
@@ -125,19 +127,18 @@ function applyCardPowers(state, {card}) {
 	})
 }
 
-function changeHealth(state, {target, amount}) {
-	const currHp = state[target].currentHealth
-	// @todo avoid hardcoding powers. Also, this should be in the deal damage action.
+function addHealth(state, {target, amount}) {
+	return produce(state, draft => {
+		draft[target].currentHealth = state[target].currentHealth + amount
+	})
+}
+
+const removeHealth = (state, {target, amount}) => {
 	if (state[target].powers.vulnerable) {
 		amount = powers.vulnerable.use(amount)
 	}
 	return produce(state, draft => {
-		let newHealth = currHp + amount
-		// if (newHealth <= 0) {
-		// 	alert('we won')
-		// 	newHealth = 0
-		// }
-		draft[target].currentHealth = newHealth
+		draft[target].currentHealth = state[target].currentHealth - amount
 	})
 }
 
@@ -156,7 +157,7 @@ function endTurn(state) {
 		// @todo avoid hardcoding individual powers.
 		if (state.player.powers.regen) {
 			let amount = powers.regen.use(state.player.powers.regen)
-			let x = changeHealth(newState, {
+			let x = addHealth(newState, {
 				target: 'player',
 				amount
 			})
@@ -180,6 +181,8 @@ function decreasePowerStacks(state) {
 }
 
 export default {
+	addHealth,
+	removeHealth,
 	applyCardPowers,
 	createNewGame,
 	drawStarterDeck,
@@ -188,8 +191,7 @@ export default {
 	discardCard,
 	discardHand,
 	playCard,
-	endTurn,
-	changeHealth
+	endTurn
 }
 
 // ## Console Commands
