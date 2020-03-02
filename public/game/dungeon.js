@@ -55,21 +55,18 @@ export class MonsterRoom extends Room {
 
 // A monster has health, probably some damage and a list of intents.
 // Intents are cycled through as the monster plays its turn.
-export class Monster {
-	constructor(props = {}) {
-		this.id = uuid()
-		this.maxHealth = props.hp || 42
-		this.currentHealth = props.hp || 42
-		this.damage = props.damage || 5
-		// this.damage = random(5)
-		this.intents = ['attack', 'block', 'attack', 'attack']
-	}
-	beforeBattle() {}
-	takeTurn() {
-		console.log('takeTurn')
+
+export function Monster(props = {}) {
+	// const id = uuid()
+	const maxHealth = props.hp || 42
+	const currentHealth = props.hp || 42
+	const damage = props.damage || 5
+	// const damage = random(5)
+	// const intents = ['attack', 'block', 'attack', 'attack']
+	return {
+		maxHealth,
+		currentHealth,
+		damage,
+		powers: {}
 	}
 }
-
-// export const encounter1 = new MonsterRoom(new Monster())
-// export const encounter2 = new MonsterRoom(new Monster({hp: 24}), new Monster({hp: 20}))
-// export const encounter3 = new MonsterRoom(new Monster(), new Monster(), new Monster())

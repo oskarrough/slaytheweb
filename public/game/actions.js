@@ -2,28 +2,26 @@ import produce from '../web_modules/immer.js'
 import {createCard} from './cards.js'
 import {shuffle} from './utils.js'
 import powers from './powers.js'
+import {dungeon1} from './dungeon-encounters.js'
 
 // The idea is that we have one big object with game state. Whenever we want to change something, we call an "action" from this file. Each action takes two arguments: 1) the current state, 2) an object of arguments.
 
 // This is the big object of game state. Everything should start here.
 function createNewGame() {
+	const monster = dungeon1.rooms[0].monsters[0]
 	return {
 		hand: [],
 		drawPile: [],
 		discardPile: [],
 		player: {
-			maxEnergy: 3,
-			currentEnergy: 3,
 			maxHealth: 100,
 			currentHealth: 100,
+			maxEnergy: 3,
+			currentEnergy: 3,
 			block: 0,
 			powers: {}
 		},
-		monster: {
-			maxHealth: 42,
-			currentHealth: 42,
-			powers: {}
-		}
+		monster
 	}
 }
 
