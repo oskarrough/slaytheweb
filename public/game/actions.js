@@ -145,7 +145,9 @@ function changeHealth(state, {target, amount}) {
 function endTurn(state) {
 	let newState = discardHand(state)
 	newState = drawCards(newState)
+	// aka "endofturnhook"
 	newState = decreasePowerStacks(newState)
+
 	newState = produce(newState, draft => {
 		// Reset energy and block
 		draft.player.currentEnergy = 3
@@ -166,13 +168,14 @@ function endTurn(state) {
 
 // Decrease all power stacks by one.
 function decreasePowerStacks(state) {
+	function decrease(powers) {
+		Object.entries(powers).forEach(([name, stacks]) => {
+			if (stacks > 0) powers[name] = stacks - 1
+		})
+	}
 	return produce(state, draft => {
-		Object.entries(state.player.powers).forEach(([name, stacks]) => {
-			if (stacks > 0) draft.player.powers[name] = stacks - 1
-		})
-		Object.entries(state.monster.powers).forEach(([name, stacks]) => {
-			if (stacks > 0) draft.monster.powers[name] = stacks - 1
-		})
+		decrease(draft.player.powers)
+		decrease(draft.monster.powers)
 	})
 }
 
