@@ -27,3 +27,29 @@ export function shuffle(array) {
 
 	return array
 }
+
+// Get the value at "path" of "object"
+// https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_get
+export const get = (obj, path, defaultValue) => {
+	const travel = regexp =>
+		String.prototype.split
+			.call(path, regexp)
+			.filter(Boolean)
+			.reduce((res, key) => (res !== null && res !== undefined ? res[key] : res), obj)
+	const result = travel(/[,[\]]+?/) || travel(/[,[\].]+?/)
+	return result === undefined || result === obj ? defaultValue : result
+}
+
+// Support a target like "enemyx", where x is the order of the monster.
+export function getMonster(obj, target) {
+	let path = target
+	// console.log({pathbefore: path})
+	if (target.includes('enemy')) {
+		const monsterIndex = target.split('enemy')[1]
+		path = `dungeon.rooms[0].monsters[${monsterIndex}]`
+	}
+	// console.log({pathafter: path})
+	const result = get(obj, path)
+	// console.log({result})
+	return result
+}

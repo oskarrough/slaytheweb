@@ -227,6 +227,7 @@ summary {
 
 .Monster {
 	position: relative;
+	padding-bottom: 3rem;
 }
 
 .Monster .Card {

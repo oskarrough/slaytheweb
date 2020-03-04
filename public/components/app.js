@@ -2,7 +2,7 @@ import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 import ActionManager from '../game/action-manager.js'
 import actions from './../game/actions.js'
 import {createCard} from './../game/cards.js'
-import Player, {Healthbar} from './player.js'
+import Player, {Monster, Healthbar} from './player.js'
 import Cards from './cards.js'
 import History from './history.js'
 
@@ -61,7 +61,9 @@ export default class App extends Component {
 		})
 		drop.on('sortable:start', event => {
 			// console.log('sortable:start', event)
-			const card = this.state.hand.find(card => card.id === event.data.dragEvent.data.source.dataset.id)
+			const card = this.state.hand.find(
+				card => card.id === event.data.dragEvent.data.source.dataset.id
+			)
 			if (card.energy > this.state.player.currentEnergy) {
 				event.cancel()
 				alert('Not enough energy to play this card.')
@@ -69,34 +71,39 @@ export default class App extends Component {
 		})
 		drop.on('sortable:sort', event => {
 			// Only allow drop on discard pile.
-			if (event.dragEvent.data.overContainer !== drop.containers[0]) {
-				// console.log('canceled sortable:sort')
+			const el = event.dragEvent.data.overContainer
+			if (!el.classList.contains('is-cardTarget')) {
 				event.cancel()
 			}
 		})
 		// drop.on('sortable:sorted', event => { console.log('sortable:sorted', event) })
 		drop.on('sortable:stop', event => {
 			const {newContainer, oldContainer} = event.data
-			const wasDiscarded = newContainer === drop.containers[0] && newContainer !== oldContainer
+			const wasDiscarded =
+				newContainer.classList.contains('is-cardTarget') && newContainer !== oldContainer
 			if (wasDiscarded) {
 				event.cancel()
-				const card = this.state.hand.find(card => card.id === event.data.dragEvent.originalSource.dataset.id)
-				this.enqueue({type: 'playCard', card})
+				const card = this.state.hand.find(
+					card => card.id === event.data.dragEvent.originalSource.dataset.id
+				)
+				const discardedOnCardIndex = Array.from(newContainer.parentNode.children).indexOf(
+					newContainer
+				)
+				this.enqueue({type: 'playCard', target: `enemy${discardedOnCardIndex}`, card})
 				this.dequeue() // play card immediately
 			}
 		})
 	}
 
 	render(props, state) {
-		const didWin = state.monster.currentHealth <= 0
+		const room = state.dungeon.getCurrentRoom()
+		const didWin = room.isComplete()
 		return html`
 			<div class="App">
 				<div class="Split">
 					<${Player} player=${state.player} />
-					<div class="Monster dropzone">
-						<h2>Evil Monster</h2>
-						<${Healthbar} max=${state.monster.maxHealth} value=${state.monster.currentHealth} />
-						${state.monster.powers.vulnerable > 0 ? `Vulnerable ${state.monster.powers.vulnerable}` : ''}
+					<div class="Monsters">
+						${room.monsters.map(Monster)}
 					</div>
 				</div>
 

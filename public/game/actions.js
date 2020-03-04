@@ -1,6 +1,6 @@
 import produce from '../web_modules/immer.js'
 import {createCard} from './cards.js'
-import {shuffle} from './utils.js'
+import {shuffle, get, getMonster} from './utils.js'
 import powers from './powers.js'
 import {createSimpleDungeon} from './dungeon-encounters.js'
 
@@ -8,7 +8,6 @@ import {createSimpleDungeon} from './dungeon-encounters.js'
 
 // This is the big object of game state. Everything should start here.
 function createNewGame() {
-	const dungeon = createSimpleDungeon()
 	return {
 		hand: [],
 		drawPile: [],
@@ -21,7 +20,7 @@ function createNewGame() {
 			block: 0,
 			powers: {}
 		},
-		monster: dungeon.rooms[0].monsters[0]
+		dungeon: createSimpleDungeon()
 	}
 }
 
@@ -84,61 +83,92 @@ const discardHand = state =>
 		draft.hand = []
 	})
 
-function playCard(state, {card}) {
+function playCard(state, {card, target}) {
+	if (!target) target = card.target
 	if (!card) throw new Error('No card to play')
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
+	if (!target || typeof target !== 'string') throw new Error(`Wrong target to play card: ${target}`)
+
+	// console.log('play card', {target})
+
 	// Move card from hand to discard pile.
 	let newState = discardCard(state, {card})
+
 	newState = produce(newState, draft => {
 		// Use energy
 		draft.player.currentEnergy = newState.player.currentEnergy - card.energy
+
 		// Block
 		if (card.block) {
 			draft.player.block = newState.player.block + card.block
 		}
-		// Damage
-		if (card.damage) {
-			draft.monster.currentHealth = removeHealth(newState, {
-				target: 'monster',
-				amount: card.damage
-			}).monster.currentHealth
-		}
 	})
+
+	// Damage
+	if (card.damage) {
+		newState = removeHealth(newState, {target, amount: card.damage})
+	}
+
 	// Powers
 	if (card.powers) newState = applyCardPowers(newState, {card})
+
 	return newState
+}
+
+function addHealth(state, {target, amount}) {
+	const monster = getMonster(state, target)
+	return produce(state, draft => {
+		getMonster(draft, target).currentHealth = monster.currentHealth + amount
+	})
+}
+
+const removeHealth = (state, {target, amount}) => {
+	const monster = getMonster(state, target)
+
+	// console.log({monster, target})
+
+	if (monster.powers.vulnerable) {
+		amount = powers.vulnerable.use(amount)
+	}
+
+	return produce(state, draft => {
+		getMonster(draft, target).currentHealth = monster.currentHealth - amount
+	})
 }
 
 function applyCardPowers(state, {card}) {
 	return produce(state, draft => {
-		Object.keys(card.powers).forEach(powerName => {
-			let stacks = card.powers[powerName]
+		Object.entries(card.powers).forEach(([name, stacks]) => {
 			if (card.target === 'self') {
-				const newStacks = (state.player.powers[powerName] || 0) + stacks
-				draft.player.powers[powerName] = newStacks
+				const newStacks = (state.player.powers[name] || 0) + stacks
+				draft.player.powers[name] = newStacks
 			}
 			if (card.target === 'enemy') {
-				const newStacks = (state.monster.powers[powerName] || 0) + stacks
-				draft.monster.powers[powerName] = newStacks
+				state.dungeon.rooms[0].monsters.forEach(monster => {
+					const newStacks = (monster.powers[name] || 0) + stacks
+					// @todo for now we just apply to one
+					draft.dungeon.rooms[0].monsters[0].powers[name] = newStacks
+				})
 			}
 		})
 	})
 }
 
-function addHealth(state, {target, amount}) {
+// Decrease all (player's + monster's) power stacks by one.
+function decreasePowerStacks(state) {
+	function decrease(powers) {
+		Object.entries(powers).forEach(([name, stacks]) => {
+			if (stacks > 0) powers[name] = stacks - 1
+		})
+	}
 	return produce(state, draft => {
-		draft[target].currentHealth = state[target].currentHealth + amount
+		decrease(draft.player.powers)
+		state.dungeon.rooms[0].monsters.forEach(monster => {
+			decrease(monster.powers)
+		})
 	})
 }
 
-const removeHealth = (state, {target, amount}) => {
-	if (state[target].powers.vulnerable) {
-		amount = powers.vulnerable.use(amount)
-	}
-	return produce(state, draft => {
-		draft[target].currentHealth = state[target].currentHealth - amount
-	})
-}
 
 // Ending a turn means 1) discarding your hand 2) drawing new cards and 3) resetting different state things.
 function endTurn(state) {
@@ -163,19 +193,6 @@ function endTurn(state) {
 		}
 	})
 	return newState
-}
-
-// Decrease all power stacks by one.
-function decreasePowerStacks(state) {
-	function decrease(powers) {
-		Object.entries(powers).forEach(([name, stacks]) => {
-			if (stacks > 0) powers[name] = stacks - 1
-		})
-	}
-	return produce(state, draft => {
-		decrease(draft.player.powers)
-		decrease(draft.monster.powers)
-	})
 }
 
 export default {

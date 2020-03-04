@@ -1,4 +1,5 @@
 import test from 'ava'
+import {getMonster} from '../public/game/utils'
 import actions from '../public/game/actions'
 import {createCard} from '../public/game/cards'
 
@@ -11,7 +12,10 @@ test.beforeEach(t => {
 
 test('new game state is ok', t => {
 	const {state} = t.context
-	t.deepEqual(state, {
+	t.is(typeof state.dungeon, 'object')
+	const stateExceptDungeon = Object.assign({}, state)
+	delete stateExceptDungeon.dungeon
+	t.deepEqual(stateExceptDungeon, {
 		drawPile: [],
 		hand: [],
 		discardPile: [],
@@ -21,12 +25,6 @@ test('new game state is ok', t => {
 			maxHealth: 100,
 			currentHealth: 100,
 			block: 0,
-			powers: {}
-		},
-		monster: {
-			maxHealth: 42,
-			currentHealth: 42,
-			damage: 5,
 			powers: {}
 		}
 	})
@@ -73,7 +71,7 @@ test('can draw cards from drawPile to hand', t => {
 })
 
 test('recycling the discard pile is shuffled', t => {
-	const getIds = (arr) => arr.map(card => card.id)
+	const getIds = arr => arr.map(card => card.id)
 	let {state} = t.context
 	state = a.drawStarterDeck(state)
 	state = a.drawCards(state)
@@ -91,13 +89,17 @@ test('can manipulate player hp', t => {
 	t.is(state3.player.currentHealth, 100)
 })
 
+// play {card} {optional selector} {optional index}
+
 test('can manipulate monster hp', t => {
 	const {state} = t.context
-	t.is(state.monster.currentHealth, 42)
-	const state2 = a.addHealth(state, {target: 'monster', amount: 8})
-	t.is(state2.monster.currentHealth, 50)
-	const state3 = a.removeHealth(state2, {target: 'monster', amount: 50})
-	t.is(state3.monster.currentHealth, 0)
+	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42)
+
+	const state2 = a.addHealth(state, {target: 'enemy0', amount: 8})
+	t.is(state2.dungeon.rooms[0].monsters[0].currentHealth, 50, 'can add health')
+
+	// const state3 = a.removeHealth(state2, {target: 'enemy0', 0), amount: 50})
+	// t.is(state3.dungeon.rooms[0].monsters[0].currentHealth, 0, 'can remove health')
 })
 
 test('can not play a card without enough energy', t => {
@@ -110,30 +112,30 @@ test('can not play a card without enough energy', t => {
 
 test('can play a strike card from hand and see the effects on state', t => {
 	const {state} = t.context
-	const originalHealth = state.monster.currentHealth
-	t.is(state.monster.currentHealth, originalHealth)
+	const originalHealth = getMonster(state, 'enemy0').currentHealth
+	t.is(getMonster(state, 'enemy0').currentHealth, originalHealth)
 	const card = createCard('Strike')
-	const state2 = a.playCard(state, {card})
-	t.is(state.monster.currentHealth, originalHealth)
-	t.is(state2.monster.currentHealth, originalHealth - card.damage)
+	const state2 = a.playCard(state, {target: 'enemy0', card})
+	t.is(getMonster(state, 'enemy0').currentHealth, originalHealth)
+	t.is(getMonster(state2, 'enemy0').currentHealth, originalHealth - card.damage)
 })
 
 test('can play a defend card from hand and see the effects on state', t => {
 	const {state} = t.context
 	t.is(state.player.block, 0)
 	const card = createCard('Defend')
-	const state2 = a.playCard(state, {card})
+	const state2 = a.playCard(state, {target: 'player', card})
 	t.is(state2.player.block, 5)
-	const state3 = a.playCard(state2, {card})
+	const state3 = a.playCard(state2, {target: 'player', card})
 	t.is(state3.player.block, 10)
 })
 
 test('when monster reaches 0 hp, you win!', t => {
 	const {state} = t.context
-	t.is(state.monster.currentHealth, 42)
-	const newState = a.removeHealth(state, {target: 'monster', amount: 40})
-	t.is(state.monster.currentHealth, 42, 'original state is not modified')
-	t.is(newState.monster.currentHealth, 2, 'but new state is')
+	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42)
+	const newState = a.removeHealth(state, {target: 'enemy0', amount: 40})
+	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42, 'original state is not modified')
+	t.is(newState.dungeon.rooms[0].monsters[0].currentHealth, 2, 'but new state is')
 })
 
 test('can discard a single card from hand', t => {
@@ -163,9 +165,9 @@ test('ending a turn refreshes energy', t => {
 	const {state} = t.context
 	t.is(state.player.currentEnergy, 3)
 	const card = createCard('Defend')
-	const state2 = a.playCard(state, {card})
+	const state2 = a.playCard(state, {target: 'player', card})
 	t.is(state2.player.currentEnergy, 2)
-	const state3 = a.playCard(state2, {card})
+	const state3 = a.playCard(state2, {target: 'player', card})
 	t.is(state3.player.currentEnergy, 1)
 	const newTurn = a.endTurn(state3)
 	t.is(newTurn.player.currentEnergy, 3)
@@ -175,9 +177,9 @@ test("ending a turn removes player's block", t => {
 	const {state} = t.context
 	t.is(state.player.block, 0)
 	const card = createCard('Defend')
-	const state2 = a.playCard(state, {card})
+	const state2 = a.playCard(state, {target: 'player', card})
 	t.is(state2.player.block, 5)
-	const state3 = a.playCard(state2, {card})
+	const state3 = a.playCard(state2, {target: 'player', card})
 	t.is(state3.player.block, 10)
 	const newTurn = a.endTurn(state3)
 	t.is(newTurn.player.block, 0)
@@ -212,33 +214,36 @@ test('Bash card adds a vulnerable power and it doubles damage', t => {
 	let {state} = t.context
 	const bashCard = createCard('Bash')
 	const strikeCard = createCard('Strike')
-	t.is(state.monster.currentHealth, 42, 'checking initial health to be sure')
-	state = a.playCard(state, {card: bashCard})
+
+	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42, 'checking initial health to be sure')
+
+	state = a.playCard(state, {target: 'enemy0', card: bashCard})
 	t.is(
-		state.monster.powers.vulnerable,
+		getMonster(state, 'enemy0').powers.vulnerable,
 		bashCard.powers.vulnerable,
 		'power is applied to monster before dealing damage'
 	)
-	t.is(state.monster.currentHealth, 34, '...and after dealing damage')
+	t.is(getMonster(state, 'enemy0').currentHealth, 34, '...and after dealing damage')
+
+	t.is(getMonster(state, 'enemy0').powers.vulnerable, 2, 'power is applied')
+	state = a.endTurn(state)
+	t.is(getMonster(state, 'enemy0').powers.vulnerable, 1, 'power stacks go down')
+	t.is(getMonster(state, 'enemy0').currentHealth, 34)
 
 	state = a.endTurn(state)
-	t.is(state.monster.powers.vulnerable, 1, 'power stacks go down')
-	t.is(state.monster.currentHealth, 34)
+	t.is(getMonster(state, 'enemy0').powers.vulnerable, 0, 'power stacks go down')
 
-	state = a.endTurn(state)
-	t.is(state.monster.powers.vulnerable, 0, 'power stacks go down')
+	state = a.playCard(state, {target: 'enemy0', card: bashCard})
+	t.is(getMonster(state, 'enemy0').currentHealth, 26)
+	t.is(getMonster(state, 'enemy0').powers.vulnerable, 2)
 
-	state = a.playCard(state, {card: bashCard})
-	t.is(state.monster.currentHealth, 26)
-	t.is(state.monster.powers.vulnerable, 2)
-
-	state = a.playCard(state, {card: strikeCard})
-	t.is(state.monster.currentHealth, 14, 'deals double damage')
+	state = a.playCard(state, {target: 'enemy0', card: strikeCard})
+	t.is(getMonster(state, 'enemy0').currentHealth, 14, 'deals double damage')
 	state = a.endTurn(state)
 	state = a.endTurn(state)
 	state = a.endTurn(state)
 	state = a.endTurn(state)
-	t.is(state.monster.powers.vulnerable, 0, 'stacks dont go negative')
+	t.is(getMonster(state, 'enemy0').powers.vulnerable, 0, 'stacks dont go negative')
 })
 
 test('Flourish card adds a working "regen" buff', t => {
@@ -246,7 +251,7 @@ test('Flourish card adds a working "regen" buff', t => {
 	const card = createCard('Flourish')
 	t.is(card.powers.regen, 5, 'card has regen power')
 	t.is(state.player.currentHealth, 100)
-	state = a.playCard(state, {card})
+	state = a.playCard(state, {target: 'self', card})
 	t.is(state.player.powers.regen, card.powers.regen, 'regen is applied to player')
 	state = a.endTurn(state)
 	t.is(state.player.currentHealth, 105, 'ending your turn adds hp')
@@ -298,4 +303,3 @@ test('You can stack regen power', t => {
 // 	state.hand.push(defendCard)
 // 	t.throws(() => a.playCard(state, {card: clashCard}))
 // })
-
