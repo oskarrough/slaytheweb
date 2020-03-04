@@ -11,11 +11,14 @@ export default class App extends Component {
 		super()
 		// Set up our action manager.
 		this.am = ActionManager()
+
 		// Prepare the game.
-		this.am.enqueue({type: 'createNewGame'})
-		this.state = this.am.dequeue({})
-		this.am.enqueue({type: 'drawStarterDeck'})
-		this.am.enqueue({type: 'drawCards'})
+		let game = actions.createNewGame()
+		game = actions.setDungeon(game)
+		game = actions.drawStarterDeck(game)
+		game = actions.drawCards(game)
+		this.state = game
+
 		// Enable debugging in the browser.
 		window.slaytheweb = {
 			component: this,
@@ -26,8 +29,6 @@ export default class App extends Component {
 
 	componentDidMount() {
 		this.enableDrop()
-		// Dequeuing twice because of what we did in constructor.
-		this.dequeue(this.dequeue)
 	}
 
 	enqueue(action) {
