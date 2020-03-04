@@ -9,19 +9,28 @@ import {createSimpleDungeon} from './dungeon-encounters.js'
 // This is the big object of game state. Everything should start here.
 function createNewGame() {
 	return {
-		hand: [],
 		drawPile: [],
+		hand: [],
 		discardPile: [],
 		player: {
-			maxHealth: 100,
-			currentHealth: 100,
 			maxEnergy: 3,
 			currentEnergy: 3,
+			maxHealth: 100,
+			currentHealth: 100,
 			block: 0,
 			powers: {}
-		},
-		dungeon: createSimpleDungeon()
+		}
+		// dungeon : {}
 	}
+}
+
+// By default a new game doesn't come with a dungeon. Use this to set one.
+function setDungeon(state, {dungeon} = {}) {
+	// Default to the "simple" dungeon encounter.
+	if (!dungeon) dungeon = createSimpleDungeon()
+	return produce(state, draft => {
+		draft.dungeon = dungeon
+	})
 }
 
 // Draws a "starter" deck to your discard pile. Normally you'd run this as you start the game.
@@ -195,8 +204,6 @@ function endTurn(state) {
 }
 
 export default {
-	addHealth,
-	removeHealth,
 	applyCardPowers,
 	createNewGame,
 	drawStarterDeck,
@@ -205,7 +212,10 @@ export default {
 	discardCard,
 	discardHand,
 	playCard,
-	endTurn
+	endTurn,
+	addHealth,
+	removeHealth,
+	setDungeon
 }
 
 // ## Console Commands

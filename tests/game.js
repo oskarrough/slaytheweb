@@ -2,20 +2,22 @@ import test from 'ava'
 import {getMonster} from '../public/game/utils'
 import actions from '../public/game/actions'
 import {createCard} from '../public/game/cards'
+import {createSimpleDungeon} from '../public/game/dungeon-encounters'
 
 const a = actions
 
-// Each test gets a fresh game state.
+// Each test gets a fresh game state with a dungeon set up.
 test.beforeEach(t => {
-	t.context = {state: a.createNewGame()}
+	let state = a.createNewGame()
+	state = a.setDungeon(state, createSimpleDungeon())
+	t.context = {state}
 })
 
 test('new game state is ok', t => {
 	const {state} = t.context
-	t.is(typeof state.dungeon, 'object')
-	const stateExceptDungeon = Object.assign({}, state)
-	delete stateExceptDungeon.dungeon
-	t.deepEqual(stateExceptDungeon, {
+	t.true(state.dungeon.rooms.length > 0, 'we have a dungeon with rooms')
+	delete state.dungeon // deleting for rest of test because can't deepequal ids
+	t.deepEqual(state, {
 		drawPile: [],
 		hand: [],
 		discardPile: [],
