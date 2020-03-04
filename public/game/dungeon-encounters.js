@@ -1,7 +1,12 @@
-import Dungeon, {MonsterRoom, Monster} from './dungeon.js'
+import Dungeon, {CampfireRoom, MonsterRoom, Monster} from './dungeon.js'
 
-export const encounter1 = new MonsterRoom(new Monster())
-export const encounter2 = new MonsterRoom(new Monster({hp: 24}), new Monster({hp: 20}))
-export const encounter3 = new MonsterRoom(new Monster(), new Monster(), new Monster())
+// Define some different monsters.
+const normal = new MonsterRoom(new Monster())
+const elite = new MonsterRoom(new Monster({hp: 24}), new Monster({hp: 20}))
+const boss = new MonsterRoom(new Monster({hp: 150}), new Monster())
 
-export const createSimpleDungeon = () => new Dungeon({rooms: [encounter1, encounter2, encounter3]})
+// An example dungeon showcasing some different fights.
+export const createSimpleDungeon = () =>
+	new Dungeon({
+		rooms: [normal, elite, new CampfireRoom(), boss]
+	})
