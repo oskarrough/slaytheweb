@@ -48,6 +48,8 @@ button:focus {
 }
 
 button:active {
+	position: relative;
+	top: 0.1em;
 	box-shadow: none;
 }
 
