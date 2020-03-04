@@ -305,3 +305,5 @@ test('You can stack regen power', t => {
 // 	state.hand.push(defendCard)
 // 	t.throws(() => a.playCard(state, {card: clashCard}))
 // })
+
+test.todo('can apply a power to a specific monster')

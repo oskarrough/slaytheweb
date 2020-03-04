@@ -98,8 +98,6 @@ function playCard(state, {card, target}) {
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
 	if (!target || typeof target !== 'string') throw new Error(`Wrong target to play card: ${target}`)
 
-	// console.log('play card', {target})
-
 	// Move card from hand to discard pile.
 	let newState = discardCard(state, {card})
 
@@ -107,13 +105,13 @@ function playCard(state, {card, target}) {
 		// Use energy
 		draft.player.currentEnergy = newState.player.currentEnergy - card.energy
 
-		// Block
+		// Block is expected to always target the player.
 		if (card.block) {
 			draft.player.block = newState.player.block + card.block
 		}
 	})
 
-	// Damage
+	// Deal damage to target.
 	if (card.damage) {
 		newState = removeHealth(newState, {target, amount: card.damage})
 	}
@@ -124,6 +122,7 @@ function playCard(state, {card, target}) {
 	return newState
 }
 
+// The `target` argument should be a string. See utils.js#getMonster
 function addHealth(state, {target, amount}) {
 	const monster = getMonster(state, target)
 	return produce(state, draft => {
@@ -134,8 +133,7 @@ function addHealth(state, {target, amount}) {
 const removeHealth = (state, {target, amount}) => {
 	const monster = getMonster(state, target)
 
-	// console.log({monster, target})
-
+	// Adjust damage if the monster is vulnerable.
 	if (monster.powers.vulnerable) {
 		amount = powers.vulnerable.use(amount)
 	}
@@ -148,10 +146,13 @@ const removeHealth = (state, {target, amount}) => {
 function applyCardPowers(state, {card}) {
 	return produce(state, draft => {
 		Object.entries(card.powers).forEach(([name, stacks]) => {
+			// Add powers that target self.
 			if (card.target === 'self') {
 				const newStacks = (state.player.powers[name] || 0) + stacks
 				draft.player.powers[name] = newStacks
 			}
+
+			// Add powers that target an enemy.
 			if (card.target === 'enemy') {
 				state.dungeon.rooms[0].monsters.forEach(monster => {
 					const newStacks = (monster.powers[name] || 0) + stacks
