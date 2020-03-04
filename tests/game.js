@@ -100,8 +100,8 @@ test('can manipulate monster hp', t => {
 	const state2 = a.addHealth(state, {target: 'enemy0', amount: 8})
 	t.is(state2.dungeon.rooms[0].monsters[0].currentHealth, 50, 'can add health')
 
-	// const state3 = a.removeHealth(state2, {target: 'enemy0', 0), amount: 50})
-	// t.is(state3.dungeon.rooms[0].monsters[0].currentHealth, 0, 'can remove health')
+	const state3 = a.removeHealth(state2, {target: 'enemy0', amount: 50})
+	t.is(state3.dungeon.rooms[0].monsters[0].currentHealth, 0, 'can remove health')
 })
 
 test('can not play a card without enough energy', t => {
