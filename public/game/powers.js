@@ -13,7 +13,7 @@ class Power {
 // When end turn:  reduce stacks + do your thing e.g. add health
 export const regen = new Power({
 	type: 'buff',
-	target: 'self',
+	target: 'player',
 	use: stacks => stacks
 })
 

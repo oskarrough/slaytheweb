@@ -64,7 +64,7 @@ export const cards = [
 		name: 'Flourish',
 		energy: 2,
 		type: 'Skill',
-		target: 'self',
+		target: 'player',
 		description: 'Gain 5 regen.',
 		powers: {
 			regen: 5
@@ -85,7 +85,7 @@ export class Card {
 		this.powers = props.powers
 		// type = [ATTACK, SKILL, POWER, STATUS, CURSE]
 		this.type = props.type
-		// target = [ENEMY, ALL_ENEMY, SELF, NONE, SELF_AND_ENEMY, ALL]
+		// target = [ENEMY, ALL_ENEMY, PLAYER, NONE, SELF_AND_ENEMY, ALL]
 		this.target = props.target
 		// this.color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
 		// this.rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]

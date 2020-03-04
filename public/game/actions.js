@@ -145,8 +145,8 @@ const removeHealth = (state, {target, amount}) => {
 function applyCardPowers(state, {card}) {
 	return produce(state, draft => {
 		Object.entries(card.powers).forEach(([name, stacks]) => {
-			// Add powers that target self.
-			if (card.target === 'self') {
+			// Add powers that target player.
+			if (card.target === 'player') {
 				const newStacks = (state.player.powers[name] || 0) + stacks
 				draft.player.powers[name] = newStacks
 			}
@@ -218,7 +218,7 @@ export default {
 	setDungeon
 }
 
-// ## Console Commands
+// Additional actions to consider copy/pasted from sts base mod
 
 // ### Anytime
 

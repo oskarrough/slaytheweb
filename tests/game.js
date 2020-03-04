@@ -253,7 +253,7 @@ test('Flourish card adds a working "regen" buff', t => {
 	const card = createCard('Flourish')
 	t.is(card.powers.regen, 5, 'card has regen power')
 	t.is(state.player.currentHealth, 100)
-	state = a.playCard(state, {target: 'self', card})
+	state = a.playCard(state, {target: 'player', card})
 	t.is(state.player.powers.regen, card.powers.regen, 'regen is applied to player')
 	state = a.endTurn(state)
 	t.is(state.player.currentHealth, 105, 'ending your turn adds hp')
@@ -307,3 +307,4 @@ test('You can stack regen power', t => {
 // })
 
 test.todo('can apply a power to a specific monster')
+
