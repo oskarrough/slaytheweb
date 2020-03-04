@@ -32,18 +32,10 @@ export function CampfireRoom() {
 		console.log('@todo campfire choice:', which)
 		complete = true
 	}
-	function rest() {
-		takeChoice('rest')
-	}
-	function upgrade(card) {
-		takeChoice('upgrade')
-	}
-	function remove(card) {
-		takeChoice('remove')
-	}
-	function isComplete() {
-		return complete
-	}
+	const rest = () => takeChoice('rest')
+	const upgrade = card => takeChoice('upgrade')
+	const remove = card => takeChoice('remove')
+	const isComplete = () => complete
 	return {id: uuid(), type: 'campfire', rest, upgrade, remove, isComplete}
 }
 
