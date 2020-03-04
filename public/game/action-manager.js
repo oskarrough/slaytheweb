@@ -15,7 +15,7 @@ export default function() {
 
 	// Runs the oldest actions and returns a new state.
 	function dequeue(state) {
-		const {action} = future.takeFromBottom()
+		const {action} = future.takeFromBottom() || {}
 		let nextState
 		if (!action) return
 		try {
