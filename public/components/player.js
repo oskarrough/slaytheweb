@@ -4,7 +4,7 @@ export default class Player extends Component {
 	render({player}) {
 		const name = player.name ? player.name : 'You'
 		return html`
-			<div class="Player is-cardTarget">
+			<div class="Player dropzone is-cardTarget">
 				<h2>${name}</h2>
 				<${Healthbar} max=${player.maxHealth} value=${player.currentHealth} block=${player.block} />
 				${player.powers.regen > 0 ? `Regen ${player.powers.regen}` : ''}

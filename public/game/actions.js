@@ -132,7 +132,6 @@ function addHealth(state, {target, amount}) {
 
 const removeHealth = (state, {target, amount}) => {
 	const monster = getMonster(state, target)
-
 	// Adjust damage if the monster is vulnerable.
 	if (monster.powers.vulnerable) {
 		amount = powers.vulnerable.use(amount)
