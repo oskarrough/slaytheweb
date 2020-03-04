@@ -1,6 +1,6 @@
 import produce from '../web_modules/immer.js'
 import {createCard} from './cards.js'
-import {shuffle, get, getMonster} from './utils.js'
+import {shuffle, getMonster} from './utils.js'
 import powers from './powers.js'
 import {createSimpleDungeon} from './dungeon-encounters.js'
 
@@ -168,7 +168,6 @@ function decreasePowerStacks(state) {
 		})
 	})
 }
-
 
 // Ending a turn means 1) discarding your hand 2) drawing new cards and 3) resetting different state things.
 function endTurn(state) {

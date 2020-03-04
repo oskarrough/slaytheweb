@@ -33,8 +33,8 @@ export function CampfireRoom() {
 		complete = true
 	}
 	const rest = () => takeChoice('rest')
-	const upgrade = card => takeChoice('upgrade')
-	const remove = card => takeChoice('remove')
+	const upgrade = card => takeChoice('upgrade', card)
+	const remove = card => takeChoice('remove', card)
 	const isComplete = () => complete
 	return {id: uuid(), type: 'campfire', rest, upgrade, remove, isComplete}
 }
