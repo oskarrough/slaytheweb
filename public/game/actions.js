@@ -92,6 +92,8 @@ const discardHand = state =>
 		draft.hand = []
 	})
 
+// The funky part of this action is the `target` argument. It needs to be a special type of string.
+// Either "player" to target yourself with the card, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getMonster
 function playCard(state, {card, target}) {
 	if (!target) target = card.target
 	if (!card) throw new Error('No card to play')
@@ -122,7 +124,6 @@ function playCard(state, {card, target}) {
 	return newState
 }
 
-// The `target` argument should be a string. See utils.js#getMonster
 function addHealth(state, {target, amount}) {
 	const monster = getMonster(state, target)
 	return produce(state, draft => {
