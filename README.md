@@ -16,7 +16,7 @@ This repository has two points of interest.
 
 The `public` folder is meant to be deployed to any static web server and runs without the need of compiling anything.
 
-To develop locally, do:
+To develop locally, run `yarn build` once and then do:
 
 - `yarn start` for a server that reloads on file change
 
@@ -33,34 +33,27 @@ Here I'll try to summarize the main concepts.
 
 The main game state is a single, large object that stores everything needed to reproduce a certain state of the game. This is all you'll need to implement any interface for the game.
 
-The state is always modified by using an action. Actions take a state, modifies it and returns the new one.
-
-### Cards
-
-You have a deck of cards. Cards have different energy cost and can trigger actions. Cards from from  the "draw pile" to the "hand" and finally to the "discard pile". Cards are reshuffled into the draw pile when needed.
+The state is always modified using actions. An action takes a `state`, modifies it and returns a new one.
 
 ### Actions
 
 An action is anything that modifies the game state, be it drawing a card, dealing damage or applying a debuff.
 
+### Action Manager
+
 All actions are enqueued and dequeued using an "action manager". This allows us to keep track of the history, undo things and control the flow of the game.
+
+Run `enqueue(action)` to add to the list. Run `dequeue()` to update the state.
+
+### Cards
+
+You have a deck of cards. Cards have different energy cost, do different things by triggering game actions. 
+
+Cards start in the "draw pile". From there they are drawn to the "hand" and finally, once played, to the "discard pile". Once the draw pile is empty, the discard pile is reshuffled into the draw pile.
 
 ### Dungeon
 
-You enter a dungeon. Every dungeon has a path
-
-- Dungeon > Encounters > Monsters, Campfire, Merchant
-
-### Basics
-
-- fight
-- gold
-- hand
-- player
-- energy
-- gold
-- Cards
-- card.use()
+Every game starts in a dungeon. A dungeon has a path of rooms. There are different types of rooms: Monster, Campfire and Merchant.
 
 ## Links
 
