@@ -127,19 +127,22 @@ function playCard(state, {card, target}) {
 function addHealth(state, {target, amount}) {
 	const monster = getMonster(state, target)
 	return produce(state, draft => {
-		getMonster(draft, target).currentHealth = monster.currentHealth + amount
+		const newHp = monster.currentHealth + amount
+		getMonster(draft, target).currentHealth = newHp
 	})
 }
 
 const removeHealth = (state, {target, amount}) => {
 	const monster = getMonster(state, target)
+
 	// Adjust damage if the monster is vulnerable.
 	if (monster.powers.vulnerable) {
 		amount = powers.vulnerable.use(amount)
 	}
 
 	return produce(state, draft => {
-		getMonster(draft, target).currentHealth = monster.currentHealth - amount
+		const newHp = monster.currentHealth - amount
+		getMonster(draft, target).currentHealth = newHp
 	})
 }
 
