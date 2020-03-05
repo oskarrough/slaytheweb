@@ -207,6 +207,16 @@ function endTurn(state) {
 	return newState
 }
 
+function goToNextRoom(state) {
+	const number = state.dungeon.roomNumber || 0
+	if (number === state.dungeon.rooms.length - 1) {
+		throw new Error('Already at last room')
+	}
+	return produce(state, draft => {
+		draft.dungeon.roomNumber = number + 1
+	})
+}
+
 export default {
 	applyCardPowers,
 	createNewGame,
@@ -219,7 +229,8 @@ export default {
 	endTurn,
 	addHealth,
 	removeHealth,
-	setDungeon
+	setDungeon,
+	goToNextRoom
 }
 
 // Additional actions to consider copy/pasted from sts base mod
