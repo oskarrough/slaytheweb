@@ -114,8 +114,11 @@ test('can not play a card without enough energy', t => {
 
 test('can play a strike card from hand and see the effects on state', t => {
 	const {state} = t.context
+
 	const originalHealth = getMonster(state, 'enemy0').currentHealth
+
 	t.is(getMonster(state, 'enemy0').currentHealth, originalHealth)
+
 	const card = createCard('Strike')
 	const state2 = a.playCard(state, {target: 'enemy0', card})
 	t.is(getMonster(state, 'enemy0').currentHealth, originalHealth)

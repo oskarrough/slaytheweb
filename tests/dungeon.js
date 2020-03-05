@@ -24,11 +24,8 @@ test('can create a dungeon', t => {
 })
 
 test('can create rooms with many monsters', t => {
-	const advancedDungeon = new Dungeon({
-		rooms: [new MonsterRoom(new Monster(), new Monster({hp: 100})), new CampfireRoom()]
-	})
-	t.is(advancedDungeon.rooms[0].monsters.length, 2)
-	t.is(advancedDungeon.rooms[0].monsters[1].currentHealth, 100)
+	const room = new MonsterRoom(new Monster(), new Monster())
+	t.is(room.monsters.length, 2)
 })
 
 test('we know when a monster room is won', t => {

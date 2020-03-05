@@ -25,50 +25,27 @@ export default function Dungeon(props) {
 	}
 }
 
-// Room types: Monster, Elite, Boss, Campfire, Shop, Treasure and Event
-
 // A campfire gives our hero the opportunity to rest, remove or upgrade a card.
 export function CampfireRoom() {
-	let complete = false
-	function takeChoice(which) {
-		if (complete) throw new Error('You already made your choice...')
-		console.log('@todo campfire choice:', which)
-		complete = true
-	}
-	const rest = () => takeChoice('rest')
-	const upgrade = card => takeChoice('upgrade', card)
-	const remove = card => takeChoice('remove', card)
-	const isComplete = () => complete
-	return {id: uuid(), type: 'campfire', rest, upgrade, remove, isComplete}
+	this.id = uuid()
+	this.type = 'campfire'
 }
 
+// A monster room has one or more monsters.
 export function MonsterRoom(...monsters) {
+	this.id = uuid()
+	this.type = 'monster'
 	this.monsters = monsters
-	this.isComplete = function() {
-		const dead = this.monsters.filter(m => m.currentHealth < 1)
-		return dead.length === this.monsters.length
-	}
-	return {
-		id: uuid(),
-		type: 'monster',
-		monsters: this.monsters,
-		isComplete: this.isComplete
-	}
 }
 
 // A monster has health, probably some damage and a list of intents.
 // Intents are cycled through as the monster plays its turn.
 export function Monster(props = {}) {
-	// const id = uuid()
-	const maxHealth = props.hp || 42
-	const currentHealth = props.hp || 42
-	const damage = props.damage || 5
-	// const damage = randomBetween(props.damage - 1, props.damage + 1)
-	// const intents = ['attack', 'block', 'attack', 'attack']
-	return {
-		maxHealth,
-		currentHealth,
-		damage,
-		powers: {}
-	}
+	this.maxHealth = props.hp || 42
+	this.currentHealth = props.hp || 42
+	this.damage = props.damage || 5
+	this.powers = {}
+	// this.damage = randomBetween(props.damage - 1, props.damage + 1)
+	// this.intents = ['attack', 'block', 'attack', 'attack']
+}
 }
