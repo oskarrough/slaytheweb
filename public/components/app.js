@@ -1,6 +1,7 @@
 import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 import ActionManager from '../game/action-manager.js'
 import actions from './../game/actions.js'
+import {isMonsterRoomCleared} from '../game/dungeon.js'
 import {createCard} from './../game/cards.js'
 import {Player, Monster} from './player.js'
 import Cards from './cards.js'
@@ -102,8 +103,9 @@ export default class App extends Component {
 	}
 
 	render(props, state) {
-		const room = state.dungeon.getCurrentRoom()
-		const didWin = room.isComplete()
+		const room = state.dungeon.rooms[state.dungeon.roomNumber]
+		// @todo figure out how we know we won
+		const didWin = isMonsterRoomCleared(state)
 		return html`
 			<div class="App">
 				<div class="Split">

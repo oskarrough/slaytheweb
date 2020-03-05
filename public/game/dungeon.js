@@ -2,27 +2,10 @@ import {uuid} from './utils.js'
 
 // A dungeon is where the adventure starts. It has a path of rooms, you know where you are and you can continue to the next room.
 export default function Dungeon(props) {
+	if (!props.rooms) throw new Error('You must pass in rooms to create a dungeon')
 	this.id = uuid()
 	this.rooms = props.rooms
-	this.roomNumber = 0
-
-	function getCurrentRoom() {
-		return this.rooms[this.roomNumber]
-	}
-
-	function goToNextRoom() {
-		if (this.roomNumber === this.rooms.length - 1) throw new Error('Already at last room')
-		this.roomNumber = this.roomNumber + 1
-		return this.roomNumber
-	}
-
-	return {
-		id: this.id,
-		roomNumber: this.roomNumber,
-		rooms: this.rooms,
-		getCurrentRoom,
-		goToNextRoom
-	}
+	this.roomNumber = props.roomNumber || 0
 }
 
 // A campfire gives our hero the opportunity to rest, remove or upgrade a card.
@@ -48,4 +31,10 @@ export function Monster(props = {}) {
 	// this.damage = randomBetween(props.damage - 1, props.damage + 1)
 	// this.intents = ['attack', 'block', 'attack', 'attack']
 }
+
+// A couple of utilities
+export function isMonsterRoomCleared(state) {
+	const room = state.dungeon.rooms[state.dungeon.roomNumber || 0]
+	const deadMonsters = room.monsters.filter(m => m.currentHealth < 1)
+	return deadMonsters.length === room.monsters.length
 }
