@@ -13,12 +13,12 @@ export default class App extends Component {
 		this.am = ActionManager()
 
 		// Prepare the game.
-		let game = actions.createNewGame()
-		game = actions.setDungeon(game)
-		// game.dungeon.roomNumber = 1 // use this to change room
-		game = actions.drawStarterDeck(game)
-		game = actions.drawCards(game)
-		this.state = game
+		let state = actions.createNewGame()
+		state = actions.setDungeon(state)
+		state.dungeon.roomNumber = 1 // use this to change room
+		state = actions.drawStarterDeck(state)
+		state = actions.drawCards(state)
+		this.state = state
 
 		// Enable debugging in the browser.
 		window.slaytheweb = {
