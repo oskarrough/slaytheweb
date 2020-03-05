@@ -31,11 +31,18 @@ test('can create rooms with many monsters', t => {
 	t.is(advancedDungeon.rooms[0].monsters[1].currentHealth, 100)
 })
 
-test('we know when a room is won', t => {
+test('we know when a monster room is won', t => {
 	const room = new MonsterRoom(new Monster())
 	t.false(room.isComplete())
 	room.monsters[0].currentHealth = 0
 	t.true(room.isComplete())
+})
+
+test('we know when a campfire has been used', t => {
+	const camp = new CampfireRoom()
+	t.false(camp.isComplete())
+	camp.rest()
+	t.true(camp.isComplete())
 })
 
 test('we can navigate a dungeon', t => {
@@ -53,9 +60,3 @@ test('we can navigate a dungeon', t => {
 	t.throws(() => dungeon.goToNextRoom())
 })
 
-test('campfire can rest or upgrade', t => {
-	const camp = new CampfireRoom()
-	t.is(typeof camp.rest, 'function')
-	t.is(typeof camp.upgrade, 'function')
-	t.is(typeof camp.remove, 'function')
-})

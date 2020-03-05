@@ -5,14 +5,17 @@ export default function Dungeon(props) {
 	this.id = uuid()
 	this.rooms = props.rooms
 	this.roomNumber = 0
+
 	function getCurrentRoom() {
 		return this.rooms[this.roomNumber]
 	}
+
 	function goToNextRoom() {
 		if (this.roomNumber === this.rooms.length - 1) throw new Error('Already at last room')
 		this.roomNumber = this.roomNumber + 1
 		return this.roomNumber
 	}
+
 	return {
 		id: this.id,
 		roomNumber: this.roomNumber,
@@ -40,15 +43,16 @@ export function CampfireRoom() {
 }
 
 export function MonsterRoom(...monsters) {
-	function isComplete() {
-		const dead = monsters.filter(m => m.currentHealth < 1)
-		return dead.length === monsters.length
+	this.monsters = monsters
+	this.isComplete = function() {
+		const dead = this.monsters.filter(m => m.currentHealth < 1)
+		return dead.length === this.monsters.length
 	}
 	return {
 		id: uuid(),
 		type: 'monster',
-		monsters,
-		isComplete
+		monsters: this.monsters,
+		isComplete: this.isComplete
 	}
 }
 
