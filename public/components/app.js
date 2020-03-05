@@ -2,7 +2,7 @@ import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 import ActionManager from '../game/action-manager.js'
 import actions from './../game/actions.js'
 import {createCard} from './../game/cards.js'
-import Player, {Monster} from './player.js'
+import {Player, Monster} from './player.js'
 import Cards from './cards.js'
 import History from './history.js'
 
