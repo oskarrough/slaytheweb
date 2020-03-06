@@ -178,10 +178,12 @@ summary {
 
 .Energybar {
 	display: inline-flex;
-	padding: 0.2em 0.3em 0.2em;
+	padding: 0.4em 0.3em 0.4em;
 	border-radius: 1em;
 	border: 2px solid;
 	margin-left: 0.7rem;
+	margin-bottom: 0.7rem;
+	font-size: large;
 }
 
 .Healthbar {
@@ -240,7 +242,6 @@ summary {
 }
 
 .Hand {
-	/* margin: auto; */
 }
 
 [align-right] {
@@ -249,6 +250,7 @@ summary {
 
 .Actions {
 	text-align: right;
+	margin-top: auto;
 	margin-right: 1rem;
 }
 

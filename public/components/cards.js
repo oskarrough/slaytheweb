@@ -5,6 +5,10 @@ export default class Cards extends Component {
 		const cards = this.base.querySelectorAll('.Card')
 		if (this.props.isHand && cards.length) positionCards(cards)
 	}
+	componentDidUpdate(prev, next) {
+		const cards = this.base.querySelectorAll('.Card')
+		if (this.props.isHand && cards.length) positionCards(cards)
+	}
 	render({cards, canDrag, isDiscardPile}) {
 		const classNames = `Cards ${canDrag ? 'dropzone' : ''} ${isDiscardPile ? 'Cards--discard' : ''}`
 		return html`
