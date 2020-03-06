@@ -10,7 +10,7 @@
     "docs": "cd public/game; docco *.js; mv docs ../../docs"
   },
   "devDependencies": {
-    "ava": "^3.4.0",
+    "ava": "^3.5.0",
     "browser-sync": "^2.26.7",
     "docco": "^0.8.0",
     "eslint": "^6.8.0",
@@ -18,13 +18,13 @@
     "eslint-plugin-prettier": "^3.1.2",
     "nyc": "^15.0.0",
     "prettier": "1.19.1",
-    "snowpack": "^1.4.0"
+    "snowpack": "^1.5.2"
   },
   "dependencies": {
-    "esm": "^3.2.25",
     "@shopify/draggable": "^1.0.0-beta.8",
+    "esm": "^3.2.25",
     "htm": "^3.0.3",
-    "immer": "^5.3.6"
+    "immer": "^6.0.1"
   },
   "ava": {
     "require": [
