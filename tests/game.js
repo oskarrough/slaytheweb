@@ -2,6 +2,7 @@ import test from 'ava'
 import {getMonster} from '../public/game/utils'
 import actions from '../public/game/actions'
 import {createCard} from '../public/game/cards'
+import {isCurrentMonsterRoomCleared} from '../public/game/dungeon.js'
 import {createSimpleDungeon} from '../public/game/dungeon-encounters'
 
 const a = actions
@@ -140,10 +141,9 @@ test('can play a defend card from hand and see the effects on state', t => {
 
 test('when monster reaches 0 hp, you win!', t => {
 	const {state} = t.context
-	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42)
-	const newState = a.removeHealth(state, {target: 'enemy0', amount: 40})
-	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42, 'original state is not modified')
-	t.is(newState.dungeon.rooms[0].monsters[0].currentHealth, 2, 'but new state is')
+	const newState = a.removeHealth(state, {target: 'enemy0', amount: 42})
+	t.false(isCurrentMonsterRoomCleared(state))
+	t.true(isCurrentMonsterRoomCleared(newState))
 })
 
 test('can discard a single card from hand', t => {

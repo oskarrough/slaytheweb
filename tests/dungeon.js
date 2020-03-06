@@ -1,6 +1,6 @@
 import test from 'ava'
 import actions from '../public/game/actions'
-import Dungeon, {CampfireRoom, MonsterRoom, Monster, isMonsterRoomCleared} from '../public/game/dungeon'
+import Dungeon, {CampfireRoom, MonsterRoom, Monster, isCurrentMonsterRoomCleared} from '../public/game/dungeon'
 
 const a = actions
 
@@ -35,19 +35,19 @@ test('we know when a monster room is won', t => {
 			rooms: [room]
 		}
 	}
-	t.false(isMonsterRoomCleared(state))
+	t.false(isCurrentMonsterRoomCleared(state))
 	room.monsters[0].currentHealth = 0
-	t.true(isMonsterRoomCleared(state))
+	t.true(isCurrentMonsterRoomCleared(state))
 })
 
 test('we know when a monster room with many monsters is won', t => {
 	const room = new MonsterRoom(new Monster(), new Monster())
 	const state = {dungeon: {rooms: [room]}}
-	t.false(isMonsterRoomCleared(state))
+	t.false(isCurrentMonsterRoomCleared(state))
 	room.monsters[0].currentHealth = 0
-	t.false(isMonsterRoomCleared(state))
+	t.false(isCurrentMonsterRoomCleared(state))
 	room.monsters[1].currentHealth = 0
-	t.true(isMonsterRoomCleared(state))
+	t.true(isCurrentMonsterRoomCleared(state))
 })
 
 test.skip('we know when a campfire has been used', t => {

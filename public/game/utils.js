@@ -28,26 +28,19 @@ export function shuffle(array) {
 	return array
 }
 
-// Get the value at "path" of "object".
-// https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_get
-export const get = (obj, path, defaultValue) => {
-	const travel = regexp =>
-		String.prototype.split
-			.call(path, regexp)
-			.filter(Boolean)
-			.reduce((res, key) => (res !== null && res !== undefined ? res[key] : res), obj)
-	const result = travel(/[,[\]]+?/) || travel(/[,[\].]+?/)
-	return result === undefined || result === obj ? defaultValue : result
-}
-
 // Support a target like "enemyx", where x is the order of the monster.
-export function getMonster(obj, target) {
-	let path = target
-	if (target.includes('enemy')) {
-		const monsterIndex = target.split('enemy')[1]
-		path = `dungeon.rooms[${obj.dungeon.roomNumber}].monsters[${monsterIndex}]`
+export function getMonster(state, target) {
+	if (target === 'player') {
+		return state.player
 	}
-	const result = get(obj, path)
-	if (!result) throw new Error('could not find monster :(')
-	return result
+	if (target.startsWith('enemy')) {
+		const index = target.split('enemy')[1]
+		// console.log({index, number: state.dungeon.roomNumber, room: state.dungeon.rooms[state.dungeon.roomNumber]})
+		const monster = state.dungeon.rooms[state.dungeon.roomNumber].monsters[index]
+		if (!monster) {
+			throw new Error(`could not find "${target}" in room ${state.dungeon.roomNumber}`)
+		}
+		return monster
+	}
+	throw new Error(`Can not find monster with target: "${target}"`)
 }
