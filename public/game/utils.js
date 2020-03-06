@@ -44,3 +44,17 @@ export function getMonster(state, target) {
 	}
 	throw new Error(`Can not find monster with target: "${target}"`)
 }
+
+// Check if the current room in a game has been cleared.
+export function isCurrentRoomCompleted(state) {
+	const room = state.dungeon.rooms[state.dungeon.roomNumber || 0]
+
+	if (room.type === 'monster') {
+		const deadMonsters = room.monsters.filter(m => m.currentHealth < 1)
+		return deadMonsters.length === room.monsters.length
+	}
+
+	if (room.type === 'campfire') {
+		// @todo
+	}
+}

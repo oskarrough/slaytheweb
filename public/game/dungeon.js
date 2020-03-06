@@ -38,10 +38,3 @@ export function Monster(props = {}) {
 		powers: {}
 	}
 }
-
-// A couple of utilities
-export function isCurrentMonsterRoomCleared(state) {
-	const room = state.dungeon.rooms[state.dungeon.roomNumber || 0]
-	const deadMonsters = room.monsters.filter(m => m.currentHealth < 1)
-	return deadMonsters.length === room.monsters.length
-}
