@@ -84,10 +84,10 @@ test('recycling the discard pile is shuffled', t => {
 
 test('getMonster utility works', t => {
 	const {state} = t.context
-	let room = state.dungeon.rooms[state.dungeon.roomNumber]
+	let room = state.dungeon.rooms[state.dungeon.index]
 	t.deepEqual(getMonster(state, 'enemy0'), room.monsters[0])
-	state.dungeon.roomNumber = 1
-	room = state.dungeon.rooms[state.dungeon.roomNumber]
+	state.dungeon.index = 1
+	room = state.dungeon.rooms[state.dungeon.index]
 	t.deepEqual(getMonster(state, 'enemy1'), room.monsters[1])
 	t.throws(() => getMonster(state, 'doesntexist'))
 })

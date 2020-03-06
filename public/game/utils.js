@@ -35,10 +35,10 @@ export function getMonster(state, target) {
 	}
 	if (target.startsWith('enemy')) {
 		const index = target.split('enemy')[1]
-		// console.log({index, number: state.dungeon.roomNumber, room: state.dungeon.rooms[state.dungeon.roomNumber]})
-		const monster = state.dungeon.rooms[state.dungeon.roomNumber].monsters[index]
+		// console.log({index, number: state.dungeon.index, room: state.dungeon.rooms[state.dungeon.index]})
+		const monster = state.dungeon.rooms[state.dungeon.index].monsters[index]
 		if (!monster) {
-			throw new Error(`could not find "${target}" in room ${state.dungeon.roomNumber}`)
+			throw new Error(`could not find "${target}" in room ${state.dungeon.index}`)
 		}
 		return monster
 	}
@@ -47,7 +47,7 @@ export function getMonster(state, target) {
 
 // Check if the current room in a game has been cleared.
 export function isCurrentRoomCompleted(state) {
-	const room = state.dungeon.rooms[state.dungeon.roomNumber || 0]
+	const room = state.dungeon.rooms[state.dungeon.index || 0]
 
 	if (room.type === 'monster') {
 		const deadMonsters = room.monsters.filter(m => m.currentHealth < 1)

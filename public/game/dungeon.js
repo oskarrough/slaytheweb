@@ -1,12 +1,12 @@
 import {uuid} from './utils.js'
 
-// A dungeon is where the adventure starts. It has a path of rooms, you know where you are and you can continue to the next room.
+// A dungeon is where the adventure starts.
 export default function Dungeon(props) {
 	if (!props.rooms) throw new Error('You must pass in rooms to create a dungeon')
 	return {
 		id: uuid(),
 		rooms: props.rooms,
-		roomNumber: 0
+		index: 0
 	}
 }
 

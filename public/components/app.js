@@ -18,7 +18,7 @@ export default class App extends Component {
 		let state = actions.createNewGame()
 		const dungeon = createSimpleDungeon()
 		state = actions.setDungeon(state, {dungeon})
-		// state.dungeon.roomNumber = 1 // use this to change room
+		// state.dungeon.index = 1 // use this to change room
 		state = actions.drawStarterDeck(state)
 		state = actions.drawCards(state)
 		this.state = state
@@ -105,7 +105,7 @@ export default class App extends Component {
 	}
 
 	render(props, state) {
-		const room = state.dungeon.rooms[state.dungeon.roomNumber]
+		const room = state.dungeon.rooms[state.dungeon.index]
 		// @todo figure out how we know we won
 		const didWin = isCurrentRoomCompleted(state)
 		return html`

@@ -154,10 +154,10 @@ function applyCardPowers(state, {card}) {
 
 			// Add powers that target an enemy.
 			if (card.target === 'enemy') {
-				state.dungeon.rooms[state.dungeon.roomNumber].monsters.forEach(monster => {
+				state.dungeon.rooms[state.dungeon.index].monsters.forEach(monster => {
 					const newStacks = (monster.powers[name] || 0) + stacks
 					// @todo for now we just apply to one
-					draft.dungeon.rooms[state.dungeon.roomNumber].monsters[0].powers[name] = newStacks
+					draft.dungeon.rooms[state.dungeon.index].monsters[0].powers[name] = newStacks
 				})
 			}
 		})
@@ -173,7 +173,7 @@ function decreasePowerStacks(state) {
 	}
 	return produce(state, draft => {
 		decrease(draft.player.powers)
-		state.dungeon.rooms[state.dungeon.roomNumber].monsters.forEach(monster => {
+		state.dungeon.rooms[state.dungeon.index].monsters.forEach(monster => {
 			decrease(monster.powers)
 		})
 	})
@@ -206,11 +206,11 @@ function endTurn(state) {
 
 function goToNextRoom(state) {
 	return produce(state, draft => {
-		const number = state.dungeon.roomNumber
+		const number = state.dungeon.index
 		if (number === state.dungeon.rooms.length - 1) {
 			throw new Error('Already at last room')
 		}
-		draft.dungeon.roomNumber = number + 1
+		draft.dungeon.index = number + 1
 	})
 }
 

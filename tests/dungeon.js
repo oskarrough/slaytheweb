@@ -1,18 +1,9 @@
 import test from 'ava'
 import actions from '../public/game/actions'
-import Dungeon, {
-	CampfireRoom,
-	MonsterRoom,
-	Monster,
-	isCurrentRoomCompleted
-} from '../public/game/dungeon'
+import Dungeon, {CampfireRoom, MonsterRoom, Monster} from '../public/game/dungeon'
+import {isCurrentRoomCompleted} from '../public/game/utils'
 
 const a = actions
-
-// Each test gets a fresh game state.
-test.beforeEach(t => {
-	t.context = {state: a.createNewGame()}
-})
 
 test('can create rooms with many monsters', t => {
 	const room = new MonsterRoom(new Monster(), new Monster({hp: 20}))
@@ -21,14 +12,14 @@ test('can create rooms with many monsters', t => {
 })
 
 test('can create a dungeon', t => {
-	const simpleDungeon = Dungeon({
+	const d = Dungeon({
 		rooms: [MonsterRoom(Monster()), CampfireRoom(), MonsterRoom(Monster())]
 	})
-	t.is(simpleDungeon.rooms.length, 3)
-	t.is(simpleDungeon.rooms[0].type, 'monster')
-	t.is(simpleDungeon.rooms[0].monsters.length, 1)
-	t.is(simpleDungeon.rooms[1].type, 'campfire')
-	t.is(simpleDungeon.rooms[2].type, 'monster')
+	t.is(d.rooms.length, 3)
+	t.is(d.rooms[0].type, 'monster')
+	t.is(d.rooms[0].monsters.length, 1)
+	t.is(d.rooms[1].type, 'campfire')
+	t.is(d.rooms[2].type, 'monster')
 })
 
 test('can set a dungeon', t => {
@@ -67,8 +58,8 @@ test('we can navigate a dungeon', t => {
 	state = a.setDungeon(state, {dungeon})
 	// Go through the next rooms.
 	state = a.goToNextRoom(state)
-	t.is(state.dungeon.rooms[state.dungeon.roomNumber].id, dungeon.rooms[1].id)
+	t.is(state.dungeon.rooms[state.dungeon.index].id, dungeon.rooms[1].id)
 	state = a.goToNextRoom(state)
-	t.is(state.dungeon.rooms[state.dungeon.roomNumber].id, dungeon.rooms[2].id)
+	t.is(state.dungeon.rooms[state.dungeon.index].id, dungeon.rooms[2].id)
 	t.throws(() => a.goToNextRoom(state), null, 'can not go further than last room')
 })
