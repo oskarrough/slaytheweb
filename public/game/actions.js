@@ -24,11 +24,12 @@ function createNewGame() {
 }
 
 // By default a new game doesn't come with a dungeon. You have to set one explicitly. Look in dungeon-encounters.js for inspiration.
-const setDungeon = (state, dungeon) =>
-	produce(state, draft => {
+function setDungeon(state, dungeon) {
+	return produce(state, draft => {
 		if (!dungeon) throw new Error('Missing a dungeon?')
 		draft.dungeon = dungeon
 	})
+}
 
 // Draws a "starter" deck to your discard pile. Normally you'd run this as you start the game.
 function drawStarterDeck(state) {

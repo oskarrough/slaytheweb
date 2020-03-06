@@ -9,7 +9,7 @@ const a = actions
 // Each test gets a fresh game state with a dungeon set up.
 test.beforeEach(t => {
 	let state = a.createNewGame()
-	state = a.setDungeon(state, {dungeon: createSimpleDungeon()})
+	state = a.setDungeon(state, createSimpleDungeon())
 	t.context = {state}
 })
 

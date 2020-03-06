@@ -16,7 +16,7 @@ export default class App extends Component {
 
 		// Prepare the game.
 		let state = actions.createNewGame()
-		state = actions.setDungeon(state, {dungeon: createSimpleDungeon})
+		state = actions.setDungeon(state, createSimpleDungeon())
 		state = actions.drawStarterDeck(state)
 		state = actions.drawCards(state)
 		// state.dungeon.index = 1 // use this to change room

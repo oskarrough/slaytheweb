@@ -25,7 +25,7 @@ test('can create a dungeon', t => {
 test('can set a dungeon', t => {
 	const dungeon = Dungeon({rooms: [MonsterRoom(Monster())]})
 	let state = a.createNewGame()
-	state = a.setDungeon(state, {dungeon})
+	state = a.setDungeon(state, dungeon)
 	t.deepEqual(state.dungeon, dungeon, 'setting dungeon works')
 })
 
@@ -55,7 +55,7 @@ test('we can navigate a dungeon', t => {
 	const dungeon = Dungeon({
 		rooms: [CampfireRoom(), CampfireRoom(), CampfireRoom()]
 	})
-	state = a.setDungeon(state, {dungeon})
+	state = a.setDungeon(state, dungeon)
 	// Go through the next rooms.
 	state = a.goToNextRoom(state)
 	t.is(state.dungeon.rooms[state.dungeon.index].id, dungeon.rooms[1].id)
