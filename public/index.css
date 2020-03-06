@@ -48,6 +48,8 @@ button:focus {
 }
 
 button:active {
+	position: relative;
+	top: 0.1em;
 	box-shadow: none;
 }
 
@@ -228,6 +230,7 @@ summary {
 
 .Monster {
 	position: relative;
+	padding-bottom: 3rem;
 }
 
 .Monster .Card {

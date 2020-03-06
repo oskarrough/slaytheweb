@@ -27,3 +27,34 @@ export function shuffle(array) {
 
 	return array
 }
+
+// Support a target like "enemyx", where x is the order of the monster.
+export function getMonster(state, target) {
+	if (target === 'player') {
+		return state.player
+	}
+	if (target.startsWith('enemy')) {
+		const index = target.split('enemy')[1]
+		// console.log({index, number: state.dungeon.index, room: state.dungeon.rooms[state.dungeon.index]})
+		const monster = state.dungeon.rooms[state.dungeon.index].monsters[index]
+		if (!monster) {
+			throw new Error(`could not find "${target}" in room ${state.dungeon.index}`)
+		}
+		return monster
+	}
+	throw new Error(`Can not find monster with target: "${target}"`)
+}
+
+// Check if the current room in a game has been cleared.
+export function isCurrentRoomCompleted(state) {
+	const room = state.dungeon.rooms[state.dungeon.index || 0]
+
+	if (room.type === 'monster') {
+		const deadMonsters = room.monsters.filter(m => m.currentHealth < 1)
+		return deadMonsters.length === room.monsters.length
+	}
+
+	if (room.type === 'campfire') {
+		// @todo
+	}
+}

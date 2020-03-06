@@ -1,8 +1,10 @@
 import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 import ActionManager from '../game/action-manager.js'
 import actions from './../game/actions.js'
+import {isCurrentRoomCompleted} from '../game/utils.js'
+import {createSimpleDungeon} from '../game/dungeon-encounters.js'
 import {createCard} from './../game/cards.js'
-import Player, {Healthbar} from './player.js'
+import {Player, Monster} from './player.js'
 import Cards from './cards.js'
 import History from './history.js'
 
@@ -11,11 +13,15 @@ export default class App extends Component {
 		super()
 		// Set up our action manager.
 		this.am = ActionManager()
+
 		// Prepare the game.
-		this.am.enqueue({type: 'createNewGame'})
-		this.state = this.am.dequeue({})
-		this.am.enqueue({type: 'drawStarterDeck'})
-		this.am.enqueue({type: 'drawCards'})
+		let state = actions.createNewGame()
+		state = actions.setDungeon(state, createSimpleDungeon())
+		state = actions.drawStarterDeck(state)
+		state = actions.drawCards(state)
+		// state.dungeon.index = 1 // use this to change room
+		this.state = state
+
 		// Enable debugging in the browser.
 		window.slaytheweb = {
 			component: this,
@@ -26,19 +32,15 @@ export default class App extends Component {
 
 	componentDidMount() {
 		this.enableDrop()
-		// Dequeuing twice because of what we did in constructor.
-		this.dequeue(this.dequeue)
 	}
 
 	enqueue(action) {
 		this.am.enqueue(action)
 	}
-
 	dequeue(callback) {
 		const nextState = this.am.dequeue(this.state)
 		this.setState(nextState, callback)
 	}
-
 	undo() {
 		const prev = this.am.past.takeFromTop()
 		if (!prev) return
@@ -47,56 +49,67 @@ export default class App extends Component {
 	}
 
 	endTurn() {
-		this.am.enqueue({type: 'endTurn'})
+		this.enqueue({type: 'endTurn'})
 		this.dequeue()
 	}
 
 	enableDrop() {
+		// Enable drag and drop.
 		const dropzones = this.base.querySelectorAll('.dropzone')
 		const drop = new window.Sortable.default(dropzones, {
 			draggable: '.Card',
-			mirror: {
-				constrainDimensions: true
-			}
+			mirror: {constrainDimensions: true}
 		})
+
 		drop.on('sortable:start', event => {
-			// console.log('sortable:start', event)
-			const card = this.state.hand.find(card => card.id === event.data.dragEvent.data.source.dataset.id)
+			// Find the card object behind the DOM card we are dragging.
+			const card = this.state.hand.find(c => c.id === event.data.dragEvent.data.source.dataset.id)
 			if (card.energy > this.state.player.currentEnergy) {
 				event.cancel()
 				alert('Not enough energy to play this card.')
 			}
 		})
+
 		drop.on('sortable:sort', event => {
-			// Only allow drop on discard pile.
-			if (event.dragEvent.data.overContainer !== drop.containers[0]) {
-				// console.log('canceled sortable:sort')
-				event.cancel()
-			}
+			// Only allow dropping on elements with this class.
+			const el = event.dragEvent.data.overContainer
+			if (!el.classList.contains('is-cardTarget')) event.cancel()
 		})
-		// drop.on('sortable:sorted', event => { console.log('sortable:sorted', event) })
+
 		drop.on('sortable:stop', event => {
-			const {newContainer, oldContainer} = event.data
-			const wasDiscarded = newContainer === drop.containers[0] && newContainer !== oldContainer
-			if (wasDiscarded) {
-				event.cancel()
-				const card = this.state.hand.find(card => card.id === event.data.dragEvent.originalSource.dataset.id)
-				this.enqueue({type: 'playCard', card})
-				this.dequeue() // play card immediately
+			const {newContainer, oldContainer, dragEvent} = event.data
+
+			// Should it be allowed to drop the card here?
+			const allowCardPlay =
+				newContainer.classList.contains('is-cardTarget') && newContainer !== oldContainer
+			if (!allowCardPlay) return
+
+			// If yes, use the DOM to find the played card.
+			const card = this.state.hand.find(c => c.id === dragEvent.originalSource.dataset.id)
+
+			// Also use the DOM to find who we dropped it on.
+			let target
+			if (newContainer.classList.contains('Player')) {
+				target = 'player'
+			} else {
+				const index = Array.from(newContainer.parentNode.children).indexOf(newContainer)
+				target = `enemy${index}`
 			}
+			// Play the card immediately
+			this.enqueue({type: 'playCard', target, card})
+			this.dequeue()
 		})
 	}
 
 	render(props, state) {
-		const didWin = state.monster.currentHealth <= 0
+		const room = state.dungeon.rooms[state.dungeon.index]
+		const didWin = isCurrentRoomCompleted(state)
 		return html`
 			<div class="App">
 				<div class="Split">
 					<${Player} player=${state.player} />
-					<div class="Monster dropzone">
-						<h2>Evil Monster</h2>
-						<${Healthbar} max=${state.monster.maxHealth} value=${state.monster.currentHealth} />
-						${state.monster.powers.vulnerable > 0 ? `Vulnerable ${state.monster.powers.vulnerable}` : ''}
+					<div class="Monsters">
+						${room.monsters.map(Monster)}
 					</div>
 				</div>
 
