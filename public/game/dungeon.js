@@ -21,9 +21,9 @@ export function CampfireRoom() {
 // A monster room has one or more monsters.
 export function MonsterRoom(...monsters) {
 	return {
-		id : uuid(),
-		type : 'monster',
-		monsters : monsters
+		id: uuid(),
+		type: 'monster',
+		monsters: monsters
 	}
 }
 
