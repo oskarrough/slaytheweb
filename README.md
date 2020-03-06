@@ -16,9 +16,10 @@ This repository has two points of interest.
 
 The `public` folder is meant to be deployed to any static web server and runs without the need of compiling anything.
 
-To develop locally, run `yarn build` once and then do:
+To develop locally:
 
-- `yarn start` for a server that reloads on file change
+1. `yarn build` to pull ESM dependencies into ./public/web_modules 
+2. `yarn start` for a server that reloads on file change
 
 All scripts are checked with eslint, formatted with prettier and tested with ava.
 
@@ -31,9 +32,7 @@ Here I'll try to summarize the main concepts.
 
 ### Game state
 
-The main game state is a single, large object that stores everything needed to reproduce a certain state of the game. This is all you'll need to implement any interface for the game.
-
-The state is always modified using actions. An action takes a `state`, modifies it and returns a new one.
+The main game state is a single, large object that stores everything needed to reproduce a certain state of the game. This is all you'll need to implement any interface for the game. The state is always modified using actions. An action takes a `state`, modifies it and returns a new one.
 
 ### Actions
 
@@ -43,17 +42,17 @@ An action is anything that modifies the game state, be it drawing a card, dealin
 
 All actions are enqueued and dequeued using an "action manager". This allows us to keep track of the history, undo things and control the flow of the game.
 
-Run `enqueue(action)` to add to the list. Run `dequeue()` to update the state.
+Run `enqueue(action)` to add to the list. Run `dequeue()` to update the state with the oldest action.
 
 ### Cards
 
-You have a deck of cards. Cards have different energy cost, do different things by triggering game actions. 
+You have a deck of cards. Cards have different energy cost and can trigger game actions. 
 
 Cards start in the "draw pile". From there they are drawn to the "hand" and finally, once played, to the "discard pile". Once the draw pile is empty, the discard pile is reshuffled into the draw pile.
 
 ### Dungeon
 
-Every game starts in a dungeon. A dungeon has a path of rooms. There are different types of rooms: Monster, Campfire and Merchant.
+Every game starts in a dungeon. A dungeon has a path of rooms. There are different types of rooms: Monster and Campfire. One day there'll be more like Merchant and Treasure or a "random" room.
 
 ## Links
 
