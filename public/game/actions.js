@@ -24,13 +24,11 @@ function createNewGame() {
 }
 
 // By default a new game doesn't come with a dungeon. You have to set one explicitly. Look in dungeon-encounters.js for inspiration.
-function setDungeon(state, {dungeon} = {}) {
-	// Default to the "simple" dungeon encounter.
-	if (!dungeon) throw new Error('Missing a dungeon?')
-	return produce(state, draft => {
+const setDungeon = (state, dungeon) =>
+	produce(state, draft => {
+		if (!dungeon) throw new Error('Missing a dungeon?')
 		draft.dungeon = dungeon
 	})
-}
 
 // Draws a "starter" deck to your discard pile. Normally you'd run this as you start the game.
 function drawStarterDeck(state) {
@@ -91,35 +89,23 @@ const discardHand = state =>
 		draft.hand = []
 	})
 
-// The funky part of this action is the `target` argument. It needs to be a special type of string.
-// Either "player" to target yourself with the card, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getMonster
+// The funky part of this action is the `target` argument. It needs to be a special type of string. Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getMonster
 function playCard(state, {card, target}) {
 	if (!target) target = card.target
 	if (!card) throw new Error('No card to play')
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
 	if (!target || typeof target !== 'string') throw new Error(`Wrong target to play card: ${target}`)
-
-	// Move card from hand to discard pile.
 	let newState = discardCard(state, {card})
-
 	newState = produce(newState, draft => {
 		// Use energy
 		draft.player.currentEnergy = newState.player.currentEnergy - card.energy
-
 		// Block is expected to always target the player.
 		if (card.block) {
 			draft.player.block = newState.player.block + card.block
 		}
 	})
-
-	// Deal damage to target.
-	if (card.damage) {
-		newState = removeHealth(newState, {target, amount: card.damage})
-	}
-
-	// Powers
+	if (card.damage) newState = removeHealth(newState, {target, amount: card.damage})
 	if (card.powers) newState = applyCardPowers(newState, {card})
-
 	return newState
 }
 
@@ -133,7 +119,6 @@ function addHealth(state, {target, amount}) {
 const removeHealth = (state, {target, amount}) => {
 	return produce(state, draft => {
 		const monster = getMonster(draft, target)
-
 		// Adjust damage if the monster is vulnerable.
 		if (monster.powers.vulnerable) {
 			amount = powers.vulnerable.use(amount)
@@ -151,7 +136,6 @@ function applyCardPowers(state, {card}) {
 				const newStacks = (state.player.powers[name] || 0) + stacks
 				draft.player.powers[name] = newStacks
 			}
-
 			// Add powers that target an enemy.
 			if (card.target === 'enemy') {
 				state.dungeon.rooms[state.dungeon.index].monsters.forEach(monster => {
@@ -185,8 +169,7 @@ function endTurn(state) {
 	newState = drawCards(newState)
 	// aka "endofturnhook"
 	newState = decreasePowerStacks(newState)
-
-	newState = produce(newState, draft => {
+	return produce(newState, draft => {
 		// Reset energy and block
 		draft.player.currentEnergy = 3
 		draft.player.block = 0
@@ -201,7 +184,6 @@ function endTurn(state) {
 			draft.player.currentHealth = x.player.currentHealth
 		}
 	})
-	return newState
 }
 
 function goToNextRoom(state) {
@@ -229,58 +211,3 @@ export default {
 	setDungeon,
 	goToNextRoom
 }
-
-// Additional actions to consider copy/pasted from sts base mod
-
-// ### Anytime
-
-// * `gold add [amount]` gain gold
-// * `gold lose [amount]` lose gold
-// * `potion [pos] [id]` gain specified potion in specified slot (0, 1, or 2)
-// * `hp add [amount]` heal amount
-// * `hp remove [amount]` hp loss
-// * `maxhp add [amount]` gain max hp
-// * `maxhp remove [amount]` lose max hp
-// * `debug [true/false]` sets `Settings.isDebug`
-
-// ### During Combat
-
-// * `draw [num]` draw cards
-// * `energy add [amount]` gain energy
-// * `energy inf` toggles infinite energy
-// * `energy remove [amount]` lose energy
-// * `hand add [id] {cardcount} {upgrades}` add card to hand with (optional: integer # of times to add the card) (optional: integer # of upgrades)
-// * `hand remove all` exhaust entire hand
-// * `hand remove [id]` exhaust card from hand
-// * `kill all` kills all enemies in the current combat
-// * `kill self` kills your character
-// * `power [id] [amount]` bring up a targetting reticle to apply amount stacks of a power to either the player or an enemy
-
-// ### Outside of Combat
-
-// * `fight [name]` enter combat with the specified encounter
-// * `event [name]` start event with the specified name
-
-// ### Anytime
-
-// * `gold add [amount]` gain gold
-// * `gold lose [amount]` lose gold
-// * `info toggle` Settings.isInfo
-// * `potion [pos] [id]` gain specified potion in specified slot (0, 1, or 2)
-// * `hp add [amount]` heal amount
-// * `hp remove [amount]` hp loss
-// * `maxhp add [amount]` gain max hp
-// * `maxhp remove [amount]` lose max hp
-// * `debug [true/false]` sets `Settings.isDebug`
-
-// ### Relics
-
-// * `relic add [id]` generate relic
-// * `relic list` logs all relic pools
-// * `relic remove [id]` lose relic
-
-// ### Deck Modification
-
-// * `deck add [id] {cardcount} {upgrades}` add card to deck (optional: integer # of times you want to add this card) (optional: integer # of upgrades)
-// * `deck remove [id]` remove card from deck
-// * `deck remove all` remove all cards from deck

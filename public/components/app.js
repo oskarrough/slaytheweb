@@ -16,11 +16,10 @@ export default class App extends Component {
 
 		// Prepare the game.
 		let state = actions.createNewGame()
-		const dungeon = createSimpleDungeon()
-		state = actions.setDungeon(state, {dungeon})
-		// state.dungeon.index = 1 // use this to change room
+		state = actions.setDungeon(state, {dungeon: createSimpleDungeon})
 		state = actions.drawStarterDeck(state)
 		state = actions.drawCards(state)
+		// state.dungeon.index = 1 // use this to change room
 		this.state = state
 
 		// Enable debugging in the browser.
@@ -38,12 +37,10 @@ export default class App extends Component {
 	enqueue(action) {
 		this.am.enqueue(action)
 	}
-
 	dequeue(callback) {
 		const nextState = this.am.dequeue(this.state)
 		this.setState(nextState, callback)
 	}
-
 	undo() {
 		const prev = this.am.past.takeFromTop()
 		if (!prev) return
@@ -52,7 +49,7 @@ export default class App extends Component {
 	}
 
 	endTurn() {
-		this.am.enqueue({type: 'endTurn'})
+		this.enqueue({type: 'endTurn'})
 		this.dequeue()
 	}
 
@@ -65,9 +62,8 @@ export default class App extends Component {
 		})
 
 		drop.on('sortable:start', event => {
-			// Find the state's card object behind the DOM card we are dragging.
+			// Find the card object behind the DOM card we are dragging.
 			const card = this.state.hand.find(c => c.id === event.data.dragEvent.data.source.dataset.id)
-
 			if (card.energy > this.state.player.currentEnergy) {
 				event.cancel()
 				alert('Not enough energy to play this card.')
@@ -90,6 +86,7 @@ export default class App extends Component {
 
 			// If yes, use the DOM to find the played card.
 			const card = this.state.hand.find(c => c.id === dragEvent.originalSource.dataset.id)
+
 			// Also use the DOM to find who we dropped it on.
 			let target
 			if (newContainer.classList.contains('Player')) {
@@ -106,7 +103,6 @@ export default class App extends Component {
 
 	render(props, state) {
 		const room = state.dungeon.rooms[state.dungeon.index]
-		// @todo figure out how we know we won
 		const didWin = isCurrentRoomCompleted(state)
 		return html`
 			<div class="App">
