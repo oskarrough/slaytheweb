@@ -9,7 +9,7 @@ const a = actions
 // Each test gets a fresh game state with a dungeon set up.
 test.beforeEach(t => {
 	let state = a.createNewGame()
-	state = a.setDungeon(state, createSimpleDungeon())
+	state = a.setDungeon(state, {dungeon: createSimpleDungeon()})
 	t.context = {state}
 })
 
@@ -32,7 +32,10 @@ test('new game state is ok', t => {
 	})
 })
 
-test('drawing a starter deck adds it to the draw pile', t => {
+test('initial rooms monster hp is as expected', t => {
+	const {state} = t.context
+	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42)
+})
 	const {state} = t.context
 	t.is(state.drawPile.length, 0)
 	const state2 = a.drawStarterDeck(state)

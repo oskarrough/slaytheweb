@@ -1,4 +1,4 @@
-import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
+import {html} from './../web_modules/htm/preact/standalone.module.js'
 
 export function Healthbar({max, value, block}) {
 	return html`
