@@ -2,6 +2,7 @@ import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 import ActionManager from '../game/action-manager.js'
 import actions from './../game/actions.js'
 import {isMonsterRoomCleared} from '../game/dungeon.js'
+import {createSimpleDungeon} from '../game/dungeon-encounters.js'
 import {createCard} from './../game/cards.js'
 import {Player, Monster} from './player.js'
 import Cards from './cards.js'
@@ -15,8 +16,9 @@ export default class App extends Component {
 
 		// Prepare the game.
 		let state = actions.createNewGame()
-		state = actions.setDungeon(state)
-		state.dungeon.roomNumber = 1 // use this to change room
+		const dungeon = createSimpleDungeon()
+		state = actions.setDungeon(state, {dungeon})
+		// state.dungeon.roomNumber = 1 // use this to change room
 		state = actions.drawStarterDeck(state)
 		state = actions.drawCards(state)
 		this.state = state

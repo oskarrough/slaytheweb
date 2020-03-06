@@ -5,7 +5,7 @@ export default function Dungeon(props) {
 	if (!props.rooms) throw new Error('You must pass in rooms to create a dungeon')
 	this.id = uuid()
 	this.rooms = props.rooms
-	this.roomNumber = props.roomNumber || 0
+	this.roomNumber = 0
 }
 
 // A campfire gives our hero the opportunity to rest, remove or upgrade a card.
