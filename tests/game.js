@@ -33,10 +33,7 @@ test('new game state is ok', t => {
 	})
 })
 
-test('initial rooms monster hp is as expected', t => {
-	const {state} = t.context
-	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42)
-})
+test('drawing a starter deck adds it to the draw pile', t => {
 	const {state} = t.context
 	t.is(state.drawPile.length, 0)
 	const state2 = a.drawStarterDeck(state)
@@ -86,26 +83,39 @@ test('recycling the discard pile is shuffled', t => {
 	t.notDeepEqual(getIds(state.hand), getIds(thirdDraw.hand), 'order is maintained')
 })
 
+test('getMonster utility works', t => {
+	const {state} = t.context
+	let room = state.dungeon.rooms[state.dungeon.roomNumber]
+	t.deepEqual(getMonster(state, 'enemy0'), room.monsters[0])
+	state.dungeon.roomNumber = 1
+	room = state.dungeon.rooms[state.dungeon.roomNumber]
+	t.deepEqual(getMonster(state, 'enemy1'), room.monsters[1])
+	t.throws(() => getMonster(state, 'doesntexist'))
+})
+
 test('can manipulate player hp', t => {
 	const {state} = t.context
 	t.is(state.player.currentHealth, 100)
 	const state2 = a.removeHealth(state, {target: 'player', amount: 10})
+	t.is(state2.player.currentHealth, 90, 'can remove hp')
+	t.is(state.player.currentHealth, 100, 'original state was not modified')
+	const state3 = a.addHealth(state2, {target: 'player', amount: 20})
+	t.is(state3.player.currentHealth, 110)
+	t.is(state.player.currentHealth, 100)
 	t.is(state2.player.currentHealth, 90)
-	const state3 = a.addHealth(state2, {target: 'player', amount: 10})
-	t.is(state3.player.currentHealth, 100)
 })
-
-// play {card} {optional selector} {optional index}
 
 test('can manipulate monster hp', t => {
 	const {state} = t.context
-	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42)
+	t.is(getMonster(state, 'enemy0').currentHealth, 42, 'og heath is ok')
+	const state2 = a.removeHealth(state, {target: 'enemy0', amount: 10})
+	t.is(state2.dungeon.rooms[0].monsters[0].currentHealth, 32, 'can remove hp')
+	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42, 'original state was not modified')
 
-	const state2 = a.addHealth(state, {target: 'enemy0', amount: 8})
-	t.is(state2.dungeon.rooms[0].monsters[0].currentHealth, 50, 'can add health')
-
-	const state3 = a.removeHealth(state2, {target: 'enemy0', amount: 50})
-	t.is(state3.dungeon.rooms[0].monsters[0].currentHealth, 0, 'can remove health')
+	const state3 = a.removeHealth(state2, {target: 'enemy0', amount: 10})
+	t.is(state3.dungeon.rooms[0].monsters[0].currentHealth, 22, 'can remove hp')
+	t.is(state2.dungeon.rooms[0].monsters[0].currentHealth, 32, 'original state was not modified')
+	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42, 'original state was not modified')
 })
 
 test('can not play a card without enough energy', t => {
@@ -116,13 +126,15 @@ test('can not play a card without enough energy', t => {
 	t.throws(() => a.playCard(state, {card}))
 })
 
+test('initial rooms monster hp is STILL as expected', t => {
+	const {state} = t.context
+	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42)
+})
+
 test('can play a strike card from hand and see the effects on state', t => {
 	const {state} = t.context
-
 	const originalHealth = getMonster(state, 'enemy0').currentHealth
-
 	t.is(getMonster(state, 'enemy0').currentHealth, originalHealth)
-
 	const card = createCard('Strike')
 	const state2 = a.playCard(state, {target: 'enemy0', card})
 	t.is(getMonster(state, 'enemy0').currentHealth, originalHealth)
@@ -313,4 +325,3 @@ test('You can stack regen power', t => {
 // })
 
 test.todo('can apply a power to a specific monster')
-

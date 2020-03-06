@@ -1,6 +1,11 @@
 import test from 'ava'
 import actions from '../public/game/actions'
-import Dungeon, {CampfireRoom, MonsterRoom, Monster, isCurrentMonsterRoomCleared} from '../public/game/dungeon'
+import Dungeon, {
+	CampfireRoom,
+	MonsterRoom,
+	Monster,
+	isCurrentMonsterRoomCleared
+} from '../public/game/dungeon'
 
 const a = actions
 
@@ -13,8 +18,8 @@ test.beforeEach(t => {
 })
 
 test('can create a dungeon', t => {
-	const simpleDungeon = new Dungeon({
-		rooms: [new MonsterRoom(new Monster()), new CampfireRoom(), new MonsterRoom(new Monster())]
+	const simpleDungeon = Dungeon({
+		rooms: [MonsterRoom(Monster()), CampfireRoom(), MonsterRoom(Monster())]
 	})
 	t.is(simpleDungeon.rooms.length, 3)
 	t.is(simpleDungeon.rooms[0].type, 'monster')
@@ -24,8 +29,9 @@ test('can create a dungeon', t => {
 })
 
 test('can create rooms with many monsters', t => {
-	const room = new MonsterRoom(new Monster(), new Monster())
+	const room = new MonsterRoom(new Monster(), new Monster({hp: 20}))
 	t.is(room.monsters.length, 2)
+	t.is(room.monsters[1].maxHealth, 20)
 })
 
 test('we know when a monster room is won', t => {
@@ -60,20 +66,23 @@ test.skip('we know when a campfire has been used', t => {
 test('we can navigate a dungeon', t => {
 	// Prepare a game with a dungeon.
 	let state = a.createNewGame()
-	const dungeon = new Dungeon({
-		rooms: [new CampfireRoom(), new CampfireRoom(), new CampfireRoom()]
+	const dungeon = Dungeon({
+		rooms: [CampfireRoom(), CampfireRoom(), CampfireRoom()]
 	})
+
 	state = a.setDungeon(state, {dungeon})
-	t.is(state.dungeon.roomNumber, 0)
-	t.is(state.dungeon.rooms[dungeon.roomNumber].id, dungeon.rooms[0].id)
+	t.deepEqual(state.dungeon, dungeon, 'setting dungeon works')
+
 	// Go to the next room.
 	state = a.goToNextRoom(state)
 	t.is(state.dungeon.roomNumber, 1)
-	t.is(state.dungeon.rooms[dungeon.roomNumber].id, dungeon.rooms[1].id)
+	t.is(state.dungeon.rooms[state.dungeon.roomNumber].id, dungeon.rooms[1].id)
+
 	state = a.goToNextRoom(state)
 	t.is(state.dungeon.roomNumber, 2)
-	t.is(state.dungeon.rooms[dungeon.roomNumber].id, dungeon.rooms[2].id)
-	t.throws(() => a.goToNextRoom(state))
+	t.is(state.dungeon.rooms[state.dungeon.roomNumber].id, dungeon.rooms[2].id)
+
+	t.throws(() => a.goToNextRoom(state), null, 'can go further than last room')
 })
 
 test('context...', t => {

@@ -124,24 +124,22 @@ function playCard(state, {card, target}) {
 }
 
 function addHealth(state, {target, amount}) {
-	const monster = getMonster(state, target)
 	return produce(state, draft => {
-		const newHp = monster.currentHealth + amount
-		getMonster(draft, target).currentHealth = newHp
+		const monster = getMonster(draft, target)
+		monster.currentHealth = monster.currentHealth + amount
 	})
 }
 
 const removeHealth = (state, {target, amount}) => {
-	const monster = getMonster(state, target)
-
-	// Adjust damage if the monster is vulnerable.
-	if (monster.powers.vulnerable) {
-		amount = powers.vulnerable.use(amount)
-	}
-
 	return produce(state, draft => {
+		const monster = getMonster(draft, target)
+
+		// Adjust damage if the monster is vulnerable.
+		if (monster.powers.vulnerable) {
+			amount = powers.vulnerable.use(amount)
+		}
 		const newHp = monster.currentHealth - amount
-		getMonster(draft, target).currentHealth = newHp
+		monster.currentHealth = newHp
 	})
 }
 
@@ -207,11 +205,11 @@ function endTurn(state) {
 }
 
 function goToNextRoom(state) {
-	const number = state.dungeon.roomNumber || 0
-	if (number === state.dungeon.rooms.length - 1) {
-		throw new Error('Already at last room')
-	}
 	return produce(state, draft => {
+		const number = state.dungeon.roomNumber
+		if (number === state.dungeon.rooms.length - 1) {
+			throw new Error('Already at last room')
+		}
 		draft.dungeon.roomNumber = number + 1
 	})
 }
