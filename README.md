@@ -1,20 +1,22 @@
 # Slay the Web
 
-[Slay The Spire](https://www.megacrit.com/) by Mega Crit is a single player, roguelike deckbuilding video card game.
+Hello and welcome to Slay the Web. A browser-based version of the fantastic video card game [Slay The Spire](https://www.megacrit.com/) by Mega Crit. They explain:
 
 > We fused card games and roguelikes together to make the best single player deckbuilder we could. Craft a unique deck, encounter bizarre creatures, discover relics of immense power, and Slay the Spire!
 
-They did a fantastic job with the game design that I wanted to learn more, so I tried implementing my own version of the game, for the web. I've studied the source code of the decompiled game, looked at community mods and want to give credit to all the STS fans out there.
+This exists because I was interested in the mechanics behind the original game and wanted to play around with some JavaScript while learning from all the work in the open source Slay the Spire modding community. The idea is to provide a stable game logic to play the game with any kind of interface. Be it the browser, a command line or whatever. Once the game logic is more or less stable, the fun part begins where we can design unique monsters, cards and powers! This project is very much work in progress. It is made for fun and to learn. 
 
-This repository has two points of interest.
+The `master` branch is automatically deployed to https://slaytheweb.now.sh/, where you can try it out!
 
-1. A game engine in `./public/game` with tests in `./tests`. Use this to build your own game using actions. The engine does not concern with rendering.
+## What's in the code?
 
-2. An example interface (website) in `./public/index.js` using the game engine
+- `./public/game` contains all the game logic, exposed with a lot of actions to modify game state. It does not use the DOM
+- `./public/index.js` is an example interface/website made with preact+htm
+- `./tests` contains quite a few tests in attempt to make sure this actually works
 
-## Development setup
+## How to develop on it
 
-The `public` folder is meant to be deployed to any static web server and runs without the need of compiling anything.
+The `public` folder can be deployed to any static web server. It does not require any compilation, but it does require you to download a few dependencies:
 
 To develop locally:
 
@@ -55,6 +57,8 @@ Cards start in the "draw pile". From there they are drawn to the "hand" and fina
 Every game starts in a dungeon. A dungeon has a path of rooms. There are different types of rooms: Monster and Campfire. One day there'll be more like Merchant and Treasure or a "random" room.
 
 ## Links
+
+A collection of related things, inspiration and ideas.
 
 - FTL, Into The Breach, Darkest Dungeon, Dungeon of the Endless, Spelunky, Rogue Legacy,
 - [Pollywog Games: A history of roguelite deck building games](https://pollywog.games/rgdb/)
