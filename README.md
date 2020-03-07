@@ -23,10 +23,16 @@ To develop locally:
 1. `yarn build` to pull ESM dependencies into ./public/web_modules 
 2. `yarn start` for a server that reloads on file change
 
-All scripts are checked with eslint, formatted with prettier and tested with ava.
+## Testing
 
-- `yarn test` tests once
+All scripts are checked for with eslint, formatted with prettier and tested with ava.
+
+Additionally the `./tests` folder contains the tests. Primarly it goes like 1) create a game 2) modify the game state with an action or more 3) test that the final state is how it you expect.
+
+- `yarn test` tests everything once
 - `yarn test:watch` tests continously
+
+Additionally you can run `yarn eslint public --fix` to automatically format all scripts according to the prettier standards.
 
 ## Current state of the game
 
@@ -34,17 +40,22 @@ Here I'll try to summarize the main concepts that are implemented.
 
 ### Game state
 
-The main game state is a single, large object that stores everything needed to reproduce a certain state of the game. This is all you'll need to implement any interface for the game. The state is always modified using actions. An action takes a `state`, modifies it and returns a new one.
+The game state is a single, large object that stores everything needed to reproduce a certain state of the game. This is all you will/should need to implement any interface for the game. The state is always modified using an action. 
 
 ### Actions
 
-An action is anything that modifies the game state, be it drawing a card, dealing damage or applying a debuff.
+An action takes a `state`, modifies it and returns a new one. It could be drawing a card, dealing damage or applying a debuff. 
+
+Check all the actions in `./public/game/actions.js`. Most have comments and corresponding tests you can check out.
 
 ### Action Manager
 
-All actions are enqueued and dequeued using an "action manager". This allows us to keep track of the history, undo things and control the flow of the game.
+As said, actions return a new state. They don't modify the original state. To keep track of all the moves (actions) made, we use the "action manager" to queue and dequeue them. 
 
-Run `enqueue(action)` to add to the list. Run `dequeue()` to update the state with the oldest action.
+Run `enqueue(action)` to add to the list.  
+Run `dequeue()` to update the state with the oldest action.
+
+Note, you don't pass an action directly rather you pass an object like `{type: 'nameOfAction', damage: 5}`.
 
 ### Cards
 
@@ -54,11 +65,11 @@ Cards start in the "draw pile". From there they are drawn to the "hand" and fina
 
 ### Powers
 
-Cards can optionally apply "powers". A power is an aura that usually lasts one or more turns. It can target the player, a monster or all enemies. A power could do literally anything, but an example is the "Vulnerable" power, which makes the target take 50% more damage for two turns.
+Cards can apply "powers". A power is an aura that usually lasts one or more turns. It can target the player, a monster or all enemies. A power could do literally anything, but an example is the "Vulnerable" power, which makes the target take 50% more damage for two turns.
 
 ### Dungeon
 
-Every game starts in a dungeon. A dungeon has a path of rooms. There are different types of rooms: Monster and Campfire. One day there'll be more like Merchant and Treasure or a "random" room. Rooms are explored from first to last. Later it'd be cool to have real maps like Slay The Spire.
+Every game starts in a dungeon. You fight your way through rooms from the start to the end. There are different types of rooms. Like Monster and Campfire. One day there'll be more like Merchant and Treasure or a "random" room. Later it'd be cool to have real maps like Slay The Spire, where there are multiple paths to take.
 
 ## Links
 
