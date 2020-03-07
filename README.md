@@ -1,10 +1,10 @@
 # Slay the Web
 
-Hello and welcome to Slay the Web. A browser-based version of the fantastic video card game [Slay The Spire](https://www.megacrit.com/) by Mega Crit. They explain:
+Slay the Spire is a fantastic video card game designed by [MegaCrit](https://www.megacrit.com/) . They explain:
 
 > We fused card games and roguelikes together to make the best single player deckbuilder we could. Craft a unique deck, encounter bizarre creatures, discover relics of immense power, and Slay the Spire!
 
-This exists because I was interested in the mechanics behind the original game and wanted to play around with some JavaScript while learning from all the work in the open source Slay the Spire modding community. The idea is to provide a stable game logic to play the game with any kind of interface. Be it the browser, a command line or whatever. Once the game logic is more or less stable, the fun part begins where we can design unique monsters, cards and powers! This project is very much work in progress. It is made for fun and to learn. 
+After many runs in the Spire, I got really into the theory behind the game. Inspired by the modding community, I thought it'd be neat and a great learning experience to try and implement the core logic of the game for the web. And that is what _Slay the Web_ is. The idea is to provide a stable game logic to play the game with any kind of interface. Be it the browser, a command line or whatever. 
 
 The `master` branch is automatically deployed to https://slaytheweb.now.sh/, where you can try it out!
 
@@ -28,9 +28,9 @@ All scripts are checked with eslint, formatted with prettier and tested with ava
 - `yarn test` tests once
 - `yarn test:watch` tests continously
 
-## Game Engine 
+## Current state of the game
 
-Here I'll try to summarize the main concepts.
+Here I'll try to summarize the main concepts that are implemented.
 
 ### Game state
 
@@ -52,9 +52,13 @@ You have a deck of cards. Cards have different energy cost and can trigger game 
 
 Cards start in the "draw pile". From there they are drawn to the "hand" and finally, once played, to the "discard pile". Once the draw pile is empty, the discard pile is reshuffled into the draw pile.
 
+### Powers
+
+Cards can optionally apply "powers". A power is an aura that usually lasts one or more turns. It can target the player, a monster or all enemies. A power could do literally anything, but an example is the "Vulnerable" power, which makes the target take 50% more damage for two turns.
+
 ### Dungeon
 
-Every game starts in a dungeon. A dungeon has a path of rooms. There are different types of rooms: Monster and Campfire. One day there'll be more like Merchant and Treasure or a "random" room.
+Every game starts in a dungeon. A dungeon has a path of rooms. There are different types of rooms: Monster and Campfire. One day there'll be more like Merchant and Treasure or a "random" room. Rooms are explored from first to last. Later it'd be cool to have real maps like Slay The Spire.
 
 ## Links
 
@@ -77,6 +81,7 @@ A collection of related things, inspiration and ideas.
 - https://itch.io/games/tag-card-game/tag-roguelike
 - https://kinopio.club/cardcrawl-UL_lam2QrnMLIw9meGOmX
 - https://nathanwentworth.itch.io/deck-dungeon [Source](https://github.com/nathanwentworth/deck-dungeon/)
+- https://en.wikipedia.org/wiki/Slay_the_Spire
 - https://slay-the-spire.fandom.com/wiki/Slay_the_Spire_Wiki
 - https://spirelogs.com/
 - https://twitter.com/fabynou/status/1212534790672408578
