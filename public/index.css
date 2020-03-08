@@ -1,10 +1,12 @@
 :root {
 	--card-width: 7rem;
-	--card-height: 10rem;
+	--card-height: 11rem;
 }
 
 html {
 	background: hsl(137, 80%, 13%) linear-gradient(hsl(137, 80%, 13%), hsl(137, 50%, 13%));
+	background-image: url('moonlit-landscape-1904.jpg');
+	background-size: cover;
 	color: antiquewhite;
 	font-size: 16px;
 	line-height: 1.2;
@@ -67,6 +69,17 @@ summary {
 	min-height: 100vh;
 	overflow-y: hidden;
 	padding: 0 0.5rem;
+}
+
+.App::before {
+	content: "";
+	background: linear-gradient(to bottom, #0f1642, transparent);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 30vh;
+	z-index: -1;
 }
 
 .Split {
