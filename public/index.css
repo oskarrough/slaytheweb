@@ -156,34 +156,58 @@ summary {
 .Card-energy {
 	position: absolute;
 	top: -0.5em;
-	left: -0.3em;
+	left: -0.4em;
 	width: 1.4em;
 	height: 1.4em;
 	margin: 0;
-
 	display: flex;
 	place-content: center;
 	place-items: center;
 	font-weight: bold;
 	border-radius: 50%;
 	line-height: 1;
+	border: 2px solid #140c1c;
 }
 
 .Card-energy,
-.Energybar {
+.EnergyBadge {
 	background: teal;
 	color: antiquewhite;
 	text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.8);
 }
 
-.Energybar {
+.EnergyBadge {
 	display: inline-flex;
-	padding: 0.4em 0.3em 0.4em;
 	border-radius: 1em;
-	border: 2px solid;
-	margin-left: 0.7rem;
-	margin-bottom: 0.7rem;
-	font-size: large;
+	border: 3px solid;
+	border-radius: 50%;
+	font-size: 1.25rem;
+	padding: 0.7em 0.50em;
+	margin-bottom: -2rem;
+	z-index: 1;
+	position: relative;
+}
+
+.Target {
+	/* max-width: 24rem; */
+}
+
+.Monster {
+	position: relative;
+	padding-bottom: 3rem;
+	/* margin-left: auto; */
+	/* flex: 1; */
+}
+
+.Target h2 {
+	margin-left: 0.5rem;
+}
+
+/* How cards should look when you drag on a target */
+.Target .Card {
+	position: absolute;
+	top: 2rem;
+	left: 50%;
 }
 
 .Healthbar {

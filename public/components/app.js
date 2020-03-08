@@ -124,7 +124,7 @@ export default class App extends Component {
 				</p>
 
 				<div class="Hand">
-					<div class="Energybar">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
+					<div class="EnergyBadge">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
 					<${Cards} cards=${state.hand} isHand=${true} canDrag=${true} />
 				</div>
 
