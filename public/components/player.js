@@ -12,7 +12,7 @@ export function Healthbar({max, value, block}) {
 export function Player({player}) {
 	const name = player.name ? player.name : 'You'
 	return html`
-		<div class="Player dropzone is-cardTarget">
+		<div class="Target Player dropzone is-cardTarget">
 			<h2>${name}</h2>
 			<${Healthbar} max=${player.maxHealth} value=${player.currentHealth} block=${player.block} />
 			${player.powers.regen > 0 ? `Regen ${player.powers.regen}` : ''}
@@ -22,8 +22,8 @@ export function Player({player}) {
 
 export function Monster(monster) {
 	return html`
-		<div class="Monster dropzone is-cardTarget">
-			<h2>Evil Monster</h2>
+		<div class="Target Monster dropzone is-cardTarget">
+			<h2 align-right>Evil Monster</h2>
 			<${Healthbar} max=${monster.maxHealth} value=${monster.currentHealth} />
 			${monster.powers.vulnerable > 0 ? `Vulnerable ${monster.powers.vulnerable}` : ''}
 		</div>

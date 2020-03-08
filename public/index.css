@@ -56,7 +56,7 @@ button:active {
 h2,
 summary {
 	font-size: 1.25rem;
-	margin: 1rem 0;
+	margin: 1rem 0 0.5rem;
 }
 
 .App {
@@ -71,10 +71,11 @@ summary {
 
 .Split {
 	display: grid;
-	grid-template-columns: 50% 50%;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 5%;
 }
 
-.Split .Cards {
+summary .Cards {
 	overflow: auto;
 }
 
@@ -252,21 +253,10 @@ summary {
 
 .Card.draggable-mirror {
 	width: var(--card-width);
+	z-index: 10;
 }
 
-.Monster {
-	position: relative;
-	padding-bottom: 3rem;
-}
-
-.Monster .Card {
-	position: absolute;
-	top: 2rem;
-	left: 50%;
-}
-
-.Hand {
-}
+.Hand {}
 
 [align-right] {
 	text-align: right;
