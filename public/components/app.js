@@ -120,7 +120,6 @@ export default class App extends Component {
 						  `
 						: html`
 								<button onclick=${() => this.endTurn()}>End turn</button>
-								<button onclick=${() => this.undo()}>Undo</button>
 						  `}
 				</p>
 
@@ -140,7 +139,10 @@ export default class App extends Component {
 					</details>
 				</div>
 
-				<${History} future=${this.am.future.list} past=${this.am.past.list} />
+				<div class="Split">
+					<${History} future=${this.am.future.list} past=${this.am.past.list} />
+					<p><button onclick=${() => this.undo()}>Undo</button></p>
+				</div>
 			</div>
 		`
 	}
