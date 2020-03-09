@@ -14,6 +14,8 @@ The `master` branch is automatically deployed to https://slaytheweb.now.sh/, whe
 - `./public/index.js` is an example interface/website made with preact+htm
 - `./tests` contains quite a few tests in attempt to make sure this actually works
 
+Also see https://kinopio.club/slay-the-web-Dh3xUjjHbol7RbCuqZQDn for a more or less up to date overview.
+
 ## How to develop on it
 
 The `public` folder can be deployed to any static web server. It does not require any compilation, but it does require you to download a few dependencies:
