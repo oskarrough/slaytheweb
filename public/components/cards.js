@@ -1,13 +1,26 @@
 import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
 
 export default class Cards extends Component {
+	// state = {
+	// 	cards: [],
+	// 	isHand: false,
+	// 	isDiscardPile: false,
+	// 	canDrag: false
+	// }
 	componentDidMount() {
-		const cards = this.base.querySelectorAll('.Card')
-		if (this.props.isHand && cards.length) positionCards(cards)
+		this.positionCards()
 	}
-	componentDidUpdate(prev, next) {
+	componentDidUpdate() {
+		this.positionCards()
+	}
+	positionCards() {
 		const cards = this.base.querySelectorAll('.Card')
-		if (this.props.isHand && cards.length) positionCards(cards)
+		if (this.props.isHand && cards.length) {
+			cards.forEach((card, index) => {
+				const offset = parseInt(index, 10) - 2
+				card.style.transform = `rotate(${offset * 4}deg)`
+			})
+		}
 	}
 	render({cards, canDrag, isDiscardPile}) {
 		const classNames = `Cards ${canDrag ? 'dropzone' : ''} ${isDiscardPile ? 'Cards--discard' : ''}`
@@ -30,11 +43,3 @@ export const Card = ({id, name, type, energy, description}) => html`
 		</div>
 	</article>
 `
-
-function positionCards(cards) {
-	if (!cards.length) return
-	cards.forEach((card, index) => {
-		const offset = parseInt(index, 10) - 2
-		card.style.transform = `rotate(${offset * 4}deg)`
-	})
-}

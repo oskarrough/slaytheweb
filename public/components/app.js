@@ -107,9 +107,14 @@ export default class App extends Component {
 		return html`
 			<div class="App">
 				<div class="Split">
-					<${Player} player=${state.player} />
+					<${Player} model=${state.player} name="You" />
 					<div class="Monsters">
-						${room.monsters.map(Monster)}
+						${room.monsters.map(
+							(monster, index) =>
+								html`
+									<${Monster} model=${monster} name=${`Monster ${index}`} />
+								`
+						)}
 					</div>
 				</div>
 
@@ -120,12 +125,11 @@ export default class App extends Component {
 						  `
 						: html`
 								<button onclick=${() => this.endTurn()}>End turn</button>
-								<button onclick=${() => this.undo()}>Undo</button>
 						  `}
 				</p>
 
 				<div class="Hand">
-					<div class="Energybar">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
+					<div class="EnergyBadge">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
 					<${Cards} cards=${state.hand} isHand=${true} canDrag=${true} />
 				</div>
 
@@ -140,7 +144,10 @@ export default class App extends Component {
 					</details>
 				</div>
 
-				<${History} future=${this.am.future.list} past=${this.am.past.list} />
+				<div class="Split">
+					<${History} future=${this.am.future.list} past=${this.am.past.list} />
+					<p><button onclick=${() => this.undo()}>Undo</button></p>
+				</div>
 			</div>
 		`
 	}

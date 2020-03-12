@@ -1,6 +1,6 @@
 :root {
 	--card-width: 7rem;
-	--card-height: 10rem;
+	--card-height: 11rem;
 }
 
 html {
@@ -24,6 +24,30 @@ button {
 body {
 	margin: 0;
 }
+
+.App {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	flex-flow: column;
+	min-height: 100vh;
+	overflow-y: hidden;
+	padding: 0 0.5rem;
+	background-size: cover;
+	/* background-image: url('moonlit-landscape-1904.jpg'); */
+}
+
+/* Darkens the top of the screen to highlight the player+monsters on the background. */
+/* .App::before { */
+/* 	content: ""; */
+/* 	background: linear-gradient(to bottom, #0f1642, transparent); */
+/* 	position: absolute; */
+/* 	top: 0; */
+/* 	left: 0; */
+/* 	width: 100%; */
+/* 	height: 30vh; */
+/* 	z-index: -1; */
+/* } */
 
 a { color: inherit; }
 
@@ -56,25 +80,18 @@ button:active {
 h2,
 summary {
 	font-size: 1.25rem;
-	margin: 1rem 0;
+	margin: 1rem 0 0.5rem;
 }
 
-.App {
-	position: relative;
-	z-index: 2;
-	display: flex;
-	flex-flow: column;
-	min-height: 100vh;
-	overflow-y: hidden;
-	padding: 0 0.5rem;
-}
+
 
 .Split {
 	display: grid;
-	grid-template-columns: 50% 50%;
+	grid-template-columns: 1fr 1fr;
+	grid-gap: 5%;
 }
 
-.Split .Cards {
+summary .Cards {
 	overflow: auto;
 }
 
@@ -156,34 +173,52 @@ summary {
 .Card-energy {
 	position: absolute;
 	top: -0.5em;
-	left: -0.3em;
+	left: -0.4em;
 	width: 1.4em;
 	height: 1.4em;
 	margin: 0;
-
 	display: flex;
 	place-content: center;
 	place-items: center;
 	font-weight: bold;
 	border-radius: 50%;
 	line-height: 1;
+	border: 2px solid #140c1c;
 }
 
 .Card-energy,
-.Energybar {
+.EnergyBadge {
 	background: teal;
 	color: antiquewhite;
 	text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.8);
 }
 
-.Energybar {
+.EnergyBadge {
 	display: inline-flex;
-	padding: 0.4em 0.3em 0.4em;
 	border-radius: 1em;
-	border: 2px solid;
-	margin-left: 0.7rem;
-	margin-bottom: 0.7rem;
-	font-size: large;
+	border: 3px solid;
+	border-radius: 50%;
+	font-size: 1.25rem;
+	padding: 0.7em 0.50em;
+	margin-bottom: -2rem;
+	z-index: 1;
+	position: relative;
+}
+
+.Target {
+	position: relative;
+	padding-bottom: 3rem;
+}
+
+.Target h2 {
+	margin-left: 0.5rem;
+}
+
+/* How cards should look when you drag on a target */
+.Target .Card {
+	position: absolute;
+	top: 2rem;
+	left: 50%;
 }
 
 .Healthbar {
@@ -195,7 +230,7 @@ summary {
 	color: black;
 }
 
-.Healthbar--block .Healthbar-bar {
+.Healthbar--hasBlock .Healthbar-bar {
 	background: #afafff;
 }
 
@@ -228,20 +263,7 @@ summary {
 
 .Card.draggable-mirror {
 	width: var(--card-width);
-}
-
-.Monster {
-	position: relative;
-	padding-bottom: 3rem;
-}
-
-.Monster .Card {
-	position: absolute;
-	top: 2rem;
-	left: 50%;
-}
-
-.Hand {
+	z-index: 10;
 }
 
 [align-right] {
