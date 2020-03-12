@@ -69,19 +69,20 @@ function drawCards(state, amount = 5) {
 	})
 }
 
+// Adds a card (from nowhere) directly to your hand.
 const addCardToHand = (state, {card}) =>
 	produce(state, draft => {
 		draft.hand.push(card)
 	})
 
-// Discard a single card from hand.
+// Discard a single card from your hand.
 const discardCard = (state, {card}) =>
 	produce(state, draft => {
 		draft.hand = state.hand.filter(c => c.id !== card.id)
 		draft.discardPile.push(card)
 	})
 
-// Discard entire hand.
+// Discard your entire hand.
 const discardHand = state =>
 	produce(state, draft => {
 		draft.hand.forEach(card => {
@@ -90,7 +91,8 @@ const discardHand = state =>
 		draft.hand = []
 	})
 
-// The funky part of this action is the `target` argument. It needs to be a special type of string. Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getMonster
+// The funky part of this action is the `target` argument. It needs to be a special type of string:
+// Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getMonster
 function playCard(state, {card, target}) {
 	if (!target) target = card.target
 	if (!card) throw new Error('No card to play')
@@ -110,6 +112,7 @@ function playCard(state, {card, target}) {
 	return newState
 }
 
+// See the note on `target` above.
 function addHealth(state, {target, amount}) {
 	return produce(state, draft => {
 		const monster = getMonster(draft, target)
@@ -117,6 +120,7 @@ function addHealth(state, {target, amount}) {
 	})
 }
 
+// See the note on `target` above.
 const removeHealth = (state, {target, amount}) => {
 	return produce(state, draft => {
 		const monster = getMonster(draft, target)
@@ -129,6 +133,7 @@ const removeHealth = (state, {target, amount}) => {
 	})
 }
 
+// Used by playCard. Applies each power on the card to?
 function applyCardPowers(state, {card}) {
 	return produce(state, draft => {
 		Object.entries(card.powers).forEach(([name, stacks]) => {
@@ -177,12 +182,11 @@ function endTurn(state) {
 
 		// @todo avoid hardcoding individual powers.
 		if (state.player.powers.regen) {
-			let amount = powers.regen.use(state.player.powers.regen)
-			let x = addHealth(newState, {
+			let tempstate = addHealth(newState, {
 				target: 'player',
-				amount
+				amount: powers.regen.use(state.player.powers.regen)
 			})
-			draft.player.currentHealth = x.player.currentHealth
+			draft.player.currentHealth = tempstate.player.currentHealth
 		}
 	})
 }
