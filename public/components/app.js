@@ -19,7 +19,7 @@ export default class App extends Component {
 		state = actions.setDungeon(state, createSimpleDungeon())
 		state = actions.drawStarterDeck(state)
 		state = actions.drawCards(state)
-		// state.dungeon.index = 1 // use this to change room
+		state.dungeon.index = 1 // use this to change room
 		this.state = state
 
 		// Enable debugging in the browser.
@@ -107,9 +107,14 @@ export default class App extends Component {
 		return html`
 			<div class="App">
 				<div class="Split">
-					<${Player} player=${state.player} />
+					<${Player} model=${state.player} name="You" />
 					<div class="Monsters">
-						${room.monsters.map(Monster)}
+						${room.monsters.map(
+							(monster, index) =>
+								html`
+									<${Monster} model=${monster} name=${`Monster ${index}`} />
+								`
+						)}
 					</div>
 				</div>
 

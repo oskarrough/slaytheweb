@@ -1,6 +1,25 @@
 import {html} from './../web_modules/htm/preact/standalone.module.js'
 
-export function Healthbar({max, value, block}) {
+export const Player = props => html`
+	<${Target} ...${props} type="player" />
+`
+
+export const Monster = props => html`
+	<${Target} ...${props} type="monster" />
+`
+
+function Target({model, type, name}) {
+	return html`
+		<div class="Target Target--${type} dropzone is-cardTarget">
+			<h2>${name}</h2>
+			<${Healthbar} max=${model.maxHealth} value=${model.currentHealth} block=${model.block} />
+			<${Powers} powers=${model.powers} />
+		</div>
+	`
+}
+
+// A bar that shows the player's current and maximum health as well as any block.
+function Healthbar({value, max, block}) {
 	return html`
 		<div class="Healthbar ${block ? `Healthbar--hasBlock` : ''}">
 			<p class="Healthbar-label">${block ? `[${block}]` : ''} ${value}/${max}</p>
@@ -9,23 +28,11 @@ export function Healthbar({max, value, block}) {
 	`
 }
 
-export function Player({player}) {
-	const name = player.name ? player.name : 'You'
+// Shows currently active powers.
+function Powers({powers}) {
 	return html`
-		<div class="Target Player dropzone is-cardTarget">
-			<h2>${name}</h2>
-			<${Healthbar} max=${player.maxHealth} value=${player.currentHealth} block=${player.block} />
-			${player.powers.regen > 0 ? `Regen ${player.powers.regen}` : ''}
-		</div>
+		${powers.vulnerable > 0 ? `Vulnerable ${powers.vulnerable}` : ''}
+		${powers.regen > 0 ? `Regen ${powers.regen}` : ''}
 	`
 }
 
-export function Monster(monster) {
-	return html`
-		<div class="Target Monster dropzone is-cardTarget">
-			<h2 align-right>Evil Monster</h2>
-			<${Healthbar} max=${monster.maxHealth} value=${monster.currentHealth} />
-			${monster.powers.vulnerable > 0 ? `Vulnerable ${monster.powers.vulnerable}` : ''}
-		</div>
-	`
-}
