@@ -205,14 +205,8 @@ summary .Cards {
 }
 
 .Target {
-	/* max-width: 24rem; */
-}
-
-.Monster {
 	position: relative;
 	padding-bottom: 3rem;
-	/* margin-left: auto; */
-	/* flex: 1; */
 }
 
 .Target h2 {
@@ -235,7 +229,7 @@ summary .Cards {
 	color: black;
 }
 
-.Healthbar--block .Healthbar-bar {
+.Healthbar--hasBlock .Healthbar-bar {
 	background: #afafff;
 }
 
@@ -270,8 +264,6 @@ summary .Cards {
 	width: var(--card-width);
 	z-index: 10;
 }
-
-.Hand {}
 
 [align-right] {
 	text-align: right;

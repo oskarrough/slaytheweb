@@ -2,7 +2,7 @@ import {html} from './../web_modules/htm/preact/standalone.module.js'
 
 export function Healthbar({max, value, block}) {
 	return html`
-		<div class="Healthbar ${block ? `Healthbar--block` : ''}">
+		<div class="Healthbar ${block ? `Healthbar--hasBlock` : ''}">
 			<p class="Healthbar-label">${block ? `[${block}]` : ''} ${value}/${max}</p>
 			<div class="Healthbar-bar" style=${`width: ${(value / max) * 100}%`}></div>
 		</div>
