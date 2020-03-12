@@ -35,4 +35,3 @@ function Powers({powers}) {
 		${powers.regen > 0 ? `Regen ${powers.regen}` : ''}
 	`
 }
-

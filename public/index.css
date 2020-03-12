@@ -33,10 +33,11 @@ body {
 	min-height: 100vh;
 	overflow-y: hidden;
 	padding: 0 0.5rem;
+	background-size: cover;
 	/* background-image: url('moonlit-landscape-1904.jpg'); */
-	/* background-size: cover; */
 }
 
+/* Darkens the top of the screen to highlight the player+monsters on the background. */
 /* .App::before { */
 /* 	content: ""; */
 /* 	background: linear-gradient(to bottom, #0f1642, transparent); */

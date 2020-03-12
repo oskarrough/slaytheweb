@@ -19,7 +19,7 @@ export default class App extends Component {
 		state = actions.setDungeon(state, createSimpleDungeon())
 		state = actions.drawStarterDeck(state)
 		state = actions.drawCards(state)
-		state.dungeon.index = 1 // use this to change room
+		// state.dungeon.index = 1 // use this to change room
 		this.state = state
 
 		// Enable debugging in the browser.
