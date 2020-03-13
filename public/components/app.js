@@ -1,9 +1,15 @@
+// Third party dependencies
 import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
+import {Sortable, OnSpill} from '../web_modules/sortablejs/modular/sortable.core.esm.js'
+
+// Game logic
 import ActionManager from '../game/action-manager.js'
 import actions from './../game/actions.js'
 import {isCurrentRoomCompleted} from '../game/utils.js'
 import {createSimpleDungeon} from '../game/dungeon-encounters.js'
 import {createCard} from './../game/cards.js'
+
+// Components
 import {Player, Monster} from './player.js'
 import Cards from './cards.js'
 import History from './history.js'
@@ -54,50 +60,50 @@ export default class App extends Component {
 	}
 
 	enableDrop() {
-		// Enable drag and drop.
-		const dropzones = this.base.querySelectorAll('.dropzone')
-		const drop = new window.Sortable.default(dropzones, {
+		const self = this
+
+		// Enable required plugin for the 'revertOnSpill' option.
+		Sortable.mount(OnSpill)
+
+		// We want to be able to drag and drop cards in the hand.
+		new Sortable(this.base.querySelector('.Hand .Cards'), {
+			group: 'hand',
 			draggable: '.Card',
-			mirror: {constrainDimensions: true}
-		})
-
-		drop.on('sortable:start', event => {
-			// Find the card object behind the DOM card we are dragging.
-			const card = this.state.hand.find(c => c.id === event.data.dragEvent.data.source.dataset.id)
-			if (card.energy > this.state.player.currentEnergy) {
-				event.cancel()
-				alert('Not enough energy to play this card.')
+			revertOnSpill: true,
+			// sort: false,
+			onMove: function(/**Event*/ event) {
+				const card = self.state.hand.find(c => c.id === event.dragged.dataset.id)
+				if (card.energy > self.state.player.currentEnergy) {
+					alert('Not enough energy to play this card.')
+					return false
+				}
 			}
 		})
+		// And we want all the targets (player + monsters) to be droppable.
+		this.base.querySelectorAll('.Target').forEach(el => {
+			new Sortable(el, {
+				group: {
+					name: 'player',
+					put: ['hand']
+				},
+				draggable: '.TRICKYOUCANT',
+				onAdd: function(event) {
+					const card = self.state.hand.find(c => c.id === event.item.dataset.id)
+					let to = event.to
+					let target
 
-		drop.on('sortable:sort', event => {
-			// Only allow dropping on elements with this class.
-			const el = event.dragEvent.data.overContainer
-			if (!el.classList.contains('is-cardTarget')) event.cancel()
-		})
+					if (to.classList.contains('Player')) {
+						target = 'player'
+					} else {
+						const index = Array.from(to.parentNode.children).indexOf(to)
+						target = `enemy${index}`
+					}
 
-		drop.on('sortable:stop', event => {
-			const {newContainer, oldContainer, dragEvent} = event.data
-
-			// Should it be allowed to drop the card here?
-			const allowCardPlay =
-				newContainer.classList.contains('is-cardTarget') && newContainer !== oldContainer
-			if (!allowCardPlay) return
-
-			// If yes, use the DOM to find the played card.
-			const card = this.state.hand.find(c => c.id === dragEvent.originalSource.dataset.id)
-
-			// Also use the DOM to find who we dropped it on.
-			let target
-			if (newContainer.classList.contains('Player')) {
-				target = 'player'
-			} else {
-				const index = Array.from(newContainer.parentNode.children).indexOf(newContainer)
-				target = `enemy${index}`
-			}
-			// Play the card immediately
-			this.enqueue({type: 'playCard', target, card})
-			this.dequeue()
+					// Play the card immediately
+					self.enqueue({type: 'playCard', target, card})
+					self.dequeue()
+				}
+			})
 		})
 	}
 
