@@ -10,7 +10,7 @@ export const Monster = props => html`
 
 function Target({model, type, name}) {
 	return html`
-		<div class="Target Target--${type}">
+		<div class="Target" data-type=${type}>
 			<h2>${name}</h2>
 			<${Healthbar} max=${model.maxHealth} value=${model.currentHealth} block=${model.block} />
 			<${Powers} powers=${model.powers} />

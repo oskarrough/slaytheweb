@@ -88,17 +88,10 @@ export default class App extends Component {
 				},
 				draggable: '.TRICKYOUCANT',
 				onAdd: function(event) {
-					const card = self.state.hand.find(c => c.id === event.item.dataset.id)
-					let to = event.to
-					let target
-
-					if (to.classList.contains('Player')) {
-						target = 'player'
-					} else {
-						const index = Array.from(to.parentNode.children).indexOf(to)
-						target = `enemy${index}`
-					}
-
+					const {item, to} = event
+					const card = self.state.hand.find(c => c.id === item.dataset.id)
+					const index = Array.from(to.parentNode.children).indexOf(to)
+					let target = to.dataset.type + index
 					// Play the card immediately
 					self.enqueue({type: 'playCard', target, card})
 					self.dequeue()
