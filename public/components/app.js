@@ -136,7 +136,7 @@ export default class App extends Component {
 
 				<div class="Hand">
 					<div class="EnergyBadge">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
-					<${Cards} cards=${state.hand} isHand=${true} canDrag=${true} />
+					<${Cards} cards=${state.hand} isHand=${true} />
 				</div>
 
 				<div class="Split">
@@ -146,7 +146,7 @@ export default class App extends Component {
 					</details>
 					<details>
 						<summary align-right>Discard pile ${state.discardPile.length}</summary>
-						<${Cards} cards=${state.discardPile} isDiscardPile=${true} />
+						<${Cards} cards=${state.discardPile} />
 					</details>
 				</div>
 

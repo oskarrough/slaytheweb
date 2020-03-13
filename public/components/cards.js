@@ -4,8 +4,6 @@ export default class Cards extends Component {
 	// props = {
 	// 	cards: [],
 	// 	isHand: false,
-	// 	isDiscardPile: false,
-	// 	canDrag: false
 	// }
 	componentDidMount() {
 		this.positionCards()
@@ -22,10 +20,9 @@ export default class Cards extends Component {
 			})
 		}
 	}
-	render({cards, canDrag, isDiscardPile}) {
-		const classNames = `Cards ${canDrag ? 'dropzone' : ''} ${isDiscardPile ? 'Cards--discard' : ''}`
+	render({cards}) {
 		return html`
-			<div class=${classNames}>
+			<div class="Cards">
 				${cards.map(Card)}
 			</div>
 		`
