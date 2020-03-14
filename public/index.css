@@ -83,16 +83,10 @@ summary {
 	margin: 1rem 0 0.5rem;
 }
 
-
-
 .Split {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	grid-gap: 5%;
-}
-
-summary .Cards {
-	overflow: auto;
 }
 
 .Cards {
@@ -111,13 +105,12 @@ summary .Cards {
 	margin-left: -3rem;
 }
 
+summary .Cards {
+	overflow: auto;
+}
 
 .Card {
 	display: flex;
-}
-
-.Card-inner {
-	flex: 1;
 	display: flex;
 	flex-flow: column;
 	position: relative;
@@ -139,17 +132,6 @@ summary .Cards {
 	border-image-slice: 6 6 6 6;
 	border-image-width: 18px;
 	border-width: 15px;
-}
-
-.dropzone .Card:hover {
-	z-index: 101;
-	cursor: grab;
-}
-
-.dropzone .Card:hover .Card-inner {
-	transition-duration: 60ms;
-	transform: translate3d(0, -1rem, 0) scale(1.25);
-	box-shadow: 0 0 0.75em gold;
 }
 
 .Card-title {
@@ -207,18 +189,16 @@ summary .Cards {
 
 .Target {
 	position: relative;
-	padding-bottom: 3rem;
+	margin-top: 1rem;
+	padding: 1px 1em 1.4em;
+}
+
+.Target.is-dragOver .Healthbar {
+	box-shadow: 0 0 1em #ffc107;
 }
 
 .Target h2 {
 	margin-left: 0.5rem;
-}
-
-/* How cards should look when you drag on a target */
-.Target .Card {
-	position: absolute;
-	top: 2rem;
-	left: 50%;
 }
 
 .Healthbar {
@@ -250,20 +230,8 @@ summary .Cards {
 	max-width: 100%;
 	height: 100%;
 	border-radius: 0.5rem;
-	background: red;
 	background: #ffc107;
 	transition: width 400ms, background 200ms;
-}
-
-.draggable-source--is-dragging {
-	/* Hide the original card while dragging the copy. */
-	opacity: 0.5;
-	/* visibility: hidden; */
-}
-
-.Card.draggable-mirror {
-	width: var(--card-width);
-	z-index: 10;
 }
 
 [align-right] {
@@ -280,3 +248,23 @@ summary .Cards {
 	margin: 2rem;
 	text-align: center;
 }
+
+.Hand .Card {
+	cursor: grab;
+	transition-duration: 120ms;
+}
+
+.Hand .Card:hover {
+	transition-duration: 60ms;
+	transform: translate3d(0, -1rem, 0) scale(1.25) rotate(0deg) !important;
+	box-shadow: 0 0 0.75em gold;
+	z-index: 1;
+}
+
+.sortable-chosen {}
+.Card.sortable-ghost { opacity: 0.5; }
+
+.Target .Card.sortable-ghost {
+	display: none;
+}
+

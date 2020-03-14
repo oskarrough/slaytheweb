@@ -1,9 +1,15 @@
+// Third party dependencies
 import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
+import {Sortable, OnSpill} from '../web_modules/sortablejs/modular/sortable.core.esm.js'
+
+// Game logic
 import ActionManager from '../game/action-manager.js'
 import actions from './../game/actions.js'
 import {isCurrentRoomCompleted} from '../game/utils.js'
 import {createSimpleDungeon} from '../game/dungeon-encounters.js'
 import {createCard} from './../game/cards.js'
+
+// Components
 import {Player, Monster} from './player.js'
 import Cards from './cards.js'
 import History from './history.js'
@@ -29,11 +35,9 @@ export default class App extends Component {
 			createCard
 		}
 	}
-
 	componentDidMount() {
 		this.enableDrop()
 	}
-
 	enqueue(action) {
 		this.am.enqueue(action)
 	}
@@ -47,60 +51,55 @@ export default class App extends Component {
 		console.log('Undoing', prev.action.type)
 		this.setState(prev.state)
 	}
-
 	endTurn() {
 		this.enqueue({type: 'endTurn'})
 		this.dequeue()
 	}
-
 	enableDrop() {
-		// Enable drag and drop.
-		const dropzones = this.base.querySelectorAll('.dropzone')
-		const drop = new window.Sortable.default(dropzones, {
+		const overClass = 'is-dragOver'
+		const self = this
+		// Enable required plugin for the 'revertOnSpill' option.
+		Sortable.mount(OnSpill)
+		// We want to be able to drag cards in the hand.
+		new Sortable(this.base.querySelector('.Hand .Cards'), {
+			group: 'hand',
 			draggable: '.Card',
-			mirror: {constrainDimensions: true}
-		})
-
-		drop.on('sortable:start', event => {
-			// Find the card object behind the DOM card we are dragging.
-			const card = this.state.hand.find(c => c.id === event.data.dragEvent.data.source.dataset.id)
-			if (card.energy > this.state.player.currentEnergy) {
-				event.cancel()
-				alert('Not enough energy to play this card.')
+			revertOnSpill: true,
+			onMove(event) {
+				// Do as little as possible here. It gets called a lot.
+				targets.forEach(t => t.classList.remove(overClass))
+				event.to.classList.add(overClass)
+				// Check if we have enough energy.
+				const card = self.state.hand.find(c => c.id === event.dragged.dataset.id)
+				if (card.energy > self.state.player.currentEnergy) {
+					alert('Not enough energy to play this card.')
+					return false
+				}
 			}
 		})
-
-		drop.on('sortable:sort', event => {
-			// Only allow dropping on elements with this class.
-			const el = event.dragEvent.data.overContainer
-			if (!el.classList.contains('is-cardTarget')) event.cancel()
-		})
-
-		drop.on('sortable:stop', event => {
-			const {newContainer, oldContainer, dragEvent} = event.data
-
-			// Should it be allowed to drop the card here?
-			const allowCardPlay =
-				newContainer.classList.contains('is-cardTarget') && newContainer !== oldContainer
-			if (!allowCardPlay) return
-
-			// If yes, use the DOM to find the played card.
-			const card = this.state.hand.find(c => c.id === dragEvent.originalSource.dataset.id)
-
-			// Also use the DOM to find who we dropped it on.
-			let target
-			if (newContainer.classList.contains('Player')) {
-				target = 'player'
-			} else {
-				const index = Array.from(newContainer.parentNode.children).indexOf(newContainer)
-				target = `enemy${index}`
-			}
-			// Play the card immediately
-			this.enqueue({type: 'playCard', target, card})
-			this.dequeue()
+		// And we want to be able to drop on all the targets (player + monsters)
+		const targets = this.base.querySelectorAll('.Target')
+		targets.forEach(el => {
+			new Sortable(el, {
+				group: {
+					name: 'player',
+					pull: false,
+					put: ['hand']
+				},
+				draggable: '.TRICKYOUCANT',
+				// When you drop, play the card.
+				onAdd(event) {
+					const {item, to} = event
+					const card = self.state.hand.find(c => c.id === item.dataset.id)
+					const index = Array.from(to.parentNode.children).indexOf(to)
+					let target = to.dataset.type + index
+					self.enqueue({type: 'playCard', target, card})
+					self.dequeue()
+					targets.forEach(t => t.classList.remove(overClass))
+				}
+			})
 		})
 	}
-
 	render(props, state) {
 		const room = state.dungeon.rooms[state.dungeon.index]
 		const didWin = isCurrentRoomCompleted(state)
@@ -130,7 +129,7 @@ export default class App extends Component {
 
 				<div class="Hand">
 					<div class="EnergyBadge">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
-					<${Cards} cards=${state.hand} isHand=${true} canDrag=${true} />
+					<${Cards} cards=${state.hand} isHand=${true} />
 				</div>
 
 				<div class="Split">
@@ -140,7 +139,7 @@ export default class App extends Component {
 					</details>
 					<details>
 						<summary align-right>Discard pile ${state.discardPile.length}</summary>
-						<${Cards} cards=${state.discardPile} isDiscardPile=${true} />
+						<${Cards} cards=${state.discardPile} />
 					</details>
 				</div>
 

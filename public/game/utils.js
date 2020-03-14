@@ -30,12 +30,11 @@ export function shuffle(array) {
 
 // Support a target like "enemyx", where x is the order of the monster.
 export function getMonster(state, target) {
-	if (target === 'player') {
+	if (target.startsWith('player')) {
 		return state.player
 	}
 	if (target.startsWith('enemy')) {
 		const index = target.split('enemy')[1]
-		// console.log({index, number: state.dungeon.index, room: state.dungeon.rooms[state.dungeon.index]})
 		const monster = state.dungeon.rooms[state.dungeon.index].monsters[index]
 		if (!monster) {
 			throw new Error(`could not find "${target}" in room ${state.dungeon.index}`)

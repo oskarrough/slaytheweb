@@ -5,12 +5,12 @@ export const Player = props => html`
 `
 
 export const Monster = props => html`
-	<${Target} ...${props} type="monster" />
+	<${Target} ...${props} type="enemy" />
 `
 
 function Target({model, type, name}) {
 	return html`
-		<div class="Target Target--${type} dropzone is-cardTarget">
+		<div class="Target" data-type=${type}>
 			<h2>${name}</h2>
 			<${Healthbar} max=${model.maxHealth} value=${model.currentHealth} block=${model.block} />
 			<${Powers} powers=${model.powers} />
