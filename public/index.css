@@ -111,10 +111,6 @@ summary .Cards {
 
 .Card {
 	display: flex;
-}
-
-.Card-inner {
-	flex: 1;
 	display: flex;
 	flex-flow: column;
 	position: relative;
@@ -251,14 +247,16 @@ summary .Cards {
 
 .Hand .Card {
 	cursor: grab;
+	transition-duration: 120ms;
 }
 
-.Hand .Card:hover .Card-inner {
+.Hand .Card:hover {
 	transition-duration: 60ms;
-	transform: translate3d(0, -1rem, 0) scale(1.25);
+	transform: translate3d(0, -1rem, 0) scale(1.25) rotate(0deg) !important;
 	box-shadow: 0 0 0.75em gold;
+	z-index: 1;
 }
 
 .sortable-chosen {}
-.sortable-ghost { opacity: 0.2; }
+.Card.sortable-ghost { opacity: 0.5; }
 
