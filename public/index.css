@@ -194,7 +194,7 @@ summary .Cards {
 }
 
 .Target.is-dragOver .Healthbar {
-	box-shadow: 0 0 1em #ffc107;
+	box-shadow: 0 0 2em lightblue;
 }
 
 .Target h2 {
@@ -238,9 +238,17 @@ summary .Cards {
 	text-align: right;
 }
 
+.Targets,
+.Target {
+	flex: 1;
+}
+
+.Monsters {
+	display: flex;
+}
+
 .Actions {
 	text-align: right;
-	margin-top: auto;
 	margin-right: 1rem;
 }
 
@@ -261,7 +269,7 @@ summary .Cards {
 	z-index: 1;
 }
 
-.sortable-chosen {}
+.Card.sortable-chosen {}
 .Card.sortable-ghost { opacity: 0.5; }
 
 .Target .Card.sortable-ghost {

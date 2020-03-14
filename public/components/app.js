@@ -105,7 +105,7 @@ export default class App extends Component {
 		const didWin = isCurrentRoomCompleted(state)
 		return html`
 			<div class="App">
-				<div class="Split">
+				<div class="Targets Split">
 					<${Player} model=${state.player} name="You" />
 					<div class="Monsters">
 						${room.monsters.map(
