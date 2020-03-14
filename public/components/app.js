@@ -61,11 +61,9 @@ export default class App extends Component {
 
 	enableDrop() {
 		const self = this
-
 		// Enable required plugin for the 'revertOnSpill' option.
 		Sortable.mount(OnSpill)
-
-		// We want to be able to drag and drop cards in the hand.
+		// We want to be able to drag cards in the hand.
 		new Sortable(this.base.querySelector('.Hand .Cards'), {
 			group: 'hand',
 			draggable: '.Card',
@@ -79,20 +77,21 @@ export default class App extends Component {
 				}
 			}
 		})
-		// And we want all the targets (player + monsters) to be droppable.
+		// And we want to be able to drop on all the targets (player + monsters)
 		this.base.querySelectorAll('.Target').forEach(el => {
 			new Sortable(el, {
 				group: {
 					name: 'player',
+					pull: false,
 					put: ['hand']
 				},
 				draggable: '.TRICKYOUCANT',
+				// When you drop, play the card.
 				onAdd: function(event) {
 					const {item, to} = event
 					const card = self.state.hand.find(c => c.id === item.dataset.id)
 					const index = Array.from(to.parentNode.children).indexOf(to)
 					let target = to.dataset.type + index
-					// Play the card immediately
 					self.enqueue({type: 'playCard', target, card})
 					self.dequeue()
 				}
