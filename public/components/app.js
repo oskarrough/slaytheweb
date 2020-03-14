@@ -35,11 +35,9 @@ export default class App extends Component {
 			createCard
 		}
 	}
-
 	componentDidMount() {
 		this.enableDrop()
 	}
-
 	enqueue(action) {
 		this.am.enqueue(action)
 	}
@@ -53,13 +51,12 @@ export default class App extends Component {
 		console.log('Undoing', prev.action.type)
 		this.setState(prev.state)
 	}
-
 	endTurn() {
 		this.enqueue({type: 'endTurn'})
 		this.dequeue()
 	}
-
 	enableDrop() {
+		const overClass = 'is-dragOver'
 		const self = this
 		// Enable required plugin for the 'revertOnSpill' option.
 		Sortable.mount(OnSpill)
@@ -70,6 +67,8 @@ export default class App extends Component {
 			revertOnSpill: true,
 			// sort: false,
 			onMove: function(/**Event*/ event) {
+				targets.forEach(t => t.classList.remove(overClass))
+				event.to.classList.add(overClass)
 				const card = self.state.hand.find(c => c.id === event.dragged.dataset.id)
 				if (card.energy > self.state.player.currentEnergy) {
 					alert('Not enough energy to play this card.')
@@ -78,7 +77,8 @@ export default class App extends Component {
 			}
 		})
 		// And we want to be able to drop on all the targets (player + monsters)
-		this.base.querySelectorAll('.Target').forEach(el => {
+		const targets = this.base.querySelectorAll('.Target')
+		targets.forEach(el => {
 			new Sortable(el, {
 				group: {
 					name: 'player',
@@ -94,11 +94,11 @@ export default class App extends Component {
 					let target = to.dataset.type + index
 					self.enqueue({type: 'playCard', target, card})
 					self.dequeue()
+					targets.forEach(t => t.classList.remove(overClass))
 				}
 			})
 		})
 	}
-
 	render(props, state) {
 		const room = state.dungeon.rooms[state.dungeon.index]
 		const didWin = isCurrentRoomCompleted(state)

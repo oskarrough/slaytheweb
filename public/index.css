@@ -189,7 +189,12 @@ summary .Cards {
 
 .Target {
 	position: relative;
-	padding-bottom: 2rem;
+	margin-top: 1rem;
+	padding: 1px 1em 1.4em;
+}
+
+.Target.is-dragOver .Healthbar {
+	box-shadow: 0 0 1em #ffc107;
 }
 
 .Target h2 {
@@ -225,7 +230,6 @@ summary .Cards {
 	max-width: 100%;
 	height: 100%;
 	border-radius: 0.5rem;
-	background: red;
 	background: #ffc107;
 	transition: width 400ms, background 200ms;
 }
@@ -259,4 +263,8 @@ summary .Cards {
 
 .sortable-chosen {}
 .Card.sortable-ghost { opacity: 0.5; }
+
+.Target .Card.sortable-ghost {
+	display: none;
+}
 
