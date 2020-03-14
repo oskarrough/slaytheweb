@@ -65,10 +65,11 @@ export default class App extends Component {
 			group: 'hand',
 			draggable: '.Card',
 			revertOnSpill: true,
-			// sort: false,
-			onMove: function(/**Event*/ event) {
+			onMove(event) {
+				// Do as little as possible here. It gets called a lot.
 				targets.forEach(t => t.classList.remove(overClass))
 				event.to.classList.add(overClass)
+				// Check if we have enough energy.
 				const card = self.state.hand.find(c => c.id === event.dragged.dataset.id)
 				if (card.energy > self.state.player.currentEnergy) {
 					alert('Not enough energy to play this card.')
@@ -87,7 +88,7 @@ export default class App extends Component {
 				},
 				draggable: '.TRICKYOUCANT',
 				// When you drop, play the card.
-				onAdd: function(event) {
+				onAdd(event) {
 					const {item, to} = event
 					const card = self.state.hand.find(c => c.id === item.dataset.id)
 					const index = Array.from(to.parentNode.children).indexOf(to)
