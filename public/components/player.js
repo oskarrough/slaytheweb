@@ -5,7 +5,7 @@ export const Player = props => html`
 `
 
 export const Monster = props => html`
-	<${Target} ...${props} type="monster" />
+	<${Target} ...${props} type="enemy" />
 `
 
 function Target({model, type, name}) {
