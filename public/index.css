@@ -1,6 +1,8 @@
 :root {
 	--card-width: 7rem;
 	--card-height: 11rem;
+	--yellow: #ffc107;
+	--teal: #116f54;
 }
 
 html {
@@ -49,7 +51,9 @@ body {
 /* 	z-index: -1; */
 /* } */
 
-a { color: inherit; }
+a {
+	color: inherit;
+}
 
 button {
 	font-size: 1.25rem;
@@ -89,6 +93,22 @@ summary {
 	grid-gap: 5%;
 }
 
+.EnergyBadge {
+	position: relative;
+	z-index: 1;
+	font-size: 1.5rem;
+	width: 2.2em;
+	height: 2.2em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 3px solid hsla(0, 0%, 0%, 0.8);
+	border-radius: 50%;
+	background: var(--teal);
+	/* background: radial-gradient(var(--teal), var(--yellow)); */
+	text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
 .Cards {
 	min-height: var(--card-height);
 	display: grid;
@@ -96,7 +116,7 @@ summary {
 	grid-auto-flow: column;
 	justify-content: center;
 	padding: 1rem 1rem 1rem 3rem;
-	border: 1px dotted #ffff0080;
+	border: 1px dotted var(--yellow);
 	border-radius: 1em;
 	position: relative;
 }
@@ -154,37 +174,9 @@ summary .Cards {
 
 .Card-energy {
 	position: absolute;
-	top: -0.5em;
-	left: -0.4em;
-	width: 1.4em;
-	height: 1.4em;
-	margin: 0;
-	display: flex;
-	place-content: center;
-	place-items: center;
-	font-weight: bold;
-	border-radius: 50%;
-	line-height: 1;
-	border: 2px solid #140c1c;
-}
-
-.Card-energy,
-.EnergyBadge {
-	background: teal;
-	color: antiquewhite;
-	text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.8);
-}
-
-.EnergyBadge {
-	display: inline-flex;
-	border-radius: 1em;
-	border: 3px solid;
-	border-radius: 50%;
-	font-size: 1.25rem;
-	padding: 0.7em 0.50em;
-	margin-bottom: -2rem;
-	z-index: 1;
-	position: relative;
+	top: -1.5em;
+	left: -0.5em;
+	font-size: 0.75rem;
 }
 
 .Target {
@@ -230,7 +222,7 @@ summary .Cards {
 	max-width: 100%;
 	height: 100%;
 	border-radius: 0.5rem;
-	background: #ffc107;
+	background: var(--yellow);
 	transition: width 400ms, background 200ms;
 }
 
@@ -270,9 +262,11 @@ summary .Cards {
 }
 
 .Card.sortable-chosen {}
-.Card.sortable-ghost { opacity: 0.5; }
+
+.Card.sortable-ghost {
+	opacity: 0.5;
+}
 
 .Target .Card.sortable-ghost {
 	display: none;
 }
-
