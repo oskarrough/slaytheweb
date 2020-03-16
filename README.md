@@ -92,7 +92,6 @@ A collection of related things, inspiration and ideas.
 - https://github.com/kiooeht/StSLib/wiki/Power-Hooks
 - https://hundredrabbits.itch.io/donsol [Source](https://github.com/hundredrabbits/Donsol/tree/master/desktop/sources/scripts)
 - https://itch.io/games/tag-card-game/tag-roguelike
-- https://kinopio.club/cardcrawl-UL_lam2QrnMLIw9meGOmX
 - https://nathanwentworth.itch.io/deck-dungeon [Source](https://github.com/nathanwentworth/deck-dungeon/)
 - https://en.wikipedia.org/wiki/Slay_the_Spire
 - https://slay-the-spire.fandom.com/wiki/Slay_the_Spire_Wiki

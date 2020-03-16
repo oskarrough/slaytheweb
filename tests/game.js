@@ -97,11 +97,11 @@ test('can manipulate player hp', t => {
 	t.is(state.player.currentHealth, 100)
 	const state2 = a.removeHealth(state, {target: 'player', amount: 10})
 	t.is(state2.player.currentHealth, 90, 'can remove hp')
-	t.is(state.player.currentHealth, 100, 'original state was not modified')
+	t.is(state.player.currentHealth, 100, 'immutable')
 	const state3 = a.addHealth(state2, {target: 'player', amount: 20})
 	t.is(state3.player.currentHealth, 110)
+	t.is(state2.player.currentHealth, 90, 'immutable')
 	t.is(state.player.currentHealth, 100)
-	t.is(state2.player.currentHealth, 90)
 })
 
 test('can manipulate monster hp', t => {
@@ -109,12 +109,12 @@ test('can manipulate monster hp', t => {
 	t.is(getMonster(state, 'enemy0').currentHealth, 42, 'og heath is ok')
 	const state2 = a.removeHealth(state, {target: 'enemy0', amount: 10})
 	t.is(state2.dungeon.rooms[0].monsters[0].currentHealth, 32, 'can remove hp')
-	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42, 'original state was not modified')
+	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42, 'immutable')
 
 	const state3 = a.removeHealth(state2, {target: 'enemy0', amount: 10})
 	t.is(state3.dungeon.rooms[0].monsters[0].currentHealth, 22, 'can remove hp')
-	t.is(state2.dungeon.rooms[0].monsters[0].currentHealth, 32, 'original state was not modified')
-	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42, 'original state was not modified')
+	t.is(state2.dungeon.rooms[0].monsters[0].currentHealth, 32, 'immutable')
+	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42, 'immutable')
 })
 
 test('can not play a card without enough energy', t => {
@@ -152,8 +152,8 @@ test('can play a defend card from hand and see the effects on state', t => {
 
 test('when monster reaches 0 hp, you win!', t => {
 	const {state} = t.context
-	const newState = a.removeHealth(state, {target: 'enemy0', amount: 42})
 	t.false(isCurrentRoomCompleted(state))
+	const newState = a.removeHealth(state, {target: 'enemy0', amount: 42})
 	t.true(isCurrentRoomCompleted(newState))
 })
 
