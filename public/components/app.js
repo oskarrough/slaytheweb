@@ -23,9 +23,9 @@ export default class App extends Component {
 		// Prepare the game.
 		let state = actions.createNewGame()
 		state = actions.setDungeon(state, createSimpleDungeon())
-		state = actions.drawStarterDeck(state)
+		state = actions.addStarterDeck(state)
 		state = actions.drawCards(state)
-		// state.dungeon.index = 1 // use this to change room
+		// state.dungeon.index = 3 // use this to change room
 		this.state = state
 
 		// Enable debugging in the browser.
@@ -60,6 +60,12 @@ export default class App extends Component {
 		this.enqueue({type: 'endTurn'})
 		this.dequeue()
 	}
+	goToNextRoom() {
+		this.enqueue({type: 'goToNextRoom'})
+		this.enqueue({})
+		// Enable dragdrop again because the DOM of the targets changed.
+		this.dequeue(this.enableDrop)
+	}
 	enableDrop() {
 		const overClass = 'is-dragOver'
 		const self = this
@@ -70,6 +76,9 @@ export default class App extends Component {
 			group: 'hand',
 			draggable: '.Card',
 			revertOnSpill: true,
+			onSpill() {
+				targets.forEach(t => t.classList.remove(overClass))
+			},
 			onMove(event) {
 				// Do as little as possible here. It gets called a lot.
 				targets.forEach(t => t.classList.remove(overClass))
@@ -125,7 +134,7 @@ export default class App extends Component {
 				<p class="Actions">
 					${didWin
 						? html`
-								<button onClick=${props.onWin}>YOU WON! Try again?</button>
+								You win. <button onclick=${() => this.goToNextRoom()}>Go to the next floor?</button>
 						  `
 						: html`
 								<button onclick=${() => this.endTurn()}>End turn</button>
