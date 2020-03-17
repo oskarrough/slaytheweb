@@ -1,6 +1,6 @@
 import produce from '../web_modules/immer.js'
 import {createCard} from './cards.js'
-import {shuffle, getMonster} from './utils.js'
+import {shuffle, getTargets} from './utils.js'
 import powers from './powers.js'
 
 // The idea is that we have one big object with game state. Whenever we want to change something, we call an "action" from this file. Each action takes two arguments: 1) the current state, 2) an object of arguments.
@@ -41,8 +41,8 @@ function drawStarterDeck(state) {
 		createCard('Strike'),
 		createCard('Strike'),
 		createCard('Strike'),
-		createCard('Strike'),
 		createCard('Bash'),
+		createCard('Thunderclap'),
 		createCard('Flourish')
 	]
 	return produce(state, draft => {
@@ -92,7 +92,7 @@ const discardHand = state =>
 	})
 
 // The funky part of this action is the `target` argument. It needs to be a special type of string:
-// Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getMonster
+// Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getTargets
 function playCard(state, {card, target}) {
 	if (!target) target = card.target
 	if (!card) throw new Error('No card to play')
@@ -107,48 +107,63 @@ function playCard(state, {card, target}) {
 			draft.player.block = newState.player.block + card.block
 		}
 	})
-	if (card.damage) newState = removeHealth(newState, {target, amount: card.damage})
-	if (card.powers) newState = applyCardPowers(newState, {card})
+	if (card.damage) {
+		// This should be refactored, but when you play an attack card that targets all enemies,
+		// we prioritize this over the actual enemy where you dropped the card.
+		const newTarget = card.target === 'all enemies' ? card.target : target
+		newState = removeHealth(newState, {target: newTarget, amount: card.damage})
+	}
+	if (card.powers) newState = applyCardPowers(newState, {target, card})
 	return newState
 }
 
 // See the note on `target` above.
 function addHealth(state, {target, amount}) {
 	return produce(state, draft => {
-		const monster = getMonster(draft, target)
-		monster.currentHealth = monster.currentHealth + amount
+		const targets = getTargets(draft, target)
+		targets.forEach(t => {
+			t.currentHealth = t.currentHealth + amount
+		})
 	})
 }
 
 // See the note on `target` above.
 const removeHealth = (state, {target, amount}) => {
 	return produce(state, draft => {
-		const monster = getMonster(draft, target)
-		// Adjust damage if the monster is vulnerable.
-		if (monster.powers.vulnerable) {
-			amount = powers.vulnerable.use(amount)
-		}
-		const newHp = monster.currentHealth - amount
-		monster.currentHealth = newHp
+		const targets = getTargets(draft, target)
+		// console.log('removing health', targets, amount)
+		targets.forEach(t => {
+			// Adjust damage if the monster is vulnerable.
+			if (t.powers.vulnerable) {
+				amount = powers.vulnerable.use(amount)
+			}
+			const newHp = t.currentHealth - amount
+			t.currentHealth = newHp
+		})
 	})
 }
 
 // Used by playCard. Applies each power on the card to?
-function applyCardPowers(state, {card}) {
+function applyCardPowers(state, {card, target}) {
 	return produce(state, draft => {
 		Object.entries(card.powers).forEach(([name, stacks]) => {
-			// Add powers that target player.
 			if (card.target === 'player') {
-				const newStacks = (state.player.powers[name] || 0) + stacks
+				// Add powers that target player.
+				const newStacks = (draft.player.powers[name] || 0) + stacks
 				draft.player.powers[name] = newStacks
-			}
-			// Add powers that target an enemy.
-			if (card.target === 'enemy') {
-				state.dungeon.rooms[state.dungeon.index].monsters.forEach(monster => {
+			} else if (card.target === 'all enemies') {
+				// Add powers that target all enemies.
+				draft.dungeon.rooms[draft.dungeon.index].monsters.forEach(monster => {
 					const newStacks = (monster.powers[name] || 0) + stacks
-					// @todo for now we just apply to one
-					draft.dungeon.rooms[state.dungeon.index].monsters[0].powers[name] = newStacks
+					monster.powers[name] = newStacks
 				})
+			} else if (target) {
+				// const t = getTargets(draft, target)
+				const index = target.split('enemy')[1]
+				const t = draft.dungeon.rooms[state.dungeon.index].monsters[index]
+				// console.log(target, t)
+				const newStacks = (t.powers[name] || 0) + stacks
+				t.powers[name] = newStacks
 			}
 		})
 	})
