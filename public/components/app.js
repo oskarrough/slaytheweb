@@ -62,7 +62,6 @@ export default class App extends Component {
 	}
 	goToNextRoom() {
 		this.enqueue({type: 'goToNextRoom'})
-		this.enqueue({})
 		// Enable dragdrop again because the DOM of the targets changed.
 		this.dequeue(this.enableDrop)
 	}
