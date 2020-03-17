@@ -42,8 +42,13 @@ export default class App extends Component {
 		this.am.enqueue(action)
 	}
 	dequeue(callback) {
-		const nextState = this.am.dequeue(this.state)
-		this.setState(nextState, callback)
+		try {
+			const nextState = this.am.dequeue(this.state)
+			this.setState(nextState, callback)
+		} catch (err) {
+			console.log(err)
+			alert(err)
+		}
 	}
 	undo() {
 		const prev = this.am.past.takeFromTop()
