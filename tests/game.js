@@ -181,30 +181,6 @@ test('can discard the entire hand', t => {
 	t.is(state4.discardPile.length, 5)
 })
 
-test('ending a turn refreshes energy', t => {
-	const {state} = t.context
-	t.is(state.player.currentEnergy, 3)
-	const card = createCard('Defend')
-	const state2 = a.playCard(state, {target: 'player', card})
-	t.is(state2.player.currentEnergy, 2)
-	const state3 = a.playCard(state2, {target: 'player', card})
-	t.is(state3.player.currentEnergy, 1)
-	const newTurn = a.endTurn(state3)
-	t.is(newTurn.player.currentEnergy, 3)
-})
-
-test("ending a turn removes player's block", t => {
-	const {state} = t.context
-	t.is(state.player.block, 0)
-	const card = createCard('Defend')
-	const state2 = a.playCard(state, {target: 'player', card})
-	t.is(state2.player.block, 5)
-	const state3 = a.playCard(state2, {target: 'player', card})
-	t.is(state3.player.block, 10)
-	const newTurn = a.endTurn(state3)
-	t.is(newTurn.player.block, 0)
-})
-
 test('ending a turn draws a new hand and recycles discard pile', t => {
 	let {state} = t.context
 
@@ -228,6 +204,30 @@ test('ending a turn draws a new hand and recycles discard pile', t => {
 	t.is(state.drawPile.length, 5)
 	t.is(state.hand.length, 5)
 	t.is(state.discardPile.length, 0)
+})
+
+test('ending a turn refreshes energy', t => {
+	const {state} = t.context
+	t.is(state.player.currentEnergy, 3)
+	const card = createCard('Defend')
+	const state2 = a.playCard(state, {target: 'player', card})
+	t.is(state2.player.currentEnergy, 2)
+	const state3 = a.playCard(state2, {target: 'player', card})
+	t.is(state3.player.currentEnergy, 1)
+	const newTurn = a.endTurn(state3)
+	t.is(newTurn.player.currentEnergy, 3)
+})
+
+test("ending a turn removes player's block", t => {
+	const {state} = t.context
+	t.is(state.player.block, 0)
+	const card = createCard('Defend')
+	const state2 = a.playCard(state, {target: 'player', card})
+	t.is(state2.player.block, 5)
+	const state3 = a.playCard(state2, {target: 'player', card})
+	t.is(state3.player.block, 10)
+	const newTurn = a.endTurn(state3)
+	t.is(newTurn.player.block, 0)
 })
 
 test('Bash card adds a vulnerable power and it doubles damage', t => {
@@ -309,12 +309,6 @@ test('You can stack regen power', t => {
 // 	state = a.playCard(state, {card})
 // })
 
-// test.skip('Cleave damages all monsters', t => {
-// 	let {state} = t.context
-// 	const card = createCard('Cleave')
-// 	state = a.playCard(state, {card})
-// })
-
 // test.skip('Clash can only be played if it\'s the only attack', t => {
 // 	let {state} = t.context
 // 	const clashCard = createCard('Clash')
@@ -324,4 +318,23 @@ test('You can stack regen power', t => {
 // 	t.throws(() => a.playCard(state, {card: clashCard}))
 // })
 
+test('target "all enemies" works for damage as well as power', t => {
+	const {state} = t.context
+	state.dungeon.index = 1
+	t.is(state.dungeon.rooms[state.dungeon.index].monsters.length, 2, 'we have two enemies')
+	t.is(state.dungeon.rooms[state.dungeon.index].monsters[0].currentHealth, 24)
+	t.is(state.dungeon.rooms[state.dungeon.index].monsters[1].currentHealth, 20)
+	t.falsy(state.dungeon.rooms[state.dungeon.index].monsters[0].powers.vulnerable)
+	t.falsy(state.dungeon.rooms[state.dungeon.index].monsters[1].powers.vulnerable)
+	const card = createCard('Thunderclap')
+	const nextState = a.playCard(state, {card})
+	// console.log(nextState.dungeon.rooms[nextState.dungeon.index].monsters[0])
+	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[0].currentHealth, 19)
+	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[1].currentHealth, 15)
+	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[0].powers.vulnerable, 1)
+	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[1].powers.vulnerable, 1)
+})
+
+test.todo('playing defend on an enemy ?')
+test.todo('Cleave targets all monsters')
 test.todo('can apply a power to a specific monster')

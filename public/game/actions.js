@@ -41,8 +41,8 @@ function drawStarterDeck(state) {
 		createCard('Strike'),
 		createCard('Strike'),
 		createCard('Strike'),
-		createCard('Strike'),
 		createCard('Bash'),
+		createCard('Thunderclap'),
 		createCard('Flourish')
 	]
 	return produce(state, draft => {
@@ -92,7 +92,7 @@ const discardHand = state =>
 	})
 
 // The funky part of this action is the `target` argument. It needs to be a special type of string:
-// Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getMonster
+// Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getTargets
 function playCard(state, {card, target}) {
 	if (!target) target = card.target
 	if (!card) throw new Error('No card to play')
@@ -107,8 +107,13 @@ function playCard(state, {card, target}) {
 			draft.player.block = newState.player.block + card.block
 		}
 	})
-	if (card.damage) newState = removeHealth(newState, {target, amount: card.damage})
-	if (card.powers) newState = applyCardPowers(newState, {card})
+	if (card.damage) {
+		// This should be refactored, but when you play an attack card that targets all enemies,
+		// we prioritize this over the actual enemy where you dropped the card.
+		const newTarget = card.target === 'all enemies' ? card.target : target
+		newState = removeHealth(newState, {target: newTarget, amount: card.damage})
+	}
+	if (card.powers) newState = applyCardPowers(newState, {target, card})
 	return newState
 }
 
