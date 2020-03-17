@@ -186,6 +186,7 @@ summary .Cards {
 }
 
 .Target.is-dragOver .Healthbar {
+	transition-duration: 100ms;
 	box-shadow: 0 0 2em lightblue;
 }
 
@@ -200,6 +201,7 @@ summary .Cards {
 	text-align: center;
 	background: darkslategrey;
 	color: black;
+	transition: box-shadow 400ms;
 }
 
 .Healthbar--hasBlock .Healthbar-bar {
