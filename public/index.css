@@ -34,9 +34,15 @@ body {
 	flex-flow: column;
 	min-height: 100vh;
 	overflow-y: hidden;
-	padding: 0 0.5rem;
+	padding: 0 1vw;
 	background-size: cover;
 	/* background-image: url('moonlit-landscape-1904.jpg'); */
+}
+
+.App-statusline {
+	margin: 0 -1vw;
+	background: #0f0e0e;
+	padding: 0.2em;
 }
 
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
@@ -263,7 +269,8 @@ summary .Cards {
 	z-index: 1;
 }
 
-.Card.sortable-chosen {}
+.Card.sortable-chosen {
+}
 
 .Card.sortable-ghost {
 	opacity: 0.5;

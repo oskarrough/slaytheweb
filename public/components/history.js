@@ -18,7 +18,7 @@ export default class Queue extends Component {
 		const time = new Date(state.time).toLocaleTimeString()
 		return html`
 			<details>
-				<summary>Slay the Web v0 ${time}</summary>
+				<summary>${time}</summary>
 				<h2>Future</h2>
 				<${FutureList} items=${props.future} />
 				<h3>Past</h3>

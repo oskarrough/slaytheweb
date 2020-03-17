@@ -131,18 +131,21 @@ export default class App extends Component {
 					</div>
 				</div>
 
-				<p class="Actions">
-					${didWin
-						? html`
-								You win. <button onclick=${() => this.goToNextRoom()}>Go to the next floor?</button>
-						  `
-						: html`
-								<button onclick=${() => this.endTurn()}>End turn</button>
-						  `}
-				</p>
+				<div class="Split">
+					<div class="EnergyBadge">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
+					<p class="Actions">
+						${didWin
+							? html`
+									You win.
+									<button onclick=${() => this.goToNextRoom()}>Go to the next floor?</button>
+							  `
+							: html`
+									<button onclick=${() => this.endTurn()}>End turn</button>
+							  `}
+					</p>
+				</div>
 
 				<div class="Hand">
-					<div class="EnergyBadge">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
 					<${Cards} cards=${state.hand} isHand=${true} />
 				</div>
 
@@ -156,11 +159,13 @@ export default class App extends Component {
 						<${Cards} cards=${state.discardPile} />
 					</details>
 				</div>
-
 				<div class="Split">
 					<${History} future=${this.am.future.list} past=${this.am.past.list} />
 					<p><button onclick=${() => this.undo()}>Undo</button></p>
 				</div>
+				<p class="App-statusline">
+					Slay the Web v0. Room ${state.dungeon.index + 1} of ${state.dungeon.rooms.length}
+				</p>
 			</div>
 		`
 	}
