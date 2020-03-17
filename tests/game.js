@@ -111,7 +111,6 @@ test('can manipulate monster hp', t => {
 	const state2 = a.removeHealth(state, {target: 'enemy0', amount: 10})
 	t.is(state2.dungeon.rooms[0].monsters[0].currentHealth, 32, 'can remove hp')
 	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42, 'immutable')
-
 	const state3 = a.removeHealth(state2, {target: 'enemy0', amount: 10})
 	t.is(state3.dungeon.rooms[0].monsters[0].currentHealth, 22, 'can remove hp')
 	t.is(state2.dungeon.rooms[0].monsters[0].currentHealth, 32, 'immutable')
@@ -145,9 +144,9 @@ test('can play a defend card from hand and see the effects on state', t => {
 	const {state} = t.context
 	t.is(state.player.block, 0)
 	const card = createCard('Defend')
-	const state2 = a.playCard(state, {target: 'player', card})
+	const state2 = a.playCard(state, {card})
 	t.is(state2.player.block, 5)
-	const state3 = a.playCard(state2, {target: 'player', card})
+	const state3 = a.playCard(state2, {card})
 	t.is(state3.player.block, 10)
 })
 
@@ -210,9 +209,9 @@ test('ending a turn refreshes energy', t => {
 	const {state} = t.context
 	t.is(state.player.currentEnergy, 3)
 	const card = createCard('Defend')
-	const state2 = a.playCard(state, {target: 'player', card})
+	const state2 = a.playCard(state, {card})
 	t.is(state2.player.currentEnergy, 2)
-	const state3 = a.playCard(state2, {target: 'player', card})
+	const state3 = a.playCard(state2, {card})
 	t.is(state3.player.currentEnergy, 1)
 	const newTurn = a.endTurn(state3)
 	t.is(newTurn.player.currentEnergy, 3)
@@ -222,9 +221,9 @@ test("ending a turn removes player's block", t => {
 	const {state} = t.context
 	t.is(state.player.block, 0)
 	const card = createCard('Defend')
-	const state2 = a.playCard(state, {target: 'player', card})
+	const state2 = a.playCard(state, {card})
 	t.is(state2.player.block, 5)
-	const state3 = a.playCard(state2, {target: 'player', card})
+	const state3 = a.playCard(state2, {card})
 	t.is(state3.player.block, 10)
 	const newTurn = a.endTurn(state3)
 	t.is(newTurn.player.block, 0)
