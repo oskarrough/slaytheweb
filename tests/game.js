@@ -18,6 +18,7 @@ test('new game state is ok', t => {
 	t.true(state.dungeon.rooms.length > 0, 'we have a dungeon with rooms')
 	delete state.dungeon // deleting for rest of test because can't deepequal ids
 	t.deepEqual(state, {
+		deck: [],
 		drawPile: [],
 		hand: [],
 		discardPile: [],
@@ -35,7 +36,7 @@ test('new game state is ok', t => {
 test('drawing a starter deck adds it to the draw pile', t => {
 	const {state} = t.context
 	t.is(state.drawPile.length, 0)
-	const state2 = a.drawStarterDeck(state)
+	const state2 = a.addStarterDeck(state)
 	t.is(state2.drawPile.length, 10)
 })
 
@@ -49,8 +50,8 @@ test('starter deck is shuffled', t => {
 	const tries = Array(10)
 	t.plan(tries.length)
 	for (const index of tries) {
-		let draw1 = a.drawStarterDeck(state)
-		let draw2 = a.drawStarterDeck(state)
+		let draw1 = a.addStarterDeck(state)
+		let draw2 = a.addStarterDeck(state)
 		t.notDeepEqual(removeIds(draw1.drawPile), removeIds(draw2.drawPile))
 	}
 })
@@ -65,7 +66,7 @@ test('can add a card to hand', t => {
 
 test('can draw cards from drawPile to hand', t => {
 	const {state} = t.context
-	const state2 = a.drawStarterDeck(state)
+	const state2 = a.addStarterDeck(state)
 	t.is(state2.hand.length, 0, 'hand is empty to start with')
 	const state3 = a.drawCards(state2)
 	t.is(state3.hand.length, 5, 'cards have been added to the hand')
@@ -75,7 +76,7 @@ test('can draw cards from drawPile to hand', t => {
 test('recycling the discard pile is shuffled', t => {
 	const getIds = arr => arr.map(card => card.id)
 	let {state} = t.context
-	state = a.drawStarterDeck(state)
+	state = a.addStarterDeck(state)
 	state = a.drawCards(state)
 	let thirdDraw = a.endTurn(state)
 	thirdDraw = a.endTurn(thirdDraw)
@@ -159,7 +160,7 @@ test('when monster reaches 0 hp, you win!', t => {
 
 test('can discard a single card from hand', t => {
 	const {state} = t.context
-	const state2 = a.drawStarterDeck(state)
+	const state2 = a.addStarterDeck(state)
 	const state3 = a.drawCards(state2)
 	t.is(state3.hand.length, 5)
 	t.is(state3.discardPile.length, 0)
@@ -171,7 +172,7 @@ test('can discard a single card from hand', t => {
 
 test('can discard the entire hand', t => {
 	const {state} = t.context
-	const state2 = a.drawStarterDeck(state)
+	const state2 = a.addStarterDeck(state)
 	const state3 = a.drawCards(state2)
 	t.is(state3.hand.length, 5)
 	t.is(state3.discardPile.length, 0)
@@ -180,10 +181,21 @@ test('can discard the entire hand', t => {
 	t.is(state4.discardPile.length, 5)
 })
 
+test('We can reshuffle and draw', t => {
+	let {state} = t.context
+	const state2 = a.addStarterDeck(state)
+	const state3 = a.drawCards(state2)
+	const state4 = a.discardHand(state3)
+	t.is(state4.discardPile.length, 5)
+	const state5 = a.reshuffleAndDraw(state4)
+	t.is(state5.hand.length, 5)
+	t.is(state5.discardPile.length, 0)
+})
+
 test('ending a turn draws a new hand and recycles discard pile', t => {
 	let {state} = t.context
 
-	state = a.drawStarterDeck(state)
+	state = a.addStarterDeck(state)
 	t.is(state.drawPile.length, 10)
 	t.is(state.hand.length, 0)
 	t.is(state.discardPile.length, 0)

@@ -8,6 +8,7 @@ import powers from './powers.js'
 // This is the big object of game state. Everything should start here.
 function createNewGame() {
 	return {
+		deck: [],
 		drawPile: [],
 		hand: [],
 		discardPile: [],
@@ -32,7 +33,7 @@ function setDungeon(state, dungeon) {
 }
 
 // Draws a "starter" deck to your discard pile. Normally you'd run this as you start the game.
-function drawStarterDeck(state) {
+function addStarterDeck(state) {
 	const deck = [
 		createCard('Defend'),
 		createCard('Defend'),
@@ -46,6 +47,7 @@ function drawStarterDeck(state) {
 		createCard('Flourish')
 	]
 	return produce(state, draft => {
+		draft.deck = deck
 		draft.drawPile = shuffle(deck)
 	})
 }
@@ -206,8 +208,18 @@ function endTurn(state) {
 	})
 }
 
+function reshuffleAndDraw(state) {
+	const nextState = produce(state, draft => {
+		draft.hand = []
+		draft.discardPile = []
+		draft.drawPile = draft.deck
+	})
+	return drawCards(nextState)
+}
+
 function goToNextRoom(state) {
-	return produce(state, draft => {
+	let nextState = reshuffleAndDraw(state)
+	return produce(nextState, draft => {
 		const number = state.dungeon.index
 		if (number === state.dungeon.rooms.length - 1) {
 			throw new Error('Already at last room')
@@ -217,17 +229,18 @@ function goToNextRoom(state) {
 }
 
 export default {
+	addCardToHand,
+	addHealth,
+	addStarterDeck,
 	applyCardPowers,
 	createNewGame,
-	drawStarterDeck,
-	drawCards,
-	addCardToHand,
 	discardCard,
 	discardHand,
-	playCard,
+	drawCards,
 	endTurn,
-	addHealth,
+	goToNextRoom,
+	playCard,
 	removeHealth,
-	setDungeon,
-	goToNextRoom
+	reshuffleAndDraw,
+	setDungeon
 }
