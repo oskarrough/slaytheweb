@@ -258,7 +258,6 @@ summary .Cards {
 }
 
 .Hand .Card {
-	cursor: grab;
 	transition-duration: 120ms;
 }
 
@@ -279,3 +278,25 @@ summary .Cards {
 .Target .Card.sortable-ghost {
 	display: none;
 }
+
+html {
+	cursor: url(images/default.png), auto;
+}
+
+a,
+button,
+summary {
+	cursor: url(images/point.png) 10 0, auto;
+}
+
+.Hand .Card {
+	cursor: grab;
+	cursor: url(images/grab-open.png) 10 0, auto;
+}
+
+/* input, */
+/* textarea, */
+/* select { */
+/* 	cursor: url(images/select.png) 10 0, auto; */
+/* } */
+
