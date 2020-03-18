@@ -226,6 +226,29 @@ function goToNextRoom(state) {
 	})
 }
 
+function takeMonsterTurn(state) {
+	return produce(state, draft => {
+		state.dungeon.rooms[state.dungeon.index].monsters.forEach((monster) => {
+			if (!monster.nextIntent) monster.nextIntent = 0
+			const intent = monster.intents[monster.nextIntent]
+			if (intent === 'block') {
+				monster.block = monster.block + 7
+			}
+			if (intent === 'damage') {
+				draft.player.currentHealth = removeHealth(state, {
+					target: 'player',
+					amount: monster.damage
+				}).player.currentHealth
+			}
+			if (monster.nextIntent === monster.intents.length - 1) {
+				monster.nextIntent = 0
+			} else {
+				monster.nextIntent++
+			}
+		})
+	})
+}
+
 export default {
 	addCardToHand,
 	addHealth,
@@ -240,5 +263,6 @@ export default {
 	playCard,
 	removeHealth,
 	reshuffleAndDraw,
-	setDungeon
+	setDungeon,
+	takeMonsterTurn
 }

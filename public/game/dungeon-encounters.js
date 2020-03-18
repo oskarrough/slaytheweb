@@ -2,7 +2,12 @@ import Dungeon, {CampfireRoom, MonsterRoom, Monster} from './dungeon.js'
 
 // An example dungeon showcasing some different rooms.
 export const createSimpleDungeon = () => {
-	const normal = () => MonsterRoom(Monster())
+	const normal = () =>
+		MonsterRoom(
+			Monster({
+				intents: ['block', 'damage', 'damage']
+			})
+		)
 	const elite = () => MonsterRoom(Monster({hp: 24}), Monster({hp: 20}))
 	const boss = () => MonsterRoom(Monster({hp: 150}), Monster())
 	return Dungeon({

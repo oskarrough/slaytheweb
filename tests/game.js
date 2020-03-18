@@ -1,6 +1,6 @@
 import test from 'ava'
-import {getTargets, isCurrentRoomCompleted} from '../public/game/utils'
 import actions from '../public/game/actions'
+import {getTargets, isCurrentRoomCompleted} from '../public/game/utils'
 import {createCard} from '../public/game/cards'
 import {createSimpleDungeon} from '../public/game/dungeon-encounters'
 
@@ -150,6 +150,8 @@ test('can play a defend card from hand and see the effects on state', t => {
 	const state3 = a.playCard(state2, {card})
 	t.is(state3.player.block, 10)
 })
+
+test.todo('block actually blocks damage')
 
 test('when monster reaches 0 hp, you win!', t => {
 	const {state} = t.context
@@ -349,3 +351,4 @@ test('target "all enemies" works for damage as well as power', t => {
 test.todo('playing defend on an enemy ?')
 test.todo('Cleave targets all monsters')
 test.todo('can apply a power to a specific monster')
+
