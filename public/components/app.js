@@ -58,7 +58,8 @@ export default class App extends Component {
 	}
 	endTurn() {
 		this.enqueue({type: 'endTurn'})
-		this.dequeue()
+		this.enqueue({type: 'takeMonsterTurn'})
+		this.dequeue(this.dequeue())
 	}
 	goToNextRoom() {
 		this.enqueue({type: 'endTurn'})
@@ -165,10 +166,15 @@ export default class App extends Component {
 					</details>
 				</div>
 				<div class="Split">
-					<${History} future=${this.am.future.list} past=${this.am.past.list} undo=${this.undo.bind(this)} />
+					<${History}
+						future=${this.am.future.list}
+						past=${this.am.past.list}
+						undo=${this.undo.bind(this)}
+					/>
 				</div>
 				<p class="App-statusline">
-					<a href="https://github.com/oskarrough/slaytheweb">Slay the Web</a> v0. Room ${state.dungeon.index + 1} of ${state.dungeon.rooms.length}
+					<a href="https://github.com/oskarrough/slaytheweb">Slay the Web</a> v0. Room
+					${state.dungeon.index + 1} of ${state.dungeon.rooms.length}
 				</p>
 			</div>
 		`
