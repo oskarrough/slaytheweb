@@ -61,9 +61,10 @@ export default class App extends Component {
 		this.dequeue()
 	}
 	goToNextRoom() {
+		this.enqueue({type: 'endTurn'})
 		this.enqueue({type: 'goToNextRoom'})
 		// Enable dragdrop again because the DOM of the targets changed.
-		this.dequeue(this.enableDrop)
+		this.dequeue(this.dequeue(this.enableDrop))
 	}
 	enableDrop() {
 		const overClass = 'is-dragOver'

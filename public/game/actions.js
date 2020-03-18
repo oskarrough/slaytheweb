@@ -190,13 +190,11 @@ function decreasePowerStacks(state) {
 function endTurn(state) {
 	let newState = discardHand(state)
 	newState = drawCards(newState)
-	// aka "endofturnhook"
 	newState = decreasePowerStacks(newState)
 	return produce(newState, draft => {
 		// Reset energy and block
 		draft.player.currentEnergy = 3
 		draft.player.block = 0
-
 		// @todo avoid hardcoding individual powers.
 		if (state.player.powers.regen) {
 			let tempstate = addHealth(newState, {
