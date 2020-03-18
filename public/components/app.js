@@ -65,6 +65,11 @@ export default class App extends Component {
 		// Enable dragdrop again because the DOM of the targets changed.
 		this.dequeue(this.enableDrop)
 	}
+	handleShortcuts(event) {
+		const {key} = event
+		if (key === 'e') this.endTurn()
+		if (key === 'u') this.undo()
+	}
 	enableDrop() {
 		const overClass = 'is-dragOver'
 		const self = this
@@ -117,7 +122,7 @@ export default class App extends Component {
 		const room = state.dungeon.rooms[state.dungeon.index]
 		const didWin = isCurrentRoomCompleted(state)
 		return html`
-			<div class="App">
+			<div class="App" tabindex="0" onKeyDown=${e => this.handleShortcuts(e)}>
 				<div class="Targets Split">
 					<${Player} model=${state.player} name="You" />
 					<div class="Monsters">
@@ -139,7 +144,7 @@ export default class App extends Component {
 									<button onclick=${() => this.goToNextRoom()}>Go to the next floor?</button>
 							  `
 							: html`
-									<button onclick=${() => this.endTurn()}>End turn</button>
+									<button onclick=${() => this.endTurn()}><u>E</u>nd turn</button>
 							  `}
 					</p>
 				</div>
@@ -160,7 +165,9 @@ export default class App extends Component {
 				</div>
 				<div class="Split">
 					<${History} future=${this.am.future.list} past=${this.am.past.list} />
-					<p><button onclick=${() => this.undo()}>Undo</button></p>
+					<p>
+						<button onclick=${() => this.undo()}><u>U</u>ndo</button>
+					</p>
 				</div>
 				<p class="App-statusline">
 					Slay the Web v0. Room ${state.dungeon.index + 1} of ${state.dungeon.rooms.length}
