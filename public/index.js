@@ -10,7 +10,7 @@ class Main extends Component {
 	constructor() {
 		super()
 		this.state = {
-			isPlaying: true
+			isPlaying: false
 		}
 		this.handleWin = this.handleWin.bind(this)
 		this.handleNewGame = this.handleNewGame.bind(this)
@@ -39,10 +39,10 @@ class Main extends Component {
 const SplashScreen = props => html`
 	<article class="Splash">
 		<h1>Slay the Web</h1>
-		<h2>A little card crawl adventure in your browser. Work in progress.</h2>
+		<h2>A little card crawl adventure for you and your browser.</h2>
 		<p><button onClick=${props.onNewGame}>Start a new game</a></p>
 	</article>
-`
+			`
 
 const WinScreen = props => html`
 	<article class="Splash">

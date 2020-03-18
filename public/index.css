@@ -1,13 +1,14 @@
 :root {
 	--card-width: 7rem;
-	--card-height: 11rem;
+	--card-height: 12rem;
 	--yellow: #ffc107;
 	--teal: #116f54;
+	--text: hsl(34, 78%, 85%);
 }
 
 html {
 	background: hsl(137, 80%, 13%) linear-gradient(hsl(137, 80%, 13%), hsl(137, 50%, 13%));
-	color: antiquewhite;
+	color: var(--text);
 	font-size: 16px;
 	line-height: 1.2;
 }
@@ -87,6 +88,18 @@ button:active {
 	box-shadow: none;
 }
 
+h1 {
+	transform: rotate3d(5, 15, 3, -20deg);
+	font-size: 4rem;
+	font-size: 10vw;
+	margin-bottom: 1rem;
+	background-image: linear-gradient(63deg, var(--yellow), #bd4516);
+	background-clip: text;
+	color: transparent;
+	text-shadow: 1px 2px #0c0cd526;
+	letter-spacing: -1px;
+}
+
 h2,
 summary {
 	font-size: 1.25rem;
@@ -100,6 +113,7 @@ summary {
 }
 
 .EnergyBadge {
+	transform: rotate3d(5, 15, 3, -20deg);
 	position: relative;
 	z-index: 1;
 	font-size: 1.5rem;
@@ -253,8 +267,16 @@ summary .Cards {
 }
 
 .Splash {
-	margin: 2rem;
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-flow: column;
 	text-align: center;
+}
+
+.Splash h2 {
+	margin-bottom: 1rem;
 }
 
 .Hand .Card {
