@@ -18,11 +18,14 @@ export default class Queue extends Component {
 		const time = new Date(state.time).toLocaleTimeString()
 		return html`
 			<details>
-				<summary>${time}</summary>
+				<summary>History ${time}</summary>
 				<h2>Future</h2>
 				<${FutureList} items=${props.future} />
 				<h3>Past</h3>
 				<${FutureList} items=${props.past} />
+				<p>
+					<button onclick=${() => props.undo()}><u>U</u>ndo</button>
+				</p>
 			</details>
 		`
 	}

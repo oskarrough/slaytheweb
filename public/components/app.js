@@ -165,13 +165,10 @@ export default class App extends Component {
 					</details>
 				</div>
 				<div class="Split">
-					<${History} future=${this.am.future.list} past=${this.am.past.list} />
-					<p>
-						<button onclick=${() => this.undo()}><u>U</u>ndo</button>
-					</p>
+					<${History} future=${this.am.future.list} past=${this.am.past.list} undo=${this.undo.bind(this)} />
 				</div>
 				<p class="App-statusline">
-					Slay the Web v0. Room ${state.dungeon.index + 1} of ${state.dungeon.rooms.length}
+					<a href="https://github.com/oskarrough/slaytheweb">Slay the Web</a> v0. Room ${state.dungeon.index + 1} of ${state.dungeon.rooms.length}
 				</p>
 			</div>
 		`
