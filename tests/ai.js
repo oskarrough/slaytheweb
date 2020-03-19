@@ -7,17 +7,18 @@ import Dungeon, {MonsterRoom, Monster} from '../public/game/dungeon.js'
 
 const a = actions
 
-const createDungeon = () => Dungeon({
-	rooms: [
-		MonsterRoom(
-			Monster({
-				intents: ['block', 'damage', 'damage']
-			})
-		)
-	]
-})
+const createDungeon = () =>
+	Dungeon({
+		rooms: [
+			MonsterRoom(
+				Monster({
+					intents: ['block', 'damage', 'damage']
+				})
+			)
+		]
+	})
 
-const monster = (state) => state.dungeon.rooms[0].monsters[0]
+const monster = state => state.dungeon.rooms[0].monsters[0]
 
 test('monster cycles through intents on its turn', t => {
 	let state = a.setDungeon(a.createNewGame(), createDungeon())
@@ -53,6 +54,5 @@ test('monster does damage and block', t => {
 	state = a.takeMonsterTurn(state)
 	t.is(state.player.currentHealth, 90)
 	state = a.takeMonsterTurn(state)
-	t.is(monster(state).block, 14)
+	t.is(monster(state).block, 7, 'block doesnt stack')
 })
-

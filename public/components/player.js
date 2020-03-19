@@ -8,7 +8,10 @@ export const Monster = props => {
 	const intent = props.model.intents[props.model.nextIntent]
 	return html`
 		<${Target} ...${props} type="enemy">
-			<img alt=${intent} src="images/${intent}.png" />
+			${intent &&
+				html`
+					<img alt=${intent} src="images/${intent}.png" />
+				`}
 		<//>
 	`
 }
