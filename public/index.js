@@ -44,14 +44,14 @@ const SplashScreen = props => html`
 	<article class="Splash">
 		<h1>Slay the Web</h1>
 		<h2>A little card crawl adventure for you and your browser.</h2>
-		<p><button onClick=${props.onNewGame}>Start a new game</a></p>
+		<p><button autofocus onClick=${props.onNewGame}>Start a new game</a></p>
 	</article>
-			`
+`
 
 const WinScreen = props => html`
 	<article class="Splash">
 		<h1>Well done. You won.</h1>
-		<p><button onClick=${props.onNewGame}>Start a new game</a></p>
+		<p><button autofocus onClick=${props.onNewGame}>Start a new game</a></p>
 	</article>
 `
 
