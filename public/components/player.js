@@ -4,14 +4,19 @@ export const Player = props => html`
 	<${Target} ...${props} type="player" />
 `
 
-export const Monster = props => html`
-	<${Target} ...${props} type="enemy" />
-`
+export const Monster = props => {
+	const intent = props.model.intents[props.model.nextIntent]
+	return html`
+		<${Target} ...${props} type="enemy">
+			<img alt=${intent} src="images/${intent}.png" />
+		<//>
+	`
+}
 
-function Target({model, type, name}) {
+function Target({model, type, name, children}) {
 	return html`
 		<div class="Target" data-type=${type}>
-			<h2>${name}</h2>
+			<h2>${name} ${children}</h2>
 			<${Healthbar} max=${model.maxHealth} value=${model.currentHealth} block=${model.block} />
 			<${Powers} powers=${model.powers} />
 		</div>

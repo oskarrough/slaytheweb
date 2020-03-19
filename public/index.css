@@ -214,6 +214,18 @@ summary .Cards {
 	margin-left: 0.5rem;
 }
 
+.Target h2 img {
+	height: 1.5em;
+	position: absolute;
+	top: 0.7em;
+	margin-left: 0.1em;
+	image-rendering: -webkit-optimize-contrast;
+	image-rendering: -webkit-crisp-edges;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: -o-crisp-edges;
+	image-rendering: pixelated;
+}
+
 .Healthbar {
 	position: relative;
 	border: 3px solid;
@@ -321,4 +333,3 @@ summary {
 /* select { */
 /* 	cursor: url(images/select.png) 10 0, auto; */
 /* } */
-
