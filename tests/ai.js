@@ -12,6 +12,7 @@ const createDungeon = () =>
 		rooms: [
 			MonsterRoom(
 				Monster({
+					blockPower: 7,
 					intents: ['block', 'damage', 'damage']
 				})
 			)
@@ -44,6 +45,7 @@ test('monster does damage and block', t => {
 	t.is(state.player.currentHealth, 100)
 	t.is(monster(state).damage, 5)
 	t.is(monster(state).block, 0)
+	t.is(monster(state).blockPower, 7)
 	t.deepEqual(monster(state).intents, ['block', 'damage', 'damage'])
 
 	state = a.takeMonsterTurn(state)
