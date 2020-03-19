@@ -23,33 +23,27 @@ const monster = state => state.dungeon.rooms[0].monsters[0]
 
 test('monster cycles through intents on its turn', t => {
 	let state = a.setDungeon(a.createNewGame(), createDungeon())
-
 	t.is(monster(state).intents.length, 3)
-
 	state = a.endTurn(state)
 	t.is(monster(state).nextIntent, 0)
-
 	state = a.takeMonsterTurn(state)
 	t.is(monster(state).nextIntent, 1)
-
 	state = a.takeMonsterTurn(state)
 	t.is(monster(state).nextIntent, 2)
-
 	state = a.takeMonsterTurn(state)
 	t.is(monster(state).nextIntent, 0)
 })
 
 test('monster does damage and block', t => {
 	let state = a.setDungeon(a.createNewGame(), createDungeon())
-
+	// Establish our baseline.
 	t.is(state.player.currentHealth, 100)
 	t.is(monster(state).damage, 5)
 	t.is(monster(state).block, 0)
 	t.is(monster(state).blockPower, 7)
 	t.deepEqual(monster(state).intents, ['block', 'damage', 'damage'])
-
+	// And play through some turns
 	state = a.takeMonsterTurn(state)
-	// The value "7" is hardcoded in the action for now.
 	t.is(monster(state).block, 7)
 	state = a.takeMonsterTurn(state)
 	t.is(state.player.currentHealth, 95)

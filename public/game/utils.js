@@ -61,3 +61,8 @@ export function isCurrentRoomCompleted(state) {
 		// @todo
 	}
 }
+
+// Use it to generate a range of numbers like range(3) === [1,2,3] or range(3, 6) === [6,7,8]
+export function range(size, startAt = 0) {
+	return [...Array(size).keys()].map(i => i + startAt)
+}
