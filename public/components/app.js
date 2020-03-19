@@ -157,7 +157,7 @@ export default class App extends Component {
 				</div>
 
 				<div class="Hand">
-					<${Cards} cards=${state.hand} isHand=${true} />
+					<${Cards} cards=${state.hand} isHand=${true} energy=${state.player.currentEnergy} />
 				</div>
 
 				<div class="Split">
