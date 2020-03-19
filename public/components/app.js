@@ -59,13 +59,13 @@ export default class App extends Component {
 	endTurn() {
 		this.enqueue({type: 'endTurn'})
 		this.enqueue({type: 'takeMonsterTurn'})
-		this.dequeue(this.dequeue())
+		this.dequeue(() => this.dequeue())
 	}
 	goToNextRoom() {
 		this.enqueue({type: 'endTurn'})
 		this.enqueue({type: 'goToNextRoom'})
 		// Enable dragdrop again because the DOM of the targets changed.
-		this.dequeue(this.dequeue(this.enableDrop))
+		this.dequeue(() => this.dequeue(this.enableDrop))
 	}
 	handleShortcuts(event) {
 		const {key} = event
