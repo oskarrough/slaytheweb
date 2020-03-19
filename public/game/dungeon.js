@@ -35,6 +35,7 @@ export function Monster(props = {}) {
 		maxHealth: props.hp || 42,
 		currentHealth: props.hp || 42,
 		damage: props.damage || 5,
+		blockPower: 7,
 		block: props.block || 0,
 		powers: props.powers || {},
 		intents: props.intents || [],

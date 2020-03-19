@@ -139,8 +139,14 @@ const removeHealth = (state, {target, amount}) => {
 			if (t.powers.vulnerable) {
 				amount = powers.vulnerable.use(amount)
 			}
-			const newHp = t.currentHealth - amount
-			t.currentHealth = newHp
+			// Take account for block.
+			let amountAfterBlock = t.block - amount
+			if (amountAfterBlock < 0) {
+				t.block = 0
+				t.currentHealth = t.currentHealth + amountAfterBlock
+			} else {
+				t.block = amountAfterBlock
+			}
 		})
 	})
 }
@@ -203,6 +209,9 @@ function endTurn(state) {
 			})
 			draft.player.currentHealth = tempstate.player.currentHealth
 		}
+		state.dungeon.rooms[state.dungeon.index].monsters.forEach(monster => {
+			monster.block = 0
+		})
 	})
 }
 
@@ -228,11 +237,11 @@ function goToNextRoom(state) {
 
 function takeMonsterTurn(state) {
 	return produce(state, draft => {
-		state.dungeon.rooms[state.dungeon.index].monsters.forEach((monster) => {
+		state.dungeon.rooms[state.dungeon.index].monsters.forEach(monster => {
 			if (!monster.nextIntent) monster.nextIntent = 0
 			const intent = monster.intents[monster.nextIntent]
 			if (intent === 'block') {
-				monster.block = monster.block + 7
+				monster.block = monster.block + monster.blockPower
 			}
 			if (intent === 'damage') {
 				draft.player.currentHealth = removeHealth(state, {

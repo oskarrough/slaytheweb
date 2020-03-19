@@ -141,6 +141,19 @@ test('can play a strike card from hand and see the effects on state', t => {
 	t.is(getTargets(state2, 'enemy0')[0].currentHealth, originalHealth - card.damage)
 })
 
+test('block actually blocks damage', t => {
+	const {state} = t.context
+	const card = createCard('Strike')
+
+	getTargets(state, 'enemy0')[0].block = 10
+	getTargets(state, 'enemy0')[0].currentHealth = 12
+	t.is(card.damage, 6)
+
+	const state2 = a.playCard(state, {target: 'enemy0', card})
+	t.is(getTargets(state2, 'enemy0')[0].block, 10 - 6, 'block was reduced')
+	t.is(getTargets(state2, 'enemy0')[0].currentHealth, 12, 'so hp wasnt removed')
+})
+
 test('can play a defend card from hand and see the effects on state', t => {
 	const {state} = t.context
 	t.is(state.player.block, 0)
@@ -150,8 +163,6 @@ test('can play a defend card from hand and see the effects on state', t => {
 	const state3 = a.playCard(state2, {card})
 	t.is(state3.player.block, 10)
 })
-
-test.todo('block actually blocks damage')
 
 test('when monster reaches 0 hp, you win!', t => {
 	const {state} = t.context
