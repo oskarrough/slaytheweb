@@ -238,18 +238,22 @@ function goToNextRoom(state) {
 function takeMonsterTurn(state) {
 	return produce(state, draft => {
 		state.dungeon.rooms[state.dungeon.index].monsters.forEach(monster => {
+			// Get current intent.
 			if (!monster.nextIntent) monster.nextIntent = 0
 			const intent = monster.intents[monster.nextIntent]
-			if (intent === 'block') {
-				monster.block = monster.block + monster.blockPower
+			// Apply block
+			if (intent.block) {
+				monster.block = monster.block + intent.block
 			}
-			if (intent === 'damage') {
+			// Deal damage
+			if (intent.damage) {
 				draft.player.currentHealth = removeHealth(state, {
 					target: 'player',
-					amount: monster.damage
+					amount: intent.damage
 					// amount: shuffle(range(5, monster.damage - 2))[0]
 				}).player.currentHealth
 			}
+			// Increment for next turn..
 			if (monster.nextIntent === monster.intents.length - 1) {
 				monster.nextIntent = 0
 			} else {

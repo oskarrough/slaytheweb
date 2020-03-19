@@ -6,11 +6,12 @@ export const Player = props => html`
 
 export const Monster = props => {
 	const intent = props.model.intents[props.model.nextIntent]
+	const type = Object.keys(intent)[0]
 	return html`
 		<${Target} ...${props} type="enemy">
 			${intent &&
 				html`
-					<img alt=${intent} src="images/${intent}.png" />
+					<img alt=${type} src="images/${type}.png" />
 				`}
 		<//>
 	`

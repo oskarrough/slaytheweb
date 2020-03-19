@@ -5,8 +5,7 @@ export const createSimpleDungeon = () => {
 	const normal = () =>
 		MonsterRoom(
 			Monster({
-				blockPower: 7,
-				intents: ['block', 'damage', 'damage']
+				intents: [{block: 7}, {damage: 10}, {damage: 10}]
 			})
 		)
 	const elite = () => MonsterRoom(Monster({hp: 24}), Monster({hp: 20}))
