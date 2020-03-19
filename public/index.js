@@ -14,6 +14,7 @@ class Main extends Component {
 		}
 		this.handleWin = this.handleWin.bind(this)
 		this.handleNewGame = this.handleNewGame.bind(this)
+		this.handleLoose = this.handleLoose.bind(this)
 	}
 	handleNewGame() {
 		this.setState({isPlaying: true, didWin: false})
@@ -21,10 +22,13 @@ class Main extends Component {
 	handleWin() {
 		this.setState({isPlaying: false, didWin: true})
 	}
+	handleLoose() {
+		this.setState({isPlaying: false, didWin: false})
+	}
 	render(props, {didWin, isPlaying}) {
 		if (isPlaying)
 			return html`
-				<${App} onWin=${this.handleWin} />
+				<${App} onWin=${this.handleWin} onLoose=${this.handleLoose} />
 			`
 		if (didWin)
 			return html`

@@ -122,6 +122,7 @@ export default class App extends Component {
 	}
 	render(props, state) {
 		const room = state.dungeon.rooms[state.dungeon.index]
+		const isDead = state.player.currentHealth < 1
 		const didWin = isCurrentRoomCompleted(state)
 		return html`
 			<div class="App" tabindex="0" onKeyDown=${e => this.handleShortcuts(e)}>
@@ -140,10 +141,14 @@ export default class App extends Component {
 				<div class="Split">
 					<div class="EnergyBadge">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
 					<p class="Actions">
-						${didWin
+						${isDead
+							? html`
+									You are dead. <button onclick=${() => this.props.onLoose()}>Try again?</button>
+							  `
+							: didWin
 							? html`
 									You win.
-									<button onclick=${() => this.goToNextRoom()}>Go to the next floor?</button>
+									<button onclick=${() => this.goToNextRoom()}>Go to the next floor</button>
 							  `
 							: html`
 									<button onclick=${() => this.endTurn()}><u>E</u>nd turn</button>
