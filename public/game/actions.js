@@ -253,6 +253,12 @@ function takeMonsterTurn(state) {
 					// amount: shuffle(range(5, monster.damage - 2))[0]
 				}).player.currentHealth
 			}
+			if (intent.vulnerable) {
+				draft.player.powers.vulnerable = (draft.player.powers.vulnerable || 0) + intent.vulnerable
+			}
+			if (intent.weak) {
+				draft.player.powers.weak = (draft.player.powers.weak || 0) + intent.weak
+			}
 			// Increment for next turn..
 			if (monster.nextIntent === monster.intents.length - 1) {
 				monster.nextIntent = 0

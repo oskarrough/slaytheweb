@@ -42,12 +42,32 @@ test('monster does damage and block', t => {
 	state = a.takeMonsterTurn(state)
 	t.is(monster(state).block, 7)
 	state = a.takeMonsterTurn(state)
-	t.is(state.player.currentHealth, 95)
+	t.is(state.player.currentHealth, 90)
 	state = a.endTurn(state)
 	state = a.takeMonsterTurn(state)
-	t.is(state.player.currentHealth, 90)
+	t.is(state.player.currentHealth, 80)
 	state = a.endTurn(state)
 	state = a.takeMonsterTurn(state)
 	t.is(monster(state).block, 7, 'block doesnt stack')
 	state = a.endTurn(state)
+})
+
+test('monster can apply vulnerable', t => {
+	let state = a.setDungeon(a.createNewGame(), createDungeon())
+	// Overwrite the "first" monster.
+	const monster = Monster({
+		intents: [{vulnerable: 2}, {weak: 5}]
+	})
+	state.dungeon.rooms[0].monsters[0] = monster
+	state = a.endTurn(state)
+	state = a.takeMonsterTurn(state)
+	t.is(state.player.powers.vulnerable, 2)
+	state = a.endTurn(state)
+	state = a.takeMonsterTurn(state)
+	t.is(state.player.powers.vulnerable, 1)
+	t.is(state.player.powers.weak, 5)
+	// state = a.endTurn(state)
+	// state = a.takeMonsterTurn(state)
+	// t.is(state.player.powers.vulnerable, 0)
+	// t.is(state.player.powers.weak, 4)
 })
