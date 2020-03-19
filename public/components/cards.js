@@ -1,10 +1,7 @@
 import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
 
 export default class Cards extends Component {
-	// props = {
-	// 	cards: [],
-	// 	isHand: false,
-	// }
+	// props = {	cards: [], isHand: false, energy: 123 }
 	componentDidMount() {
 		this.positionCards()
 	}
@@ -20,20 +17,24 @@ export default class Cards extends Component {
 			})
 		}
 	}
-	render({cards}) {
+	render(props) {
 		return html`
 			<div class="Cards">
-				${cards.map(Card)}
+				${props.cards.map(card => Card(card, props.energy))}
 			</div>
 		`
 	}
 }
 
-export const Card = ({id, name, type, energy, description}) => html`
-	<article class="Card" key=${id} data-id=${id}>
-		<h3 class="Card-title">${name}</h3>
-		<p class="Energybadge Card-energy">${energy}</p>
-		<!-- <p class="Card-type">${type}</p> -->
-		<p class="Card-description">${description}</p>
-	</article>
-`
+export function Card(card, currentEnergy) {
+	const {id, name, type, energy, description} = card
+	const isDisabled = currentEnergy < energy
+	return html`
+		<article class="Card" key=${id} data-id=${id} disabled=${isDisabled}>
+			<h3 class="Card-title">${name}</h3>
+			<p class="Energybadge Card-energy">${energy}</p>
+			<!-- <p class="Card-type">${type}</p> -->
+			<p class="Card-description">${description}</p>
+		</article>
+	`
+}
