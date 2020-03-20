@@ -58,8 +58,7 @@ export default class App extends Component {
 	}
 	endTurn() {
 		this.enqueue({type: 'endTurn'})
-		this.enqueue({type: 'takeMonsterTurn'})
-		this.dequeue(() => this.dequeue())
+		this.dequeue()
 	}
 	goToNextRoom() {
 		this.enqueue({type: 'endTurn'})
