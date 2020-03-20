@@ -6,7 +6,7 @@ export const Player = props => html`
 
 export const Monster = props => {
 	const intent = props.model.intents[props.model.nextIntent]
-	const type = Object.keys(intent)[0]
+	const type = intent && Object.keys(intent)[0]
 	return html`
 		<${Target} ...${props} type="enemy">
 			${intent &&
