@@ -6,6 +6,6 @@ export const createSimpleDungeon = () => {
 	const elite = () => MonsterRoom(Monster({hp: 24}), Monster({hp: 20}))
 	const boss = () => MonsterRoom(Monster({hp: 150}), Monster())
 	return Dungeon({
-		rooms: [normal(), elite(), CampfireRoom(), boss()]
+		rooms: [normal(), elite(), boss()]
 	})
 }
