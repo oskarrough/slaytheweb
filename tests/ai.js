@@ -59,11 +59,27 @@ test('monster can apply vulnerable', t => {
 	state.dungeon.rooms[0].monsters[0] = monster
 	state = a.endTurn(state)
 	t.is(state.player.powers.vulnerable, 2)
-	// state = a.endTurn(state)
-	// t.is(state.player.powers.vulnerable, 1)
-	// t.is(state.player.powers.weak, 5)
-	// state = a.endTurn(state)
-	// state = a.endTurn(state)
-	// t.is(state.player.powers.vulnerable, 0)
-	// t.is(state.player.powers.weak, 4)
+	state = a.endTurn(state)
+	t.is(state.player.powers.vulnerable, 1)
+	t.is(state.player.powers.weak, 5)
+	state = a.endTurn(state)
+	state = a.endTurn(state)
+	t.is(state.player.powers.vulnerable, 1, '1 because it lost one and gained 2')
+	t.is(state.player.powers.weak, 8, 'same logic')
+})
+
+test('two monsters both do damage', t => {
+	const intents = [{damage: 10}]
+	const dungeon = Dungeon({
+		rooms: [
+			MonsterRoom(
+				Monster({intents}),
+				Monster({intents})
+			)
+		]
+	})
+	const state = a.setDungeon(a.createNewGame(), dungeon)
+	t.is(state.player.currentHealth, 100)
+	const nextState = a.endTurn(state)
+	t.is(nextState.player.currentHealth, 80)
 })

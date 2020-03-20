@@ -247,11 +247,12 @@ function takeMonsterTurn(state) {
 			}
 			// Deal damage
 			if (intent.damage) {
-				draft.player.currentHealth = removeHealth(state, {
+				var newHp = removeHealth(draft, {
 					target: 'player',
 					amount: intent.damage
 					// amount: shuffle(range(5, monster.damage - 2))[0]
 				}).player.currentHealth
+				draft.player.currentHealth = newHp
 			}
 			if (intent.vulnerable) {
 				draft.player.powers.vulnerable = (draft.player.powers.vulnerable || 0) + intent.vulnerable
