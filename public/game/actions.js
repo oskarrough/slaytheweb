@@ -216,7 +216,6 @@ function newTurn(state) {
 	return produce(newState, draft => {
 		draft.player.currentEnergy = 3
 		draft.player.block = 0
-
 	})
 }
 
@@ -234,6 +233,9 @@ function takeMonsterTurn(state) {
 	return produce(state, draft => {
 		draft.dungeon.rooms[draft.dungeon.index].monsters.forEach(monster => {
 			monster.block = 0
+
+			// If dead don't do anything..
+			if (monster.currentHealth < 1) return
 
 			// Get current intent.
 			const intent = monster.intents[monster.nextIntent || 0]
