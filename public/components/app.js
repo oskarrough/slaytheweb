@@ -16,7 +16,7 @@ import History from './history.js'
 
 // Puts and gets the game state in the URL.
 const save = state => (location.hash = encodeURIComponent(JSON.stringify(state)))
-const load = () => JSON.parse(decodeURIComponent(location.hash.split('#')[1]))
+const load = () => JSON.parse(decodeURIComponent(window.location.hash.split('#')[1]))
 
 export default class App extends Component {
 	constructor() {
@@ -25,7 +25,7 @@ export default class App extends Component {
 		this.am = ActionManager()
 
 		// Set up either a saved or new game.
-		const savedGame = load()
+		const savedGame = window.location.hash && load()
 		if (savedGame) {
 			this.state = savedGame
 		} else {
