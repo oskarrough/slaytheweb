@@ -14,19 +14,27 @@ import {Player, Monster} from './player.js'
 import Cards from './cards.js'
 import History from './history.js'
 
+// Puts and gets the game state in the URL.
+const save = state => (location.hash = encodeURIComponent(JSON.stringify(state)))
+const load = () => JSON.parse(decodeURIComponent(location.hash.split('#')[1]))
+
 export default class App extends Component {
 	constructor() {
 		super()
 		// Set up our action manager.
 		this.am = ActionManager()
 
-		// Prepare the game.
-		let state = actions.createNewGame()
-		state = actions.setDungeon(state, createSimpleDungeon())
-		state = actions.addStarterDeck(state)
-		state = actions.drawCards(state)
-		// state.dungeon.index = 3 // use this to change room
-		this.state = state
+		// Set up either a saved or new game.
+		const savedGame = load()
+		if (savedGame) {
+			this.state = savedGame
+		} else {
+			let state = actions.createNewGame()
+			state = actions.setDungeon(state, createSimpleDungeon())
+			state = actions.addStarterDeck(state)
+			state = actions.drawCards(state)
+			this.state = state
+		}
 
 		// Enable debugging in the browser.
 		window.slaytheweb = {
@@ -45,6 +53,7 @@ export default class App extends Component {
 		try {
 			const nextState = this.am.dequeue(this.state)
 			this.setState(nextState, callback)
+			save(nextState)
 		} catch (err) {
 			console.log(err)
 			alert(err)
