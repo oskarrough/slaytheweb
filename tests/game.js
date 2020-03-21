@@ -154,16 +154,16 @@ test('block on enemy actually blocks damage', t => {
 	t.is(getTargets(state2, 'enemy0')[0].currentHealth, 12, 'so hp wasnt removed')
 })
 
-// test('block on player actually blocks damage', t => {
-// 	let state = a.createNewGame()
-// 	state = a.setDungeon(state, createSimpleDungeon())
-// 	state.player.currentHealth = 10
-// 	state.player.block = 7
-// 	// state.dungeon.rooms[state.dungeon.index].monsters[0].intents[0] = {damage: 6}
-// 	const state2 = a.endTurn(state)
-// 	// t.is(getTargets(state2, 'player')[0].block, 1, 'block was reduced')
-// 	t.is(getTargets(state2, 'player')[0].currentHealth, 10, 'so hp was not reduced')
-// })
+test('block on player actually blocks damage', t => {
+	let state = a.createNewGame()
+	state = a.setDungeon(state, createSimpleDungeon())
+	state = a.endTurn(state)
+	state = a.playCard(state, {card: createCard('Defend')})
+	t.is(state.player.block, 5)
+	const state2 = a.endTurn(state)
+	t.is(getTargets(state2, 'player')[0].block, 0, 'block was reduced')
+	t.is(getTargets(state2, 'player')[0].currentHealth, 95, 'so hp was not reduced')
+})
 
 test('can play a defend card from hand and see the effects on state', t => {
 	const {state} = t.context
