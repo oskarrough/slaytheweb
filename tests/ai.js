@@ -33,7 +33,7 @@ test('monster cycles through intents on its turn', t => {
 	t.is(monster(state).nextIntent, 0)
 })
 
-test('monster does damage and block', t => {
+test('monster can do damage and gain block', t => {
 	let state = a.setDungeon(a.createNewGame(), createDungeon())
 	// Establish our baseline.
 	t.is(state.player.currentHealth, 100)
@@ -47,10 +47,9 @@ test('monster does damage and block', t => {
 	t.is(state.player.currentHealth, 80)
 	state = a.endTurn(state)
 	t.is(monster(state).block, 7, 'block doesnt stack')
-	state = a.endTurn(state)
 })
 
-test('monster can apply vulnerable', t => {
+test('monster can apply vulnerable and weak', t => {
 	let state = a.setDungeon(a.createNewGame(), createDungeon())
 	// Overwrite the "first" monster.
 	const monster = Monster({
@@ -68,18 +67,28 @@ test('monster can apply vulnerable', t => {
 	t.is(state.player.powers.weak, 8, 'same logic')
 })
 
-test('two monsters both do damage', t => {
+test('two monsters both do damage in same turn', t => {
 	const intents = [{damage: 10}]
 	const dungeon = Dungeon({
-		rooms: [
-			MonsterRoom(
-				Monster({intents}),
-				Monster({intents})
-			)
-		]
+		rooms: [MonsterRoom(Monster({intents}), Monster({intents}))]
 	})
 	const state = a.setDungeon(a.createNewGame(), dungeon)
 	t.is(state.player.currentHealth, 100)
 	const nextState = a.endTurn(state)
 	t.is(nextState.player.currentHealth, 80)
+})
+
+test('dead monsters dont play', t => {
+	let state = a.setDungeon(a.createNewGame(), createDungeon())
+	t.is(state.player.currentHealth, 100)
+	// t.deepEqual(monster(state).intents[monster(state).nextIntent], {block: 7})
+	state = a.endTurn(state)
+	t.is(monster(state).block, 7)
+	// t.deepEqual(monster(state).intents[monster(state).nextIntent], {damage: 10})
+	state = a.endTurn(state)
+	t.is(state.player.currentHealth, 90)
+	monster(state).currentHealth = 0
+	// t.deepEqual(monster(state).intents[monster(state).nextIntent], {damage: 10})
+	state = a.endTurn(state)
+	t.is(state.player.currentHealth, 90, 'monster is dead so nothing happened')
 })
