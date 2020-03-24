@@ -141,7 +141,7 @@ test('can play a strike card from hand and see the effects on state', t => {
 	t.is(getTargets(state2, 'enemy0')[0].currentHealth, originalHealth - card.damage)
 })
 
-test('block actually blocks damage', t => {
+test('block on enemy actually blocks damage', t => {
 	const {state} = t.context
 	const card = createCard('Strike')
 
@@ -152,6 +152,17 @@ test('block actually blocks damage', t => {
 	const state2 = a.playCard(state, {target: 'enemy0', card})
 	t.is(getTargets(state2, 'enemy0')[0].block, 10 - 6, 'block was reduced')
 	t.is(getTargets(state2, 'enemy0')[0].currentHealth, 12, 'so hp wasnt removed')
+})
+
+test('block on player actually blocks damage', t => {
+	let state = a.createNewGame()
+	state = a.setDungeon(state, createSimpleDungeon())
+	state = a.endTurn(state)
+	state = a.playCard(state, {card: createCard('Defend')})
+	t.is(state.player.block, 5)
+	const state2 = a.endTurn(state)
+	t.is(getTargets(state2, 'player')[0].block, 0, 'block was reduced')
+	t.is(getTargets(state2, 'player')[0].currentHealth, 95, 'so hp was not reduced')
 })
 
 test('can play a defend card from hand and see the effects on state', t => {
@@ -295,25 +306,27 @@ test('Flourish card adds a working "regen" buff', t => {
 	const card = createCard('Flourish')
 	t.is(card.powers.regen, 5, 'card has regen power')
 	t.is(state.player.currentHealth, 100)
-	state = a.playCard(state, {target: 'player', card})
-	t.is(state.player.powers.regen, card.powers.regen, 'regen is applied to player')
-	state = a.endTurn(state)
-	t.is(state.player.currentHealth, 105, 'ending your turn adds hp')
-	t.is(state.player.powers.regen, 4, 'stacks go down')
-	state = a.endTurn(state)
-	t.is(state.player.currentHealth, 109)
-	t.is(state.player.powers.regen, 3)
-	state = a.endTurn(state)
-	t.is(state.player.currentHealth, 112)
-	t.is(state.player.powers.regen, 2)
-	state = a.endTurn(state)
-	t.is(state.player.currentHealth, 114)
-	t.is(state.player.powers.regen, 1)
-	state = a.endTurn(state)
-	t.is(state.player.currentHealth, 115)
-	t.is(state.player.powers.regen, 0)
-	state = a.endTurn(state)
-	t.is(state.player.currentHealth, 115)
+
+	let state2 = a.playCard(state, {target: 'player', card})
+	state2.dungeon.rooms[state.dungeon.index].monsters[0].intents = []
+	t.is(state2.player.powers.regen, card.powers.regen, 'regen is applied to player')
+	state2 = a.endTurn(state2)
+	t.is(state2.player.currentHealth, 105, 'ending your turn adds hp')
+	t.is(state2.player.powers.regen, 4, 'stacks go down')
+	state2 = a.endTurn(state2)
+	t.is(state2.player.currentHealth, 109)
+	t.is(state2.player.powers.regen, 3)
+	state2 = a.endTurn(state2)
+	t.is(state2.player.currentHealth, 112)
+	t.is(state2.player.powers.regen, 2)
+	state2 = a.endTurn(state2)
+	t.is(state2.player.currentHealth, 114)
+	t.is(state2.player.powers.regen, 1)
+	state2 = a.endTurn(state2)
+	t.is(state2.player.currentHealth, 115)
+	t.is(state2.player.powers.regen, 0)
+	state2 = a.endTurn(state2)
+	t.is(state2.player.currentHealth, 115)
 })
 
 test('You can stack regen power', t => {
@@ -347,14 +360,14 @@ test('target "all enemies" works for damage as well as power', t => {
 	state.dungeon.index = 1
 	t.is(state.dungeon.rooms[state.dungeon.index].monsters.length, 2, 'we have two enemies')
 	t.is(state.dungeon.rooms[state.dungeon.index].monsters[0].currentHealth, 24)
-	t.is(state.dungeon.rooms[state.dungeon.index].monsters[1].currentHealth, 20)
+	t.is(state.dungeon.rooms[state.dungeon.index].monsters[1].currentHealth, 13)
 	t.falsy(state.dungeon.rooms[state.dungeon.index].monsters[0].powers.vulnerable)
 	t.falsy(state.dungeon.rooms[state.dungeon.index].monsters[1].powers.vulnerable)
 	const card = createCard('Thunderclap')
 	const nextState = a.playCard(state, {card})
 	// console.log(nextState.dungeon.rooms[nextState.dungeon.index].monsters[0])
 	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[0].currentHealth, 19)
-	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[1].currentHealth, 15)
+	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[1].currentHealth, 8)
 	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[0].powers.vulnerable, 1)
 	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[1].powers.vulnerable, 1)
 })

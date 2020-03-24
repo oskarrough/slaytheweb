@@ -192,26 +192,30 @@ function decreasePowerStacks(state) {
 	})
 }
 
-// Ending a turn means 1) discarding your hand 2) drawing new cards and 3) resetting different state things.
 function endTurn(state) {
 	let newState = discardHand(state)
-	newState = drawCards(newState)
-	newState = decreasePowerStacks(newState)
-	return produce(newState, draft => {
-		// Reset energy and block
-		draft.player.currentEnergy = 3
-		draft.player.block = 0
-		// @todo avoid hardcoding individual powers.
+	newState = produce(newState, draft => {
 		if (state.player.powers.regen) {
 			let tempstate = addHealth(newState, {
 				target: 'player',
-				amount: powers.regen.use(state.player.powers.regen)
+				amount: powers.regen.use(newState.player.powers.regen)
 			})
 			draft.player.currentHealth = tempstate.player.currentHealth
 		}
-		state.dungeon.rooms[state.dungeon.index].monsters.forEach(monster => {
-			monster.block = 0
-		})
+	})
+	newState = decreasePowerStacks(newState)
+	newState = takeMonsterTurn(newState)
+	newState = newTurn(newState)
+	return newState
+}
+
+// Draws new cards, reset energy, remove player block, check powers
+function newTurn(state) {
+	let newState = drawCards(state)
+
+	return produce(newState, draft => {
+		draft.player.currentEnergy = 3
+		draft.player.block = 0
 	})
 }
 
@@ -224,34 +228,31 @@ function reshuffleAndDraw(state) {
 	return drawCards(nextState)
 }
 
-function goToNextRoom(state) {
-	let nextState = reshuffleAndDraw(state)
-	return produce(nextState, draft => {
-		const number = state.dungeon.index
-		if (number === state.dungeon.rooms.length - 1) {
-			throw new Error('Already at last room')
-		}
-		draft.dungeon.index = number + 1
-	})
-}
-
+// Runs the "intent" for each monster in the current room
 function takeMonsterTurn(state) {
 	return produce(state, draft => {
-		state.dungeon.rooms[state.dungeon.index].monsters.forEach(monster => {
+		draft.dungeon.rooms[draft.dungeon.index].monsters.forEach(monster => {
+			monster.block = 0
+
+			// If dead don't do anything..
+			if (monster.currentHealth < 1) return
+
 			// Get current intent.
-			if (!monster.nextIntent) monster.nextIntent = 0
-			const intent = monster.intents[monster.nextIntent]
+			const intent = monster.intents[monster.nextIntent || 0]
+			if (!intent) return
+
 			// Apply block
 			if (intent.block) {
 				monster.block = monster.block + intent.block
 			}
 			// Deal damage
 			if (intent.damage) {
-				draft.player.currentHealth = removeHealth(state, {
+				var newHp = removeHealth(draft, {
 					target: 'player',
 					amount: intent.damage
 					// amount: shuffle(range(5, monster.damage - 2))[0]
 				}).player.currentHealth
+				draft.player.currentHealth = newHp
 			}
 			if (intent.vulnerable) {
 				draft.player.powers.vulnerable = (draft.player.powers.vulnerable || 0) + intent.vulnerable
@@ -266,6 +267,17 @@ function takeMonsterTurn(state) {
 				monster.nextIntent++
 			}
 		})
+	})
+}
+
+function goToNextRoom(state) {
+	let nextState = reshuffleAndDraw(state)
+	return produce(nextState, draft => {
+		const number = state.dungeon.index
+		if (number === state.dungeon.rooms.length - 1) {
+			throw new Error('Already at last room')
+		}
+		draft.dungeon.index = number + 1
 	})
 }
 
