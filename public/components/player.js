@@ -45,5 +45,6 @@ function Powers({powers}) {
 	return html`
 		${powers.vulnerable > 0 ? `Vulnerable ${powers.vulnerable}` : ''}
 		${powers.regen > 0 ? `Regen ${powers.regen}` : ''}
+		${powers.weak > 0 ? `Weak ${powers.weak}` : ''}
 	`
 }

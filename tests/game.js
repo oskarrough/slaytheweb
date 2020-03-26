@@ -340,12 +340,6 @@ test('You can stack regen power', t => {
 	t.is(state.player.powers.regen, card.powers.regen * 2, 'regen applied twice')
 })
 
-// test.skip('Sucker Punch applies weak', t => {
-// 	let {state} = t.context
-// 	const card = createCard('Sucker Punch')
-// 	state = a.playCard(state, {card})
-// })
-
 // test.skip('Clash can only be played if it\'s the only attack', t => {
 // 	let {state} = t.context
 // 	const clashCard = createCard('Clash')
@@ -375,4 +369,3 @@ test('target "all enemies" works for damage as well as power', t => {
 test.todo('playing defend on an enemy ?')
 test.todo('Cleave targets all monsters')
 test.todo('can apply a power to a specific monster')
-
