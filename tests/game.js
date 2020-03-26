@@ -141,6 +141,21 @@ test('can play a strike card from hand and see the effects on state', t => {
 	t.is(getTargets(state2, 'enemy0')[0].currentHealth, originalHealth - card.damage)
 })
 
+test('Applying weak makes you deal 25% less damage', t => {
+	let {state} = t.context
+	t.is(getTargets(state, 'enemy0')[0].currentHealth, 42)
+	const card = createCard('Strike')
+	let nextState = a.playCard(state, {target: 'enemy0', card})
+	t.is(getTargets(nextState, 'enemy0')[0].currentHealth, 36)
+	state.player.powers.weak = 1
+	nextState = a.playCard(nextState, {target: 'enemy0', card})
+	t.is(
+		getTargets(nextState, 'enemy0')[0].currentHealth,
+		32,
+		'weak is rounded down. 25% of 6 is 4.5, so we deal 4 damage'
+	)
+})
+
 test('block on enemy actually blocks damage', t => {
 	const {state} = t.context
 	const card = createCard('Strike')

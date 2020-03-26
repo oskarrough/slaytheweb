@@ -114,7 +114,9 @@ function playCard(state, {card, target}) {
 		// This should be refactored, but when you play an attack card that targets all enemies,
 		// we prioritize this over the actual enemy where you dropped the card.
 		const newTarget = card.target === 'all enemies' ? card.target : target
-		newState = removeHealth(newState, {target: newTarget, amount: card.damage})
+		let amount = card.damage
+		if (newState.player.powers.weak) amount = Math.floor(amount * 0.75)
+		newState = removeHealth(newState, {target: newTarget, amount})
 	}
 	if (card.powers) newState = applyCardPowers(newState, {target, card})
 	return newState
