@@ -1,7 +1,9 @@
-import Dungeon, {CampfireRoom, MonsterRoom, Monster} from './dungeon.js'
+import Dungeon, {MonsterRoom, Monster} from './dungeon.js'
+
+// This file contains ready-to-use dungeons filled with rooms and exciting monsters.
 
 const intents = [{block: 7}, {damage: 10}, {damage: 10}]
-const dangerousIntents = [
+const scalingIntents = [
 	{damage: 1},
 	{damage: 2},
 	{damage: 3},
@@ -18,13 +20,25 @@ const dangerousIntents = [
 	{damage: 50}
 ]
 
-// An example dungeon showcasing some different rooms.
+const normalRoom = () => MonsterRoom(Monster({intents}))
+const eliteRoom = () =>
+	MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents: scalingIntents}))
+const bossRoom = () => MonsterRoom(Monster({hp: 150, intents}), Monster({intents: scalingIntents}))
+
+const CultistMonster = () =>
+	Monster({
+		// hp: 48-54,
+		hp: 48,
+		intents: [{weak: 1}, {damage: 6}]
+	})
+
 export const createSimpleDungeon = () => {
-	const normal = () => MonsterRoom(Monster({intents}))
-	const elite = () =>
-		MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents: dangerousIntents}))
-	const boss = () => MonsterRoom(Monster({hp: 150, intents}), Monster({intents: dangerousIntents}))
 	return Dungeon({
-		rooms: [normal(), elite(), CampfireRoom(), boss()]
+		rooms: [
+			// MonsterRoom(CultistMonster()),
+			normalRoom(),
+			eliteRoom(),
+			bossRoom()
+		]
 	})
 }
