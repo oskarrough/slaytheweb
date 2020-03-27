@@ -1,10 +1,9 @@
 import {html, render, Component} from './web_modules/htm/preact/standalone.module.js'
 import App from '../components/app.js'
 
-// Decides what to render: splash screen, "win" screen or the game itself.
-// enum GameMode {
-//  	CHAR_SELECT, GAMEPLAY, DUNGEON_TRANSITION, SPLASH;
-// }
+// This component decides what to render:
+// A splash screen, a "win" screen or the game/app itself.
+// It also detects if there's a saved game in the URL and allows the player to continue.
 
 class Main extends Component {
 	constructor() {
@@ -14,12 +13,17 @@ class Main extends Component {
 		}
 		this.handleWin = this.handleWin.bind(this)
 		this.handleNewGame = this.handleNewGame.bind(this)
+		this.handleLoadGame = this.handleLoadGame.bind(this)
 	}
 	handleNewGame() {
+		window.location.hash = ''
 		this.setState({isPlaying: true, didWin: false})
 	}
 	handleWin() {
 		this.setState({isPlaying: false, didWin: true})
+	}
+	handleLoadGame() {
+		this.setState({isPlaying: true, didWin: false})
 	}
 	render(props, {didWin, isPlaying}) {
 		if (isPlaying)
@@ -31,7 +35,7 @@ class Main extends Component {
 				<${WinScreen} onNewGame=${this.handleNewGame} />
 			`
 		return html`
-			<${SplashScreen} onNewGame=${this.handleNewGame} />
+			<${SplashScreen} onNewGame=${this.handleNewGame} onContinue=${this.handleLoadGame} />
 		`
 	}
 }
@@ -40,14 +44,18 @@ const SplashScreen = props => html`
 	<article class="Splash">
 		<h1>Slay the Web</h1>
 		<h2>A little card crawl adventure for you and your browser.</h2>
-		<p><button onClick=${props.onNewGame}>Start a new game</a></p>
+		${location.hash &&
+			html`
+				<p>Oh, it seems you have a saved game. <button onClick=${props.onContinue}>Continue?</button></p>
+			`}
+		<p><button onClick=${props.onNewGame}>Play</a></p>
 	</article>
 			`
 
 const WinScreen = props => html`
 	<article class="Splash">
 		<h1>Well done. You won.</h1>
-		<p><button onClick=${props.onNewGame}>Start a new game</a></p>
+		<p><button onClick=${props.onNewGame}>Play again</a></p>
 	</article>
 `
 
@@ -57,3 +65,7 @@ render(
 	`,
 	document.querySelector('#root')
 )
+
+// enum GameMode {
+//  	CHAR_SELECT, GAMEPLAY, DUNGEON_TRANSITION, SPLASH;
+// }
