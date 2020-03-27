@@ -25,8 +25,8 @@ test('new game state is ok', t => {
 		player: {
 			maxEnergy: 3,
 			currentEnergy: 3,
-			maxHealth: 100,
-			currentHealth: 100,
+			maxHealth: 72,
+			currentHealth: 72,
 			block: 0,
 			powers: {}
 		}
@@ -96,14 +96,14 @@ test('getTargets utility works', t => {
 
 test('can manipulate player hp', t => {
 	const {state} = t.context
-	t.is(state.player.currentHealth, 100)
+	t.is(state.player.currentHealth, 72)
 	const state2 = a.removeHealth(state, {target: 'player', amount: 10})
-	t.is(state2.player.currentHealth, 90, 'can remove hp')
-	t.is(state.player.currentHealth, 100, 'immutable')
+	t.is(state2.player.currentHealth, 62, 'can remove hp')
+	t.is(state.player.currentHealth, 72, 'immutable')
 	const state3 = a.addHealth(state2, {target: 'player', amount: 20})
-	t.is(state3.player.currentHealth, 110)
-	t.is(state2.player.currentHealth, 90, 'immutable')
-	t.is(state.player.currentHealth, 100)
+	t.is(state3.player.currentHealth, 82)
+	t.is(state2.player.currentHealth, 62, 'immutable')
+	t.is(state.player.currentHealth, 72, 'immutable')
 })
 
 test('can manipulate monster hp', t => {
@@ -177,7 +177,7 @@ test('block on player actually blocks damage', t => {
 	t.is(state.player.block, 5)
 	const state2 = a.endTurn(state)
 	t.is(getTargets(state2, 'player')[0].block, 0, 'block was reduced')
-	t.is(getTargets(state2, 'player')[0].currentHealth, 95, 'so hp was not reduced')
+	t.is(getTargets(state2, 'player')[0].currentHealth, 67, 'so hp was not reduced')
 })
 
 test('can play a defend card from hand and see the effects on state', t => {
@@ -320,49 +320,39 @@ test('Flourish card adds a working "regen" buff', t => {
 	let {state} = t.context
 	const card = createCard('Flourish')
 	t.is(card.powers.regen, 5, 'card has regen power')
-	t.is(state.player.currentHealth, 100)
+	t.is(state.player.currentHealth, 72)
 
 	let state2 = a.playCard(state, {target: 'player', card})
 	state2.dungeon.rooms[state.dungeon.index].monsters[0].intents = []
 	t.is(state2.player.powers.regen, card.powers.regen, 'regen is applied to player')
 	state2 = a.endTurn(state2)
-	t.is(state2.player.currentHealth, 105, 'ending your turn adds hp')
+	t.is(state2.player.currentHealth, 72+5, 'ending your turn adds hp')
 	t.is(state2.player.powers.regen, 4, 'stacks go down')
 	state2 = a.endTurn(state2)
-	t.is(state2.player.currentHealth, 109)
+	t.is(state2.player.currentHealth, 72+5+4)
 	t.is(state2.player.powers.regen, 3)
 	state2 = a.endTurn(state2)
-	t.is(state2.player.currentHealth, 112)
+	t.is(state2.player.currentHealth, 72+5+4+3)
 	t.is(state2.player.powers.regen, 2)
 	state2 = a.endTurn(state2)
-	t.is(state2.player.currentHealth, 114)
+	t.is(state2.player.currentHealth, 72+5+4+3+2)
 	t.is(state2.player.powers.regen, 1)
 	state2 = a.endTurn(state2)
-	t.is(state2.player.currentHealth, 115)
+	t.is(state2.player.currentHealth, 72+5+4+3+2+1)
 	t.is(state2.player.powers.regen, 0)
 	state2 = a.endTurn(state2)
-	t.is(state2.player.currentHealth, 115)
+	t.is(state2.player.currentHealth, 87)
 })
 
 test('You can stack regen power', t => {
 	let {state} = t.context
 	const card = createCard('Flourish')
-	t.is(state.player.currentHealth, 100)
 	state.player.currentEnergy = 999
 	state = a.playCard(state, {card})
 	t.is(state.player.powers.regen, card.powers.regen, 'regen applied once')
 	state = a.playCard(state, {card})
 	t.is(state.player.powers.regen, card.powers.regen * 2, 'regen applied twice')
 })
-
-// test.skip('Clash can only be played if it\'s the only attack', t => {
-// 	let {state} = t.context
-// 	const clashCard = createCard('Clash')
-// 	const defendCard = createCard('Defend')
-// 	state.hand.push(clashCard)
-// 	state.hand.push(defendCard)
-// 	t.throws(() => a.playCard(state, {card: clashCard}))
-// })
 
 test('target "all enemies" works for damage as well as power', t => {
 	const {state} = t.context
@@ -384,3 +374,4 @@ test('target "all enemies" works for damage as well as power', t => {
 test.todo('playing defend on an enemy ?')
 test.todo('Cleave targets all monsters')
 test.todo('can apply a power to a specific monster')
+test.todo('Clash can only be played if it\'s the only attack')

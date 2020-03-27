@@ -15,8 +15,8 @@ function createNewGame() {
 		player: {
 			maxEnergy: 3,
 			currentEnergy: 3,
-			maxHealth: 100,
-			currentHealth: 100,
+			maxHealth: 72,
+			currentHealth: 72,
 			block: 0,
 			powers: {}
 		}
