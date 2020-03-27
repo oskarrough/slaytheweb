@@ -1,13 +1,14 @@
 {
   "name": "slaytheweb",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "license": "MIT",
   "scripts": {
     "start": "browser-sync public --watch --no-notify",
     "test": "eslint public; nyc ava --verbose",
     "test:watch": "ava --watch --verbose",
     "build": "snowpack --include 'public/**/*.js' --clean --dest 'public/web_modules' --stat --optimize",
-    "docs": "cd public/game; docco *.js; mv docs ../../docs"
+    "docs": "cd public/game; docco *.js; mv docs ../../docs",
+    "release": "release-it --no-npm.publish"
   },
   "devDependencies": {
     "ava": "^3.5.0",
