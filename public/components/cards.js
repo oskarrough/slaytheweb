@@ -27,14 +27,13 @@ export default class Cards extends Component {
 }
 
 export function Card(card, currentEnergy) {
-	const {id, name, type, energy, description} = card
-	const isDisabled = currentEnergy < energy
+	const isDisabled = currentEnergy < card.energy
 	return html`
-		<article class="Card" key=${id} data-id=${id} disabled=${isDisabled}>
-			<h3 class="Card-title">${name}</h3>
-			<p class="Energybadge Card-energy">${energy}</p>
-			<!-- <p class="Card-type">${type}</p> -->
-			<p class="Card-description">${description}</p>
+		<article class="Card" key=${card.id} data-id=${card.id} disabled=${isDisabled}>
+			<h3 class="Card-title">${card.name}</h3>
+			<p class="Card-energy Energybadge">${card.energy}</p>
+			<p class="Card-type">${card.type}</p>
+			<p class="Card-description">${card.description}</p>
 		</article>
 	`
 }
