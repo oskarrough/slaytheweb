@@ -240,6 +240,7 @@ function reshuffleAndDraw(state) {
 function takeMonsterTurn(state) {
 	return produce(state, draft => {
 		draft.dungeon.rooms[draft.dungeon.index].monsters.forEach(monster => {
+			// Reset block at start of turn.
 			monster.block = 0
 
 			// If dead don't do anything..
@@ -249,11 +250,18 @@ function takeMonsterTurn(state) {
 			const intent = monster.intents[monster.nextIntent || 0]
 			if (!intent) return
 
-			// Apply block
+			// Increment for next turn..
+			if (monster.nextIntent === monster.intents.length - 1) {
+				monster.nextIntent = 0
+			} else {
+				monster.nextIntent++
+			}
+
+			// Run the intent..
 			if (intent.block) {
 				monster.block = monster.block + intent.block
 			}
-			// Deal damage
+
 			if (intent.damage) {
 				var newHp = removeHealth(draft, {
 					target: 'player',
@@ -262,17 +270,13 @@ function takeMonsterTurn(state) {
 				}).player.currentHealth
 				draft.player.currentHealth = newHp
 			}
+
 			if (intent.vulnerable) {
 				draft.player.powers.vulnerable = (draft.player.powers.vulnerable || 0) + intent.vulnerable
 			}
+
 			if (intent.weak) {
 				draft.player.powers.weak = (draft.player.powers.weak || 0) + intent.weak
-			}
-			// Increment for next turn..
-			if (monster.nextIntent === monster.intents.length - 1) {
-				monster.nextIntent = 0
-			} else {
-				monster.nextIntent++
 			}
 		})
 	})
