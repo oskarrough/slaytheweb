@@ -23,7 +23,7 @@ const scalingIntents = [
 const normalRoom = () => MonsterRoom(Monster({intents}))
 const eliteRoom = () =>
 	MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents: scalingIntents}))
-const bossRoom = () => MonsterRoom(Monster({hp: 150, intents}), Monster({intents: scalingIntents}))
+const bossRoom = () => MonsterRoom(Monster({hp: 92, intents}), Monster({intents: scalingIntents}))
 
 // const CultistMonster = () =>
 // 	Monster({
