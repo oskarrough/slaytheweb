@@ -198,15 +198,19 @@ function decreasePowerStacks(state) {
 
 function endTurn(state) {
 	let newState = discardHand(state)
-	newState = produce(newState, draft => {
-		if (state.player.powers.regen) {
-			let tempstate = addHealth(newState, {
-				target: 'player',
-				amount: powers.regen.use(newState.player.powers.regen)
-			})
-			draft.player.currentHealth = tempstate.player.currentHealth
-		}
-	})
+	if (state.player.powers.regen) {
+		newState = produce(newState, draft => {
+			let amount = powers.regen.use(newState.player.powers.regen)
+			let newHealth
+			// Don't allow regen to go above max health.
+			if (newState.player.currentHealth + amount > newState.player.maxHealth) {
+				newHealth = newState.player.maxHealth
+			} else {
+				newHealth = addHealth(newState, {target: 'player', amount}).player.currentHealth
+			}
+			draft.player.currentHealth = newHealth
+		})
+	}
 	newState = decreasePowerStacks(newState)
 	newState = takeMonsterTurn(newState)
 	newState = newTurn(newState)
