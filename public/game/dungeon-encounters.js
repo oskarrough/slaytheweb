@@ -2,6 +2,8 @@ import Dungeon, {MonsterRoom, Monster} from './dungeon.js'
 
 // This file contains ready-to-use dungeons filled with rooms and exciting monsters.
 
+// Use a list of intents to describe what the monster should do each turn.
+// Supported intents: block, damage, vulnerable and weak.
 const intents = [{block: 7}, {damage: 10}, {damage: 10}]
 const scalingIntents = [
 	{damage: 1},
