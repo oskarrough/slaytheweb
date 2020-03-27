@@ -25,7 +25,7 @@ class Main extends Component {
 	}
 	handleLoose() {
 		this.setState({isPlaying: false, didWin: false})
-  }
+	}
 	handleLoadGame() {
 		this.setState({isPlaying: true, didWin: false})
 	}
@@ -50,7 +50,10 @@ const SplashScreen = props => html`
 		<h2>A little card crawl adventure for you and your browser.</h2>
 		${location.hash &&
 			html`
-				<p>Oh, it seems you have a saved game. <button autofocus onClick=${props.onContinue}>Continue?</button></p>
+				<p>
+					Oh, it seems you have a saved game.
+					<button autofocus onClick=${props.onContinue}>Continue?</button>
+				</p>
 			`}
 		<p><button autofocus onClick=${props.onNewGame}>Play</a></p>
 	</article>
