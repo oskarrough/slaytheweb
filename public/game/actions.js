@@ -279,7 +279,7 @@ function goToNextRoom(state) {
 	return produce(nextState, draft => {
 		const number = state.dungeon.index
 		if (number === state.dungeon.rooms.length - 1) {
-			throw new Error('Already at last room')
+			throw new Error('You have reached the end of the dungeon. Congratulations.')
 		}
 		draft.dungeon.index = number + 1
 	})
