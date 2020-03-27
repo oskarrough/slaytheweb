@@ -73,7 +73,7 @@ export default class App extends Component {
 		this.enqueue({type: 'endTurn'})
 		this.enqueue({type: 'goToNextRoom'})
 		// Enable dragdrop again because the DOM of the targets changed.
-		this.dequeue(this.dequeue(this.enableDrop))
+		this.dequeue(() => this.dequeue(this.enableDrop))
 	}
 	handleShortcuts(event) {
 		const {key} = event
@@ -130,6 +130,7 @@ export default class App extends Component {
 	}
 	render(props, state) {
 		const room = state.dungeon.rooms[state.dungeon.index]
+		const isDead = state.player.currentHealth < 1
 		const didWin = isCurrentRoomCompleted(state)
 		return html`
 			<div class="App" tabindex="0" onKeyDown=${e => this.handleShortcuts(e)}>
@@ -148,10 +149,14 @@ export default class App extends Component {
 				<div class="Split">
 					<div class="EnergyBadge">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
 					<p class="Actions">
-						${didWin
+						${isDead
+							? html`
+									You are dead. <button onclick=${() => this.props.onLoose()}>Try again?</button>
+							  `
+							: didWin
 							? html`
 									You win.
-									<button onclick=${() => this.goToNextRoom()}>Go to the next floor?</button>
+									<button onclick=${() => this.goToNextRoom()}>Go to the next floor</button>
 							  `
 							: html`
 									<button onclick=${() => this.endTurn()}><u>E</u>nd turn</button>
@@ -160,7 +165,7 @@ export default class App extends Component {
 				</div>
 
 				<div class="Hand">
-					<${Cards} cards=${state.hand} isHand=${true} />
+					<${Cards} cards=${state.hand} isHand=${true} energy=${state.player.currentEnergy} />
 				</div>
 
 				<div class="Split">

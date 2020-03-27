@@ -1,6 +1,6 @@
 import produce from '../web_modules/immer.js'
 import {createCard} from './cards.js'
-import {shuffle, getTargets} from './utils.js'
+import {shuffle, getTargets /*, range*/} from './utils.js'
 import powers from './powers.js'
 
 // The idea is that we have one big object with game state. Whenever we want to change something, we call an "action" from this file. Each action takes two arguments: 1) the current state, 2) an object of arguments.
@@ -15,8 +15,8 @@ function createNewGame() {
 		player: {
 			maxEnergy: 3,
 			currentEnergy: 3,
-			maxHealth: 100,
-			currentHealth: 100,
+			maxHealth: 72,
+			currentHealth: 72,
 			block: 0,
 			powers: {}
 		}
@@ -96,10 +96,12 @@ const discardHand = state =>
 // The funky part of this action is the `target` argument. It needs to be a special type of string:
 // Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getTargets
 function playCard(state, {card, target}) {
-	if (!target) target = card.target
+	target = target ? target : card.target
+	if (target === 'enemy') throw new Error('Did you mean "enemy0" or "all enemies"?')
 	if (!card) throw new Error('No card to play')
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
-	if (!target || typeof target !== 'string') throw new Error(`Wrong target to play card: ${target}`)
+	if (!target || typeof target !== 'string')
+		throw new Error(`Wrong target to play card: ${target},${card.target}`)
 	let newState = discardCard(state, {card})
 	newState = produce(newState, draft => {
 		// Use energy
@@ -113,7 +115,9 @@ function playCard(state, {card, target}) {
 		// This should be refactored, but when you play an attack card that targets all enemies,
 		// we prioritize this over the actual enemy where you dropped the card.
 		const newTarget = card.target === 'all enemies' ? card.target : target
-		newState = removeHealth(newState, {target: newTarget, amount: card.damage})
+		let amount = card.damage
+		if (newState.player.powers.weak) amount = Math.floor(amount * 0.75)
+		newState = removeHealth(newState, {target: newTarget, amount})
 	}
 	if (card.powers) newState = applyCardPowers(newState, {target, card})
 	return newState
@@ -139,8 +143,14 @@ const removeHealth = (state, {target, amount}) => {
 			if (t.powers.vulnerable) {
 				amount = powers.vulnerable.use(amount)
 			}
-			const newHp = t.currentHealth - amount
-			t.currentHealth = newHp
+			// Take account for block.
+			let amountAfterBlock = t.block - amount
+			if (amountAfterBlock < 0) {
+				t.block = 0
+				t.currentHealth = t.currentHealth + amountAfterBlock
+			} else {
+				t.block = amountAfterBlock
+			}
 		})
 	})
 }
@@ -186,23 +196,34 @@ function decreasePowerStacks(state) {
 	})
 }
 
-// Ending a turn means 1) discarding your hand 2) drawing new cards and 3) resetting different state things.
 function endTurn(state) {
 	let newState = discardHand(state)
-	newState = drawCards(newState)
+	if (state.player.powers.regen) {
+		newState = produce(newState, draft => {
+			let amount = powers.regen.use(newState.player.powers.regen)
+			let newHealth
+			// Don't allow regen to go above max health.
+			if (newState.player.currentHealth + amount > newState.player.maxHealth) {
+				newHealth = newState.player.maxHealth
+			} else {
+				newHealth = addHealth(newState, {target: 'player', amount}).player.currentHealth
+			}
+			draft.player.currentHealth = newHealth
+		})
+	}
 	newState = decreasePowerStacks(newState)
+	newState = takeMonsterTurn(newState)
+	newState = newTurn(newState)
+	return newState
+}
+
+// Draws new cards, reset energy, remove player block, check powers
+function newTurn(state) {
+	let newState = drawCards(state)
+
 	return produce(newState, draft => {
-		// Reset energy and block
 		draft.player.currentEnergy = 3
 		draft.player.block = 0
-		// @todo avoid hardcoding individual powers.
-		if (state.player.powers.regen) {
-			let tempstate = addHealth(newState, {
-				target: 'player',
-				amount: powers.regen.use(state.player.powers.regen)
-			})
-			draft.player.currentHealth = tempstate.player.currentHealth
-		}
 	})
 }
 
@@ -213,6 +234,52 @@ function reshuffleAndDraw(state) {
 		draft.drawPile = draft.deck
 	})
 	return drawCards(nextState)
+}
+
+// Runs the "intent" for each monster in the current room
+function takeMonsterTurn(state) {
+	return produce(state, draft => {
+		draft.dungeon.rooms[draft.dungeon.index].monsters.forEach(monster => {
+			// Reset block at start of turn.
+			monster.block = 0
+
+			// If dead don't do anything..
+			if (monster.currentHealth < 1) return
+
+			// Get current intent.
+			const intent = monster.intents[monster.nextIntent || 0]
+			if (!intent) return
+
+			// Increment for next turn..
+			if (monster.nextIntent === monster.intents.length - 1) {
+				monster.nextIntent = 0
+			} else {
+				monster.nextIntent++
+			}
+
+			// Run the intent..
+			if (intent.block) {
+				monster.block = monster.block + intent.block
+			}
+
+			if (intent.damage) {
+				var newHp = removeHealth(draft, {
+					target: 'player',
+					amount: intent.damage
+					// amount: shuffle(range(5, monster.damage - 2))[0]
+				}).player.currentHealth
+				draft.player.currentHealth = newHp
+			}
+
+			if (intent.vulnerable) {
+				draft.player.powers.vulnerable = (draft.player.powers.vulnerable || 0) + intent.vulnerable
+			}
+
+			if (intent.weak) {
+				draft.player.powers.weak = (draft.player.powers.weak || 0) + intent.weak
+			}
+		})
+	})
 }
 
 function goToNextRoom(state) {
@@ -240,5 +307,6 @@ export default {
 	playCard,
 	removeHealth,
 	reshuffleAndDraw,
-	setDungeon
+	setDungeon,
+	takeMonsterTurn
 }

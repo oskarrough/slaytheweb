@@ -9,24 +9,24 @@ import {uuid} from './utils.js'
 export const cards = [
 	{
 		name: 'Defend',
-		energy: 1,
 		type: 'Skill',
+		energy: 1,
 		block: 5,
 		target: 'player',
 		description: 'Gain 5 Block.'
 	},
 	{
 		name: 'Strike',
-		energy: 1,
 		type: 'Attack',
+		energy: 1,
 		target: 'enemy',
 		damage: 6,
 		description: 'Deal 6 Damage.'
 	},
 	{
 		name: 'Bash',
-		energy: 2,
 		type: 'Attack',
+		energy: 2,
 		damage: 8,
 		target: 'enemy',
 		powers: {
@@ -36,24 +36,24 @@ export const cards = [
 	},
 	{
 		name: 'Clash',
-		energy: 0,
 		type: 'Attack',
+		energy: 0,
 		damage: 14,
 		target: 'enemy',
 		description: 'Can only be played if every card in your hand is an Attack. Deal 14 damage.'
 	},
 	{
 		name: 'Cleave',
-		energy: 1,
 		type: 'Attack',
+		energy: 1,
 		damage: 8,
 		target: 'all enemies',
 		description: 'Deal 8 damage to ALL enemies.'
 	},
 	{
 		name: 'Iron Wave',
-		energy: 1,
 		type: 'Skill',
+		energy: 1,
 		damage: 5,
 		block: 5,
 		target: 'self and enemy',
@@ -61,8 +61,8 @@ export const cards = [
 	},
 	{
 		name: 'Sucker Punch',
-		energy: 1,
 		type: 'Attack',
+		energy: 1,
 		damage: 7,
 		target: 'enemy',
 		powers: {
@@ -72,8 +72,8 @@ export const cards = [
 	},
 	{
 		name: 'Thunderclap',
-		energy: 1,
 		type: 'Attack',
+		energy: 1,
 		damage: 5,
 		target: 'all enemies',
 		powers: {
@@ -83,8 +83,8 @@ export const cards = [
 	},
 	{
 		name: 'Flourish',
-		energy: 2,
 		type: 'Skill',
+		energy: 2,
 		target: 'player',
 		description: 'Gain 5 regen.',
 		powers: {

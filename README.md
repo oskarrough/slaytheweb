@@ -73,6 +73,10 @@ Cards can apply "powers". A power is an aura that usually lasts one or more turn
 
 Every game starts in a dungeon. You fight your way through rooms from the start to the end. There are different types of rooms. Like Monster and Campfire. One day there'll be more like Merchant and Treasure or a "random" room. Later it'd be cool to have real maps like Slay The Spire, where there are multiple paths to take.
 
+## Monsters
+
+Monsters can exist inside the rooms in a dungeon. A monster has some health and a list of "intents" that it will take each turn. These intents are basically the AI. Monsters can do damage, block and apply powers. It's not super flexible, as we're not using actions and cards like the player does. But it's enough for now.
+
 ## Links
 
 A collection of related things, inspiration and ideas.

@@ -4,14 +4,24 @@ export const Player = props => html`
 	<${Target} ...${props} type="player" />
 `
 
-export const Monster = props => html`
-	<${Target} ...${props} type="enemy" />
-`
+export const Monster = props => {
+	const intent = props.model.intents[props.model.nextIntent]
+	const type = intent && Object.keys(intent)[0]
+	const damage = intent && intent.damage
+	return html`
+		<${Target} ...${props} type="enemy">
+			${intent &&
+				html`
+					<div class="Target-intent"><img alt=${type} src="images/${type}.png" /> ${damage}</div>
+				`}
+		<//>
+	`
+}
 
-function Target({model, type, name}) {
+function Target({model, type, name, children}) {
 	return html`
 		<div class="Target" data-type=${type}>
-			<h2>${name}</h2>
+			<h2>${name} ${children}</h2>
 			<${Healthbar} max=${model.maxHealth} value=${model.currentHealth} block=${model.block} />
 			<${Powers} powers=${model.powers} />
 		</div>
@@ -33,5 +43,6 @@ function Powers({powers}) {
 	return html`
 		${powers.vulnerable > 0 ? `Vulnerable ${powers.vulnerable}` : ''}
 		${powers.regen > 0 ? `Regen ${powers.regen}` : ''}
+		${powers.weak > 0 ? `Weak ${powers.weak}` : ''}
 	`
 }
