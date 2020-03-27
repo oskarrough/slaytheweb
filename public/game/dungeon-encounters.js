@@ -25,12 +25,12 @@ const eliteRoom = () =>
 	MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents: scalingIntents}))
 const bossRoom = () => MonsterRoom(Monster({hp: 150, intents}), Monster({intents: scalingIntents}))
 
-const CultistMonster = () =>
-	Monster({
-		// hp: 48-54,
-		hp: 48,
-		intents: [{weak: 1}, {damage: 6}]
-	})
+// const CultistMonster = () =>
+// 	Monster({
+// 		// hp: 48-54,
+// 		hp: 48,
+// 		intents: [{weak: 1}, {damage: 6}]
+// 	})
 
 export const createSimpleDungeon = () => {
 	return Dungeon({

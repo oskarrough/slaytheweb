@@ -8,6 +8,8 @@ import {getTargets} from '../public/game/utils.js'
 
 const a = actions
 
+const defaultHp = 72
+
 const createDungeon = () =>
 	Dungeon({
 		rooms: [
@@ -36,15 +38,15 @@ test('monster cycles through intents on its turn', t => {
 test('monster can do damage and gain block', t => {
 	let state = a.setDungeon(a.createNewGame(), createDungeon())
 	// Establish our baseline.
-	t.is(state.player.currentHealth, 100)
+	t.is(state.player.currentHealth, defaultHp)
 	t.is(monster(state).block, 0)
 	// And play through some turns
 	state = a.endTurn(state)
 	t.is(monster(state).block, 7)
 	state = a.endTurn(state)
-	t.is(state.player.currentHealth, 90)
+	t.is(state.player.currentHealth, 62)
 	state = a.endTurn(state)
-	t.is(state.player.currentHealth, 80)
+	t.is(state.player.currentHealth, 52)
 	state = a.endTurn(state)
 	t.is(monster(state).block, 7, 'block doesnt stack')
 })
@@ -73,22 +75,22 @@ test('two monsters both do damage in same turn', t => {
 		rooms: [MonsterRoom(Monster({intents}), Monster({intents}))]
 	})
 	const state = a.setDungeon(a.createNewGame(), dungeon)
-	t.is(state.player.currentHealth, 100)
+	t.is(state.player.currentHealth, defaultHp)
 	const nextState = a.endTurn(state)
-	t.is(nextState.player.currentHealth, 80)
+	t.is(nextState.player.currentHealth, 52)
 })
 
 test('dead monsters dont play', t => {
 	let state = a.setDungeon(a.createNewGame(), createDungeon())
-	t.is(state.player.currentHealth, 100)
+	t.is(state.player.currentHealth, defaultHp)
 	// t.deepEqual(monster(state).intents[monster(state).nextIntent], {block: 7})
 	state = a.endTurn(state)
 	t.is(monster(state).block, 7)
 	// t.deepEqual(monster(state).intents[monster(state).nextIntent], {damage: 10})
 	state = a.endTurn(state)
-	t.is(state.player.currentHealth, 90)
+	t.is(state.player.currentHealth, 62)
 	monster(state).currentHealth = 0
 	// t.deepEqual(monster(state).intents[monster(state).nextIntent], {damage: 10})
 	state = a.endTurn(state)
-	t.is(state.player.currentHealth, 90, 'monster is dead so nothing happened')
+	t.is(state.player.currentHealth, 62, 'monster is dead so nothing happened')
 })

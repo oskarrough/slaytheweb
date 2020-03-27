@@ -11,11 +11,11 @@ export const Monster = props => {
 	return html`
 		<${Target} ...${props} type="enemy">
 			${intent &&
-				html`
-					<div class="Target-intent">
-						<img alt=${type} src="images/${type}.png" /> ${damage}
-					</div>
-				`}
+			html`
+				<div class="Target-intent">
+					<img alt=${type} src="images/${type}.png" /> ${damage}
+				</div>
+			`}
 		<//>
 	`
 }
