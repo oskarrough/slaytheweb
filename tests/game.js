@@ -326,22 +326,25 @@ test('Flourish card adds a working "regen" buff', t => {
 	state2.dungeon.rooms[state.dungeon.index].monsters[0].intents = []
 	t.is(state2.player.powers.regen, card.powers.regen, 'regen is applied to player')
 	state2 = a.endTurn(state2)
-	t.is(state2.player.currentHealth, 72+5, 'ending your turn adds hp')
+	t.is(state2.player.currentHealth, 72, 'it doesnt go above max hp')
 	t.is(state2.player.powers.regen, 4, 'stacks go down')
+
+	state2.player.currentHealth = 10
+
 	state2 = a.endTurn(state2)
-	t.is(state2.player.currentHealth, 72+5+4)
+	t.is(state2.player.currentHealth, 14)
 	t.is(state2.player.powers.regen, 3)
 	state2 = a.endTurn(state2)
-	t.is(state2.player.currentHealth, 72+5+4+3)
+	t.is(state2.player.currentHealth, 17)
 	t.is(state2.player.powers.regen, 2)
 	state2 = a.endTurn(state2)
-	t.is(state2.player.currentHealth, 72+5+4+3+2)
+	t.is(state2.player.currentHealth, 19)
 	t.is(state2.player.powers.regen, 1)
 	state2 = a.endTurn(state2)
-	t.is(state2.player.currentHealth, 72+5+4+3+2+1)
+	t.is(state2.player.currentHealth, 20)
 	t.is(state2.player.powers.regen, 0)
 	state2 = a.endTurn(state2)
-	t.is(state2.player.currentHealth, 87)
+	t.is(state2.player.currentHealth, 20)
 })
 
 test('You can stack regen power', t => {
