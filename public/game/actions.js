@@ -284,6 +284,7 @@ function takeMonsterTurn(state) {
 
 function goToNextRoom(state) {
 	let nextState = reshuffleAndDraw(state)
+	nextState.player.powers = {} // remove all powers
 	return produce(nextState, draft => {
 		const number = state.dungeon.index
 		if (number === state.dungeon.rooms.length - 1) {
