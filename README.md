@@ -67,9 +67,13 @@ You have a deck of cards. Cards have different energy cost and can trigge other 
 
 Once the draw pile is empty, and you attempt to draw, the discard pile is reshuffled into the draw pile.
 
+Cards also have a `target` property to suggest which targets the card should affect. Targets include `player`, `enemyX` (where x is the monster's index, starting from 0) and `all enemies`.
+
 ### Powers
 
 Cards can apply "powers". A power is a status effect or aura that usually lasts one or more turns. It can target the player, a monster or all enemies. A power could do literally anything, but an example is the "Vulnerable" power, which makes the target take 50% more damage for two turns.
+
+As an example, setting `state.player.powers.weak = 5`, indicates that the player should be considered weak for five turns. Powers decrease by one stack per turn.
 
 ### The player
 
@@ -83,7 +87,7 @@ There are different types of rooms. Like Monster and Campfire. One day there'll 
 
 Later it'd be cool to have real maps like Slay The Spire, where there are multiple paths to take.
 
-## Monsters
+### Monsters
 
 Monsters exist inside the rooms in a dungeon. A monster has some health and a list of "intents" that it will take each turn. These intents are basically the AI. Monsters can do damage, block and apply powers. It's not super flexible, as we're not using actions and cards like the player does. But it is enough for now.
 
