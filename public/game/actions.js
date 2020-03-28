@@ -166,16 +166,18 @@ function applyCardPowers(state, {card, target}) {
 			} else if (card.target === 'all enemies') {
 				// Add powers that target all enemies.
 				draft.dungeon.rooms[draft.dungeon.index].monsters.forEach(monster => {
+					if (monster.currentHealth < 1) return
 					const newStacks = (monster.powers[name] || 0) + stacks
 					monster.powers[name] = newStacks
 				})
 			} else if (target) {
 				// const t = getTargets(draft, target)
 				const index = target.split('enemy')[1]
-				const t = draft.dungeon.rooms[state.dungeon.index].monsters[index]
+				const monster = draft.dungeon.rooms[state.dungeon.index].monsters[index]
+				if (monster.currentHealth < 1) return
 				// console.log(target, t)
-				const newStacks = (t.powers[name] || 0) + stacks
-				t.powers[name] = newStacks
+				const newStacks = (monster.powers[name] || 0) + stacks
+				monster.powers[name] = newStacks
 			}
 		})
 	})
