@@ -13,6 +13,12 @@ html {
 	line-height: 1.2;
 }
 
+@media (min-width: 54em) {
+	html {
+		font-size: 20px;
+	}
+}
+
 html,
 body {
 	min-height: 100%;
