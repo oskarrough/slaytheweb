@@ -9,5 +9,14 @@
 		<div id="root"></div>
 
 		<script async src="index.js" type="module"></script>
+		<script>
+			// Offline support
+			if ('serviceWorker' in navigator) {
+				window.addEventListener('load', () => {
+					navigator.serviceWorker.register('/service-worker.js')
+				})
+			}
+		</script>
+
 	</body>
 </html>
