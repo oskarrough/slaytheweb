@@ -216,6 +216,14 @@ summary .Cards {
 	padding: 1px 1em 1.4em;
 }
 
+.Target--isDead {
+	/* pointer-events: none; */
+}
+
+.Target--isDead .Healthbar {
+	background: red;
+}
+
 .Target.is-dragOver .Healthbar {
 	transition-duration: 100ms;
 	box-shadow: 0 0 2em lightblue;
@@ -247,6 +255,7 @@ summary .Cards {
 	background: darkslategrey;
 	color: black;
 	transition: box-shadow 400ms;
+	margin-bottom: 0.5rem;
 }
 
 .Healthbar--hasBlock .Healthbar-bar {
