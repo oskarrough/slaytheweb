@@ -280,7 +280,7 @@ test("ending a turn removes player's block", t => {
 	t.is(newTurn.player.block, 0)
 })
 
-test('Bash card adds a vulnerable power and it doubles damage', t => {
+test('Bash card adds a vulnerable power and it deals 25% more dmg', t => {
 	let {state} = t.context
 	const bashCard = createCard('Bash')
 	const strikeCard = createCard('Strike')
@@ -308,7 +308,7 @@ test('Bash card adds a vulnerable power and it doubles damage', t => {
 	t.is(getTargets(state, 'enemy0')[0].powers.vulnerable, 2)
 
 	state = a.playCard(state, {target: 'enemy0', card: strikeCard})
-	t.is(getTargets(state, 'enemy0')[0].currentHealth, 14, 'deals double damage')
+	t.is(getTargets(state, 'enemy0')[0].currentHealth, 19, 'deals 25%')
 	state = a.endTurn(state)
 	state = a.endTurn(state)
 	state = a.endTurn(state)
