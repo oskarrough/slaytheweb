@@ -1,6 +1,6 @@
 # Slay the Web
 
-Slay the Spire is a fantastic video card game designed by [MegaCrit](https://www.megacrit.com/) . They explain:
+This is a browser-based card game engine based on Slay The Spire, a fantastic video card game designed by [MegaCrit](https://www.megacrit.com/). They explain:
 
 > We fused card games and roguelikes together to make the best single player deckbuilder we could. Craft a unique deck, encounter bizarre creatures, discover relics of immense power, and Slay the Spire!
 
@@ -22,65 +22,75 @@ The `public` folder can be deployed to any static web server. It does not requir
 
 To develop locally:
 
-1. `yarn build` to pull ESM dependencies into ./public/web_modules 
-2. `yarn start` for a server that reloads on file change
+1. `yarn build` downloads ESM dependencies into ./public/web_modules 
+2. `yarn start` starts a local file server on ./public folder
 
 ## Testing
 
-All scripts are checked for with eslint, formatted with prettier and tested with ava.
+All scripts are checked with eslint, formatted with prettier and tested with ava.
 
-Additionally the `./tests` folder contains the tests. Primarly it goes like 1) create a game 2) modify the game state with an action or more 3) test that the final state is how it you expect.
+Additionally the `./tests` folder contains the tests. Usually a test goes 1) create a game 2) modify the game state with one or more actions 3) assert that the final state is how it you expect.
 
 - `yarn test` tests everything once
 - `yarn test:watch` tests continously
 
 Additionally you can run `yarn eslint public --fix` to automatically format all scripts according to the prettier standards.
 
-## Current state of the game
-
-Here I'll try to summarize the main concepts that are implemented.
+## A summary of the current state of the game
 
 ### Game state
 
-The game state is a single, large object that stores everything needed to reproduce a certain state of the game. This is all you will/should need to implement any interface for the game. The state is always modified using an action. 
+The full game state is always stored in a single, large "game state" object. It is everything needed to reproduce a certain state of the game. Everything is synchronous. It does not care about your UI. The state is always modified using "actions". 
 
 ### Actions
 
-An action takes a `state`, modifies it and returns a new one. It could be drawing a card, dealing damage or applying a debuff. 
+An action is a function that takes a `state` object, modifies it, and returns a new one. There are actions for drawing a card, dealing damage, applying a debuff and basically everything that is possible in the game. 
 
-Check all the actions in `./public/game/actions.js`. Most have comments and corresponding tests you can check out.
+See all actions in `./public/game/actions.js`. Most have comments and corresponding tests you can check.
 
 ### Action Manager
 
-As said, actions return a new state. They don't modify the original state. To keep track of all the moves (actions) made, we use the "action manager" to queue and dequeue them. 
+As said, actions return a new state. They don't modify the original state. To keep track of all the moves (actions) made, we use the "action manager" to queue and dequeue them.
 
-Run `enqueue(action)` to add to the list.  
-Run `dequeue()` to update the state with the oldest action.
+Run `enqueue(action)` to add an action to the list.  
+Run `dequeue()` to update the state with the changes from the oldest action in the queue.
 
-Note, you don't pass an action directly rather you pass an object like `{type: 'nameOfAction', damage: 5}`.
+> Note, you don't pass an action directly to the action manager. Rather you pass an object. Like this: `{type: 'nameOfAction', damage: 5, ... more properties}`.
 
 ### Cards
 
-You have a deck of cards. Cards have different energy cost and can trigger game actions. 
+You have a deck of cards. Cards have different energy cost and can trigge other game actions when they are played.
 
-Cards start in the "draw pile". From there they are drawn to the "hand" and finally, once played, to the "discard pile". Once the draw pile is empty, the discard pile is reshuffled into the draw pile.
+1. Cards start in the "draw pile".
+2. From there they are drawn to the "hand"
+3. ...and finally, once played, to the "discard pile".
+
+Once the draw pile is empty, and you attempt to draw, the discard pile is reshuffled into the draw pile.
 
 ### Powers
 
-Cards can apply "powers". A power is an aura that usually lasts one or more turns. It can target the player, a monster or all enemies. A power could do literally anything, but an example is the "Vulnerable" power, which makes the target take 50% more damage for two turns.
+Cards can apply "powers". A power is a status effect or aura that usually lasts one or more turns. It can target the player, a monster or all enemies. A power could do literally anything, but an example is the "Vulnerable" power, which makes the target take 50% more damage for two turns.
+
+### The player
+
+On `state.player` we have you, the player. This object describes the health, powers and the cards you have.
 
 ### Dungeon
 
-Every game starts in a dungeon. You fight your way through rooms from the start to the end. There are different types of rooms. Like Monster and Campfire. One day there'll be more like Merchant and Treasure or a "random" room. Later it'd be cool to have real maps like Slay The Spire, where there are multiple paths to take.
+Every game starts in a dungeon. You fight your way through one or more rooms to reach the end, where you win the game.
+
+There are different types of rooms. Like Monster and Campfire. One day there'll be more like Merchant and Treasure or a "random" room.
+
+Later it'd be cool to have real maps like Slay The Spire, where there are multiple paths to take.
 
 ## Monsters
 
-Monsters can exist inside the rooms in a dungeon. A monster has some health and a list of "intents" that it will take each turn. These intents are basically the AI. Monsters can do damage, block and apply powers. It's not super flexible, as we're not using actions and cards like the player does. But it's enough for now.
+Monsters exist inside the rooms in a dungeon. A monster has some health and a list of "intents" that it will take each turn. These intents are basically the AI. Monsters can do damage, block and apply powers. It's not super flexible, as we're not using actions and cards like the player does. But it is enough for now.
 
-## Links
+## References
 
-A collection of related things, inspiration and ideas.
-
+<details>
+ <summary>A collection of related links, inspiration and ideas.</summary>
 - FTL, Into The Breach, Darkest Dungeon, Dungeon of the Endless, Spelunky, Rogue Legacy,
 - [Pollywog Games: A history of roguelite deck building games](https://pollywog.games/rgdb/)
 - http://stfj.net/index2.php?project=art/2011/Scoundrel.pdf
@@ -108,3 +118,4 @@ A collection of related things, inspiration and ideas.
 - https://www.gdcvault.com/play/1025731/-Slay-the-Spire-Metrics
 - https://github.com/Dementophobia/slay-the-spire-sensei
 - https://www.rockpapershotgun.com/2018/02/19/why-revealing-all-is-the-secret-of-slay-the-spires-success/
+</details>
