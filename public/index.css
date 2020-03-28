@@ -187,10 +187,6 @@ summary .Cards {
 	text-align: center;
 }
 
-.Card[disabled] {
-	/* background: red; */
-}
-
 .Card[disabled] .EnergyBadge {
 	color: red;
 }
@@ -229,7 +225,7 @@ summary .Cards {
 }
 
 .Target--isDead {
-	/* pointer-events: none; */
+	pointer-events: none;
 }
 
 .Target--isDead .Healthbar {
