@@ -89,8 +89,8 @@ Monsters exist inside the rooms in a dungeon. A monster has some health and a li
 
 ## References
 
-<details>
- <summary>A collection of related links, inspiration and ideas.</summary>
+A collection of related links, inspiration and ideas.
+
 - FTL, Into The Breach, Darkest Dungeon, Dungeon of the Endless, Spelunky, Rogue Legacy,
 - [Pollywog Games: A history of roguelite deck building games](https://pollywog.games/rgdb/)
 - http://stfj.net/index2.php?project=art/2011/Scoundrel.pdf
@@ -118,4 +118,3 @@ Monsters exist inside the rooms in a dungeon. A monster has some health and a li
 - https://www.gdcvault.com/play/1025731/-Slay-the-Spire-Metrics
 - https://github.com/Dementophobia/slay-the-spire-sensei
 - https://www.rockpapershotgun.com/2018/02/19/why-revealing-all-is-the-secret-of-slay-the-spires-success/
-</details>
