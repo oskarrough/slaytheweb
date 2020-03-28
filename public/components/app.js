@@ -53,7 +53,7 @@ export default class App extends Component {
 		try {
 			const nextState = this.am.dequeue(this.state)
 			this.setState(nextState, callback)
-			save(nextState)
+			// save(nextState)
 		} catch (err) {
 			console.log(err)
 			alert(err)
@@ -186,8 +186,9 @@ export default class App extends Component {
 					/>
 				</div>
 				<p class="App-statusline">
-					<a href="https://github.com/oskarrough/slaytheweb">Slay the Web</a> v0. Room
-					${state.dungeon.index + 1} of ${state.dungeon.rooms.length}. <a href="/">New Game</a>
+					<a href="https://github.com/oskarrough/slaytheweb">Slay the Web</a> v0.
+					Room ${state.dungeon.index + 1} of ${state.dungeon.rooms.length}
+					<button onclick=${() => save(state)}>Save</button>
 				</p>
 			</div>
 		`

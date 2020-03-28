@@ -46,6 +46,10 @@ body {
 	padding: 0.2em;
 }
 
+.App-statusline button {
+	padding: 0 0.5em;
+}
+
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
 /* .App::before { */
 /* 	content: ""; */
