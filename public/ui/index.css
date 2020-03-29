@@ -4,6 +4,7 @@
 	--yellow: #ffc107;
 	--teal: #116f54;
 	--text: hsl(34, 78%, 85%);
+	--text-inverse: hsla(0, 0%, 0%, 0.9);
 }
 
 html {
@@ -13,7 +14,7 @@ html {
 	line-height: 1.2;
 }
 
-@media (min-width: 54em) {
+@media (min-height: 1000px) {
 	html {
 		font-size: 20px;
 	}
@@ -27,7 +28,6 @@ body {
 html,
 button {
 	font-family: 'Port Lligat Slab', serif;
-	font-display: swap;
 }
 
 body {
@@ -43,7 +43,7 @@ body {
 	overflow-y: hidden;
 	padding: 0 1vw;
 	background-size: cover;
-	/* background-image: url('moonlit-landscape-1904.jpg'); */
+	background-image: url('images/moonlit-landscape-1904.jpg');
 }
 
 .App-statusline {
@@ -57,16 +57,17 @@ body {
 }
 
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
-/* .App::before { */
-/* 	content: ""; */
-/* 	background: linear-gradient(to bottom, #0f1642, transparent); */
-/* 	position: absolute; */
-/* 	top: 0; */
-/* 	left: 0; */
-/* 	width: 100%; */
-/* 	height: 30vh; */
-/* 	z-index: -1; */
-/* } */
+.App::before {
+	content: '';
+	background: linear-gradient(to bottom, #0f1642, transparent);
+	/* background: linear-gradient(to bottom, hsl(135.9, 51.5%, 22.9%), transparent); */
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 30vh;
+	z-index: -1;
+}
 
 a {
 	color: inherit;
@@ -78,7 +79,7 @@ button {
 	border: 2px solid black;
 	border-radius: 0.3em;
 	background: hsl(194.7, 53.3%, 79%);
-	color: hsla(0, 0%, 0%, 0.9);
+	color: var(--text-inverse);
 	box-shadow: 0 0.2em hsl(0, 0%, 0%, 0.9);
 }
 
@@ -261,7 +262,7 @@ summary .Cards {
 	border-radius: 1em;
 	text-align: center;
 	background: darkslategrey;
-	color: black;
+	color: var(--text-inverse);
 	transition: box-shadow 400ms;
 	margin-bottom: 0.5rem;
 }
