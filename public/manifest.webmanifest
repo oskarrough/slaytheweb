@@ -3,9 +3,9 @@
 	"display": "fullscreen",
 	"icons": [
 		{
-			"src": "ui/images/favicon.jpg",
-			"sizes": "512x512",
-			"type": "image/jpg"
+			"src": "ui/images/favicon.png",
+			"sizes": "192x192",
+			"type": "image/png"
 		}
 	],
 	"name": "Slay the Web",
