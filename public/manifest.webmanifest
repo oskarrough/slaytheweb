@@ -1,0 +1,14 @@
+{
+	"background_color": "purple",
+	"display": "fullscreen",
+	"icons": [
+		{
+			"src": "images/favicon.jpg",
+			"sizes": "512x512",
+			"type": "image/jpg"
+		}
+	],
+	"name": "Slay the Web",
+	"short_name": "STW",
+	"start_url": "/index.html"
+}
