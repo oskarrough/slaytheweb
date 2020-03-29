@@ -11,7 +11,7 @@ The `master` branch is automatically deployed to https://slaytheweb.now.sh/, whe
 ## How to work on the code
 
 - The `public/game` folder contains the game engine
-- The `public/index.js` file an example interface/website
+- The `public/index.html` and `public/ui` is an example interface/website
 - The `tests` folder is filled with tests for the game
 
 The entire `public` folder can be deployed to any static web server. It does not require any compilation. It does require you to download the dependencies once.
@@ -122,4 +122,3 @@ A collection of related links, inspiration and ideas.
 - https://www.rockpapershotgun.com/2018/02/19/why-revealing-all-is-the-secret-of-slay-the-spires-success/
 - [Slay the Spire Reference](https://docs.google.com/spreadsheets/u/1/d/1ZsxNXebbELpcCi8N7FVOTNGdX_K9-BRC_LMgx4TORo4/edit?usp=sharing)
 - [Slay the Spire Discord](https://discord.gg/slaythespire)
-
