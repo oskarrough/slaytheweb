@@ -3,7 +3,7 @@
 	"display": "fullscreen",
 	"icons": [
 		{
-			"src": "images/favicon.jpg",
+			"src": "ui/images/favicon.jpg",
 			"sizes": "512x512",
 			"type": "image/jpg"
 		}
