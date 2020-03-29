@@ -1,0 +1,15 @@
+{
+	"background_color": "#116f54",
+	"theme_color": "#116f54",
+	"display": "fullscreen",
+	"icons": [
+		{
+			"src": "ui/images/favicon.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		}
+	],
+	"name": "Slay the Web",
+	"short_name": "STW",
+	"start_url": "/index.html"
+}
