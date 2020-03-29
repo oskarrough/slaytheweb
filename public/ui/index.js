@@ -1,5 +1,5 @@
-import {html, render, Component} from './web_modules/htm/preact/standalone.module.js'
-import App from '../components/app.js'
+import {html, render, Component} from '../web_modules/htm/preact/standalone.module.js'
+import App from './app.js'
 
 // This component decides what to render:
 // A splash screen, a "win" screen or the game/app itself.

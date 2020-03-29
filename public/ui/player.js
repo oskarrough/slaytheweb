@@ -12,17 +12,19 @@ export const Monster = props => {
 		<${Target} ...${props} type="enemy">
 			${intent &&
 				html`
-					<div class="Target-intent"><img alt=${type} src="images/${type}.png" /> ${damage}</div>
+					<div class="Target-intent"><img alt=${type} src="ui/images/${type}.png" /> ${damage}</div>
 				`}
 		<//>
 	`
 }
 
 function Target({model, type, name, children}) {
+	const isDead = model.currentHealth < 1
+	const hp = isDead ? 0 : model.currentHealth
 	return html`
-		<div class="Target" data-type=${type}>
+		<div class=${`Target${isDead ? ' Target--isDead' : ''}`} data-type=${type}>
 			<h2>${name} ${children}</h2>
-			<${Healthbar} max=${model.maxHealth} value=${model.currentHealth} block=${model.block} />
+			<${Healthbar} max=${model.maxHealth} value=${hp} block=${model.block} />
 			<${Powers} powers=${model.powers} />
 		</div>
 	`

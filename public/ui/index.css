@@ -4,6 +4,7 @@
 	--yellow: #ffc107;
 	--teal: #116f54;
 	--text: hsl(34, 78%, 85%);
+	--text-inverse: hsla(0, 0%, 0%, 0.9);
 }
 
 html {
@@ -11,6 +12,12 @@ html {
 	color: var(--text);
 	font-size: 16px;
 	line-height: 1.2;
+}
+
+@media (min-height: 1000px) {
+	html {
+		font-size: 20px;
+	}
 }
 
 html,
@@ -21,7 +28,6 @@ body {
 html,
 button {
 	font-family: 'Port Lligat Slab', serif;
-	font-display: swap;
 }
 
 body {
@@ -37,7 +43,7 @@ body {
 	overflow-y: hidden;
 	padding: 0 1vw;
 	background-size: cover;
-	/* background-image: url('moonlit-landscape-1904.jpg'); */
+	background-image: url('images/moonlit-landscape-1904.jpg');
 }
 
 .App-statusline {
@@ -46,17 +52,22 @@ body {
 	padding: 0.2em;
 }
 
+.App-statusline button {
+	padding: 0 0.5em;
+}
+
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
-/* .App::before { */
-/* 	content: ""; */
-/* 	background: linear-gradient(to bottom, #0f1642, transparent); */
-/* 	position: absolute; */
-/* 	top: 0; */
-/* 	left: 0; */
-/* 	width: 100%; */
-/* 	height: 30vh; */
-/* 	z-index: -1; */
-/* } */
+.App::before {
+	content: '';
+	background: linear-gradient(to bottom, #0f1642, transparent);
+	/* background: linear-gradient(to bottom, hsl(135.9, 51.5%, 22.9%), transparent); */
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 30vh;
+	z-index: -1;
+}
 
 a {
 	color: inherit;
@@ -68,7 +79,7 @@ button {
 	border: 2px solid black;
 	border-radius: 0.3em;
 	background: hsl(194.7, 53.3%, 79%);
-	color: hsla(0, 0%, 0%, 0.9);
+	color: var(--text-inverse);
 	box-shadow: 0 0.2em hsl(0, 0%, 0%, 0.9);
 }
 
@@ -95,6 +106,7 @@ h1 {
 	margin-bottom: 1rem;
 	background-image: linear-gradient(63deg, var(--yellow), #bd4516);
 	background-clip: text;
+	-webkit-background-clip: text;
 	color: transparent;
 	text-shadow: 1px 2px #0c0cd526;
 	letter-spacing: -1px;
@@ -127,6 +139,7 @@ summary {
 	background: var(--teal);
 	/* background: radial-gradient(var(--teal), var(--yellow)); */
 	text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+	/* text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.8); */
 }
 
 .Cards {
@@ -150,16 +163,11 @@ summary .Cards {
 }
 
 .Card {
-	display: flex;
-	display: flex;
-	flex-flow: column;
 	position: relative;
-	border: 0.5em ridge #53b5a8;
-	border-radius: 0.5em;
-	background: #065046;
-	background: #0a3540;
-	text-align: center;
-	box-shadow: 1px 2px 3px #00000080;
+	display: flex;
+	/* border: 0.5em ridge #53b5a8;
+	border-radius: 0.5em; */
+	/* box-shadow: 1px 2px 3px #00000080; */
 
 	image-rendering: -webkit-optimize-contrast;
 	image-rendering: -webkit-crisp-edges;
@@ -170,8 +178,14 @@ summary .Cards {
 	border-image-source: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAA7ElEQVRYhe2YMQ6DMAxFcwBGRtaeoFUv0K2qOAa36NYDVmLjMmHB0VfqEJbG3xKRvkTiAE+OnYBD2FrfDdFSAVvfDfH7vpsqQQnMMk9xmad0jWOacJ4o79fGVSgEEsPnda1qbx7a8mdifxcIJ7aKm6qHBOZxuTURQsm7i0Djc/y7fAHhYEsgTCYqD6lZRrVk1h6iAZIYoglqOg/RAflZMtwLKDZGOg+dQe0OiO60t8oyutP+/B5yF9R0QH6yTEiplgxJW+jQv30urHagJ0v22n2lSkjyEF196EjRqlRK0cowaNfmaLYfGOuyHjKsYnCffLyABLkAAAAASUVORK5CYII=);
 	border-image-repeat: repeat;
 	border-image-slice: 6 6 6 6;
-	border-image-width: 18px;
-	border-width: 15px;
+	border-image-width: 16px;
+	border-width: 16px;
+}
+
+.Card-inner {
+	flex: 1;
+	background: #0a3540;
+	text-align: center;
 }
 
 .Card[disabled] .EnergyBadge {
@@ -181,8 +195,7 @@ summary .Cards {
 .Card-title {
 	margin: 0;
 	padding: 0.6em 1em 0.8em;
-	background: #96969617;
-	color: whitesmoke;
+	background: linear-gradient(to bottom, #065046, transparent);
 	text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.8);
 	user-select: none;
 }
@@ -202,13 +215,22 @@ summary .Cards {
 	position: absolute;
 	top: -1.5em;
 	left: -0.5em;
-	font-size: 0.75rem;
+	width: 1.7rem;
+	height: 1.9rem;
 }
 
 .Target {
 	position: relative;
 	margin-top: 1rem;
 	padding: 1px 1em 1.4em;
+}
+
+.Target--isDead {
+	pointer-events: none;
+}
+
+.Target--isDead .Healthbar {
+	background: red;
 }
 
 .Target.is-dragOver .Healthbar {
@@ -240,8 +262,9 @@ summary .Cards {
 	border-radius: 1em;
 	text-align: center;
 	background: darkslategrey;
-	color: black;
+	color: var(--text-inverse);
 	transition: box-shadow 400ms;
+	margin-bottom: 0.5rem;
 }
 
 .Healthbar--hasBlock .Healthbar-bar {
@@ -252,7 +275,6 @@ summary .Cards {
 	position: relative;
 	z-index: 1;
 	margin: 0.2em 0;
-	font-size: large;
 	text-shadow: 0px 0px 2px hsla(0, 0%, 75%, 0.8);
 }
 

@@ -30,10 +30,12 @@ export function Card(card, currentEnergy) {
 	const isDisabled = currentEnergy < card.energy
 	return html`
 		<article class="Card" key=${card.id} data-id=${card.id} disabled=${isDisabled}>
-			<h3 class="Card-title">${card.name}</h3>
-			<p class="Card-energy Energybadge">${card.energy}</p>
-			<p class="Card-type">${card.type}</p>
-			<p class="Card-description">${card.description}</p>
+			<div class="Card-inner">
+				<h3 class="Card-title">${card.name}</h3>
+				<p class="Card-energy Energybadge">${card.energy}</p>
+				<p class="Card-type">${card.type}</p>
+				<p class="Card-description">${card.description}</p>
+			</div>
 		</article>
 	`
 }
