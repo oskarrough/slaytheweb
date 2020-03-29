@@ -1,5 +1,6 @@
 {
-	"background_color": "purple",
+	"background_color": "#116f54",
+	"theme_color": "#116f54",
 	"display": "fullscreen",
 	"icons": [
 		{
