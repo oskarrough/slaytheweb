@@ -1,6 +1,6 @@
 // Third party dependencies
-import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
-import {Sortable, OnSpill} from '../web_modules/sortablejs/modular/sortable.core.esm.js'
+import {html, Component} from '../../web_modules/htm/preact/standalone.module.js'
+import {Sortable, OnSpill} from '../../web_modules/sortablejs/modular/sortable.core.esm.js'
 
 // Game logic
 import ActionManager from '../game/action-manager.js'
@@ -186,8 +186,8 @@ export default class App extends Component {
 					/>
 				</div>
 				<p class="App-statusline">
-					<a href="https://github.com/oskarrough/slaytheweb">Slay the Web</a> v0.
-					Room ${state.dungeon.index + 1} of ${state.dungeon.rooms.length}
+					<a href="https://github.com/oskarrough/slaytheweb">Slay the Web</a> v0. Room
+					${state.dungeon.index + 1} of ${state.dungeon.rooms.length}
 					<button onclick=${() => save(state)}>Save</button>
 				</p>
 			</div>
