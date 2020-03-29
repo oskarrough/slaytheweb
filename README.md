@@ -8,22 +8,20 @@ After many runs in the Spire, I got really into the theory behind the game. Insp
 
 The `master` branch is automatically deployed to https://slaytheweb.now.sh/, where you can try it out!
 
-## What's in the code?
+## How to work on the code
 
-- `./public/game` contains all the game logic, exposed with a lot of actions to modify game state. It does not use the DOM
-- `./public/index.js` is an example interface/website made with preact+htm
-- `./tests` contains quite a few tests in attempt to make sure this actually works
+- The `public/game` folder contains the game engine
+- The `public/index.js` file an example interface/website
+- The `tests` folder is filled with tests for the game
 
-Also see https://kinopio.club/slay-the-web-Dh3xUjjHbol7RbCuqZQDn for a more or less up to date overview.
-
-## How to develop on it
-
-The `public` folder can be deployed to any static web server. It does not require any compilation, but it does require you to download a few dependencies:
+The entire `public` folder can be deployed to any static web server. It does not require any compilation. It does require you to download the dependencies once.
 
 To develop locally:
 
 1. `yarn build` downloads ESM dependencies into ./public/web_modules 
 2. `yarn start` starts a local file server on ./public folder
+
+Also see https://kinopio.club/slay-the-web-Dh3xUjjHbol7RbCuqZQDn for a more or less up to date overview.
 
 ## Testing
 
@@ -122,3 +120,6 @@ A collection of related links, inspiration and ideas.
 - https://www.gdcvault.com/play/1025731/-Slay-the-Spire-Metrics
 - https://github.com/Dementophobia/slay-the-spire-sensei
 - https://www.rockpapershotgun.com/2018/02/19/why-revealing-all-is-the-secret-of-slay-the-spires-success/
+- [Slay the Spire Reference](https://docs.google.com/spreadsheets/u/1/d/1ZsxNXebbELpcCi8N7FVOTNGdX_K9-BRC_LMgx4TORo4/edit?usp=sharing)
+- [Slay the Spire Discord](https://discord.gg/slaythespire)
+
