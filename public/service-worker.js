@@ -2,7 +2,7 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox
 
 const {registerRoute} = workbox.routing
 const {precacheAndRoute} = workbox.precaching
-const {CacheFirst, StaleWhileRevalidate} = workbox.strategies
+const {CacheFirst, NetworkFirst, StaleWhileRevalidate} = workbox.strategies
 const {CacheableResponse} = workbox.cacheableResponse
 
 console.log('hello from service worker')
@@ -18,7 +18,7 @@ precacheAndRoute([{url: '/index.html', revision: '1'}])
 // Catch all js and css files and cache them.
 registerRoute(
 	/\.(?:js|css)$/,
-	new StaleWhileRevalidate({
+	new NetworkFirst({
 		cacheName: 'static-resources'
 	})
 )
