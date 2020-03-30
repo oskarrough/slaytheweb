@@ -80,6 +80,8 @@ export default class App extends Component {
 		const {key} = event
 		if (key === 'e') this.endTurn()
 		if (key === 'u') this.undo()
+		if (key === 'a') this.base.querySelector('.DrawPile').toggleAttribute('open')
+		if (key === 's') this.base.querySelector('.DiscardPile').toggleAttribute('open')
 		if (key === 'm') this.base.querySelector('.Map').toggleAttribute('open')
 	}
 	enableDrop() {
@@ -136,6 +138,16 @@ export default class App extends Component {
 		const didWin = isCurrentRoomCompleted(state)
 		return html`
 			<div class="App" tabindex="0" onKeyDown=${e => this.handleShortcuts(e)}>
+				<p class="App-statusline">
+					<a href="https://github.com/oskarrough/slaytheweb">Slay the Web</a>
+					<${History}
+						future=${this.am.future.list}
+						past=${this.am.past.list}
+						undo=${this.undo.bind(this)}
+					/>
+					<button onclick=${() => save(state)}>Save</button>
+				</p>
+
 				<div class="Targets Split">
 					<${Player} model=${state.player} name="You" />
 					<div class="Monsters">
@@ -171,27 +183,18 @@ export default class App extends Component {
 				</div>
 
 				<div class="Split">
-					<details>
-						<summary>Draw pile ${state.drawPile.length}</summary>
+					<details class="DrawPile Overlay" bottomleft>
+						<summary>Dr<u>a</u>w pile ${state.drawPile.length}</summary>
 						<${Cards} cards=${state.drawPile} />
 					</details>
-					<details>
-						<summary align-right>Discard pile ${state.discardPile.length}</summary>
+					<details class="DiscardPile Overlay" bottomright>
+						<summary align-right>Di<u>s</u>card pile ${state.discardPile.length}</summary>
 						<${Cards} cards=${state.discardPile} />
 					</details>
 				</div>
+
 				<div class="Split">
-					<${History}
-						future=${this.am.future.list}
-						past=${this.am.past.list}
-						undo=${this.undo.bind(this)}
-					/>
 				</div>
-				<p class="App-statusline">
-					<a href="https://github.com/oskarrough/slaytheweb">Slay the Web</a> v0. Room
-					${state.dungeon.index + 1} of ${state.dungeon.rooms.length}
-					<button onclick=${() => save(state)}>Save</button>
-				</p>
 
 				<details class="Map Overlay" topright>
 					<summary><u>M</u>ap</summary>
