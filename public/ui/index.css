@@ -7,6 +7,12 @@
 	--text-inverse: hsla(0, 0%, 0%, 0.9);
 }
 
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
+}
+
 html {
 	background: hsl(137, 80%, 13%) linear-gradient(hsl(137, 80%, 13%), hsl(137, 50%, 13%));
 	color: var(--text);
@@ -363,3 +369,59 @@ summary {
 /* select { */
 /* 	cursor: url(images/select.png) 10 0, auto; */
 /* } */
+
+.Overlay {
+	position: absolute;
+	z-index: 1;
+}
+
+.Overlay[topright] {
+	top: 1.3rem;
+	right: 0;
+}
+
+.Overlay[bottomleft] {
+	bottom: 0;
+	left: 0;
+}
+
+.Overlay[bottomright] {
+	bottom: 0;
+	right: 0;
+}
+
+.Overlay summary {
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+.Overlay[open] {
+	background: var(--text-inverse);
+	z-index: 10;
+}
+
+.Map summary {
+	text-align: right;
+}
+
+.Overlay summary + * {
+	margin-left: 1rem;
+	margin-right: 1rem;
+}
+
+.DrawPile.Overlay[open],
+.DiscardPile.Overlay[open] {
+	width: 100%;
+}
+
+.Overlay .Cards {
+	flex-wrap: wrap;
+}
+
+.Overlay .Card:last-of-type {
+	margin-bottom: 1rem;
+}
+
+[hidden] {
+	display: none;
+}

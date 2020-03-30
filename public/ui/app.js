@@ -13,6 +13,7 @@ import {createCard} from './../game/cards.js'
 import {Player, Monster} from './player.js'
 import Cards from './cards.js'
 import History from './history.js'
+import Map from './map.js'
 
 // Puts and gets the game state in the URL.
 const save = state => (location.hash = encodeURIComponent(JSON.stringify(state)))
@@ -79,6 +80,7 @@ export default class App extends Component {
 		const {key} = event
 		if (key === 'e') this.endTurn()
 		if (key === 'u') this.undo()
+		if (key === 'm') this.base.querySelector('.Map').toggleAttribute('open')
 	}
 	enableDrop() {
 		const overClass = 'is-dragOver'
@@ -190,6 +192,11 @@ export default class App extends Component {
 					${state.dungeon.index + 1} of ${state.dungeon.rooms.length}
 					<button onclick=${() => save(state)}>Save</button>
 				</p>
+
+				<details class="Map Overlay" topright>
+					<summary><u>M</u>ap</summary>
+					<${Map} dungeon=${state.dungeon} />
+				</details>
 			</div>
 		`
 	}
