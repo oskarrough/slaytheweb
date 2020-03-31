@@ -136,36 +136,10 @@ summary {
 	height: 30vh;
 	z-index: -1;
 }
-
 .App::after {
 	top: initial;
 	bottom: 0;
 	background: linear-gradient(to top, #0f1642, transparent);
-}
-
-/* The top status line */
-.App-statusline {
-	display: flex;
-	margin: 0 -1vw;
-	background: var(--text-inverse);
-	padding: 0.2em 0.4em 0.2em;
-	align-items: flex-start;
-}
-
-.App-statusline > a {
-	margin-right: auto;
-}
-
-.App-statusline summary {
-	font-size: initial;
-	margin: 0;
-	text-align: right;
-}
-
-.App-statusline button {
-	margin-left: 1em;
-	padding: 0 0.5em;
-	font-size: inherit;
 }
 
 .Split {
@@ -405,46 +379,32 @@ summary {
 	position: absolute;
 	z-index: 1;
 }
-
-.Overlay[topright] {
-	top: 1.3rem;
-	right: 0;
-}
-
-.Overlay[bottomleft] {
-	bottom: 0;
+.Overlay[topleft] {
+	top: 0.5rem;
 	left: 0;
 }
-
-.Overlay[bottomright] {
-	bottom: 0;
+.Overlay[topright] {
+	top: 0.5rem;
 	right: 0;
 }
-
+.Overlay[bottomleft] {
+	bottom: 0.5rem;
+	left: 0;
+}
+.Overlay[bottomright] {
+	bottom: 0.5rem;
+	right: 0;
+}
+.Overlay[open] {
+	background: var(--text-inverse);
+	z-index: 10;
+	width: 100%;
+}
 .Overlay summary {
 	padding-left: 1rem;
 	padding-right: 1rem;
 }
-
-.Overlay[open] {
-	background: var(--text-inverse);
-	z-index: 10;
-}
-
-.Map summary {
-	text-align: right;
-}
-
 .Overlay summary + * {
 	margin-left: 1rem;
 	margin-right: 1rem;
-}
-
-.DrawPile.Overlay[open],
-.DiscardPile.Overlay[open] {
-	width: 100%;
-}
-
-[hidden] {
-	display: none;
 }
