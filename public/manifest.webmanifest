@@ -2,6 +2,7 @@
 	"background_color": "#116f54",
 	"theme_color": "#116f54",
 	"display": "fullscreen",
+	"orientation": "landscape",
 	"icons": [
 		{
 			"src": "ui/images/favicon.png",
