@@ -1,10 +1,16 @@
 :root {
-	--card-width: 7rem;
-	--card-height: 12rem;
+	--card-width: 10rem;
+	--card-height: 11rem;
 	--yellow: #ffc107;
 	--teal: #116f54;
 	--text: hsl(34, 78%, 85%);
 	--text-inverse: hsla(0, 0%, 0%, 0.9);
+}
+
+*,
+*::after,
+*::before {
+	box-sizing: border-box;
 }
 
 html {
@@ -12,6 +18,7 @@ html {
 	color: var(--text);
 	font-size: 16px;
 	line-height: 1.2;
+	cursor: url(images/default.png), auto;
 }
 
 @media (min-height: 1000px) {
@@ -30,6 +37,18 @@ button {
 	font-family: 'Port Lligat Slab', serif;
 }
 
+a,
+button,
+summary {
+	cursor: url(images/point.png) 10 0, auto;
+}
+
+input,
+textarea,
+select {
+	cursor: url(images/select.png) 10 0, auto;
+}
+
 body {
 	margin: 0;
 }
@@ -39,6 +58,7 @@ body {
 	z-index: 2;
 	display: flex;
 	flex-flow: column;
+	width: 100vw;
 	min-height: 100vh;
 	overflow-y: hidden;
 	padding: 0 1vw;
@@ -47,17 +67,31 @@ body {
 }
 
 .App-statusline {
+	display: flex;
 	margin: 0 -1vw;
-	background: #0f0e0e;
-	padding: 0.2em;
+	background: var(--text-inverse);
+	padding: 0.2em 0.4em 0.2em;
+	align-items: flex-start;
+}
+
+.App-statusline > a {
+	margin-right: auto;
+}
+
+.App-statusline summary {
+	font-size: initial;
+	margin: 0;
 }
 
 .App-statusline button {
+	margin-left: 1em;
 	padding: 0 0.5em;
+	font-size: inherit;
 }
 
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
-.App::before {
+.App::before,
+.App::after {
 	content: '';
 	background: linear-gradient(to bottom, #0f1642, transparent);
 	/* background: linear-gradient(to bottom, hsl(135.9, 51.5%, 22.9%), transparent); */
@@ -67,6 +101,12 @@ body {
 	width: 100%;
 	height: 30vh;
 	z-index: -1;
+}
+
+.App::after {
+	top: initial;
+	bottom: 0;
+	background: linear-gradient(to top, #0f1642, transparent);
 }
 
 a {
@@ -137,52 +177,24 @@ summary {
 	border: 3px solid hsla(0, 0%, 0%, 0.8);
 	border-radius: 50%;
 	background: var(--teal);
-	/* background: radial-gradient(var(--teal), var(--yellow)); */
 	text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-	/* text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.8); */
-}
-
-.Cards {
-	min-height: var(--card-height);
-	display: grid;
-	grid-auto-columns: var(--card-width);
-	grid-auto-flow: column;
-	justify-content: center;
-	padding: 1rem 1rem 1rem 3rem;
-	border: 1px dotted var(--yellow);
-	border-radius: 1em;
-	position: relative;
-}
-
-.Cards .Card {
-	margin-left: -3rem;
-}
-
-summary .Cards {
-	overflow: auto;
 }
 
 .Card {
 	position: relative;
 	display: flex;
-	/* border: 0.5em ridge #53b5a8;
-	border-radius: 0.5em; */
-	/* box-shadow: 1px 2px 3px #00000080; */
-
-	image-rendering: -webkit-optimize-contrast;
-	image-rendering: -webkit-crisp-edges;
-	image-rendering: -moz-crisp-edges;
-	image-rendering: -o-crisp-edges;
-	image-rendering: pixelated;
-	border-style: solid;
+	border: 0.5em ridge #53b5a8;
 	border-image-source: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAA7ElEQVRYhe2YMQ6DMAxFcwBGRtaeoFUv0K2qOAa36NYDVmLjMmHB0VfqEJbG3xKRvkTiAE+OnYBD2FrfDdFSAVvfDfH7vpsqQQnMMk9xmad0jWOacJ4o79fGVSgEEsPnda1qbx7a8mdifxcIJ7aKm6qHBOZxuTURQsm7i0Djc/y7fAHhYEsgTCYqD6lZRrVk1h6iAZIYoglqOg/RAflZMtwLKDZGOg+dQe0OiO60t8oyutP+/B5yF9R0QH6yTEiplgxJW+jQv30urHagJ0v22n2lSkjyEF196EjRqlRK0cowaNfmaLYfGOuyHjKsYnCffLyABLkAAAAASUVORK5CYII=);
 	border-image-repeat: repeat;
 	border-image-slice: 6 6 6 6;
 	border-image-width: 16px;
 	border-width: 16px;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: pixelated;
 }
 
 .Card-inner {
+	width: 100%;
 	flex: 1;
 	background: #0a3540;
 	text-align: center;
@@ -209,6 +221,7 @@ summary .Cards {
 .Card-description {
 	margin: 0.5rem 0.2rem;
 	user-select: none;
+	font-size: small;
 }
 
 .Card-energy {
@@ -243,7 +256,7 @@ summary .Cards {
 
 .Target.is-dragOver .Healthbar {
 	transition-duration: 100ms;
-	box-shadow: 0 0 2em lightblue;
+	box-shadow: 0 0 2em var(--yellow), 3px 3px 1px black;
 }
 
 .Target h2 {
@@ -257,10 +270,7 @@ summary .Cards {
 .Target-intent img {
 	vertical-align: bottom;
 	height: 1.5em;
-	image-rendering: -webkit-optimize-contrast;
-	image-rendering: -webkit-crisp-edges;
 	image-rendering: -moz-crisp-edges;
-	image-rendering: -o-crisp-edges;
 	image-rendering: pixelated;
 }
 
@@ -329,8 +339,43 @@ summary .Cards {
 	margin-bottom: 1rem;
 }
 
+.Hand {
+	margin-bottom: 1rem;
+}
+
+/* Normal card layout in one row */
+.Cards {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+}
+
+.Cards > * {
+	flex-basis: var(--card-width);
+	flex-shrink: 1;
+	min-height: var(--card-height);
+}
+
+/* Inside overlays cards are allowed to wrap */
+.Overlay .Cards {
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+/* In your hand, the cards stack a bit */
+.Hand .Cards {
+	padding-left: 2em;
+}
+
 .Hand .Card {
+	margin-left: -2rem;
 	transition-duration: 120ms;
+	cursor: grab;
+	cursor: url(images/grab-open.png) 10 0, auto;
+}
+
+.Hand .Card[disabled] {
+	cursor: not-allowed;
 }
 
 .Hand .Card:hover {
@@ -347,35 +392,55 @@ summary .Cards {
 	opacity: 0.5;
 }
 
+/* Don't show copy of the dragged card on target */
 .Target .Card.sortable-ghost {
 	display: none;
 }
 
-html {
-	cursor: url(images/default.png), auto;
+.Overlay {
+	position: absolute;
+	z-index: 1;
 }
 
-a,
-button,
-summary {
-	cursor: url(images/point.png) 10 0, auto;
+.Overlay[topright] {
+	top: 1.3rem;
+	right: 0;
 }
 
-.Hand .Card {
-	cursor: grab;
-	cursor: url(images/grab-open.png) 10 0, auto;
+.Overlay[bottomleft] {
+	bottom: 0;
+	left: 0;
 }
 
-.Hand .Card:not([disabled]) {
-	/* opacity: 0.5; */
+.Overlay[bottomright] {
+	bottom: 0;
+	right: 0;
 }
 
-.Hand .Card[disabled] {
-	cursor: not-allowed;
+.Overlay summary {
+	padding-left: 1rem;
+	padding-right: 1rem;
 }
 
-/* input, */
-/* textarea, */
-/* select { */
-/* 	cursor: url(images/select.png) 10 0, auto; */
-/* } */
+.Overlay[open] {
+	background: var(--text-inverse);
+	z-index: 10;
+}
+
+.Map summary {
+	text-align: right;
+}
+
+.Overlay summary + * {
+	margin-left: 1rem;
+	margin-right: 1rem;
+}
+
+.DrawPile.Overlay[open],
+.DiscardPile.Overlay[open] {
+	width: 100%;
+}
+
+[hidden] {
+	display: none;
+}
