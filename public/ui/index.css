@@ -18,6 +18,7 @@ html {
 	color: var(--text);
 	font-size: 16px;
 	line-height: 1.2;
+	cursor: url(images/default.png), auto;
 }
 
 @media (min-height: 1000px) {
@@ -34,6 +35,18 @@ body {
 html,
 button {
 	font-family: 'Port Lligat Slab', serif;
+}
+
+a,
+button,
+summary {
+	cursor: url(images/point.png) 10 0, auto;
+}
+
+input,
+textarea,
+select {
+	cursor: url(images/select.png) 10 0, auto;
 }
 
 body {
@@ -167,24 +180,6 @@ summary {
 	text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
 
-.Cards {
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: center;
-	padding-left: 3em;
-	position: relative;
-}
-
-.Cards .Card {
-	flex: 1;
-	max-width: var(--card-width);
-	min-height: var(--card-height);
-}
-
-summary .Cards {
-	overflow: auto;
-}
-
 .Card {
 	position: relative;
 	display: flex;
@@ -261,7 +256,7 @@ summary .Cards {
 
 .Target.is-dragOver .Healthbar {
 	transition-duration: 100ms;
-	box-shadow: 0 0 2em lightblue;
+	box-shadow: 0 0 2em var(--yellow), 3px 3px 1px black;
 }
 
 .Target h2 {
@@ -348,13 +343,39 @@ summary .Cards {
 	margin-bottom: 1rem;
 }
 
+/* Normal card layout in one row */
+.Cards {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+}
+
+.Cards > * {
+	flex-basis: var(--card-width);
+	flex-shrink: 1;
+	min-height: var(--card-height);
+}
+
+/* Inside overlays cards are allowed to wrap */
+.Overlay .Cards {
+	flex-wrap: wrap;
+	gap: 1rem;
+}
+
+/* In your hand, the cards stack a bit */
 .Hand .Cards {
 	padding-left: 2em;
 }
 
 .Hand .Card {
-	transition-duration: 120ms;
 	margin-left: -2rem;
+	transition-duration: 120ms;
+	cursor: grab;
+	cursor: url(images/grab-open.png) 10 0, auto;
+}
+
+.Hand .Card[disabled] {
+	cursor: not-allowed;
 }
 
 .Hand .Card:hover {
@@ -371,38 +392,10 @@ summary .Cards {
 	opacity: 0.5;
 }
 
+/* Don't show copy of the dragged card on target */
 .Target .Card.sortable-ghost {
 	display: none;
 }
-
-html {
-	cursor: url(images/default.png), auto;
-}
-
-a,
-button,
-summary {
-	cursor: url(images/point.png) 10 0, auto;
-}
-
-.Hand .Card {
-	cursor: grab;
-	cursor: url(images/grab-open.png) 10 0, auto;
-}
-
-.Hand .Card:not([disabled]) {
-	/* opacity: 0.5; */
-}
-
-.Hand .Card[disabled] {
-	cursor: not-allowed;
-}
-
-/* input, */
-/* textarea, */
-/* select { */
-/* 	cursor: url(images/select.png) 10 0, auto; */
-/* } */
 
 .Overlay {
 	position: absolute;
@@ -446,14 +439,6 @@ summary {
 .DrawPile.Overlay[open],
 .DiscardPile.Overlay[open] {
 	width: 100%;
-}
-
-.Overlay .Cards {
-	flex-wrap: wrap;
-}
-
-.Overlay .Card:last-of-type {
-	margin-bottom: 1rem;
 }
 
 [hidden] {
