@@ -99,6 +99,7 @@ export default class App extends Component {
 				event.to.classList.add(overClass)
 			}
 		})
+
 		// And we want to be able to drop on all the targets (player + monsters)
 		const targets = this.base.querySelectorAll('.Target')
 		targets.forEach(el => {
@@ -128,15 +129,17 @@ export default class App extends Component {
 		const didWin = isCurrentRoomCompleted(state)
 		return html`
 			<div class="App" tabindex="0" onKeyDown=${e => this.handleShortcuts(e)}>
-				<div class="Targets Split">
-					<${Player} model=${state.player} name="You" />
-					<div class="Monsters">
-						${room.monsters.map(
-							(monster, index) =>
-								html`
-									<${Monster} model=${monster} name=${`Monster ${index}`} />
-								`
-						)}
+				<div class="Targets">
+					<div class="Split">
+						<${Player} model=${state.player} name="You" />
+						<div class="Monsters">
+							${room.monsters.map(
+								(monster, index) =>
+									html`
+										<${Monster} model=${monster} name=${`Monster ${index}`} />
+									`
+							)}
+						</div>
 					</div>
 				</div>
 
