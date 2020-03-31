@@ -93,6 +93,7 @@ export default class App extends Component {
 		new Sortable(this.base.querySelector('.Hand .Cards'), {
 			group: 'hand',
 			draggable: '.Card:not([disabled])',
+			sort: false,
 			revertOnSpill: true,
 			onSpill() {
 				targets.forEach(t => t.classList.remove(overClass))
