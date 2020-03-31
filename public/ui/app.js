@@ -88,7 +88,7 @@ export default class App extends Component {
 		// We want to be able to drag cards in the hand.
 		new Sortable(this.base.querySelector('.Hand .Cards'), {
 			group: 'hand',
-			draggable: '.Card',
+			draggable: '.Card:not([disabled])',
 			revertOnSpill: true,
 			onSpill() {
 				targets.forEach(t => t.classList.remove(overClass))
@@ -97,12 +97,6 @@ export default class App extends Component {
 				// Do as little as possible here. It gets called a lot.
 				targets.forEach(t => t.classList.remove(overClass))
 				event.to.classList.add(overClass)
-				// Check if we have enough energy.
-				const card = self.state.hand.find(c => c.id === event.dragged.dataset.id)
-				if (card.energy > self.state.player.currentEnergy) {
-					alert('Not enough energy to play this card.')
-					return false
-				}
 			}
 		})
 		// And we want to be able to drop on all the targets (player + monsters)
