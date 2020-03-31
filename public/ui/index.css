@@ -237,6 +237,14 @@ summary .Cards {
 	height: 1.9rem;
 }
 
+.Targets {
+	display: flex;
+}
+
+.Targets .Split {
+	flex: 1;
+}
+
 .Target {
 	position: relative;
 	margin-top: 1rem;
