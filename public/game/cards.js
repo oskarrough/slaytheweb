@@ -74,12 +74,12 @@ export const cards = [
 		name: 'Thunderclap',
 		type: 'Attack',
 		energy: 1,
-		damage: 5,
+		damage: 4,
 		target: 'all enemies',
 		powers: {
 			vulnerable: 1
 		},
-		description: 'Deal 5 damage to all enemies. Apply 1 Vulnerable to all enemies.'
+		description: 'Deal 4 damage and apply 1 Vulnerable to all enemies.'
 	},
 	{
 		name: 'Flourish',

@@ -1,9 +1,9 @@
+/* global importScripts, workbox */
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js')
 
 const {registerRoute} = workbox.routing
 const {precacheAndRoute} = workbox.precaching
-const {CacheFirst, NetworkFirst, StaleWhileRevalidate} = workbox.strategies
-const {CacheableResponse} = workbox.cacheableResponse
+const {CacheFirst, NetworkFirst} = workbox.strategies
 
 console.log('hello from service worker')
 if (workbox) {
