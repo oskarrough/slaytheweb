@@ -382,6 +382,14 @@ summary {
 	cursor: url(images/grab-open.png) 10 0, auto;
 }
 
+.Hand .Card:not([disabled]) {
+	/* opacity: 0.5; */
+}
+
+.Hand .Card[disabled] {
+	cursor: not-allowed;
+}
+
 /* input, */
 /* textarea, */
 /* select { */
