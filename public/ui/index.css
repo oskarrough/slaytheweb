@@ -16,7 +16,7 @@
 html {
 	background: hsl(137, 80%, 13%) linear-gradient(hsl(137, 80%, 13%), hsl(137, 50%, 13%));
 	color: var(--text);
-	font-size: 16px;
+	font-size: 18px;
 	line-height: 1.2;
 	cursor: url(images/default.png), auto;
 }
@@ -337,6 +337,12 @@ summary {
 
 .Splash h2 {
 	margin-bottom: 1rem;
+}
+
+.Splash-etails {
+	max-width: 40em;
+	text-align: left;
+	margin: 0 auto;
 }
 
 .Hand {
