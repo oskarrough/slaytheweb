@@ -3,6 +3,7 @@
 	--card-height: 11rem;
 	--yellow: #ffc107;
 	--teal: #116f54;
+	--lightblue: hsl(194.7, 53.3%, 79%);
 	--text: hsl(34, 78%, 85%);
 	--text-inverse: hsla(0, 0%, 0%, 0.9);
 }
@@ -14,10 +15,10 @@
 }
 
 html {
-	background: hsl(137, 80%, 13%) linear-gradient(hsl(137, 80%, 13%), hsl(137, 50%, 13%));
-	color: var(--text);
 	font-size: 18px;
 	line-height: 1.2;
+	background: hsl(137, 80%, 13%) linear-gradient(hsl(137, 80%, 13%), hsl(137, 50%, 13%));
+	color: var(--text);
 	cursor: url(images/default.png), auto;
 }
 
@@ -37,6 +38,14 @@ button {
 	font-family: 'Port Lligat Slab', serif;
 }
 
+body {
+	margin: 0;
+}
+
+[align-right] {
+	text-align: right;
+}
+
 a,
 button,
 summary {
@@ -49,66 +58,6 @@ select {
 	cursor: url(images/select.png) 10 0, auto;
 }
 
-body {
-	margin: 0;
-}
-
-.App {
-	position: relative;
-	z-index: 2;
-	display: flex;
-	flex-flow: column;
-	width: 100vw;
-	min-height: 100vh;
-	overflow-y: hidden;
-	padding: 0 1vw;
-	background-size: cover;
-	background-image: url('images/moonlit-landscape-1904.jpg');
-}
-
-.App-statusline {
-	display: flex;
-	margin: 0 -1vw;
-	background: var(--text-inverse);
-	padding: 0.2em 0.4em 0.2em;
-	align-items: flex-start;
-}
-
-.App-statusline > a {
-	margin-right: auto;
-}
-
-.App-statusline summary {
-	font-size: initial;
-	margin: 0;
-}
-
-.App-statusline button {
-	margin-left: 1em;
-	padding: 0 0.5em;
-	font-size: inherit;
-}
-
-/* Darkens the top of the screen to highlight the player+monsters on the background. */
-.App::before,
-.App::after {
-	content: '';
-	background: linear-gradient(to bottom, #0f1642, transparent);
-	/* background: linear-gradient(to bottom, hsl(135.9, 51.5%, 22.9%), transparent); */
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 30vh;
-	z-index: -1;
-}
-
-.App::after {
-	top: initial;
-	bottom: 0;
-	background: linear-gradient(to top, #0f1642, transparent);
-}
-
 a {
 	color: inherit;
 }
@@ -116,23 +65,20 @@ a {
 button {
 	font-size: 1.25rem;
 	padding: 0.4em 1em 0.4em;
-	border: 2px solid black;
+	border: 3px solid var(--text-inverse);
 	border-radius: 0.3em;
-	background: hsl(194.7, 53.3%, 79%);
+	background: var(--lightblue);
 	color: var(--text-inverse);
-	box-shadow: 0 0.2em hsl(0, 0%, 0%, 0.9);
+	box-shadow: 0 0.2em var(--text-inverse);
 }
-
 button + button {
 	margin-left: 0.2em;
 }
-
 button:hover,
 button:focus {
 	background: hsl(194.7, 53.3%, 83%);
-	box-shadow: 0 0.1em hsl(0, 0%, 0%, 0.9);
+	box-shadow: 0 0.1em var(--text-inverse);
 }
-
 button:active {
 	position: relative;
 	top: 0.1em;
@@ -151,11 +97,51 @@ h1 {
 	text-shadow: 1px 2px #0c0cd526;
 	letter-spacing: -1px;
 }
-
-h2,
-summary {
+h2 {
 	font-size: 1.25rem;
 	margin: 1rem 0 0.5rem;
+}
+
+.Splash {
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-flow: column;
+	text-align: center;
+}
+.Splash h2 {
+	margin-bottom: 1rem;
+}
+
+.App {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	flex-flow: column;
+	width: 100vw;
+	min-height: 100vh;
+	overflow-y: hidden;
+	padding: 2rem 1vw 0;
+	background-size: cover;
+	background-image: url('images/moonlit-landscape-1904.jpg');
+}
+/* Darkens the top of the screen to highlight the player+monsters on the background. */
+.App::before,
+.App::after {
+	content: '';
+	background: linear-gradient(to bottom, #0f1642, transparent);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 30vh;
+	z-index: -1;
+}
+.App::after {
+	top: initial;
+	bottom: 0;
+	background: linear-gradient(to top, #0f1642, transparent);
 }
 
 .Split {
@@ -176,8 +162,9 @@ summary {
 	align-items: center;
 	border: 3px solid hsla(0, 0%, 0%, 0.8);
 	border-radius: 50%;
-	background: var(--teal);
+	background-color: var(--teal);
 	text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+	box-shadow: 0 0 0.1em var(--lightblue);
 }
 
 .Card {
@@ -192,38 +179,27 @@ summary {
 	image-rendering: -moz-crisp-edges;
 	image-rendering: pixelated;
 }
-
 .Card-inner {
 	width: 100%;
 	flex: 1;
 	background: #0a3540;
 	text-align: center;
 }
-
-.Card[disabled] .EnergyBadge {
-	color: red;
-}
-
 .Card-title {
 	margin: 0;
 	padding: 0.6em 1em 0.8em;
 	background: linear-gradient(to bottom, #065046, transparent);
-	text-shadow: 1px 1px 1px hsla(0, 0%, 0%, 0.8);
+	text-shadow: 1px 1px 1px var(--text-inverse);
 	user-select: none;
 }
-
 .Card-type {
 	margin-top: -0.5em;
 	font-size: small;
 	opacity: 0.6;
 }
-
 .Card-description {
-	margin: 0.5rem 0.2rem;
-	user-select: none;
 	font-size: small;
 }
-
 .Card-energy {
 	position: absolute;
 	top: -1.5em;
@@ -231,71 +207,68 @@ summary {
 	width: 1.7rem;
 	height: 1.9rem;
 }
+.Card[disabled] .EnergyBadge {
+	color: red;
+}
 
 .Targets {
 	display: flex;
+	flex: 1;
 }
-
 .Targets .Split {
 	flex: 1;
 }
-
+.Monsters {
+	display: flex;
+}
 .Target {
 	position: relative;
 	margin-top: 1rem;
 	padding: 1px 1em 1.4em;
+	flex: 1;
 }
-
-.Target--isDead {
-	pointer-events: none;
+.Target h2 {
+	margin-left: 0.5rem;
 }
-
-.Target--isDead .Healthbar {
-	background: red;
+.Target-intent {
+	display: inline;
 }
-
+.Target-intent img {
+	vertical-align: bottom;
+	height: 1.2em;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: pixelated;
+}
 .Target.is-dragOver .Healthbar {
 	transition-duration: 100ms;
 	box-shadow: 0 0 2em var(--yellow), 3px 3px 1px black;
 }
-
-.Target h2 {
-	margin-left: 0.5rem;
+.Target--isDead {
+	pointer-events: none;
 }
-
-.Target-intent {
-	display: inline;
-}
-
-.Target-intent img {
-	vertical-align: bottom;
-	height: 1.5em;
-	image-rendering: -moz-crisp-edges;
-	image-rendering: pixelated;
+.Target--isDead .Healthbar {
+	background: red;
 }
 
 .Healthbar {
 	position: relative;
-	border: 3px solid;
-	border-radius: 1em;
 	text-align: center;
 	background: darkslategrey;
 	color: var(--text-inverse);
 	transition: box-shadow 400ms;
 	margin-bottom: 0.5rem;
+	border: 3px solid;
+	border-radius: 0.5rem;
 }
-
 .Healthbar--hasBlock .Healthbar-bar {
 	background: #afafff;
 }
-
 .Healthbar-label {
 	position: relative;
 	z-index: 1;
 	margin: 0.2em 0;
 	text-shadow: 0px 0px 2px hsla(0, 0%, 75%, 0.8);
 }
-
 .Healthbar-bar {
 	position: absolute;
 	left: 0;
@@ -303,22 +276,9 @@ summary {
 	width: 0%;
 	max-width: 100%;
 	height: 100%;
-	border-radius: 0.5rem;
 	background: var(--yellow);
 	transition: width 400ms, background 200ms;
-}
-
-[align-right] {
-	text-align: right;
-}
-
-.Targets,
-.Target {
-	flex: 1;
-}
-
-.Monsters {
-	display: flex;
+	border-radius: 0.5rem;
 }
 
 .Actions {
@@ -326,6 +286,7 @@ summary {
 	margin-right: 1rem;
 }
 
+<<<<<<< HEAD
 .Splash {
 	min-height: 100vh;
 	display: flex;
@@ -349,41 +310,44 @@ summary {
 	margin-bottom: 1rem;
 }
 
+=======
+>>>>>>> master
 /* Normal card layout in one row */
 .Cards {
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: center;
 }
-
 .Cards > * {
 	flex-basis: var(--card-width);
 	flex-shrink: 1;
 	min-height: var(--card-height);
 }
-
 /* Inside overlays cards are allowed to wrap */
 .Overlay .Cards {
 	flex-wrap: wrap;
 	gap: 1rem;
 }
-
 /* In your hand, the cards stack a bit */
+.Hand {
+	margin-bottom: -2rem;
+}
 .Hand .Cards {
 	padding-left: 2em;
 }
-
 .Hand .Card {
 	margin-left: -2rem;
 	transition-duration: 120ms;
 	cursor: grab;
 	cursor: url(images/grab-open.png) 10 0, auto;
 }
-
+.Hand .Card-inner {
+	/* because of negative margin */
+	padding-bottom: 3rem;
+}
 .Hand .Card[disabled] {
 	cursor: not-allowed;
 }
-
 .Hand .Card:hover {
 	transition-duration: 60ms;
 	transform: translate3d(0, -1rem, 0) scale(1.25) rotate(0deg) !important;
@@ -393,11 +357,9 @@ summary {
 
 .Card.sortable-chosen {
 }
-
 .Card.sortable-ghost {
 	opacity: 0.5;
 }
-
 /* Don't show copy of the dragged card on target */
 .Target .Card.sortable-ghost {
 	display: none;
@@ -407,46 +369,32 @@ summary {
 	position: absolute;
 	z-index: 1;
 }
-
-.Overlay[topright] {
-	top: 1.3rem;
-	right: 0;
-}
-
-.Overlay[bottomleft] {
-	bottom: 0;
+.Overlay[topleft] {
+	top: 0.5rem;
 	left: 0;
 }
-
-.Overlay[bottomright] {
-	bottom: 0;
+.Overlay[topright] {
+	top: 0.5rem;
 	right: 0;
 }
-
+.Overlay[bottomleft] {
+	bottom: 0.5rem;
+	left: 0;
+}
+.Overlay[bottomright] {
+	bottom: 0.5rem;
+	right: 0;
+}
+.Overlay[open] {
+	background: var(--text-inverse);
+	z-index: 10;
+	width: 100%;
+}
 .Overlay summary {
 	padding-left: 1rem;
 	padding-right: 1rem;
 }
-
-.Overlay[open] {
-	background: var(--text-inverse);
-	z-index: 10;
-}
-
-.Map summary {
-	text-align: right;
-}
-
 .Overlay summary + * {
 	margin-left: 1rem;
 	margin-right: 1rem;
-}
-
-.DrawPile.Overlay[open],
-.DiscardPile.Overlay[open] {
-	width: 100%;
-}
-
-[hidden] {
-	display: none;
 }

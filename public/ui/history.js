@@ -17,24 +17,23 @@ export default class Queue extends Component {
 	render(props, state) {
 		const time = new Date(state.time).toLocaleTimeString()
 		return html`
-			<details>
-				<summary>History ${time}</summary>
-				<h2>Future</h2>
-				<${FutureList} items=${props.future} />
+			<div>
+				<h2>Future ${time}</h2>
+				<${List} items=${props.future} />
 				<h3>Past</h3>
-				<${FutureList} items=${props.past} />
+				<${List} items=${props.past} />
 				<p>
 					<button onclick=${() => props.undo()}><u>U</u>ndo</button>
 				</p>
-			</details>
+			</div>
 		`
 	}
 }
 
-function FutureList({items}) {
+function List({items}) {
 	if (!items.length)
 		return html`
-			<p>nothing yet</p>
+			<p>The future is uncertain.</p>
 		`
 	return html`
 		<ol>
