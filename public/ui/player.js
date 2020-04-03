@@ -1,19 +1,17 @@
 import {html} from './../web_modules/htm/preact/standalone.module.js'
 
-export const Player = props => html`
-	<${Target} ...${props} type="player" />
-`
+export const Player = (props) => html` <${Target} ...${props} type="player" /> `
 
-export const Monster = props => {
+export const Monster = (props) => {
 	const intent = props.model.intents[props.model.nextIntent]
 	const type = intent && Object.keys(intent)[0]
 	const damage = intent && intent.damage
 	return html`
 		<${Target} ...${props} type="enemy">
 			${intent &&
-				html`
-					<div class="Target-intent"><img alt=${type} src="ui/images/${type}.png" /> ${damage}</div>
-				`}
+			html`
+				<div class="Target-intent"><img alt=${type} src="ui/images/${type}.png" /> ${damage}</div>
+			`}
 		<//>
 	`
 }

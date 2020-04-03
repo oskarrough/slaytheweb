@@ -53,7 +53,7 @@ export function isCurrentRoomCompleted(state) {
 	const room = state.dungeon.rooms[state.dungeon.index || 0]
 
 	if (room.type === 'monster') {
-		const deadMonsters = room.monsters.filter(m => m.currentHealth < 1)
+		const deadMonsters = room.monsters.filter((m) => m.currentHealth < 1)
 		return deadMonsters.length === room.monsters.length
 	}
 
@@ -64,5 +64,5 @@ export function isCurrentRoomCompleted(state) {
 
 // Use it to generate a range of numbers like range(3) === [1,2,3] or range(3, 6) === [6,7,8]
 export function range(size, startAt = 0) {
-	return [...Array(size).keys()].map(i => i + startAt)
+	return [...Array(size).keys()].map((i) => i + startAt)
 }

@@ -16,7 +16,7 @@ import History from './history.js'
 import Map from './map.js'
 
 // Puts and gets the game state in the URL.
-const save = state => (location.hash = encodeURIComponent(JSON.stringify(state)))
+const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state)))
 const load = () => JSON.parse(decodeURIComponent(window.location.hash.split('#')[1]))
 
 export default class App extends Component {
@@ -41,7 +41,7 @@ export default class App extends Component {
 		window.slaytheweb = {
 			component: this,
 			actions,
-			createCard
+			createCard,
 		}
 	}
 	componentDidMount() {
@@ -97,35 +97,35 @@ export default class App extends Component {
 			sort: false,
 			revertOnSpill: true,
 			onSpill() {
-				targets.forEach(t => t.classList.remove(overClass))
+				targets.forEach((t) => t.classList.remove(overClass))
 			},
 			onMove(event) {
 				// Do as little as possible here. It gets called a lot.
-				targets.forEach(t => t.classList.remove(overClass))
+				targets.forEach((t) => t.classList.remove(overClass))
 				event.to.classList.add(overClass)
-			}
+			},
 		})
 
 		// And we want to be able to drop on all the targets (player + monsters)
 		const targets = this.base.querySelectorAll('.Target')
-		targets.forEach(el => {
+		targets.forEach((el) => {
 			new Sortable(el, {
 				group: {
 					name: 'player',
 					pull: false,
-					put: ['hand']
+					put: ['hand'],
 				},
 				draggable: '.TRICKYOUCANT',
 				// When you drop, play the card.
 				onAdd(event) {
 					const {item, to} = event
-					const card = self.state.hand.find(c => c.id === item.dataset.id)
+					const card = self.state.hand.find((c) => c.id === item.dataset.id)
 					const index = Array.from(to.parentNode.children).indexOf(to)
 					let target = to.dataset.type + index
 					self.enqueue({type: 'playCard', target, card})
 					self.dequeue()
-					targets.forEach(t => t.classList.remove(overClass))
-				}
+					targets.forEach((t) => t.classList.remove(overClass))
+				},
 			})
 		})
 	}
@@ -134,16 +134,14 @@ export default class App extends Component {
 		const isDead = state.player.currentHealth < 1
 		const didWin = isCurrentRoomCompleted(state)
 		return html`
-			<div class="App" tabindex="0" onKeyDown=${e => this.handleShortcuts(e)}>
+			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
 				<div class="Targets">
 					<div class="Split">
 						<${Player} model=${state.player} name="You" />
 						<div class="Monsters">
 							${room.monsters.map(
 								(monster, index) =>
-									html`
-										<${Monster} model=${monster} name=${`Monster ${index}`} />
-									`
+									html` <${Monster} model=${monster} name=${`Monster ${index}`} /> `
 							)}
 						</div>
 					</div>
@@ -161,9 +159,7 @@ export default class App extends Component {
 									You win.
 									<button onclick=${() => this.goToNextRoom()}>Go to the next floor</button>
 							  `
-							: html`
-									<button onclick=${() => this.endTurn()}><u>E</u>nd turn</button>
-							  `}
+							: html` <button onclick=${() => this.endTurn()}><u>E</u>nd turn</button> `}
 					</p>
 				</div>
 

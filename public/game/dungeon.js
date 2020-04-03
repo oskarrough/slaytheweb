@@ -6,7 +6,7 @@ export default function Dungeon(props) {
 	return {
 		id: uuid(),
 		rooms: props.rooms,
-		index: 0
+		index: 0,
 	}
 }
 
@@ -14,7 +14,7 @@ export default function Dungeon(props) {
 export function CampfireRoom() {
 	return {
 		id: uuid(),
-		type: 'campfire'
+		type: 'campfire',
 	}
 }
 
@@ -23,7 +23,7 @@ export function MonsterRoom(...monsters) {
 	return {
 		id: uuid(),
 		type: 'monster',
-		monsters: monsters
+		monsters: monsters,
 	}
 }
 
@@ -38,6 +38,6 @@ export function Monster(props = {}) {
 		block: props.block || 0,
 		powers: props.powers || {},
 		intents: props.intents || [],
-		nextIntent: 0
+		nextIntent: 0,
 	}
 }

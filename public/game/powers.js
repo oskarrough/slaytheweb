@@ -14,13 +14,13 @@ class Power {
 export const regen = new Power({
 	type: 'buff',
 	target: 'player',
-	use: stacks => stacks
+	use: (stacks) => stacks,
 })
 
 export const vulnerable = new Power({
 	type: 'debuff',
 	target: 'enemy',
-	use: dmg => Math.floor(dmg * 1.25)
+	use: (dmg) => Math.floor(dmg * 1.25),
 })
 
 // export const weak = new Power({

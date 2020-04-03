@@ -8,9 +8,7 @@ export default class App extends Component {
 			<ol>
 				${dungeon.rooms.map(
 					(/*room, */ index) =>
-						html`
-							<li>Room ${index} ${index === dungeon.index ? '(X)' : ''}</li>
-						`
+						html` <li>Room ${index} ${index === dungeon.index ? '(X)' : ''}</li> `
 				)}
 			</ol>
 		`

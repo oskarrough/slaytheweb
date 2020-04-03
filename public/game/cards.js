@@ -13,7 +13,7 @@ export const cards = [
 		energy: 1,
 		block: 5,
 		target: 'player',
-		description: 'Gain 5 Block.'
+		description: 'Gain 5 Block.',
 	},
 	{
 		name: 'Strike',
@@ -21,7 +21,7 @@ export const cards = [
 		energy: 1,
 		target: 'enemy',
 		damage: 6,
-		description: 'Deal 6 Damage.'
+		description: 'Deal 6 Damage.',
 	},
 	{
 		name: 'Bash',
@@ -30,9 +30,9 @@ export const cards = [
 		damage: 8,
 		target: 'enemy',
 		powers: {
-			vulnerable: 2
+			vulnerable: 2,
 		},
-		description: 'Deal 8 damage. Apply 2 Vulnerable.'
+		description: 'Deal 8 damage. Apply 2 Vulnerable.',
 	},
 	{
 		name: 'Clash',
@@ -40,7 +40,7 @@ export const cards = [
 		energy: 0,
 		damage: 14,
 		target: 'enemy',
-		description: 'Can only be played if every card in your hand is an Attack. Deal 14 damage.'
+		description: 'Can only be played if every card in your hand is an Attack. Deal 14 damage.',
 	},
 	{
 		name: 'Cleave',
@@ -48,7 +48,7 @@ export const cards = [
 		energy: 1,
 		damage: 8,
 		target: 'all enemies',
-		description: 'Deal 8 damage to ALL enemies.'
+		description: 'Deal 8 damage to ALL enemies.',
 	},
 	{
 		name: 'Iron Wave',
@@ -57,7 +57,7 @@ export const cards = [
 		damage: 5,
 		block: 5,
 		target: 'self and enemy',
-		description: 'Gain 5 Block. Deal 5 damage.'
+		description: 'Gain 5 Block. Deal 5 damage.',
 	},
 	{
 		name: 'Sucker Punch',
@@ -66,9 +66,9 @@ export const cards = [
 		damage: 7,
 		target: 'enemy',
 		powers: {
-			weak: 1
+			weak: 1,
 		},
-		description: 'Deal 7 damage. Apply 1 Weak.'
+		description: 'Deal 7 damage. Apply 1 Weak.',
 	},
 	{
 		name: 'Thunderclap',
@@ -77,9 +77,9 @@ export const cards = [
 		damage: 4,
 		target: 'all enemies',
 		powers: {
-			vulnerable: 1
+			vulnerable: 1,
 		},
-		description: 'Deal 4 damage and apply 1 Vulnerable to all enemies.'
+		description: 'Deal 4 damage and apply 1 Vulnerable to all enemies.',
 	},
 	{
 		name: 'Flourish',
@@ -88,9 +88,9 @@ export const cards = [
 		target: 'player',
 		description: 'Gain 5 regen.',
 		powers: {
-			regen: 5
-		}
-	}
+			regen: 5,
+		},
+	},
 	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
 	// {name: 'Body Slam', energy: 1, type: 'Attack', description: 'Deal Damage equal to your Block'},
 ]
@@ -111,7 +111,7 @@ export class Card {
 
 // Turns the plain object cards into a class-based one.
 export function createCard(name) {
-	const baseCard = cards.find(card => card.name === name)
+	const baseCard = cards.find((card) => card.name === name)
 	if (!baseCard) throw new Error(`Card not found: ${name}`)
 	return new Card(baseCard)
 }
