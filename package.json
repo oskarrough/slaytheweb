@@ -1,6 +1,6 @@
 {
   "name": "slaytheweb",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "license": "MIT",
   "scripts": {
     "start": "browser-sync public --watch --no-notify",
