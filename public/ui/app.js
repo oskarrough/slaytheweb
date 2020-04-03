@@ -174,12 +174,12 @@ export default class App extends Component {
 				<details class="Menu Overlay" topleft>
 					<summary><u>Esc</u>ape</summary>
 					<div class="Split">
-						<${History}
-							future=${this.am.future.list}
-							past=${this.am.past.list}
-							undo=${this.undo.bind(this)}
-						/>
-						<div><button onclick=${() => save(state)}>Save</button></div>
+						<${History} future=${this.am.future.list} past=${this.am.past.list} />
+						<p>
+							<button onclick=${() => this.undo()}><u>U</u>ndo</button><br />
+							<button onclick=${() => save(state)}>Save</button>
+							<button onclick=${() => window.location.reload()}>Quit</button>
+						</p>
 					</div>
 				</details>
 				<details class="Map Overlay" topright>
