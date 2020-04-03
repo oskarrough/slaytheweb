@@ -286,7 +286,6 @@ h2 {
 	margin-right: 1rem;
 }
 
-<<<<<<< HEAD
 .Splash {
 	min-height: 100vh;
 	display: flex;
@@ -295,12 +294,10 @@ h2 {
 	flex-flow: column;
 	text-align: center;
 }
-
 .Splash h2 {
 	margin-bottom: 1rem;
 }
-
-.Splash-etails {
+.Splash-details {
 	max-width: 40em;
 	text-align: left;
 	margin: 0 auto;
@@ -310,8 +307,6 @@ h2 {
 	margin-bottom: 1rem;
 }
 
-=======
->>>>>>> master
 /* Normal card layout in one row */
 .Cards {
 	display: flex;
@@ -398,3 +393,4 @@ h2 {
 	margin-left: 1rem;
 	margin-right: 1rem;
 }
+
