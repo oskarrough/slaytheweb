@@ -152,20 +152,18 @@ export default class App extends Component {
 				<div class="Split">
 					<div class="EnergyBadge">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
 					<p class="Actions">
-						${
-							isDead
-								? html`
-										You are dead. <button onclick=${() => this.props.onLoose()}>Try again?</button>
-								  `
-								: didWin
-								? html`
-										You win.
-										<button onclick=${() => this.goToNextRoom()}>Go to the next floor</button>
-								  `
-								: html`
-										<button onclick=${() => this.endTurn()}><u>E</u>nd turn</button>
-								  `
-						}
+						${isDead
+							? html`
+									You are dead. <button onclick=${() => this.props.onLoose()}>Try again?</button>
+							  `
+							: didWin
+							? html`
+									You win.
+									<button onclick=${() => this.goToNextRoom()}>Go to the next floor</button>
+							  `
+							: html`
+									<button onclick=${() => this.endTurn()}><u>E</u>nd turn</button>
+							  `}
 					</p>
 				</div>
 
@@ -176,12 +174,12 @@ export default class App extends Component {
 				<details class="Menu Overlay" topleft>
 					<summary><u>Esc</u>ape</summary>
 					<div class="Split">
-					<${History}
-						future=${this.am.future.list}
-						past=${this.am.past.list}
-						undo=${this.undo.bind(this)}
-					/>
-					<div><button onclick=${() => save(state)}>Save</button></div>
+						<${History} future=${this.am.future.list} past=${this.am.past.list} />
+						<p>
+							<button onclick=${() => this.undo()}><u>U</u>ndo</button><br />
+							<button onclick=${() => save(state)}>Save</button>
+							<button onclick=${() => window.location.reload()}>Quit</button>
+						</p>
 					</div>
 				</details>
 				<details class="Map Overlay" topright>

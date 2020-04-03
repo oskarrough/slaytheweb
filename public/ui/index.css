@@ -15,7 +15,7 @@
 }
 
 html {
-	font-size: 16px;
+	font-size: 18px;
 	line-height: 1.2;
 	background: hsl(137, 80%, 13%) linear-gradient(hsl(137, 80%, 13%), hsl(137, 50%, 13%));
 	color: var(--text);
@@ -286,6 +286,27 @@ h2 {
 	margin-right: 1rem;
 }
 
+.Splash {
+	min-height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-content: center;
+	flex-flow: column;
+	text-align: center;
+}
+.Splash h2 {
+	margin-bottom: 1rem;
+}
+.Splash-details {
+	max-width: 40em;
+	text-align: left;
+	margin: 0 auto;
+}
+
+.Hand {
+	margin-bottom: 1rem;
+}
+
 /* Normal card layout in one row */
 .Cards {
 	display: flex;
@@ -372,3 +393,4 @@ h2 {
 	margin-left: 1rem;
 	margin-right: 1rem;
 }
+

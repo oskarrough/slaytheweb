@@ -22,9 +22,6 @@ export default class Queue extends Component {
 				<${List} items=${props.future} />
 				<h3>Past</h3>
 				<${List} items=${props.past} />
-				<p>
-					<button onclick=${() => props.undo()}><u>U</u>ndo</button>
-				</p>
 			</div>
 		`
 	}
