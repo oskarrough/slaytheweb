@@ -47,7 +47,7 @@ test('starter deck is shuffled', (t) => {
 			delete card.id
 			return card
 		})
-	const tries = Array(10)
+	const tries = Array(10).fill(10)
 	t.plan(tries.length)
 	tries.forEach(() => {
 		let draw1 = a.addStarterDeck(state)
