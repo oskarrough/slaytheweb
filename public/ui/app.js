@@ -83,6 +83,7 @@ export default class App extends Component {
 		if (key === 'a') this.base.querySelector('.DrawPile').toggleAttribute('open')
 		if (key === 's') this.base.querySelector('.DiscardPile').toggleAttribute('open')
 		if (key === 'm') this.base.querySelector('.Map').toggleAttribute('open')
+		if (key === 'Escape') this.base.querySelector('.Menu').toggleAttribute('open')
 	}
 	enableDrop() {
 		const overClass = 'is-dragOver'
@@ -134,16 +135,6 @@ export default class App extends Component {
 		const didWin = isCurrentRoomCompleted(state)
 		return html`
 			<div class="App" tabindex="0" onKeyDown=${e => this.handleShortcuts(e)}>
-				<p class="App-statusline">
-					<a href="https://github.com/oskarrough/slaytheweb">Slay the Web</a>
-					<${History}
-						future=${this.am.future.list}
-						past=${this.am.past.list}
-						undo=${this.undo.bind(this)}
-					/>
-					<button onclick=${() => save(state)}>Save</button>
-				</p>
-
 				<div class="Targets">
 					<div class="Split">
 						<${Player} model=${state.player} name="You" />
@@ -161,18 +152,20 @@ export default class App extends Component {
 				<div class="Split">
 					<div class="EnergyBadge">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
 					<p class="Actions">
-						${isDead
-							? html`
-									You are dead. <button onclick=${() => this.props.onLoose()}>Try again?</button>
-							  `
-							: didWin
-							? html`
-									You win.
-									<button onclick=${() => this.goToNextRoom()}>Go to the next floor</button>
-							  `
-							: html`
-									<button onclick=${() => this.endTurn()}><u>E</u>nd turn</button>
-							  `}
+						${
+							isDead
+								? html`
+										You are dead. <button onclick=${() => this.props.onLoose()}>Try again?</button>
+								  `
+								: didWin
+								? html`
+										You win.
+										<button onclick=${() => this.goToNextRoom()}>Go to the next floor</button>
+								  `
+								: html`
+										<button onclick=${() => this.endTurn()}><u>E</u>nd turn</button>
+								  `
+						}
 					</p>
 				</div>
 
@@ -180,22 +173,28 @@ export default class App extends Component {
 					<${Cards} cards=${state.hand} isHand=${true} energy=${state.player.currentEnergy} />
 				</div>
 
-				<div class="Split">
-					<details class="DrawPile Overlay" bottomleft>
-						<summary>Dr<u>a</u>w pile ${state.drawPile.length}</summary>
-						<${Cards} cards=${state.drawPile} />
-					</details>
-					<details class="DiscardPile Overlay" bottomright>
-						<summary align-right>Di<u>s</u>card pile ${state.discardPile.length}</summary>
-						<${Cards} cards=${state.discardPile} />
-					</details>
-				</div>
-
-				<div class="Split"></div>
-
+				<details class="Menu Overlay" topleft>
+					<summary><u>Esc</u>ape</summary>
+					<div class="Split">
+					<${History}
+						future=${this.am.future.list}
+						past=${this.am.past.list}
+						undo=${this.undo.bind(this)}
+					/>
+					<div><button onclick=${() => save(state)}>Save</button></div>
+					</div>
+				</details>
 				<details class="Map Overlay" topright>
-					<summary><u>M</u>ap</summary>
+					<summary align-right><u>M</u>ap</summary>
 					<${Map} dungeon=${state.dungeon} />
+				</details>
+				<details class="DrawPile Overlay" bottomleft>
+					<summary>Dr<u>a</u>w pile ${state.drawPile.length}</summary>
+					<${Cards} cards=${state.drawPile} />
+				</details>
+				<details class="DiscardPile Overlay" bottomright>
+					<summary align-right>Di<u>s</u>card pile ${state.discardPile.length}</summary>
+					<${Cards} cards=${state.discardPile} />
 				</details>
 			</div>
 		`
