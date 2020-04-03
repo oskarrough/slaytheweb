@@ -82,6 +82,7 @@ export default class App extends Component {
 		if (key === 'u') this.undo()
 		if (key === 'a') this.base.querySelector('.DrawPile').toggleAttribute('open')
 		if (key === 's') this.base.querySelector('.DiscardPile').toggleAttribute('open')
+		if (key === 'm') this.base.querySelector('.Map').toggleAttribute('open')
 		if (key === 'Escape') this.base.querySelector('.Menu').toggleAttribute('open')
 	}
 	enableDrop() {
