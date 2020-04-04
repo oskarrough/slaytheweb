@@ -9,7 +9,7 @@ class Main extends Component {
 	constructor() {
 		super()
 		this.state = {
-			isPlaying: false
+			isPlaying: false,
 		}
 		this.handleWin = this.handleWin.bind(this)
 		this.handleNewGame = this.handleNewGame.bind(this)
@@ -30,31 +30,27 @@ class Main extends Component {
 		this.setState({isPlaying: true, didWin: false})
 	}
 	render(props, {didWin, isPlaying}) {
-		if (isPlaying)
-			return html`
-				<${App} onWin=${this.handleWin} onLoose=${this.handleLoose} />
-			`
-		if (didWin)
-			return html`
-				<${WinScreen} onNewGame=${this.handleNewGame} />
-			`
+		if (isPlaying) return html` <${App} onWin=${this.handleWin} onLoose=${this.handleLoose} /> `
+		if (didWin) return html` <${WinScreen} onNewGame=${this.handleNewGame} /> `
 		return html`
 			<${SplashScreen} onNewGame=${this.handleNewGame} onContinue=${this.handleLoadGame} />
 		`
 	}
 }
 
-const SplashScreen = props => html`
+const SplashScreen = (props) => html`
 	<article class="Splash">
 		<h1>Slay the Web</h1>
 		<h2>A little card crawl adventure for you and your browser.</h2>
-		${location.hash &&
+		${
+			location.hash &&
 			html`
 				<p>
 					Oh, it seems you have a saved game.
 					<button autofocus onClick=${props.onContinue}>Continue?</button>
 				</p>
-			`}
+			`
+		}
 		<p><button autofocus onClick=${props.onNewGame}>Play</a></p>
 		<details class="Splash-details">
 			<summary>How to play</summary>
@@ -66,19 +62,14 @@ const SplashScreen = props => html`
 	</article>
 `
 
-const WinScreen = props => html`
+const WinScreen = (props) => html`
 	<article class="Splash">
 		<h1>Well done. You won.</h1>
 		<p><button autofocus onClick=${props.onNewGame}>Play again</a></p>
 	</article>
 `
 
-render(
-	html`
-		<${Main} />
-	`,
-	document.querySelector('#root')
-)
+render(html` <${Main} /> `, document.querySelector('#root'))
 
 // enum GameMode {
 //  	CHAR_SELECT, GAMEPLAY, DUNGEON_TRANSITION, SPLASH;

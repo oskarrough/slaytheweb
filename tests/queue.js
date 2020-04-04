@@ -1,7 +1,7 @@
 import test from 'ava'
 import Queue from '../public/game/queue.js'
 
-test('can add and run through queue', t => {
+test('can add and run through queue', (t) => {
 	const q = new Queue()
 	t.is(q.list.length, 0)
 	q.addToTop('a')
@@ -42,4 +42,3 @@ test('can add and run through queue', t => {
 // 	if (!undo) return
 // 	this.setState(applyPatches(this.state, undo))
 // }
-

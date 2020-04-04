@@ -7,13 +7,13 @@ import {createSimpleDungeon} from '../public/game/dungeon-encounters'
 const a = actions
 
 // Each test gets a fresh game state with a dungeon set up.
-test.beforeEach(t => {
+test.beforeEach((t) => {
 	let state = a.createNewGame()
 	state = a.setDungeon(state, createSimpleDungeon())
 	t.context = {state}
 })
 
-test('new game state is ok', t => {
+test('new game state is ok', (t) => {
 	const {state} = t.context
 	t.true(state.dungeon.rooms.length > 0, 'we have a dungeon with rooms')
 	delete state.dungeon // deleting for rest of test because can't deepequal ids
@@ -28,35 +28,35 @@ test('new game state is ok', t => {
 			maxHealth: 72,
 			currentHealth: 72,
 			block: 0,
-			powers: {}
-		}
+			powers: {},
+		},
 	})
 })
 
-test('drawing a starter deck adds it to the draw pile', t => {
+test('drawing a starter deck adds it to the draw pile', (t) => {
 	const {state} = t.context
 	t.is(state.drawPile.length, 0)
 	const state2 = a.addStarterDeck(state)
 	t.is(state2.drawPile.length, 10)
 })
 
-test('starter deck is shuffled', t => {
+test('starter deck is shuffled', (t) => {
 	const {state} = t.context
-	const removeIds = arr =>
-		arr.map(card => {
+	const removeIds = (arr) =>
+		arr.map((card) => {
 			delete card.id
 			return card
 		})
-	const tries = Array(10)
+	const tries = Array(10).fill(10)
 	t.plan(tries.length)
-	for (const index of tries) {
+	tries.forEach(() => {
 		let draw1 = a.addStarterDeck(state)
 		let draw2 = a.addStarterDeck(state)
 		t.notDeepEqual(removeIds(draw1.drawPile), removeIds(draw2.drawPile))
-	}
+	})
 })
 
-test('can add a card to hand', t => {
+test('can add a card to hand', (t) => {
 	let {state} = t.context
 	const strike = createCard('Strike')
 	state = a.addCardToHand(state, {card: strike})
@@ -64,7 +64,7 @@ test('can add a card to hand', t => {
 	t.is(state.hand[0].id, strike.id)
 })
 
-test('can draw cards from drawPile to hand', t => {
+test('can draw cards from drawPile to hand', (t) => {
 	const {state} = t.context
 	const state2 = a.addStarterDeck(state)
 	t.is(state2.hand.length, 0, 'hand is empty to start with')
@@ -73,8 +73,8 @@ test('can draw cards from drawPile to hand', t => {
 	t.is(state3.drawPile.length, 5, 'cards have been removed from deck')
 })
 
-test('recycling the discard pile is shuffled', t => {
-	const getIds = arr => arr.map(card => card.id)
+test('recycling the discard pile is shuffled', (t) => {
+	const getIds = (arr) => arr.map((card) => card.id)
 	let {state} = t.context
 	state = a.addStarterDeck(state)
 	state = a.drawCards(state)
@@ -83,7 +83,7 @@ test('recycling the discard pile is shuffled', t => {
 	t.notDeepEqual(getIds(state.hand), getIds(thirdDraw.hand), 'order is maintained')
 })
 
-test('getTargets utility works', t => {
+test('getTargets utility works', (t) => {
 	const {state} = t.context
 	let room = state.dungeon.rooms[state.dungeon.index]
 	t.deepEqual(getTargets(state, 'enemy0')[0], room.monsters[0])
@@ -94,7 +94,7 @@ test('getTargets utility works', t => {
 	t.deepEqual(getTargets(state, 'player')[0], state.player)
 })
 
-test('can manipulate player hp', t => {
+test('can manipulate player hp', (t) => {
 	const {state} = t.context
 	t.is(state.player.currentHealth, 72)
 	const state2 = a.removeHealth(state, {target: 'player', amount: 10})
@@ -106,7 +106,7 @@ test('can manipulate player hp', t => {
 	t.is(state.player.currentHealth, 72, 'immutable')
 })
 
-test('can manipulate monster hp', t => {
+test('can manipulate monster hp', (t) => {
 	const {state} = t.context
 	t.is(getTargets(state, 'enemy0')[0].currentHealth, 42, 'og heath is ok')
 	const state2 = a.removeHealth(state, {target: 'enemy0', amount: 10})
@@ -118,7 +118,7 @@ test('can manipulate monster hp', t => {
 	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42, 'immutable')
 })
 
-test('can not play a card without enough energy', t => {
+test('can not play a card without enough energy', (t) => {
 	const {state} = t.context
 	const card = createCard('Strike')
 	t.is(state.player.currentEnergy, 3)
@@ -126,12 +126,12 @@ test('can not play a card without enough energy', t => {
 	t.throws(() => a.playCard(state, {card}))
 })
 
-test('initial rooms monster hp is STILL as expected', t => {
+test('initial rooms monster hp is STILL as expected', (t) => {
 	const {state} = t.context
 	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42)
 })
 
-test('can play a strike card from hand and see the effects on state', t => {
+test('can play a strike card from hand and see the effects on state', (t) => {
 	const {state} = t.context
 	const originalHealth = getTargets(state, 'enemy0')[0].currentHealth
 	t.is(getTargets(state, 'enemy0')[0].currentHealth, originalHealth)
@@ -141,7 +141,7 @@ test('can play a strike card from hand and see the effects on state', t => {
 	t.is(getTargets(state2, 'enemy0')[0].currentHealth, originalHealth - card.damage)
 })
 
-test('Applying weak makes you deal 25% less damage', t => {
+test('Applying weak makes you deal 25% less damage', (t) => {
 	let {state} = t.context
 	t.is(getTargets(state, 'enemy0')[0].currentHealth, 42)
 	const card = createCard('Strike')
@@ -156,7 +156,7 @@ test('Applying weak makes you deal 25% less damage', t => {
 	)
 })
 
-test('block on enemy actually blocks damage', t => {
+test('block on enemy actually blocks damage', (t) => {
 	const {state} = t.context
 	const card = createCard('Strike')
 
@@ -169,7 +169,7 @@ test('block on enemy actually blocks damage', t => {
 	t.is(getTargets(state2, 'enemy0')[0].currentHealth, 12, 'so hp wasnt removed')
 })
 
-test('block on player actually blocks damage', t => {
+test('block on player actually blocks damage', (t) => {
 	let state = a.createNewGame()
 	state = a.setDungeon(state, createSimpleDungeon())
 	state = a.endTurn(state)
@@ -180,7 +180,7 @@ test('block on player actually blocks damage', t => {
 	t.is(getTargets(state2, 'player')[0].currentHealth, 67, 'so hp was not reduced')
 })
 
-test('can play a defend card from hand and see the effects on state', t => {
+test('can play a defend card from hand and see the effects on state', (t) => {
 	const {state} = t.context
 	t.is(state.player.block, 0)
 	const card = createCard('Defend')
@@ -190,14 +190,14 @@ test('can play a defend card from hand and see the effects on state', t => {
 	t.is(state3.player.block, 10)
 })
 
-test('when monster reaches 0 hp, you win!', t => {
+test('when monster reaches 0 hp, you win!', (t) => {
 	const {state} = t.context
 	t.false(isCurrentRoomCompleted(state))
 	const newState = a.removeHealth(state, {target: 'enemy0', amount: 42})
 	t.true(isCurrentRoomCompleted(newState))
 })
 
-test('can discard a single card from hand', t => {
+test('can discard a single card from hand', (t) => {
 	const {state} = t.context
 	const state2 = a.addStarterDeck(state)
 	const state3 = a.drawCards(state2)
@@ -209,7 +209,7 @@ test('can discard a single card from hand', t => {
 	t.is(state4.discardPile.length, 1)
 })
 
-test('can discard the entire hand', t => {
+test('can discard the entire hand', (t) => {
 	const {state} = t.context
 	const state2 = a.addStarterDeck(state)
 	const state3 = a.drawCards(state2)
@@ -220,7 +220,7 @@ test('can discard the entire hand', t => {
 	t.is(state4.discardPile.length, 5)
 })
 
-test('We can reshuffle and draw', t => {
+test('We can reshuffle and draw', (t) => {
 	let {state} = t.context
 	const state2 = a.addStarterDeck(state)
 	const state3 = a.drawCards(state2)
@@ -231,7 +231,7 @@ test('We can reshuffle and draw', t => {
 	t.is(state5.discardPile.length, 0)
 })
 
-test('ending a turn draws a new hand and recycles discard pile', t => {
+test('ending a turn draws a new hand and recycles discard pile', (t) => {
 	let {state} = t.context
 
 	state = a.addStarterDeck(state)
@@ -256,7 +256,7 @@ test('ending a turn draws a new hand and recycles discard pile', t => {
 	t.is(state.discardPile.length, 0)
 })
 
-test('ending a turn refreshes energy', t => {
+test('ending a turn refreshes energy', (t) => {
 	const {state} = t.context
 	t.is(state.player.currentEnergy, 3)
 	const card = createCard('Defend')
@@ -268,7 +268,7 @@ test('ending a turn refreshes energy', t => {
 	t.is(newTurn.player.currentEnergy, 3)
 })
 
-test("ending a turn removes player's block", t => {
+test("ending a turn removes player's block", (t) => {
 	const {state} = t.context
 	t.is(state.player.block, 0)
 	const card = createCard('Defend')
@@ -280,7 +280,7 @@ test("ending a turn removes player's block", t => {
 	t.is(newTurn.player.block, 0)
 })
 
-test('Bash card adds a vulnerable power and it deals 25% more dmg', t => {
+test('Bash card adds a vulnerable power and it deals 25% more dmg', (t) => {
 	let {state} = t.context
 	const bashCard = createCard('Bash')
 	const strikeCard = createCard('Strike')
@@ -316,7 +316,7 @@ test('Bash card adds a vulnerable power and it deals 25% more dmg', t => {
 	t.is(getTargets(state, 'enemy0')[0].powers.vulnerable, 0, 'stacks dont go negative')
 })
 
-test('Flourish card adds a working "regen" buff', t => {
+test('Flourish card adds a working "regen" buff', (t) => {
 	let {state} = t.context
 	const card = createCard('Flourish')
 	t.is(card.powers.regen, 5, 'card has regen power')
@@ -347,7 +347,7 @@ test('Flourish card adds a working "regen" buff', t => {
 	t.is(state2.player.currentHealth, 20)
 })
 
-test('You can stack regen power', t => {
+test('You can stack regen power', (t) => {
 	let {state} = t.context
 	const card = createCard('Flourish')
 	state.player.currentEnergy = 999
@@ -357,7 +357,7 @@ test('You can stack regen power', t => {
 	t.is(state.player.powers.regen, card.powers.regen * 2, 'regen applied twice')
 })
 
-test('target "all enemies" works for damage as well as power', t => {
+test('target "all enemies" works for damage as well as power', (t) => {
 	const {state} = t.context
 	state.dungeon.index = 1
 	t.is(state.dungeon.rooms[state.dungeon.index].monsters.length, 2, 'we have two enemies')
@@ -377,4 +377,4 @@ test('target "all enemies" works for damage as well as power', t => {
 test.todo('playing defend on an enemy ?')
 test.todo('Cleave targets all monsters')
 test.todo('can apply a power to a specific monster')
-test.todo('Clash can only be played if it\'s the only attack')
+test.todo("Clash can only be played if it's the only attack")

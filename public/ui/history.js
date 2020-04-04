@@ -28,10 +28,7 @@ export default class Queue extends Component {
 }
 
 function List({items}) {
-	if (!items.length)
-		return html`
-			<p>The future is uncertain.</p>
-		`
+	if (!items.length) return html` <p>The future is uncertain.</p> `
 	return html`
 		<ol>
 			${items.map(Item)}

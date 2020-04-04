@@ -19,7 +19,7 @@ const scalingIntents = [
 	{damage: 15},
 	{damage: 20},
 	{damage: 30},
-	{damage: 50}
+	{damage: 50},
 ]
 
 const normalRoom = () => MonsterRoom(Monster({intents}))
@@ -40,7 +40,7 @@ export const createSimpleDungeon = () => {
 			// MonsterRoom(CultistMonster()),
 			normalRoom(),
 			eliteRoom(),
-			bossRoom()
-		]
+			bossRoom(),
+		],
 	})
 }

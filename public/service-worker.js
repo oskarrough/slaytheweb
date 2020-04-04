@@ -19,7 +19,7 @@ precacheAndRoute([{url: '/index.html', revision: '1'}])
 registerRoute(
 	/\.(?:js|css)$/,
 	new NetworkFirst({
-		cacheName: 'static-resources'
+		cacheName: 'static-resources',
 	})
 )
 
@@ -31,8 +31,8 @@ registerRoute(
 		plugins: [
 			new workbox.expiration.ExpirationPlugin({
 				maxEntries: 60,
-				maxAgeSeconds: 30 * 24 * 60 * 60 // 30 Days
-			})
-		]
+				maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+			}),
+		],
 	})
 )
