@@ -24,6 +24,7 @@ export default class App extends Component {
 		super()
 		// Set up our action manager.
 		this.am = ActionManager()
+		this.overlayIndex = 11
 
 		// Set up either a saved or new game.
 		const savedGame = window.location.hash && load()
@@ -80,10 +81,20 @@ export default class App extends Component {
 		const {key} = event
 		if (key === 'e') this.endTurn()
 		if (key === 'u') this.undo()
-		if (key === 'a') this.base.querySelector('.DrawPile').toggleAttribute('open')
-		if (key === 's') this.base.querySelector('.DiscardPile').toggleAttribute('open')
-		if (key === 'm') this.base.querySelector('.Map').toggleAttribute('open')
-		if (key === 'Escape') this.base.querySelector('.Menu').toggleAttribute('open')
+		// Overlays
+		const toggle = (el) => {
+			el.toggleAttribute('open')
+			el.style.zIndex = this.overlayIndex
+			this.overlayIndex++
+		}
+		if (key === 'Escape') {
+			let openOverlays = this.base.querySelectorAll('details[open]:not(.Menu)')
+			openOverlays.forEach((el) => el.removeAttribute('open'))
+			toggle(this.base.querySelector('.Menu'))
+		}
+		if (key === 'a') toggle(this.base.querySelector('.DrawPile'))
+		if (key === 's') toggle(this.base.querySelector('.DiscardPile'))
+		if (key === 'm') toggle(this.base.querySelector('.Map'))
 	}
 	enableDrop() {
 		const overClass = 'is-dragOver'
