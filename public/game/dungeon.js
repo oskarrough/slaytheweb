@@ -23,7 +23,7 @@ export function MonsterRoom(...monsters) {
 	return {
 		id: uuid(),
 		type: 'monster',
-		monsters: monsters,
+		monsters,
 	}
 }
 
