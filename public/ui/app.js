@@ -19,6 +19,15 @@ import Map from './map.js'
 const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state)))
 const load = () => JSON.parse(decodeURIComponent(window.location.hash.split('#')[1]))
 
+// A tiny overlay UI component.
+const Overlay = props => html`
+	<div class="Splash Overlay" topleft open>
+		<div class="Splash-details">
+			${props.children}
+		</div>
+	</div>
+`
+
 export default class App extends Component {
 	constructor() {
 		super()
@@ -145,7 +154,20 @@ export default class App extends Component {
 		const isDead = state.player.currentHealth < 1
 		const didWin = isCurrentRoomCompleted(state)
 		return html`
-			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
+			<div class="App" tabindex="0" onKeyDown=${e => this.handleShortcuts(e)}>
+				${isDead &&
+				html`<${Overlay}>
+					<p>You are dead.</p>
+					<button onclick=${() => this.props.onLoose()}>Try again?</button>
+				<//> `}
+				${didWin &&
+				html`<${Overlay}>
+					<p>You win.</p>
+					<button onclick=${() => this.goToNextRoom()}>
+						Go to the next floor
+					</button>
+				<//> `}
+
 				<div class="Targets">
 					<div class="Split">
 						<${Player} model=${state.player} name="You" />
@@ -159,23 +181,20 @@ export default class App extends Component {
 				</div>
 
 				<div class="Split">
-					<div class="EnergyBadge">${state.player.currentEnergy}/${state.player.maxEnergy}</div>
+					<div class="EnergyBadge">
+						${state.player.currentEnergy}/${state.player.maxEnergy}
+					</div>
 					<p class="Actions">
-						${isDead
-							? html`
-									You are dead. <button onclick=${() => this.props.onLoose()}>Try again?</button>
-							  `
-							: didWin
-							? html`
-									You win.
-									<button onclick=${() => this.goToNextRoom()}>Go to the next floor</button>
-							  `
-							: html` <button onclick=${() => this.endTurn()}><u>E</u>nd turn</button> `}
+						<button onclick=${() => this.endTurn()}><u>E</u>nd turn</button>
 					</p>
 				</div>
 
 				<div class="Hand">
-					<${Cards} cards=${state.hand} isHand=${true} energy=${state.player.currentEnergy} />
+					<${Cards}
+						cards=${state.hand}
+						isHand=${true}
+						energy=${state.player.currentEnergy}
+					/>
 				</div>
 
 				<details class="Menu Overlay" topleft>
