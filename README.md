@@ -16,7 +16,7 @@ The `master` branch is automatically deployed to https://slaytheweb.now.sh/, whe
 
 The entire `public` folder can be deployed to any static web server. It does not require any compilation. It does require you to download the dependencies once.
 
-To develop locally:
+### To develop locally:
 
 1. `yarn build` downloads ESM dependencies into ./public/web_modules 
 2. `yarn start` starts a local file server on ./public folder
