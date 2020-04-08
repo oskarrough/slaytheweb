@@ -20,7 +20,7 @@ const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state
 const load = () => JSON.parse(decodeURIComponent(window.location.hash.split('#')[1]))
 
 // A tiny overlay UI component.
-const Overlay = props => html`
+const Overlay = (props) => html`
 	<div class="Splash Overlay" topleft open>
 		<div class="Splash-details">
 			${props.children}
@@ -154,7 +154,7 @@ export default class App extends Component {
 		const isDead = state.player.currentHealth < 1
 		const didWin = isCurrentRoomCompleted(state)
 		return html`
-			<div class="App" tabindex="0" onKeyDown=${e => this.handleShortcuts(e)}>
+			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
 				${isDead &&
 				html`<${Overlay}>
 					<p>You are dead.</p>
@@ -190,11 +190,7 @@ export default class App extends Component {
 				</div>
 
 				<div class="Hand">
-					<${Cards}
-						cards=${state.hand}
-						isHand=${true}
-						energy=${state.player.currentEnergy}
-					/>
+					<${Cards} cards=${state.hand} isHand=${true} energy=${state.player.currentEnergy} />
 				</div>
 
 				<details class="Menu Overlay" topleft>
