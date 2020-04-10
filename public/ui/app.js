@@ -154,19 +154,12 @@ export default class App extends Component {
 			})
 		})
 	}
-
-	foo(state) {
-		const room = state.dungeon.rooms[state.dungeon.index]
-		this.enqueue({type:"removeHealth", target: "enemy0", amount: 42})
-		this.dequeue()
-	}
 	render(props, state) {
 		const room = state.dungeon.rooms[state.dungeon.index]
 		const isDead = state.player.currentHealth < 1
 		let didWin = isCurrentRoomCompleted(state)
 		return html`
 			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
-				<button onClick=${() => this.foo(state)}>click</button>
 				${isDead &&
 				html`<${Overlay}>
 					<p>You are dead.</p>
