@@ -284,6 +284,12 @@ function takeMonsterTurn(state) {
 	})
 }
 
+function rewardPlayer(state, {card}) {
+	return produce(state, (draft) => {
+		draft.deck.push(card)
+	})
+}
+
 function goToNextRoom(state) {
 	let nextState = reshuffleAndDraw(state)
 	nextState.player.powers = {} // remove all powers
@@ -295,7 +301,6 @@ function goToNextRoom(state) {
 		draft.dungeon.index = number + 1
 	})
 }
-
 export default {
 	addCardToHand,
 	addHealth,
@@ -312,4 +317,5 @@ export default {
 	reshuffleAndDraw,
 	setDungeon,
 	takeMonsterTurn,
+	rewardPlayer
 }

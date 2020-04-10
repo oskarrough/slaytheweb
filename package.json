@@ -4,8 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "browser-sync public --watch --no-notify",
-    "lint": "eslint public tests",
-    "test": "npm run-script lint; nyc ava --verbose",
+    "lint": "eslint public tests --fix",
+    "test": "nyc ava --verbose --match='*add a reward*'",
     "test:watch": "ava --watch",
     "build": "snowpack --include 'public/**/*.js' --clean --dest 'public/web_modules' --stat --optimize",
     "docs": "cd public/game; docco *.js; mv docs ../../docs",

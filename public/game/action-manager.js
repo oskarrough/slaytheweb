@@ -9,7 +9,6 @@ export default function () {
 	const past = new Queue()
 
 	function enqueue(action) {
-		console.log('enqueued', action)
 		future.addToTop({action})
 	}
 

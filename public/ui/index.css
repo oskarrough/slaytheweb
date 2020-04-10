@@ -346,8 +346,6 @@ h2 {
 	z-index: 1;
 }
 
-.Card.sortable-chosen {
-}
 .Card.sortable-ghost {
 	opacity: 0.5;
 }
@@ -413,4 +411,22 @@ h2 {
 	gap: 1rem;
 	align-content: center;
 	min-height: calc(100vh - 4rem);
+}
+
+/* Rewards: Greg */
+.RewardsBox {
+	display: flex;
+	flex-direction: column;
+}
+
+.RewardsBox > p {
+	text-align: center;
+	margin: 0;
+}
+
+.RewardsBox > .Cards {
+	cursor: pointer;
+}
+.RewardsBox .Card {
+	min-height: 100%;
 }

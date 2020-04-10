@@ -7,20 +7,21 @@ import ActionManager from '../game/action-manager.js'
 import actions from './../game/actions.js'
 import {isCurrentRoomCompleted} from '../game/utils.js'
 import {createSimpleDungeon} from '../game/dungeon-encounters.js'
-import {createCard} from './../game/cards.js'
+import {createCard, getRandomCards} from '../game/cards.js'
 
 // Components
 import {Player, Monster} from './player.js'
 import Cards from './cards.js'
 import History from './history.js'
 import Map from './map.js'
+import Rewards from './rewards.js'
 
 // Puts and gets the game state in the URL.
 const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state)))
 const load = () => JSON.parse(decodeURIComponent(window.location.hash.split('#')[1]))
 
 // A tiny overlay UI component.
-const Overlay = props => html`
+const Overlay = (props) => html`
 	<div class="Splash Overlay" topleft open>
 		<div class="Splash-details">
 			${props.children}
@@ -35,6 +36,9 @@ export default class App extends Component {
 		this.am = ActionManager()
 		this.overlayIndex = 11
 
+		// scope button on click
+		this.handlePlayerReward = this.handlePlayerReward.bind(this);
+
 		// Set up either a saved or new game.
 		const savedGame = window.location.hash && load()
 		if (savedGame) {
@@ -46,7 +50,6 @@ export default class App extends Component {
 			state = actions.drawCards(state)
 			this.state = state
 		}
-
 		// Enable debugging in the browser.
 		window.slaytheweb = {
 			component: this,
@@ -73,7 +76,6 @@ export default class App extends Component {
 	undo() {
 		const prev = this.am.past.takeFromTop()
 		if (!prev) return
-		console.log('Undoing', prev.action.type)
 		this.setState(prev.state)
 	}
 	endTurn() {
@@ -85,6 +87,11 @@ export default class App extends Component {
 		this.enqueue({type: 'goToNextRoom'})
 		// Enable dragdrop again because the DOM of the targets changed.
 		this.dequeue(() => this.dequeue(this.enableDrop))
+	}
+	handlePlayerReward(card) {
+		this.enqueue({type: "rewardPlayer", card: card});
+		this.dequeue();
+		this.goToNextRoom();
 	}
 	handleShortcuts(event) {
 		const {key} = event
@@ -125,7 +132,6 @@ export default class App extends Component {
 				event.to.classList.add(overClass)
 			},
 		})
-
 		// And we want to be able to drop on all the targets (player + monsters)
 		const targets = this.base.querySelectorAll('.Target')
 		targets.forEach((el) => {
@@ -149,12 +155,19 @@ export default class App extends Component {
 			})
 		})
 	}
+	/*foo(state) {
+		const room = state.dungeon.rooms[state.dungeon.index]
+		this.enqueue({type:"removeHealth", target: "enemy0", amount: 42})
+		this.dequeue()
+				<button onClick=${() => this.foo(state)}>click</button>
+	}*/
 	render(props, state) {
 		const room = state.dungeon.rooms[state.dungeon.index]
 		const isDead = state.player.currentHealth < 1
-		const didWin = isCurrentRoomCompleted(state)
+		let didWin = isCurrentRoomCompleted(state)
+		getRandomCards()
 		return html`
-			<div class="App" tabindex="0" onKeyDown=${e => this.handleShortcuts(e)}>
+			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
 				${isDead &&
 				html`<${Overlay}>
 					<p>You are dead.</p>
@@ -162,10 +175,10 @@ export default class App extends Component {
 				<//> `}
 				${didWin &&
 				html`<${Overlay}>
-					<p>You win.</p>
-					<button onclick=${() => this.goToNextRoom()}>
-						Go to the next floor
-					</button>
+					<${Rewards}
+						cards=${getRandomCards()}
+						rewardWith=${this.handlePlayerReward}
+					/>
 				<//> `}
 
 				<div class="Targets">
@@ -190,11 +203,7 @@ export default class App extends Component {
 				</div>
 
 				<div class="Hand">
-					<${Cards}
-						cards=${state.hand}
-						isHand=${true}
-						energy=${state.player.currentEnergy}
-					/>
+					<${Cards} cards=${state.hand} isHand=${true} energy=${state.player.currentEnergy} />
 				</div>
 
 				<details class="Menu Overlay" topleft>

@@ -115,3 +115,13 @@ export function createCard(name) {
 	if (!baseCard) throw new Error(`Card not found: ${name}`)
 	return new Card(baseCard)
 }
+export function getRandomCards() {
+	const cardsName = cards.map(card => card.name)
+	let res = []
+	for (let i = 0; i < 3;i++) {
+		let name = cardsName[Math.floor(Math.random() * cardsName.length)];
+		let card = createCard(name);
+		res.push(card)
+	}
+	return res
+}
