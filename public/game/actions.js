@@ -283,7 +283,6 @@ function takeMonsterTurn(state) {
 		})
 	})
 }
-
 function rewardPlayer(state, {card}) {
 	return produce(state, (draft) => {
 		draft.deck.push(card)

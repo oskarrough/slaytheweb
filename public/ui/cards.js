@@ -20,7 +20,7 @@ export default class Cards extends Component {
 	render(props) {
 		return html`
 			<div class="Cards">
-				${props.cards.map((card) => card)}
+				${props.cards.map((card) => Card(card, props.energy))}
 			</div>
 		`
 	}

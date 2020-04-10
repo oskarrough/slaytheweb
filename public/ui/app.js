@@ -7,7 +7,7 @@ import ActionManager from '../game/action-manager.js'
 import actions from './../game/actions.js'
 import {isCurrentRoomCompleted} from '../game/utils.js'
 import {createSimpleDungeon} from '../game/dungeon-encounters.js'
-import {createCard, getRandomCards} from '../game/cards.js'
+import {createCard, getRandomCards} from './../game/cards.js'
 
 // Components
 import {Player, Monster} from './player.js'
@@ -155,17 +155,10 @@ export default class App extends Component {
 			})
 		})
 	}
-	/*foo(state) {
-		const room = state.dungeon.rooms[state.dungeon.index]
-		this.enqueue({type:"removeHealth", target: "enemy0", amount: 42})
-		this.dequeue()
-				<button onClick=${() => this.foo(state)}>click</button>
-	}*/
 	render(props, state) {
 		const room = state.dungeon.rooms[state.dungeon.index]
 		const isDead = state.player.currentHealth < 1
 		let didWin = isCurrentRoomCompleted(state)
-		getRandomCards()
 		return html`
 			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
 				${isDead &&
@@ -180,7 +173,6 @@ export default class App extends Component {
 						rewardWith=${this.handlePlayerReward}
 					/>
 				<//> `}
-
 				<div class="Targets">
 					<div class="Split">
 						<${Player} model=${state.player} name="You" />
@@ -236,3 +228,9 @@ export default class App extends Component {
 		`
 	}
 }
+	/*foo(state) {
+		const room = state.dungeon.rooms[state.dungeon.index]
+		this.enqueue({type:"removeHealth", target: "enemy0", amount: 42})
+		this.dequeue()
+				<button onClick=${() => this.foo(state)}>click</button>
+	}*/
