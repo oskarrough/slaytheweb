@@ -1,4 +1,4 @@
-import {html} from './../web_modules/htm/preact/standalone.module.js'
+import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
 
 export const Player = (props) => html` <${Target} ...${props} type="player" /> `
 
@@ -16,16 +16,31 @@ export const Monster = (props) => {
 	`
 }
 
-function Target({model, type, name, children}) {
-	const isDead = model.currentHealth < 1
-	const hp = isDead ? 0 : model.currentHealth
-	return html`
-		<div class=${`Target${isDead ? ' Target--isDead' : ''}`} data-type=${type}>
-			<h2>${name} ${children}</h2>
-			<${Healthbar} max=${model.maxHealth} value=${hp} block=${model.block} />
-			<${Powers} powers=${model.powers} />
-		</div>
-	`
+class Target extends Component {
+	componentDidUpdate(prevProps) {
+		const oldHp = prevProps.model.currentHealth
+		const currHp = this.props.model.currentHealth
+		const lostHealth = oldHp - currHp
+		console.log({lostHealth})
+		if (currHp < oldHp) {
+			this.setState({lostHealth})
+		}
+	}
+	render({model, type, name, children}, {lostHealth}) {
+		const isDead = model.currentHealth < 1
+		const hp = isDead ? 0 : model.currentHealth
+		return html`
+			<div class=${`Target${isDead ? ' Target--isDead' : ''}`} data-type=${type}>
+				<h2>${name} ${children}</h2>
+				<${Healthbar} max=${model.maxHealth} value=${hp} block=${model.block} />
+				<${Powers} powers=${model.powers} />
+				<div class="Split">
+					<${FCT} key=${model.block} value=${model.block} class="FCT FCT--block" />
+					<${FCT} key=${lostHealth} value=${lostHealth} />
+				</div>
+			</div>
+		`
+	}
 }
 
 // A bar that shows the player's current and maximum health as well as any block.
@@ -41,8 +56,16 @@ function Healthbar({value, max, block}) {
 // Shows currently active powers.
 function Powers({powers}) {
 	return html`
-		${powers.vulnerable > 0 ? `Vulnerable ${powers.vulnerable}` : ''}
-		${powers.regen > 0 ? `Regen ${powers.regen}` : ''}
-		${powers.weak > 0 ? `Weak ${powers.weak}` : ''}
+		<p>
+			${powers.vulnerable > 0 ? `Vulnerable ${powers.vulnerable}` : ''}
+			${powers.regen > 0 ? `Regen ${powers.regen}` : ''}
+			${powers.weak > 0 ? `Weak ${powers.weak}` : ''}
+		</p>
 	`
+}
+
+// Floating Combat Text
+function FCT(props) {
+	if (!props.value) return html`<p></p>`
+	return html`<p class="FCT" ...${props}>${props.value}</p>`
 }
