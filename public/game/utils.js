@@ -28,6 +28,11 @@ export function shuffle(array) {
 	return array
 }
 
+// Returns the current room in a dungeon.
+export function getCurrRoom(state) {
+	return state.dungeon.rooms[state.dungeon.index || 0]
+}
+
 // Support a target like "enemyx", where x is the order of the monster.
 export function getTargets(state, target) {
 	if (target.startsWith('player')) {
