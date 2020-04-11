@@ -440,6 +440,7 @@ h2 {
 }
 .FCT--block {
 	color: #afafff;
+	font-size: 3rem;
 }
 @keyframes fct-up {
 	0% {
