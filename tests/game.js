@@ -291,6 +291,21 @@ test('Vulnerable targets take 50% more damage', (t) => {
 	t.is(getTargets(state, 'enemy0')[0].currentHealth, 25, 'deals 50% more damage')
 })
 
+test('Vulnerable damage is rounded down', (t) => {
+	//  For example, Headbutt deals 9 damage. With vulnerable it deals 13 instead of 13,5.
+	let {state} = t.context
+	const card = createCard('Strike')
+	card.damage = 9
+	state.dungeon.rooms[0].monsters[0].powers.vulnerable = 999
+	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42)
+	let state2 = a.playCard(state, {target: 'enemy0', card})
+	t.is(
+		state2.dungeon.rooms[0].monsters[0].currentHealth,
+		42 - 13,
+		'With vulnerable it deals 13 instead of 13,5'
+	)
+})
+
 test('Flourish card adds a healing "regen" buff', (t) => {
 	let {state} = t.context
 	const flourish = createCard('Flourish')
