@@ -20,7 +20,7 @@ export const regen = new Power({
 export const vulnerable = new Power({
 	type: 'debuff',
 	target: 'enemy',
-	use: (dmg) => Math.floor(dmg * 1.25),
+	use: (dmg) => Math.floor(dmg * 1.5),
 })
 
 // export const weak = new Power({

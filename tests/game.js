@@ -256,7 +256,7 @@ test('ending a turn draws a new hand and recycles discard pile', (t) => {
 	t.is(state.discardPile.length, 0)
 })
 
-test('ending a turn refreshes energy', (t) => {
+test('Ending a turn refreshes energy', (t) => {
 	const {state} = t.context
 	t.is(state.player.currentEnergy, 3)
 	const card = createCard('Defend')
@@ -268,7 +268,7 @@ test('ending a turn refreshes energy', (t) => {
 	t.is(newTurn.player.currentEnergy, 3)
 })
 
-test("ending a turn removes player's block", (t) => {
+test("Ending a turn removes player's block", (t) => {
 	const {state} = t.context
 	t.is(state.player.block, 0)
 	const card = createCard('Defend')
@@ -280,57 +280,29 @@ test("ending a turn removes player's block", (t) => {
 	t.is(newTurn.player.block, 0)
 })
 
-test('Bash card adds a vulnerable power and it deals 25% more dmg', (t) => {
+test('Vulnerable targets take 50% more damage', (t) => {
 	let {state} = t.context
 	const bashCard = createCard('Bash')
 	const strikeCard = createCard('Strike')
-
-	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42, 'checking initial health to be sure')
-
+	t.is(getTargets(state, 'enemy0')[0].currentHealth, 42, 'initial hp')
 	state = a.playCard(state, {target: 'enemy0', card: bashCard})
-	t.is(
-		getTargets(state, 'enemy0')[0].powers.vulnerable,
-		bashCard.powers.vulnerable,
-		'power is applied to monster before dealing damage'
-	)
-	t.is(getTargets(state, 'enemy0')[0].currentHealth, 34, '...and after dealing damage')
-
-	t.is(getTargets(state, 'enemy0')[0].powers.vulnerable, 2, 'power is applied')
-	state = a.endTurn(state)
-	t.is(getTargets(state, 'enemy0')[0].powers.vulnerable, 1, 'power stacks go down')
 	t.is(getTargets(state, 'enemy0')[0].currentHealth, 34)
-
-	state = a.endTurn(state)
-	t.is(getTargets(state, 'enemy0')[0].powers.vulnerable, 0, 'power stacks go down')
-
-	state = a.playCard(state, {target: 'enemy0', card: bashCard})
-	t.is(getTargets(state, 'enemy0')[0].currentHealth, 26)
-	t.is(getTargets(state, 'enemy0')[0].powers.vulnerable, 2)
-
 	state = a.playCard(state, {target: 'enemy0', card: strikeCard})
-	t.is(getTargets(state, 'enemy0')[0].currentHealth, 19, 'deals 25%')
-	state = a.endTurn(state)
-	state = a.endTurn(state)
-	state = a.endTurn(state)
-	state = a.endTurn(state)
-	t.is(getTargets(state, 'enemy0')[0].powers.vulnerable, 0, 'stacks dont go negative')
+	t.is(getTargets(state, 'enemy0')[0].currentHealth, 25, 'deals 50% more damage')
 })
 
-test('Flourish card adds a working "regen" buff', (t) => {
+test('Flourish card adds a healing "regen" buff', (t) => {
 	let {state} = t.context
-	const card = createCard('Flourish')
-	t.is(card.powers.regen, 5, 'card has regen power')
+	const flourish = createCard('Flourish')
+	t.is(flourish.powers.regen, 5, 'card has regen power')
 	t.is(state.player.currentHealth, 72)
-
-	let state2 = a.playCard(state, {target: 'player', card})
+	let state2 = a.playCard(state, {target: 'player', card: flourish})
 	state2.dungeon.rooms[state.dungeon.index].monsters[0].intents = []
-	t.is(state2.player.powers.regen, card.powers.regen, 'regen is applied to player')
+	t.is(state2.player.powers.regen, flourish.powers.regen, 'regen is applied to player')
 	state2 = a.endTurn(state2)
 	t.is(state2.player.currentHealth, 72, 'it doesnt go above max hp')
 	t.is(state2.player.powers.regen, 4, 'stacks go down')
-
 	state2.player.currentHealth = 10
-
 	state2 = a.endTurn(state2)
 	t.is(state2.player.currentHealth, 14)
 	t.is(state2.player.powers.regen, 3)
@@ -347,13 +319,23 @@ test('Flourish card adds a working "regen" buff', (t) => {
 	t.is(state2.player.currentHealth, 20)
 })
 
-test('You can stack regen power', (t) => {
+test('Vulnerable power stacks', (t) => {
+	let {state} = t.context
+	const card = createCard('Bash')
+	state.player.currentEnergy = 999
+	state = a.playCard(state, {target: 'enemy0', card})
+	t.is(state.dungeon.rooms[0].monsters[0].powers.vulnerable, card.powers.vulnerable)
+	state = a.playCard(state, {target: 'enemy0', card})
+	t.is(state.dungeon.rooms[0].monsters[0].powers.vulnerable, card.powers.vulnerable * 2)
+})
+
+test('Regen power stacks', (t) => {
 	let {state} = t.context
 	const card = createCard('Flourish')
 	state.player.currentEnergy = 999
-	state = a.playCard(state, {card})
+	state = a.playCard(state, {target: 'player', card})
 	t.is(state.player.powers.regen, card.powers.regen, 'regen applied once')
-	state = a.playCard(state, {card})
+	state = a.playCard(state, {target: 'player', card})
 	t.is(state.player.powers.regen, card.powers.regen * 2, 'regen applied twice')
 })
 
