@@ -18,15 +18,13 @@ export const Monster = (props) => {
 
 class Target extends Component {
 	componentDidUpdate(prevProps) {
+		// Keep track of how much hp we might have lost.
 		const oldHp = prevProps.model.currentHealth
 		const currHp = this.props.model.currentHealth
 		const lostHealth = oldHp - currHp
-		console.log({lostHealth})
-		if (currHp < oldHp) {
-			this.setState({lostHealth})
-		}
+		if (currHp < oldHp) this.setState({lostHealth})
 	}
-	render({model, type, name, children}, {lostHealth}) {
+	render({model, type, name, children}, state) {
 		const isDead = model.currentHealth < 1
 		const hp = isDead ? 0 : model.currentHealth
 		return html`
@@ -36,7 +34,7 @@ class Target extends Component {
 				<${Powers} powers=${model.powers} />
 				<div class="Split">
 					<${FCT} key=${model.block} value=${model.block} class="FCT FCT--block" />
-					<${FCT} key=${lostHealth} value=${lostHealth} />
+					<${FCT} key=${hp} value=${state.lostHealth} />
 				</div>
 			</div>
 		`
