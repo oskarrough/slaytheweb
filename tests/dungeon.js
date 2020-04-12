@@ -1,7 +1,7 @@
 import test from 'ava'
 import actions from '../public/game/actions'
 import Dungeon, {CampfireRoom, MonsterRoom, Monster} from '../public/game/dungeon'
-import {isCurrentRoomCompleted} from '../public/game/utils'
+import {getCurrRoom, isCurrentRoomCompleted} from '../public/game/utils'
 
 const a = actions
 
@@ -58,8 +58,8 @@ test('we can navigate a dungeon', (t) => {
 	state = a.setDungeon(state, dungeon)
 	// Go through the next rooms.
 	state = a.goToNextRoom(state)
-	t.is(state.dungeon.rooms[state.dungeon.index].id, dungeon.rooms[1].id)
+	t.is(getCurrRoom(state).id, dungeon.rooms[1].id)
 	state = a.goToNextRoom(state)
-	t.is(state.dungeon.rooms[state.dungeon.index].id, dungeon.rooms[2].id)
+	t.is(getCurrRoom(state).id, dungeon.rooms[2].id)
 	t.throws(() => a.goToNextRoom(state), null, 'can not go further than last room')
 })

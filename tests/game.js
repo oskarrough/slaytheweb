@@ -1,6 +1,6 @@
 import test from 'ava'
 import actions from '../public/game/actions'
-import {getTargets, isCurrentRoomCompleted} from '../public/game/utils'
+import {getTargets, getCurrRoom, isCurrentRoomCompleted} from '../public/game/utils'
 import {createCard} from '../public/game/cards'
 import {createSimpleDungeon} from '../public/game/dungeon-encounters'
 
@@ -85,10 +85,10 @@ test('recycling the discard pile is shuffled', (t) => {
 
 test('getTargets utility works', (t) => {
 	const {state} = t.context
-	let room = state.dungeon.rooms[state.dungeon.index]
+	let room = getCurrRoom(state)
 	t.deepEqual(getTargets(state, 'enemy0')[0], room.monsters[0])
 	state.dungeon.index = 1
-	room = state.dungeon.rooms[state.dungeon.index]
+	room = getCurrRoom(state)
 	t.deepEqual(getTargets(state, 'enemy1')[0], room.monsters[1])
 	t.throws(() => getTargets(state, 'doesntexist'))
 	t.deepEqual(getTargets(state, 'player')[0], state.player)
@@ -351,11 +351,12 @@ test('Flourish card adds a healing "regen" buff', (t) => {
 test('target "all enemies" works for damage as well as power', (t) => {
 	const {state} = t.context
 	state.dungeon.index = 1
-	t.is(state.dungeon.rooms[state.dungeon.index].monsters.length, 2, 'we have two enemies')
-	t.is(state.dungeon.rooms[state.dungeon.index].monsters[0].currentHealth, 24)
-	t.is(state.dungeon.rooms[state.dungeon.index].monsters[1].currentHealth, 13)
-	t.falsy(state.dungeon.rooms[state.dungeon.index].monsters[0].powers.vulnerable)
-	t.falsy(state.dungeon.rooms[state.dungeon.index].monsters[1].powers.vulnerable)
+	const room = getCurrRoom(state)
+	t.is(room.monsters.length, 2, 'we have two enemies')
+	t.is(room.monsters[0].currentHealth, 24)
+	t.is(room.monsters[1].currentHealth, 13)
+	t.falsy(room.monsters[0].powers.vulnerable)
+	t.falsy(room.monsters[1].powers.vulnerable)
 	const card = createCard('Thunderclap')
 	const nextState = a.playCard(state, {card})
 	// console.log(nextState.dungeon.rooms[nextState.dungeon.index].monsters[0])
