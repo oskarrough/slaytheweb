@@ -220,7 +220,7 @@ test('can discard the entire hand', (t) => {
 	t.is(state4.discardPile.length, 5)
 })
 
-test('We can reshuffle and draw', (t) => {
+test('we can reshuffle and draw', (t) => {
 	let {state} = t.context
 	const state2 = a.addStarterDeck(state)
 	const state3 = a.drawCards(state2)
@@ -293,15 +293,31 @@ test('Vulnerable targets take 50% more damage', (t) => {
 
 test('Vulnerable damage is rounded down', (t) => {
 	let {state} = t.context
-	const card = createCard('Strike')
-	card.damage = 9
-	state.dungeon.rooms[0].monsters[0].powers.vulnerable = 1
-	let state2 = a.playCard(state, {target: 'enemy0', card})
-	t.is(
-		state2.dungeon.rooms[0].monsters[0].currentHealth,
-		42 - 13,
-		'With vulnerable it deals 13 instead of 13,5'
-	)
+	const strike = createCard('Strike')
+	strike.damage = 9
+	getTargets(state, 'enemy0')[0].powers.vulnerable = 1
+	let state2 = a.playCard(state, {target: 'enemy0', card: strike})
+	t.is(getTargets(state2, 'enemy0')[0].currentHealth, 42 - 13)
+})
+
+test('Vulnerable power stacks', (t) => {
+	let {state} = t.context
+	const card = createCard('Bash')
+	state.player.currentEnergy = 999
+	state = a.playCard(state, {target: 'enemy0', card})
+	t.is(state.dungeon.rooms[0].monsters[0].powers.vulnerable, card.powers.vulnerable)
+	state = a.playCard(state, {target: 'enemy0', card})
+	t.is(state.dungeon.rooms[0].monsters[0].powers.vulnerable, card.powers.vulnerable * 2)
+})
+
+test('Regen power stacks', (t) => {
+	let {state} = t.context
+	const card = createCard('Flourish')
+	state.player.currentEnergy = 999
+	state = a.playCard(state, {target: 'player', card})
+	t.is(state.player.powers.regen, card.powers.regen, 'regen applied once')
+	state = a.playCard(state, {target: 'player', card})
+	t.is(state.player.powers.regen, card.powers.regen * 2, 'regen applied twice')
 })
 
 test('Flourish card adds a healing "regen" buff', (t) => {
@@ -330,26 +346,6 @@ test('Flourish card adds a healing "regen" buff', (t) => {
 	t.is(state2.player.powers.regen, 0)
 	state2 = a.endTurn(state2)
 	t.is(state2.player.currentHealth, 20)
-})
-
-test('vulnerable power stacks', (t) => {
-	let {state} = t.context
-	const card = createCard('Bash')
-	state.player.currentEnergy = 999
-	state = a.playCard(state, {target: 'enemy0', card})
-	t.is(state.dungeon.rooms[0].monsters[0].powers.vulnerable, card.powers.vulnerable)
-	state = a.playCard(state, {target: 'enemy0', card})
-	t.is(state.dungeon.rooms[0].monsters[0].powers.vulnerable, card.powers.vulnerable * 2)
-})
-
-test('regen power stacks', (t) => {
-	let {state} = t.context
-	const card = createCard('Flourish')
-	state.player.currentEnergy = 999
-	state = a.playCard(state, {target: 'player', card})
-	t.is(state.player.powers.regen, card.powers.regen, 'regen applied once')
-	state = a.playCard(state, {target: 'player', card})
-	t.is(state.player.powers.regen, card.powers.regen * 2, 'regen applied twice')
 })
 
 test('target "all enemies" works for damage as well as power', (t) => {
