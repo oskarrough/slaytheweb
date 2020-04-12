@@ -22,9 +22,15 @@ html {
 	cursor: url(images/default.png), auto;
 }
 
+@media (min-height: 800px) {
+	html {
+		font-size: 18px;
+	}
+}
+
 @media (min-height: 1000px) {
 	html {
-		font-size: 20px;
+		font-size: 22px;
 	}
 }
 
@@ -194,7 +200,7 @@ h2 {
 	opacity: 0.6;
 }
 .Card-description {
-	font-size: small;
+	font-size: smaller;
 }
 .Card-energy {
 	position: absolute;
@@ -306,6 +312,7 @@ h2 {
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: center;
+	min-height: var(--card-height);
 }
 .Cards > * {
 	flex-basis: var(--card-width);
@@ -318,10 +325,10 @@ h2 {
 	margin-bottom: -2rem;
 }
 .Hand .Cards {
-	padding-left: 2em;
+	padding-left: 1.5em;
 }
 .Hand .Card {
-	margin-left: -2rem;
+	margin-left: -1.5rem;
 	transition-duration: 120ms;
 	cursor: grab;
 	cursor: url(images/grab-open.png) 10 0, auto;
