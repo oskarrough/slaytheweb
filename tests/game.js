@@ -256,7 +256,7 @@ test('ending a turn draws a new hand and recycles discard pile', (t) => {
 	t.is(state.discardPile.length, 0)
 })
 
-test('Ending a turn refreshes energy', (t) => {
+test('ending a turn refreshes energy', (t) => {
 	const {state} = t.context
 	t.is(state.player.currentEnergy, 3)
 	const card = createCard('Defend')
@@ -268,7 +268,7 @@ test('Ending a turn refreshes energy', (t) => {
 	t.is(newTurn.player.currentEnergy, 3)
 })
 
-test("Ending a turn removes player's block", (t) => {
+test("ending a turn removes player's block", (t) => {
 	const {state} = t.context
 	t.is(state.player.block, 0)
 	const card = createCard('Defend')
@@ -292,12 +292,10 @@ test('Vulnerable targets take 50% more damage', (t) => {
 })
 
 test('Vulnerable damage is rounded down', (t) => {
-	//  For example, Headbutt deals 9 damage. With vulnerable it deals 13 instead of 13,5.
 	let {state} = t.context
 	const card = createCard('Strike')
 	card.damage = 9
-	state.dungeon.rooms[0].monsters[0].powers.vulnerable = 999
-	t.is(state.dungeon.rooms[0].monsters[0].currentHealth, 42)
+	state.dungeon.rooms[0].monsters[0].powers.vulnerable = 1
 	let state2 = a.playCard(state, {target: 'enemy0', card})
 	t.is(
 		state2.dungeon.rooms[0].monsters[0].currentHealth,
@@ -334,7 +332,7 @@ test('Flourish card adds a healing "regen" buff', (t) => {
 	t.is(state2.player.currentHealth, 20)
 })
 
-test('Vulnerable power stacks', (t) => {
+test('vulnerable power stacks', (t) => {
 	let {state} = t.context
 	const card = createCard('Bash')
 	state.player.currentEnergy = 999
@@ -344,7 +342,7 @@ test('Vulnerable power stacks', (t) => {
 	t.is(state.dungeon.rooms[0].monsters[0].powers.vulnerable, card.powers.vulnerable * 2)
 })
 
-test('Regen power stacks', (t) => {
+test('regen power stacks', (t) => {
 	let {state} = t.context
 	const card = createCard('Flourish')
 	state.player.currentEnergy = 999
