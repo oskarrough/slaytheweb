@@ -9,23 +9,23 @@ class Power {
 	}
 }
 
-// When played: apply to player
-// When end turn:  reduce stacks + do your thing e.g. add health
+// Targets with regen heal an amount of healthpoints equal to regen stacks.
 export const regen = new Power({
 	type: 'buff',
 	target: 'player',
 	use: (stacks) => stacks,
 })
 
+// Vulnerable targets take 50% more damage.
 export const vulnerable = new Power({
 	type: 'debuff',
-	target: 'enemy',
 	use: (dmg) => Math.floor(dmg * 1.5),
 })
 
-// export const weak = new Power({
-// 	type: 'debuff',
-// 	use: (amount) => amount * 2
-// })
+// Weakened targets deal 25% less damage.
+export const weak = new Power({
+	type: 'debuff',
+	use: (dmg) => Math.floor(dmg * 0.75),
+})
 
-export default {regen, vulnerable}
+export default {regen, vulnerable, weak}
