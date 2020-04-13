@@ -345,7 +345,7 @@ h2 {
 	opacity: 0.5;
 }
 /* Don't show copy of the dragged card on target */
-.Target .Card.sortable-ghost {
+.Target .Card {
 	display: none;
 }
 
