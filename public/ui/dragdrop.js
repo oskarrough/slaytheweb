@@ -1,4 +1,3 @@
-// Third party dependencies
 import {html, Component} from '../../web_modules/htm/preact/standalone.module.js'
 import {Sortable, OnSpill} from '../../web_modules/sortablejs/modular/sortable.core.esm.js'
 
@@ -14,11 +13,12 @@ export default class App extends Component {
 	}
 	enableDrop() {
 		const targets = this.base.querySelectorAll('.Target')
+		const cards = this.base.querySelectorAll('.Hand .Cards')
 		const {onAdd} = this.props
 
 		// We want to be able to drag cards in the hand.
-		new Sortable(this.base.querySelector('.Hand .Cards'), {
-			group: 'hand',
+		new Sortable(cards, {
+			group: 'cards',
 			draggable: '.Card:not([disabled])',
 			sort: false,
 			revertOnSpill: true,
@@ -37,9 +37,9 @@ export default class App extends Component {
 		targets.forEach((el) => {
 			new Sortable(el, {
 				group: {
-					name: 'player',
+					name: 'target',
 					pull: false,
-					put: ['hand'],
+					put: ['cards'],
 				},
 				draggable: '.TRICKYOUCANT',
 				// When you drop, play the card.
