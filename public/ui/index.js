@@ -69,7 +69,7 @@ const WinScreen = (props) => html`
 	</article>
 `
 
-render(html` <${Main} /> `, document.querySelector('#root'))
+render(html` <${Main} /> `, document.querySelector('#SlayTheWeb'))
 
 // enum GameMode {
 //  	CHAR_SELECT, GAMEPLAY, DUNGEON_TRANSITION, SPLASH;
