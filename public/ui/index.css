@@ -176,8 +176,8 @@ h2 {
 	border-image-source: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAA7ElEQVRYhe2YMQ6DMAxFcwBGRtaeoFUv0K2qOAa36NYDVmLjMmHB0VfqEJbG3xKRvkTiAE+OnYBD2FrfDdFSAVvfDfH7vpsqQQnMMk9xmad0jWOacJ4o79fGVSgEEsPnda1qbx7a8mdifxcIJ7aKm6qHBOZxuTURQsm7i0Djc/y7fAHhYEsgTCYqD6lZRrVk1h6iAZIYoglqOg/RAflZMtwLKDZGOg+dQe0OiO60t8oyutP+/B5yF9R0QH6yTEiplgxJW+jQv30urHagJ0v22n2lSkjyEF196EjRqlRK0cowaNfmaLYfGOuyHjKsYnCffLyABLkAAAAASUVORK5CYII=);
 	border-image-repeat: repeat;
 	border-image-slice: 6 6 6 6;
-	border-image-width: 16px;
-	border-width: 16px;
+	border-image-width: 0.75rem;
+	border-width: 0.75rem;
 	image-rendering: -moz-crisp-edges;
 	image-rendering: pixelated;
 }
@@ -322,20 +322,20 @@ h2 {
 /* In your hand, the cards stack a bit */
 .Hand {
 	margin-top: 1rem;
-	margin-bottom: -2rem;
 }
 .Hand .Cards {
 	padding-left: 1.5em;
 }
 .Hand .Card {
 	margin-left: -1.5rem;
+	margin-bottom: -2rem;
 	transition-duration: 120ms;
 	cursor: grab;
 	cursor: url(images/grab-open.png) 10 0, auto;
 }
 .Hand .Card-inner {
 	/* because of negative margin */
-	padding-bottom: 3rem;
+	padding-bottom: 2rem;
 }
 .Hand .Card[disabled] {
 	cursor: not-allowed;
