@@ -415,3 +415,8 @@ h2 {
 	align-content: center;
 	min-height: calc(100vh - 4rem);
 }
+
+
+.MapList {
+	list-style-type: hiragana;
+}

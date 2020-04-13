@@ -209,7 +209,9 @@ export default class App extends Component {
 				</details>
 				<details class="Map Overlay" topright>
 					<summary align-right><u>M</u>ap</summary>
-					<${Map} dungeon=${state.dungeon} />
+					<div class="Splash">
+						<div class="Splash-details"><${Map} dungeon=${state.dungeon} /></div>
+					</div>
 				</details>
 				<details class="DrawPile Overlay" bottomleft>
 					<summary>Dr<u>a</u>w pile ${state.drawPile.length}</summary>
