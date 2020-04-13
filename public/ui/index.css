@@ -103,19 +103,6 @@ h2 {
 	margin: 1rem 0 0.5rem;
 }
 
-.Splash {
-	min-height: 100vh;
-	display: flex;
-	justify-content: center;
-	align-content: center;
-	flex-flow: column;
-	text-align: center;
-	padding: 0 1rem;
-}
-.Splash h2 {
-	margin-bottom: 1rem;
-}
-
 .App {
 	position: absolute;
 	z-index: 2;
@@ -297,6 +284,7 @@ h2 {
 	align-content: center;
 	flex-flow: column;
 	text-align: center;
+	padding: 0 1rem;
 }
 .Splash h2 {
 	margin-bottom: 1rem;
@@ -415,7 +403,6 @@ h2 {
 	align-content: center;
 	min-height: calc(100vh - 4rem);
 }
-
 
 .MapList {
 	list-style-type: hiragana;
