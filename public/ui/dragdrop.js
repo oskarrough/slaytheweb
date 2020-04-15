@@ -12,11 +12,11 @@ export default class App extends Component {
 		this.enableDrop()
 	}
 	enableDrop() {
+		const cards = this.base.querySelector('.Hand .Cards')
 		const targets = this.base.querySelectorAll('.Target')
-		const cards = this.base.querySelectorAll('.Hand .Cards')
 		const {onAdd} = this.props
 
-		// We want to be able to drag cards in the hand.
+		// Allow dragging cards.
 		new Sortable(cards, {
 			group: 'cards',
 			draggable: '.Card:not([disabled])',
@@ -33,7 +33,7 @@ export default class App extends Component {
 			},
 		})
 
-		// And we want to be able to drop on all the targets (player + monsters)
+		// Allow dropping cards on top of "targets". Dropping a card triggers props.onAdd().
 		targets.forEach((el) => {
 			new Sortable(el, {
 				group: {
