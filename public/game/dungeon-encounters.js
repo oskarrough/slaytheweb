@@ -41,6 +41,12 @@ export const createSimpleDungeon = () => {
 			normalRoom(),
 			eliteRoom(),
 			bossRoom(),
+
+export const testDungeon = () => {
+	return Dungeon({
+		rooms: [
+			MonsterRoom(Monster({hp: 42, intents})),
+			MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents})),
 		],
 	})
 }
