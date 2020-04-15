@@ -22,25 +22,36 @@ const scalingIntents = [
 	{damage: 50},
 ]
 
-const normalRoom = () => MonsterRoom(Monster({intents}))
-const eliteRoom = () =>
-	MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents: scalingIntents}))
-const bossRoom = () => MonsterRoom(Monster({hp: 92, intents}), Monster({intents: scalingIntents}))
+const ScalingMonster = () =>
+	Monster({
+		hp: 13,
+		intents: scalingIntents,
+	})
 
-// const CultistMonster = () =>
-// 	Monster({
-// 		// hp: 48-54,
-// 		hp: 48,
-// 		intents: [{weak: 1}, {damage: 6}]
-// 	})
+const STSMonster = () =>
+	Monster({
+		hp: 46,
+		intents: [{damage: 12}, {block: 6, damage: 11}, {block: 5, damage: 16}, {}, {block: 6}],
+	})
+
+const CultistMonster = () =>
+	Monster({
+		hp: 48,
+		intents: [{weak: 1}, {damage: 6}],
+	})
 
 export const createSimpleDungeon = () => {
 	return Dungeon({
 		rooms: [
-			// MonsterRoom(CultistMonster()),
-			normalRoom(),
-			eliteRoom(),
-			bossRoom(),
+			MonsterRoom(Monster({intents})),
+			MonsterRoom(Monster({intents}), ScalingMonster),
+			MonsterRoom(STSMonster()),
+			MonsterRoom(CultistMonster()),
+			MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents: scalingIntents})),
+			MonsterRoom(Monster({hp: 92, intents}), Monster({intents: scalingIntents})),
+		],
+	})
+}
 
 export const testDungeon = () => {
 	return Dungeon({
