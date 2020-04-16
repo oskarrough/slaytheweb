@@ -5,7 +5,7 @@ import {Sortable, OnSpill} from '../../web_modules/sortablejs/modular/sortable.c
 // Game logic
 import ActionManager from '../game/action-manager.js'
 import actions from './../game/actions.js'
-import {isCurrentRoomCompleted} from '../game/utils.js'
+import {getCurrRoom, isCurrentRoomCompleted} from '../game/utils.js'
 import {createSimpleDungeon} from '../game/dungeon-encounters.js'
 import {createCard} from './../game/cards.js'
 
@@ -150,8 +150,8 @@ export default class App extends Component {
 		})
 	}
 	render(props, state) {
-		const room = state.dungeon.rooms[state.dungeon.index]
 		const isDead = state.player.currentHealth < 1
+		const room = getCurrRoom(state)
 		const didWin = isCurrentRoomCompleted(state)
 		return html`
 			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
@@ -168,15 +168,14 @@ export default class App extends Component {
 					</button>
 				<//> `}
 
-				<div class="Targets">
-					<div class="Split">
+				<div class="Targets Split">
+					<div class="Targets-group">
 						<${Player} model=${state.player} name="You" />
-						<div class="Monsters">
-							${room.monsters.map(
-								(monster, index) =>
-									html` <${Monster} model=${monster} name=${`Monster ${index}`} /> `
-							)}
-						</div>
+					</div>
+					<div class="Targets-group">
+						${room.monsters.map(
+							(monster, index) => html` <${Monster} model=${monster} name=${`Monster ${index}`} /> `
+						)}
 					</div>
 				</div>
 
@@ -209,7 +208,9 @@ export default class App extends Component {
 				</details>
 				<details class="Map Overlay" topright>
 					<summary align-right><u>M</u>ap</summary>
-					<${Map} dungeon=${state.dungeon} />
+					<div class="Splash">
+						<div class="Splash-details"><${Map} dungeon=${state.dungeon} /></div>
+					</div>
 				</details>
 				<details class="DrawPile Overlay" bottomleft>
 					<summary>Dr<u>a</u>w pile ${state.drawPile.length}</summary>

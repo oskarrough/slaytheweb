@@ -1,12 +1,12 @@
 # Slay the Web
-
+ 
 This is a browser-based card game engine based on Slay The Spire, a fantastic video card game designed by [MegaCrit](https://www.megacrit.com/). They explain:
 
 > We fused card games and roguelikes together to make the best single player deckbuilder we could. Craft a unique deck, encounter bizarre creatures, discover relics of immense power, and Slay the Spire!
 
-After many runs in the Spire, I got really into the theory behind the game. Inspired by the modding community, I thought it'd be neat and a great learning experience to try and implement the core logic of the game for the web. And that is what _Slay the Web_ is. The idea is to provide a stable game logic to play the game with any kind of interface. Be it the browser, a command line or whatever. 
+🎴 Play it on https://slaytheweb.now.sh/
 
-The `master` branch is automatically deployed to https://slaytheweb.now.sh/, where you can try it out!
+Why what? After many runs in the Spire, I really got into the theory behind the game. Inspired by the modding community, I thought it'd be neat and a great learning experience to try and implement the core logic of the game in JavaScript for the web. And that is what _Slay the Web_ is. The idea is to provide a stable game logic to play the game with any kind of interface. Be it the browser, a command line or whatever. This repo also contains an example interface for the game.
 
 ## How to work on the code
 
@@ -23,7 +23,7 @@ The entire `public` folder can be deployed to any static web server. It does not
 
 Also see https://kinopio.club/slay-the-web-Dh3xUjjHbol7RbCuqZQDn for a more or less up to date overview.
 
-## Testing
+### Testing
 
 All scripts are checked with eslint, formatted with prettier and tested with ava.
 
@@ -33,6 +33,10 @@ Additionally the `./tests` folder contains the tests. Usually a test goes 1) cre
 - `yarn test:watch` tests continously
 
 Additionally you can run `yarn eslint public --fix` to automatically format all scripts according to the prettier standards.
+
+### Deploying
+
+The master branch automatically deploys to https://slaytheweb.now.sh via Zeit's now. 
 
 ## A summary of the current state of the game
 

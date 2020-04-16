@@ -4,19 +4,19 @@
 		<title>Slay the Web</title>
 		<meta name="description" content="A browser-based card game engine">
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 		<link rel="manifest" href="manifest.webmanifest">
 		<link rel="stylesheet" href="ui/index.css">
 		<link href="https://fonts.googleapis.com/css2?family=Port Lligat Slab&amp;display=swap" rel="stylesheet">
 		<link rel="apple-touch-icon" href="/ui/images/favicon.png">
 	</head>
 	<body>
-		<div id="root"></div>
+		<div id="SlayTheWeb"></div>
 
 		<script async src="ui/index.js" type="module"></script>
 		<script>
 			// Offline support
-			if ('serviceWorker' in navigator) {
+			if (!location.origin.includes('localhost') && 'serviceWorker' in navigator) {
 				window.addEventListener('load', () => {
 					navigator.serviceWorker.register('/service-worker.js')
 				})

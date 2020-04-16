@@ -22,7 +22,7 @@ export default class Queue {
 
 // Alternative implementation.
 /*
-export function Deck(items = []) {
+export function Queue(items = []) {
 	return {
 		addToTop: item => {
 			items.push(item) // adds to end of array
