@@ -15,22 +15,23 @@
 }
 
 html {
-	font-size: 18px;
+	font-size: 14px;
 	line-height: 1.2;
 	background: hsl(137, 80%, 13%) linear-gradient(hsl(137, 80%, 13%), hsl(137, 50%, 13%));
 	color: var(--text);
 	cursor: url(images/default.png), auto;
 }
 
-@media (min-height: 1000px) {
+@media (min-height: 800px) {
 	html {
-		font-size: 20px;
+		font-size: 18px;
 	}
 }
 
-html,
-body {
-	min-height: 100%;
+@media (min-height: 1000px) {
+	html {
+		font-size: 22px;
+	}
 }
 
 html,
@@ -100,30 +101,18 @@ h1 {
 h2 {
 	font-size: 1.25rem;
 	margin: 1rem 0 0.5rem;
-}
-
-.Splash {
-	min-height: 100vh;
-	display: flex;
-	justify-content: center;
-	align-content: center;
-	flex-flow: column;
-	text-align: center;
-	padding: 0 1rem;
-}
-.Splash h2 {
-	margin-bottom: 1rem;
+	text-shadow: 1px 1px 1px var(--text-inverse);
 }
 
 .App {
-	position: relative;
+	position: absolute;
 	z-index: 2;
+	width: 100%;
+	height: 100%;
+	padding: 2rem 0rem 0;
 	display: flex;
 	flex-flow: column;
-	width: 100vw;
-	min-height: 100vh;
-	overflow-y: hidden;
-	padding: 2rem 1vw 0;
+	overflow: hidden;
 	background-size: cover;
 	background-image: url('images/moonlit-landscape-1904.jpg');
 }
@@ -175,21 +164,21 @@ h2 {
 	border-image-source: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAA7ElEQVRYhe2YMQ6DMAxFcwBGRtaeoFUv0K2qOAa36NYDVmLjMmHB0VfqEJbG3xKRvkTiAE+OnYBD2FrfDdFSAVvfDfH7vpsqQQnMMk9xmad0jWOacJ4o79fGVSgEEsPnda1qbx7a8mdifxcIJ7aKm6qHBOZxuTURQsm7i0Djc/y7fAHhYEsgTCYqD6lZRrVk1h6iAZIYoglqOg/RAflZMtwLKDZGOg+dQe0OiO60t8oyutP+/B5yF9R0QH6yTEiplgxJW+jQv30urHagJ0v22n2lSkjyEF196EjRqlRK0cowaNfmaLYfGOuyHjKsYnCffLyABLkAAAAASUVORK5CYII=);
 	border-image-repeat: repeat;
 	border-image-slice: 6 6 6 6;
-	border-image-width: 16px;
-	border-width: 16px;
+	border-image-width: 0.75rem;
+	border-width: 0.75rem;
 	image-rendering: -moz-crisp-edges;
 	image-rendering: pixelated;
 }
 .Card-inner {
 	width: 100%;
 	flex: 1;
-	background: #0a3540;
+	background: #2a3335;
 	text-align: center;
 }
 .Card-title {
 	margin: 0;
 	padding: 0.6em 1em 0.8em;
-	background: linear-gradient(to bottom, #065046, transparent);
+	background: linear-gradient(to bottom, hsla(0, 0%, 0%, 0.2), transparent);
 	text-shadow: 1px 1px 1px var(--text-inverse);
 	user-select: none;
 }
@@ -199,7 +188,7 @@ h2 {
 	opacity: 0.6;
 }
 .Card-description {
-	font-size: small;
+	font-size: smaller;
 }
 .Card-energy {
 	position: absolute;
@@ -213,20 +202,22 @@ h2 {
 }
 
 .Targets {
-	display: flex;
 	flex: 1;
 }
-.Targets .Split {
-	flex: 1;
-}
-.Monsters {
+.Targets-group {
 	display: flex;
+	justify-content: center;
 }
 .Target {
 	position: relative;
 	margin-top: 1rem;
 	padding: 1px 1em 1.4em;
 	flex: 1;
+	display: flex;
+	flex-flow: column;
+
+	justify-content: center;
+	max-width: 20rem;
 }
 .Target h2 {
 	margin-left: 0.5rem;
@@ -285,6 +276,8 @@ h2 {
 .Actions {
 	text-align: right;
 	margin-right: 1rem;
+	position: relative;
+	z-index: 1;
 }
 
 .Splash {
@@ -294,6 +287,7 @@ h2 {
 	align-content: center;
 	flex-flow: column;
 	text-align: center;
+	padding: 0 1rem;
 }
 .Splash h2 {
 	margin-bottom: 1rem;
@@ -304,15 +298,12 @@ h2 {
 	margin: 0 auto;
 }
 
-.Hand {
-	margin-bottom: 1rem;
-}
-
 /* Normal card layout in one row */
 .Cards {
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: center;
+	min-height: var(--card-height);
 }
 .Cards > * {
 	flex-basis: var(--card-width);
@@ -321,20 +312,22 @@ h2 {
 }
 /* In your hand, the cards stack a bit */
 .Hand {
-	margin-bottom: -2rem;
+	margin-top: 1rem;
 }
 .Hand .Cards {
-	padding-left: 2em;
+	padding-left: 4rem;
+	padding-right: 4rem;
 }
 .Hand .Card {
-	margin-left: -2rem;
+	margin-left: -1.5rem;
+	margin-bottom: -2rem;
 	transition-duration: 120ms;
 	cursor: grab;
 	cursor: url(images/grab-open.png) 10 0, auto;
 }
 .Hand .Card-inner {
 	/* because of negative margin */
-	padding-bottom: 3rem;
+	padding-bottom: 2rem;
 }
 .Hand .Card[disabled] {
 	cursor: not-allowed;
@@ -360,10 +353,22 @@ h2 {
 	z-index: 1;
 	transition: background 400ms;
 }
-.Overlay[topleft] { top: 0; left: 0; }
-.Overlay[topright] { top: 0; right: 0; }
-.Overlay[bottomleft] { bottom: 0; left: 0; }
-.Overlay[bottomright] { bottom: 0; right: 0; }
+.Overlay[topleft] {
+	top: 0;
+	left: 0;
+}
+.Overlay[topright] {
+	top: 0;
+	right: 0;
+}
+.Overlay[bottomleft] {
+	bottom: 0;
+	left: 0;
+}
+.Overlay[bottomright] {
+	bottom: 0;
+	right: 0;
+}
 .Overlay summary {
 	padding: 1rem;
 	user-select: none;
@@ -403,7 +408,8 @@ h2 {
 .Overlay[open] summary + * {
 	opacity: 1;
 	transform: translate3d(0, 0, 0);
-	transition: opacity 400ms 60ms cubic-bezier(0.23, 1, 0.32, 1), transform 400ms 60ms cubic-bezier(0.23, 1, 0.32, 1);
+	transition: opacity 400ms 60ms cubic-bezier(0.23, 1, 0.32, 1),
+		transform 400ms 60ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 /* Inside overlays cards are allowed to wrap */
 .Overlay .Cards {
@@ -413,17 +419,20 @@ h2 {
 	min-height: calc(100vh - 4rem);
 }
 
+.MapList {
+	list-style-type: hiragana;
+}
+
+
 /* Rewards: Greg */
 .RewardsBox {
 	display: flex;
 	flex-direction: column;
 }
-
 .RewardsBox > p {
 	text-align: center;
 	margin: 0;
 }
-
 .RewardsBox > .Cards {
 	cursor: pointer;
 }

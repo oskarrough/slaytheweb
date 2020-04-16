@@ -1,6 +1,6 @@
 import produce from '../web_modules/immer.js'
 import {createCard} from './cards.js'
-import {shuffle, getTargets /*, range*/} from './utils.js'
+import {shuffle, getTargets, getCurrRoom /*, range*/} from './utils.js'
 import powers from './powers.js'
 
 // The idea is that we have one big object with game state. Whenever we want to change something, we call an "action" from this file. Each action takes two arguments: 1) the current state, 2) an object of arguments.
@@ -116,7 +116,7 @@ function playCard(state, {card, target}) {
 		// we prioritize this over the actual enemy where you dropped the card.
 		const newTarget = card.target === 'all enemies' ? card.target : target
 		let amount = card.damage
-		if (newState.player.powers.weak) amount = Math.floor(amount * 0.75)
+		if (newState.player.powers.weak) amount = powers.weak.use(amount)
 		newState = removeHealth(newState, {target: newTarget, amount})
 	}
 	if (card.powers) newState = applyCardPowers(newState, {target, card})
@@ -192,7 +192,7 @@ function decreasePowerStacks(state) {
 	}
 	return produce(state, (draft) => {
 		decrease(draft.player.powers)
-		state.dungeon.rooms[state.dungeon.index].monsters.forEach((monster) => {
+		getCurrRoom(state).monsters.forEach((monster) => {
 			decrease(monster.powers)
 		})
 	})
