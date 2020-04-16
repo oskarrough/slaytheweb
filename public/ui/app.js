@@ -82,8 +82,12 @@ export default class App extends Component {
 	goToNextRoom() {
 		this.enqueue({type: 'endTurn'})
 		this.enqueue({type: 'goToNextRoom'})
-		// Enable dragdrop again because the DOM of the targets changed.
-		this.dequeue(() => this.dequeue(this.enableDrop))
+		this.dequeue(() => this.dequeue())
+	}
+	playCard(cardId, target) {
+		const card = this.state.hand.find((c) => c.id === cardId)
+		this.enqueue({type: 'playCard', card, target})
+		this.dequeue()
 	}
 	handleShortcuts(event) {
 		const {key} = event
@@ -104,17 +108,12 @@ export default class App extends Component {
 		if (key === 's') toggle(this.base.querySelector('.DiscardPile'))
 		if (key === 'm') toggle(this.base.querySelector('.Map'))
 	}
-	playCard(cardId, target) {
-		const card = this.state.hand.find((c) => c.id === cardId)
-		this.enqueue({type: 'playCard', card, target})
-		this.dequeue()
-	}
 	render(props, state) {
 		const isDead = state.player.currentHealth < 1
 		const room = getCurrRoom(state)
 		const didWin = isCurrentRoomCompleted(state)
 		return html`
-			<${DragDrop} onAdd=${this.playCard}>
+			<${DragDrop} key=${state.dungeon.index} onAdd=${this.playCard}>
 				<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
 					${isDead &&
 					html`<${Overlay}>
