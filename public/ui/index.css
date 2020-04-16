@@ -231,6 +231,10 @@ h2 {
 	image-rendering: -moz-crisp-edges;
 	image-rendering: pixelated;
 }
+.Target-combatText {
+	position: absolute;
+	width: 100%;
+}
 .Target.is-dragOver .Healthbar {
 	transition-duration: 100ms;
 	box-shadow: 0 0 2em var(--yellow), 3px 3px 1px black;

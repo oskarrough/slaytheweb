@@ -33,7 +33,7 @@ class Target extends Component {
 				<h2>${name} ${children}</h2>
 				<${Healthbar} max=${model.maxHealth} value=${hp} block=${model.block} />
 				<${Powers} powers=${model.powers} />
-				<div class="Split">
+				<div class="Target-combatText Split">
 					<${FCT} key=${model.block} value=${model.block} class="FCT FCT--block" />
 					<${FCT} key=${hp} value=${state.lostHealth} />
 				</div>
@@ -64,6 +64,7 @@ const Powers = ({powers}) =>
 
 // Floating Combat Text. Give it a number and it'll animate it.
 function FCT(props) {
+	// This avoids animation the value "0".
 	if (!props.value) return html`<p></p>`
 	return html`<p class="FCT" ...${props}>${props.value}</p>`
 }
