@@ -129,6 +129,7 @@ export default class App extends Component {
 					${didWin &&
 					html`<${Overlay}>
 						<${Rewards} cards=${getRandomCards()} rewardWith=${this.handlePlayerReward} />
+						<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
 					<//> `}
 
 					<div class="Targets Split">

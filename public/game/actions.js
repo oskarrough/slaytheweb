@@ -283,11 +283,11 @@ function takeMonsterTurn(state) {
 		})
 	})
 }
+
 function rewardPlayer(state, {card}) {
-	const newState = produce(state, (draft) => {
+	return produce(state, (draft) => {
 		draft.deck.push(card)
 	})
-	return goToNextRoom(newState)
 }
 
 function goToNextRoom(state) {
