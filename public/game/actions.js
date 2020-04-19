@@ -287,7 +287,7 @@ function rewardPlayer(state, {card}) {
 	const newState = produce(state, (draft) => {
 		draft.deck.push(card)
 	})
-	return goToNextRoom(newState);
+	return goToNextRoom(newState)
 }
 
 function goToNextRoom(state) {
@@ -317,5 +317,5 @@ export default {
 	reshuffleAndDraw,
 	setDungeon,
 	takeMonsterTurn,
-	rewardPlayer
+	rewardPlayer,
 }

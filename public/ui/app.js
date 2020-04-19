@@ -38,7 +38,7 @@ export default class App extends Component {
 
 		// Scope methods
 		this.handlePlayerReward = this.handlePlayerReward.bind(this)
-    this.playCard = this.playCard.bind(this)
+		this.playCard = this.playCard.bind(this)
 
 		// Set up either a saved or new game.
 		const savedGame = window.location.hash && load()
@@ -92,8 +92,8 @@ export default class App extends Component {
 		this.dequeue()
 	}
 	handlePlayerReward(card) {
-		this.enqueue({type: "rewardPlayer", card: card});
-		this.dequeue();
+		this.enqueue({type: 'rewardPlayer', card: card})
+		this.dequeue()
 	}
 	handleShortcuts(event) {
 		const {key} = event
@@ -117,6 +117,7 @@ export default class App extends Component {
 	render(props, state) {
 		const isDead = state.player.currentHealth < 1
 		const didWin = isCurrentRoomCompleted(state)
+		const room = getCurrRoom(state)
 		return html`
 			<${DragDrop} key=${state.dungeon.index} onAdd=${this.playCard}>
 				<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
@@ -126,12 +127,9 @@ export default class App extends Component {
 						<button onclick=${() => this.props.onLoose()}>Try again?</button>
 					<//> `}
 					${didWin &&
-				    html`<${Overlay}>
-					    <${Rewards}
-						    cards=${getRandomCards()}
-						    rewardWith=${this.handlePlayerReward}
-					    />
-				    <//> `}
+					html`<${Overlay}>
+						<${Rewards} cards=${getRandomCards()} rewardWith=${this.handlePlayerReward} />
+					<//> `}
 
 					<div class="Targets Split">
 						<div class="Targets-group">
