@@ -8,7 +8,6 @@ const a = actions
 test('can create rooms with many monsters', (t) => {
 	const room = new MonsterRoom(new Monster(), new Monster())
 	t.is(room.monsters.length, 2)
-	t.is(room.monsters[1].maxHealth, 20)
 })
 
 test('can create a dungeon', (t) => {

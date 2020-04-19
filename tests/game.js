@@ -366,6 +366,7 @@ test('target "all enemies" works for damage as well as power', (t) => {
 	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[0].powers.vulnerable, 1)
 	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[1].powers.vulnerable, 1)
 })
+
 test('add a reward card in the deck after winning a room', (t) => {
 	// arrange
 	let {state} = t.context
@@ -374,6 +375,7 @@ test('add a reward card in the deck after winning a room', (t) => {
 	const room = new MonsterRoom(new Monster(), new Monster({hp: 20}))
 	room.monsters.forEach((monster) => (monster.currentHealth = 0))
 	const card = createCard('Strike')
+	t.is(state.deck.length, 10)
 	// act
 	const newState = a.rewardPlayer(state, card)
 	// assert
