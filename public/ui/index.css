@@ -297,6 +297,7 @@ h2 {
 	margin-bottom: 1rem;
 }
 .Splash-details {
+	width: 100%;
 	max-width: 40em;
 	text-align: left;
 	margin: 0 auto;
@@ -458,16 +459,23 @@ h2 {
 
 /* Rewards */
 .RewardsBox {
-	display: flex;
-	flex-direction: column;
-}
-.RewardsBox > p {
 	text-align: center;
-	margin: 0;
+	margin-bottom: 4rem;
+}
+.RewardsBox h2 {
+	margin-bottom: 4rem;
+}
+.RewardsBox .Cards {
+	min-height: 0;
+	margin-top: 2rem;
 }
 .RewardsBox .Card {
 	min-height: 100%;
 }
 .CardBox {
 	cursor: pointer;
+}
+
+[center] {
+	text-align: center;
 }
