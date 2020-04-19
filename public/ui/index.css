@@ -114,7 +114,18 @@ h2 {
 	flex-flow: column;
 	overflow: hidden;
 	background-size: cover;
-	background-image: url('images/moonlit-landscape-1904.jpg');
+	background-repeat: no-repeat;
+	background-position: center;
+	/* background-image: url('images/scenes/moonlit-landscape-1904.jpg');
+	background-image: url('images/scenes/arietty.jpg');
+	background-image: url('images/scenes/chihiro.jpg');
+	background-image: url('images/scenes/howl.jpg');
+	background-image: url('images/scenes/kaguya.jpg');
+	background-image: url('images/scenes/laputa.jpg');
+	background-image: url('images/scenes/mononoke.jpg');
+	background-image: url('images/scenes/nausicaa.jpg'); */
+	background-image: url('images/scenes/ponyo.jpg');
+
 }
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
 .App::before,
