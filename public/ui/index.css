@@ -297,6 +297,7 @@ h2 {
 	margin-bottom: 1rem;
 }
 .Splash-details {
+	width: 100%;
 	max-width: 40em;
 	text-align: left;
 	margin: 0 auto;
@@ -343,8 +344,6 @@ h2 {
 	z-index: 1;
 }
 
-.Card.sortable-chosen {
-}
 .Card.sortable-ghost {
 	opacity: 0.5;
 }
@@ -456,4 +455,27 @@ h2 {
 		transform: translateY(-100%) rotateZ(15deg);
 		opacity: 0;
 	}
+}
+
+/* Rewards */
+.RewardsBox {
+	text-align: center;
+	margin-bottom: 4rem;
+}
+.RewardsBox h2 {
+	margin-bottom: 4rem;
+}
+.RewardsBox .Cards {
+	min-height: 0;
+	margin-top: 2rem;
+}
+.RewardsBox .Card {
+	min-height: 100%;
+}
+.CardBox {
+	cursor: pointer;
+}
+
+[center] {
+	text-align: center;
 }

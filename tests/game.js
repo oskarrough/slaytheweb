@@ -3,6 +3,7 @@ import actions from '../public/game/actions'
 import {getTargets, getCurrRoom, isCurrentRoomCompleted} from '../public/game/utils'
 import {createCard} from '../public/game/cards'
 import {createSimpleDungeon} from '../public/game/dungeon-encounters'
+import {MonsterRoom, Monster} from '../public/game/dungeon'
 
 const a = actions
 
@@ -364,6 +365,21 @@ test('target "all enemies" works for damage as well as power', (t) => {
 	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[1].currentHealth, 9)
 	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[0].powers.vulnerable, 1)
 	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[1].powers.vulnerable, 1)
+})
+
+test('add a reward card in the deck after winning a room', (t) => {
+	// arrange
+	let {state} = t.context
+	state = a.addStarterDeck(state)
+	state = a.drawCards(state)
+	const room = new MonsterRoom(new Monster(), new Monster({hp: 20}))
+	room.monsters.forEach((monster) => (monster.currentHealth = 0))
+	const card = createCard('Strike')
+	t.is(state.deck.length, 10)
+	// act
+	const newState = a.rewardPlayer(state, card)
+	// assert
+	t.is(newState.deck.length, 11)
 })
 
 test.todo('playing defend on an enemy ?')

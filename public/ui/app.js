@@ -6,7 +6,7 @@ import ActionManager from '../game/action-manager.js'
 import actions from './../game/actions.js'
 import {getCurrRoom, isCurrentRoomCompleted} from '../game/utils.js'
 import {createSimpleDungeon} from '../game/dungeon-encounters.js'
-import {createCard} from './../game/cards.js'
+import {createCard, getRandomCards} from './../game/cards.js'
 
 // Components
 import DragDrop from './dragdrop.js'
@@ -14,6 +14,7 @@ import {Player, Monster} from './player.js'
 import Cards from './cards.js'
 import History from './history.js'
 import Map from './map.js'
+import Rewards from './rewards.js'
 
 // Puts and gets the game state in the URL.
 const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state)))
@@ -35,6 +36,10 @@ export default class App extends Component {
 		this.am = ActionManager()
 		this.overlayIndex = 11
 
+		// Scope methods
+		this.handlePlayerReward = this.handlePlayerReward.bind(this)
+		this.playCard = this.playCard.bind(this)
+
 		// Set up either a saved or new game.
 		const savedGame = window.location.hash && load()
 		if (savedGame) {
@@ -46,8 +51,6 @@ export default class App extends Component {
 			state = actions.drawCards(state)
 			this.state = state
 		}
-
-		this.playCard = this.playCard.bind(this)
 
 		// Enable debugging in the browser.
 		window.slaytheweb = {
@@ -72,7 +75,6 @@ export default class App extends Component {
 	undo() {
 		const prev = this.am.past.takeFromTop()
 		if (!prev) return
-		console.log('Undoing', prev.action.type)
 		this.setState(prev.state)
 	}
 	endTurn() {
@@ -87,6 +89,10 @@ export default class App extends Component {
 	playCard(cardId, target) {
 		const card = this.state.hand.find((c) => c.id === cardId)
 		this.enqueue({type: 'playCard', card, target})
+		this.dequeue()
+	}
+	handlePlayerReward(card) {
+		this.enqueue({type: 'rewardPlayer', card: card})
 		this.dequeue()
 	}
 	handleShortcuts(event) {
@@ -110,8 +116,8 @@ export default class App extends Component {
 	}
 	render(props, state) {
 		const isDead = state.player.currentHealth < 1
-		const room = getCurrRoom(state)
 		const didWin = isCurrentRoomCompleted(state)
+		const room = getCurrRoom(state)
 		return html`
 			<${DragDrop} key=${state.dungeon.index} onAdd=${this.playCard}>
 				<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
@@ -122,10 +128,8 @@ export default class App extends Component {
 					<//> `}
 					${didWin &&
 					html`<${Overlay}>
-						<p>You win.</p>
-						<button onclick=${() => this.goToNextRoom()}>
-							Go to the next floor
-						</button>
+						<${Rewards} cards=${getRandomCards()} rewardWith=${this.handlePlayerReward} />
+						<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
 					<//> `}
 
 					<div class="Targets Split">
