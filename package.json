@@ -3,23 +3,23 @@
   "version": "0.4.1",
   "license": "MIT",
   "scripts": {
-    "start": "browser-sync public --watch --no-notify",
+    "start": "servor public --reload",
     "lint": "eslint public tests --fix",
     "test": "nyc ava --verbose",
     "test:watch": "ava --watch",
     "build": "snowpack --include 'public/**/*.js' --clean --dest 'public/web_modules' --stat --optimize",
     "docs": "cd public/game; docco *.js; mv docs ../../docs",
-    "release": "release-it --no-npm.publish"
+    "release": "release-it"
   },
   "devDependencies": {
     "ava": "^3.5.0",
-    "browser-sync": "^2.26.7",
     "docco": "^0.8.0",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-prettier": "^3.1.2",
     "nyc": "^15.0.0",
     "prettier": "2.0.2",
+    "servor": "^3.2.0",
     "snowpack": "^1.5.2"
   },
   "dependencies": {
@@ -38,5 +38,13 @@
     "require": [
       "esm"
     ]
+  },
+  "release-it": {
+    "git": {
+      "requireCleanWorkingDir": false
+    },
+    "npm": {
+      "release": false
+    }
   }
 }
