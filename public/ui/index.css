@@ -465,9 +465,9 @@ h2 {
 	text-align: center;
 	margin: 0;
 }
-.RewardsBox > .Cards {
-	cursor: pointer;
-}
 .RewardsBox .Card {
 	min-height: 100%;
+}
+.CardBox {
+	cursor: pointer;
 }
