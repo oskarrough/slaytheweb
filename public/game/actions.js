@@ -38,13 +38,13 @@ function addStarterDeck(state) {
 		createCard('Defend'),
 		createCard('Defend'),
 		createCard('Defend'),
+		createCard('Defend'),
+		createCard('Defend'),
 		createCard('Strike'),
 		createCard('Strike'),
 		createCard('Strike'),
 		createCard('Strike'),
 		createCard('Bash'),
-		createCard('Thunderclap'),
-		createCard('Flourish'),
 	]
 	return produce(state, (draft) => {
 		draft.deck = deck
