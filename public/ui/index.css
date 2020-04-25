@@ -17,9 +17,27 @@
 html {
 	font-size: 14px;
 	line-height: 1.2;
-	background: hsl(137, 80%, 13%) linear-gradient(hsl(137, 80%, 13%), hsl(137, 50%, 13%));
 	color: var(--text);
 	cursor: url(images/default.png), auto;
+	background: linear-gradient(
+		163deg,
+		hsl(138.46, 50.98%, 20%) 0%,
+		hsl(138.46, 50.98%, 20%) 8.1%,
+		hsl(138.46, 52%, 19.61%) 15.5%,
+		hsl(138.11, 53.54%, 19.41%) 22.5%,
+		hsl(138.89, 56.25%, 18.82%) 29%,
+		hsl(138.55, 59.14%, 18.24%) 35.3%,
+		hsl(137.78, 60%, 17.65%) 41.2%,
+		hsl(137.45, 63.22%, 17.06%) 47.1%,
+		hsl(138.55, 66.27%, 16.27%) 52.9%,
+		hsl(138.55, 69.62%, 15.49%) 58.8%,
+		hsl(137.78, 71.05%, 14.9%) 64.7%,
+		hsl(138.55, 75.34%, 14.31%) 71%,
+		hsl(138.89, 77.14%, 13.73%) 77.5%,
+		hsl(138.11, 76.81%, 13.53%) 84.5%,
+		hsl(138.11, 79.1%, 13.14%) 91.9%,
+		hsl(138.11, 79.1%, 13.14%) 100%
+	);
 }
 
 @media (min-height: 800px) {
@@ -114,7 +132,16 @@ h2 {
 	flex-flow: column;
 	overflow: hidden;
 	background-size: cover;
-	background-image: url('images/moonlit-landscape-1904.jpg');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-image: url('images/scenes/moonlit-landscape-1904.jpg');
+	/* background-image: url('images/scenes/arietty.jpg'); */
+	/* background-image: url('images/scenes/chihiro.jpg'); */
+	/* background-image: url('images/scenes/howl.jpg'); */
+	/* background-image: url('images/scenes/laputa.jpg'); */
+	/* background-image: url('images/scenes/mononoke.jpg'); */
+	/* background-image: url('images/scenes/nausicaa.jpg'); */
+	/* background-image: url('images/scenes/ponyo.jpg'); */
 }
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
 .App::before,
@@ -231,6 +258,10 @@ h2 {
 	image-rendering: -moz-crisp-edges;
 	image-rendering: pixelated;
 }
+.Target-combatText {
+	position: absolute;
+	width: 100%;
+}
 .Target.is-dragOver .Healthbar {
 	transition-duration: 100ms;
 	box-shadow: 0 0 2em var(--yellow), 3px 3px 1px black;
@@ -293,6 +324,7 @@ h2 {
 	margin-bottom: 1rem;
 }
 .Splash-details {
+	width: 100%;
 	max-width: 40em;
 	text-align: left;
 	margin: 0 auto;
@@ -339,13 +371,11 @@ h2 {
 	z-index: 1;
 }
 
-.Card.sortable-chosen {
-}
 .Card.sortable-ghost {
 	opacity: 0.5;
 }
 /* Don't show copy of the dragged card on target */
-.Target .Card.sortable-ghost {
+.Target .Card {
 	display: none;
 }
 
@@ -423,4 +453,56 @@ h2 {
 
 .MapList {
 	list-style-type: hiragana;
+}
+
+/* Used to animate a number. It pops in and then fades up and away */
+.FCT {
+	display: inline-block;
+	margin: 0;
+	font-size: 5rem;
+	animation: fct-up 3s cubic-bezier(0.23, 1, 0.32, 1);
+	animation-fill-mode: both;
+	transform-origin: center;
+	text-shadow: 0.1rem 0.1rem 0px rgba(0, 0, 0, 0.5);
+}
+.FCT--block {
+	color: #afafff;
+	font-size: 3rem;
+}
+@keyframes fct-up {
+	0% {
+		transform: scale(0) translateY(0%);
+		opacity: 0;
+	}
+	10% {
+		opacity: 1;
+		transform: scale(1) translateY(-50%);
+	}
+	100% {
+		transform: translateY(-100%) rotateZ(15deg);
+		opacity: 0;
+	}
+}
+
+/* Rewards */
+.RewardsBox {
+	text-align: center;
+	margin-bottom: 4rem;
+}
+.RewardsBox h2 {
+	margin-bottom: 4rem;
+}
+.RewardsBox .Cards {
+	min-height: 0;
+	margin-top: 2rem;
+}
+.RewardsBox .Card {
+	min-height: 100%;
+}
+.CardBox {
+	cursor: pointer;
+}
+
+[center] {
+	text-align: center;
 }

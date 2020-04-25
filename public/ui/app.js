@@ -1,19 +1,20 @@
 // Third party dependencies
 import {html, Component} from '../../web_modules/htm/preact/standalone.module.js'
-import {Sortable, OnSpill} from '../../web_modules/sortablejs/modular/sortable.core.esm.js'
 
 // Game logic
 import ActionManager from '../game/action-manager.js'
 import actions from './../game/actions.js'
 import {getCurrRoom, isCurrentRoomCompleted} from '../game/utils.js'
 import {createSimpleDungeon} from '../game/dungeon-encounters.js'
-import {createCard} from './../game/cards.js'
+import {createCard, getRandomCards} from './../game/cards.js'
 
 // Components
+import DragDrop from './dragdrop.js'
 import {Player, Monster} from './player.js'
 import Cards from './cards.js'
 import History from './history.js'
 import Map from './map.js'
+import Rewards from './rewards.js'
 
 // Puts and gets the game state in the URL.
 const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state)))
@@ -35,6 +36,10 @@ export default class App extends Component {
 		this.am = ActionManager()
 		this.overlayIndex = 11
 
+		// Scope methods
+		this.handlePlayerReward = this.handlePlayerReward.bind(this)
+		this.playCard = this.playCard.bind(this)
+
 		// Set up either a saved or new game.
 		const savedGame = window.location.hash && load()
 		if (savedGame) {
@@ -54,9 +59,6 @@ export default class App extends Component {
 			createCard,
 		}
 	}
-	componentDidMount() {
-		this.enableDrop()
-	}
 	enqueue(action) {
 		this.am.enqueue(action)
 	}
@@ -73,7 +75,6 @@ export default class App extends Component {
 	undo() {
 		const prev = this.am.past.takeFromTop()
 		if (!prev) return
-		console.log('Undoing', prev.action.type)
 		this.setState(prev.state)
 	}
 	endTurn() {
@@ -83,8 +84,16 @@ export default class App extends Component {
 	goToNextRoom() {
 		this.enqueue({type: 'endTurn'})
 		this.enqueue({type: 'goToNextRoom'})
-		// Enable dragdrop again because the DOM of the targets changed.
-		this.dequeue(() => this.dequeue(this.enableDrop))
+		this.dequeue(() => this.dequeue())
+	}
+	playCard(cardId, target) {
+		const card = this.state.hand.find((c) => c.id === cardId)
+		this.enqueue({type: 'playCard', card, target})
+		this.dequeue()
+	}
+	handlePlayerReward(card) {
+		this.enqueue({type: 'rewardPlayer', card: card})
+		this.dequeue()
 	}
 	handleShortcuts(event) {
 		const {key} = event
@@ -105,122 +114,79 @@ export default class App extends Component {
 		if (key === 's') toggle(this.base.querySelector('.DiscardPile'))
 		if (key === 'm') toggle(this.base.querySelector('.Map'))
 	}
-	enableDrop() {
-		const overClass = 'is-dragOver'
-		const self = this
-		// Enable required plugin for the 'revertOnSpill' option.
-		Sortable.mount(OnSpill)
-		// We want to be able to drag cards in the hand.
-		new Sortable(this.base.querySelector('.Hand .Cards'), {
-			group: 'hand',
-			draggable: '.Card:not([disabled])',
-			sort: false,
-			revertOnSpill: true,
-			onSpill() {
-				targets.forEach((t) => t.classList.remove(overClass))
-			},
-			onMove(event) {
-				// Do as little as possible here. It gets called a lot.
-				targets.forEach((t) => t.classList.remove(overClass))
-				event.to.classList.add(overClass)
-			},
-		})
-
-		// And we want to be able to drop on all the targets (player + monsters)
-		const targets = this.base.querySelectorAll('.Target')
-		targets.forEach((el) => {
-			new Sortable(el, {
-				group: {
-					name: 'player',
-					pull: false,
-					put: ['hand'],
-				},
-				draggable: '.TRICKYOUCANT',
-				// When you drop, play the card.
-				onAdd(event) {
-					const {item, to} = event
-					const card = self.state.hand.find((c) => c.id === item.dataset.id)
-					const index = Array.from(to.parentNode.children).indexOf(to)
-					let target = to.dataset.type + index
-					self.enqueue({type: 'playCard', target, card})
-					self.dequeue()
-					targets.forEach((t) => t.classList.remove(overClass))
-				},
-			})
-		})
-	}
 	render(props, state) {
 		const isDead = state.player.currentHealth < 1
-		const room = getCurrRoom(state)
 		const didWin = isCurrentRoomCompleted(state)
+		const room = getCurrRoom(state)
 		return html`
-			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
-				${isDead &&
-				html`<${Overlay}>
-					<p>You are dead.</p>
-					<button onclick=${() => this.props.onLoose()}>Try again?</button>
-				<//> `}
-				${didWin &&
-				html`<${Overlay}>
-					<p>You win.</p>
-					<button onclick=${() => this.goToNextRoom()}>
-						Go to the next floor
-					</button>
-				<//> `}
+			<${DragDrop} key=${state.dungeon.index} onAdd=${this.playCard}>
+				<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
+					${isDead &&
+					html`<${Overlay}>
+						<p>You are dead.</p>
+						<button onclick=${() => this.props.onLoose()}>Try again?</button>
+					<//> `}
+					${didWin &&
+					html`<${Overlay}>
+						<${Rewards} cards=${getRandomCards()} rewardWith=${this.handlePlayerReward} />
+						<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
+					<//> `}
 
-				<div class="Targets Split">
-					<div class="Targets-group">
-						<${Player} model=${state.player} name="You" />
+					<div class="Targets Split">
+						<div class="Targets-group">
+							<${Player} model=${state.player} name="You" />
+						</div>
+						<div class="Targets-group">
+							${room.monsters.map(
+								(monster, index) =>
+									html` <${Monster} model=${monster} name=${`Monster ${index}`} /> `
+							)}
+						</div>
 					</div>
-					<div class="Targets-group">
-						${room.monsters.map(
-							(monster, index) => html` <${Monster} model=${monster} name=${`Monster ${index}`} /> `
-						)}
-					</div>
-				</div>
 
-				<div class="Split">
-					<div class="EnergyBadge">
-						${state.player.currentEnergy}/${state.player.maxEnergy}
-					</div>
-					<p class="Actions">
-						<button onclick=${() => this.endTurn()}><u>E</u>nd turn</button>
-					</p>
-				</div>
-
-				<div class="Hand">
-					<${Cards} cards=${state.hand} isHand=${true} energy=${state.player.currentEnergy} />
-				</div>
-
-				<details class="Menu Overlay" topleft>
-					<summary><u>Esc</u>ape</summary>
-					<div class="Splash">
-						<h1>Slay the Web</h1>
-						<p>
-							<button onclick=${() => save(state)}>Save</button>
-							<button onclick=${() => window.location.reload()}>Quit</button>
-						</p>
-						<${History} future=${this.am.future.list} past=${this.am.past.list} />
-						<p>
-							<button onclick=${() => this.undo()}><u>U</u>ndo</button><br />
+					<div class="Split">
+						<div class="EnergyBadge">
+							${state.player.currentEnergy}/${state.player.maxEnergy}
+						</div>
+						<p class="Actions">
+							<button onclick=${() => this.endTurn()}><u>E</u>nd turn</button>
 						</p>
 					</div>
-				</details>
-				<details class="Map Overlay" topright>
-					<summary align-right><u>M</u>ap</summary>
-					<div class="Splash">
-						<div class="Splash-details"><${Map} dungeon=${state.dungeon} /></div>
+
+					<div class="Hand">
+						<${Cards} cards=${state.hand} isHand=${true} energy=${state.player.currentEnergy} />
 					</div>
-				</details>
-				<details class="DrawPile Overlay" bottomleft>
-					<summary>Dr<u>a</u>w pile ${state.drawPile.length}</summary>
-					<${Cards} cards=${state.drawPile} />
-				</details>
-				<details class="DiscardPile Overlay" bottomright>
-					<summary align-right>Di<u>s</u>card pile ${state.discardPile.length}</summary>
-					<${Cards} cards=${state.discardPile} />
-				</details>
-			</div>
+
+					<details class="Menu Overlay" topleft>
+						<summary><u>Esc</u>ape</summary>
+						<div class="Splash">
+							<h1>Slay the Web</h1>
+							<p>
+								<button onclick=${() => save(state)}>Save</button>
+								<button onclick=${() => window.location.reload()}>Quit</button>
+							</p>
+							<${History} future=${this.am.future.list} past=${this.am.past.list} />
+							<p>
+								<button onclick=${() => this.undo()}><u>U</u>ndo</button><br />
+							</p>
+						</div>
+					</details>
+					<details class="Map Overlay" topright>
+						<summary align-right><u>M</u>ap</summary>
+						<div class="Splash">
+							<div class="Splash-details"><${Map} dungeon=${state.dungeon} /></div>
+						</div>
+					</details>
+					<details class="DrawPile Overlay" bottomleft>
+						<summary>Dr<u>a</u>w pile ${state.drawPile.length}</summary>
+						<${Cards} cards=${state.drawPile} />
+					</details>
+					<details class="DiscardPile Overlay" bottomright>
+						<summary align-right>Di<u>s</u>card pile ${state.discardPile.length}</summary>
+						<${Cards} cards=${state.discardPile} />
+					</details>
+				</div>
+			<//>
 		`
 	}
 }
