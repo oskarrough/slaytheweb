@@ -17,9 +17,27 @@
 html {
 	font-size: 14px;
 	line-height: 1.2;
-	background: hsl(137, 80%, 13%) linear-gradient(hsl(137, 80%, 13%), hsl(137, 50%, 13%));
 	color: var(--text);
 	cursor: url(images/default.png), auto;
+	background: linear-gradient(
+		163deg,
+		hsl(138.46, 50.98%, 20%) 0%,
+		hsl(138.46, 50.98%, 20%) 8.1%,
+		hsl(138.46, 52%, 19.61%) 15.5%,
+		hsl(138.11, 53.54%, 19.41%) 22.5%,
+		hsl(138.89, 56.25%, 18.82%) 29%,
+		hsl(138.55, 59.14%, 18.24%) 35.3%,
+		hsl(137.78, 60%, 17.65%) 41.2%,
+		hsl(137.45, 63.22%, 17.06%) 47.1%,
+		hsl(138.55, 66.27%, 16.27%) 52.9%,
+		hsl(138.55, 69.62%, 15.49%) 58.8%,
+		hsl(137.78, 71.05%, 14.9%) 64.7%,
+		hsl(138.55, 75.34%, 14.31%) 71%,
+		hsl(138.89, 77.14%, 13.73%) 77.5%,
+		hsl(138.11, 76.81%, 13.53%) 84.5%,
+		hsl(138.11, 79.1%, 13.14%) 91.9%,
+		hsl(138.11, 79.1%, 13.14%) 100%
+	);
 }
 
 @media (min-height: 800px) {
@@ -114,7 +132,16 @@ h2 {
 	flex-flow: column;
 	overflow: hidden;
 	background-size: cover;
-	background-image: url('images/moonlit-landscape-1904.jpg');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-image: url('images/scenes/moonlit-landscape-1904.jpg');
+	/* background-image: url('images/scenes/arietty.jpg'); */
+	/* background-image: url('images/scenes/chihiro.jpg'); */
+	/* background-image: url('images/scenes/howl.jpg'); */
+	/* background-image: url('images/scenes/laputa.jpg'); */
+	/* background-image: url('images/scenes/mononoke.jpg'); */
+	/* background-image: url('images/scenes/nausicaa.jpg'); */
+	/* background-image: url('images/scenes/ponyo.jpg'); */
 }
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
 .App::before,
@@ -436,7 +463,7 @@ h2 {
 	animation: fct-up 3s cubic-bezier(0.23, 1, 0.32, 1);
 	animation-fill-mode: both;
 	transform-origin: center;
-	text-shadow: 0.1rem 0.1rem 0px rgba(0,0,0,0.5);
+	text-shadow: 0.1rem 0.1rem 0px rgba(0, 0, 0, 0.5);
 }
 .FCT--block {
 	color: #afafff;
