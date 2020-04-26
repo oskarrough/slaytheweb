@@ -4,12 +4,13 @@ class Power {
 		this.target = target
 		this.use = use
 	}
+	// Each power usually does one thing. This method describes what. Needs to return a number.
 	use() {
 		return null
 	}
 }
 
-// Targets with regen heal an amount of healthpoints equal to regen stacks.
+// Heal an amount of healthpoints equal to regen stacks.
 export const regen = new Power({
 	type: 'buff',
 	target: 'player',
