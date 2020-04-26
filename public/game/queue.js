@@ -19,23 +19,3 @@ export default class Queue {
 		return this.list.shift()
 	}
 }
-
-// Alternative implementation.
-/*
-export function Queue(items = []) {
-	return {
-		addToTop: item => {
-			items.push(item) // adds to end of array
-		},
-		addToBottom: item => {
-			items.unshift(item) // adds to beginning of array
-		},
-		takeFromBottom: () => {
-			return items.shift() // removes and returns first/oldest
-		},
-		takeFromTop: () => {
-			return items.pop() // removes and returns last/newest
-		}
-	}
-}
-*/

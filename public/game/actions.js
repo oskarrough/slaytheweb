@@ -2,6 +2,7 @@ import produce from '../web_modules/immer.js'
 import {createCard} from './cards.js'
 import {shuffle, getTargets, getCurrRoom /*, range*/} from './utils.js'
 import powers from './powers.js'
+import {createSimpleDungeon} from './dungeon-encounters.js'
 
 // The idea is that we have one big object with game state. Whenever we want to change something, we call an "action" from this file. Each action takes two arguments: 1) the current state, 2) an object of arguments.
 
@@ -26,6 +27,7 @@ function createNewGame() {
 
 // By default a new game doesn't come with a dungeon. You have to set one explicitly. Look in dungeon-encounters.js for inspiration.
 function setDungeon(state, dungeon) {
+	if (!dungeon) dungeon = createSimpleDungeon()
 	return produce(state, (draft) => {
 		if (!dungeon) throw new Error('Missing a dungeon?')
 		draft.dungeon = dungeon

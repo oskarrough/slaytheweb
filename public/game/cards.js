@@ -5,7 +5,43 @@ import {uuid} from './utils.js'
 // this.color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
 // this.rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
 
-// A list of all the cards we have.
+// All cards extend this class.
+export class Card {
+	constructor(props) {
+		this.id = uuid()
+		this.name = props.name
+		this.type = props.type
+		this.energy = props.energy
+		this.target = props.target
+		this.damage = props.damage
+		this.block = props.block
+		this.powers = props.powers
+		this.description = props.description
+	}
+}
+
+// Turns a plain object card into a class-based one.
+// We do this so we can define the cards without using class syntax.
+export function createCard(name) {
+	const baseCard = cards.find((card) => card.name === name)
+	if (!baseCard) throw new Error(`Card not found: ${name}`)
+	return new Card(baseCard)
+}
+
+// Returns X amount of random cards.
+export function getRandomCards(amount = 3) {
+	const cardNames = cards.map((card) => card.name)
+	let cards = []
+	for (let i = 0; i < amount; i++) {
+		const randomIndex = Math.floor(Math.random() * cardNames.length)
+		const name = cardNames[randomIndex]
+		const card = createCard(name)
+		cards.push(card)
+	}
+	return cards
+}
+
+// All our cards.
 export const cards = [
 	{
 		name: 'Defend',
@@ -94,34 +130,3 @@ export const cards = [
 	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
 	// {name: 'Body Slam', energy: 1, type: 'Attack', description: 'Deal Damage equal to your Block'},
 ]
-
-export class Card {
-	constructor(props) {
-		this.id = uuid()
-		this.name = props.name
-		this.energy = props.energy
-		this.type = props.type
-		this.target = props.target
-		this.damage = props.damage
-		this.block = props.block
-		this.powers = props.powers
-		this.description = props.description
-	}
-}
-
-// Turns the plain object cards into a class-based one.
-export function createCard(name) {
-	const baseCard = cards.find((card) => card.name === name)
-	if (!baseCard) throw new Error(`Card not found: ${name}`)
-	return new Card(baseCard)
-}
-export function getRandomCards() {
-	const cardsName = cards.map((card) => card.name)
-	let res = []
-	for (let i = 0; i < 3; i++) {
-		let name = cardsName[Math.floor(Math.random() * cardsName.length)]
-		let card = createCard(name)
-		res.push(card)
-	}
-	return res
-}
