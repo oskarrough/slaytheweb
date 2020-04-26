@@ -7,6 +7,8 @@ test('new game state is ok', (t) => {
 	const game = createNewGame()
 	t.true(game.state.dungeon.rooms.length > 0, 'we have a dungeon with rooms')
 	delete game.state.dungeon // deleting for rest of test because can't deepequal ids
+	game.state.deck = []
+	game.state.drawPile = []
 	t.deepEqual(game.state, {
 		deck: [],
 		drawPile: [],
@@ -41,4 +43,7 @@ test('can really add a card to hand', (t) => {
 	t.is(game.state.hand[0].id, strike.id)
 	game.undo()
 	t.is(game.state.hand.length, 0)
+	game.queue({type: 'drawCards'})
+	game.update()
+	t.is(game.state.hand.length, 5)
 })
