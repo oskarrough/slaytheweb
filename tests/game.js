@@ -2,7 +2,7 @@ import test from 'ava'
 import actions from '../public/game/actions'
 import {getTargets, getCurrRoom, isCurrentRoomCompleted} from '../public/game/utils'
 import {createCard} from '../public/game/cards'
-import {createSimpleDungeon} from '../public/game/dungeon-encounters'
+import {testDungeon} from '../public/game/dungeon-encounters'
 import {MonsterRoom, Monster} from '../public/game/dungeon'
 
 const a = actions
@@ -10,7 +10,7 @@ const a = actions
 // Each test gets a fresh game state with a dungeon set up.
 test.beforeEach((t) => {
 	let state = a.createNewGame()
-	state = a.setDungeon(state, createSimpleDungeon())
+	state = a.setDungeon(state, testDungeon())
 	t.context = {state}
 })
 
@@ -172,7 +172,7 @@ test('block on enemy actually blocks damage', (t) => {
 
 test('block on player actually blocks damage', (t) => {
 	let state = a.createNewGame()
-	state = a.setDungeon(state, createSimpleDungeon())
+	state = a.setDungeon(state, testDungeon())
 	state = a.endTurn(state)
 	state = a.playCard(state, {card: createCard('Defend')})
 	t.is(state.player.block, 5)
@@ -356,13 +356,15 @@ test('target "all enemies" works for damage as well as power', (t) => {
 	t.is(room.monsters.length, 2, 'we have two enemies')
 	t.is(room.monsters[0].currentHealth, 24)
 	t.is(room.monsters[1].currentHealth, 13)
-	t.falsy(room.monsters[0].powers.vulnerable)
-	t.falsy(room.monsters[1].powers.vulnerable)
+	t.falsy(
+		room.monsters[0].powers.vulnerable && room.monsters[1].powers.vulnerable,
+		'none are vulnerable'
+	)
 	const card = createCard('Thunderclap')
 	const nextState = a.playCard(state, {card})
 	// console.log(nextState.dungeon.rooms[nextState.dungeon.index].monsters[0])
-	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[0].currentHealth, 20)
-	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[1].currentHealth, 9)
+	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[0].currentHealth, 24 - card.damage)
+	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[1].currentHealth, 13 - card.damage)
 	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[0].powers.vulnerable, 1)
 	t.is(nextState.dungeon.rooms[nextState.dungeon.index].monsters[1].powers.vulnerable, 1)
 })

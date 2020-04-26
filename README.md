@@ -126,3 +126,4 @@ A collection of related links, inspiration and ideas.
 - https://www.rockpapershotgun.com/2018/02/19/why-revealing-all-is-the-secret-of-slay-the-spires-success/
 - [Slay the Spire Reference](https://docs.google.com/spreadsheets/u/1/d/1ZsxNXebbELpcCi8N7FVOTNGdX_K9-BRC_LMgx4TORo4/edit?usp=sharing)
 - [Slay the Spire Discord](https://discord.gg/slaythespire)
+- https://klei.com/games/griftlands

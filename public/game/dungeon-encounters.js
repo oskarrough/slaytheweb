@@ -5,6 +5,7 @@ import Dungeon, {MonsterRoom, Monster} from './dungeon.js'
 // Use a list of intents to describe what the monster should do each turn.
 // Supported intents: block, damage, vulnerable and weak.
 const intents = [{block: 7}, {damage: 10}, {damage: 10}]
+
 const scalingIntents = [
 	{damage: 1},
 	{damage: 2},
@@ -22,25 +23,43 @@ const scalingIntents = [
 	{damage: 50},
 ]
 
-const normalRoom = () => MonsterRoom(Monster({intents}))
-const eliteRoom = () =>
-	MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents: scalingIntents}))
-const bossRoom = () => MonsterRoom(Monster({hp: 92, intents}), Monster({intents: scalingIntents}))
+const ScalingMonster = () =>
+	Monster({
+		hp: 13,
+		intents: scalingIntents,
+	})
 
-// const CultistMonster = () =>
-// 	Monster({
-// 		// hp: 48-54,
-// 		hp: 48,
-// 		intents: [{weak: 1}, {damage: 6}]
-// 	})
+const STSMonster = () =>
+	Monster({
+		hp: 46,
+		intents: [{damage: 12}, {block: 6, damage: 11}, {block: 5, damage: 16}, {}, {block: 6}],
+	})
+
+const CultistMonster = () =>
+	Monster({
+		hp: 48,
+		intents: [{weak: 1}, {damage: 6}],
+	})
 
 export const createSimpleDungeon = () => {
 	return Dungeon({
 		rooms: [
-			// MonsterRoom(CultistMonster()),
-			normalRoom(),
-			eliteRoom(),
-			bossRoom(),
+			MonsterRoom(Monster({intents})),
+			MonsterRoom(Monster({intents}), ScalingMonster),
+			MonsterRoom(STSMonster()),
+			MonsterRoom(CultistMonster()),
+			MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents: scalingIntents})),
+			MonsterRoom(Monster({hp: 92, intents}), Monster({intents: scalingIntents})),
+		],
+	})
+}
+
+// This is the dungeon used in tests. Don't change it without running tests.
+export const testDungeon = () => {
+	return Dungeon({
+		rooms: [
+			MonsterRoom(Monster({hp: 42, intents})),
+			MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents})),
 		],
 	})
 }
