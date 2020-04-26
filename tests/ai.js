@@ -90,3 +90,11 @@ test('dead monsters dont play', (t) => {
 	state = a.endTurn(state)
 	t.is(state.player.currentHealth, 62, 'monster is dead so nothing happened')
 })
+
+test('monsters can do several things at once', (t) => {
+	const dungeon = Dungeon({rooms: [MonsterRoom(Monster({intents: [{block: 5, damage: 6}]}))]})
+	const state = a.setDungeon(a.createNewGame(), dungeon)
+	const nextTurn = a.endTurn(state)
+	t.is(nextTurn.player.currentHealth, defaultHp - 6)
+	t.is(monster(nextTurn).block, 5)
+})

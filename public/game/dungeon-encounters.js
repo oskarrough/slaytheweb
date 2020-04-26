@@ -5,6 +5,7 @@ import Dungeon, {MonsterRoom, Monster} from './dungeon.js'
 // Use a list of intents to describe what the monster should do each turn.
 // Supported intents: block, damage, vulnerable and weak.
 const intents = [{block: 7}, {damage: 10}, {damage: 10}]
+
 const scalingIntents = [
 	{damage: 1},
 	{damage: 2},
@@ -53,6 +54,7 @@ export const createSimpleDungeon = () => {
 	})
 }
 
+// This is the dungeon used in tests. Don't change it without running tests.
 export const testDungeon = () => {
 	return Dungeon({
 		rooms: [
