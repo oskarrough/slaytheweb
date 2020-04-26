@@ -5,7 +5,6 @@ import {html, Component} from '../../web_modules/htm/preact/standalone.module.js
 import ActionManager from '../game/action-manager.js'
 import actions from './../game/actions.js'
 import {getCurrRoom, isCurrentRoomCompleted} from '../game/utils.js'
-import {createSimpleDungeon} from '../game/dungeon-encounters.js'
 import {createCard, getRandomCards} from './../game/cards.js'
 
 // Components
@@ -46,7 +45,7 @@ export default class App extends Component {
 			this.state = savedGame
 		} else {
 			let state = actions.createNewGame()
-			state = actions.setDungeon(state, createSimpleDungeon())
+			state = actions.setDungeon(state)
 			state = actions.addStarterDeck(state)
 			state = actions.drawCards(state)
 			this.state = state
