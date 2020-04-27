@@ -1,8 +1,11 @@
 import actions from './actions.js'
 import ActionManager from './action-manager.js'
 
+// EXPERIMENTAL: nothing in this file is currently used.
+
 // While it's possible to play and do everything with actions directly and alone,
-// you have to keep passing the state around. This is an attempt at an easier API.
+// you have to keep passing the state around. This is an attempt at an easier API,
+// without changing any code outside of this file. If we see that this API is nicer we can refactor.
 
 // Here's an example:
 // ```
@@ -16,21 +19,23 @@ import ActionManager from './action-manager.js'
 // // You can also undo!
 // game.undo()
 // ```
-function createNewState() {
-	let state = actions.createNewGame()
-	state = actions.setDungeon(state)
-	state = actions.addStarterDeck(state)
-	// state = actions.drawCards(state)
-	return state
-}
 
 export default function createNewGame() {
+	// This exists because the createNewGame action doesn't set a dungeon and deck by default.
+	function createNewState() {
+		let state = actions.createNewGame()
+		state = actions.setDungeon(state)
+		state = actions.addStarterDeck(state)
+		// state = actions.drawCards(state)
+		return state
+	}
+
 	const actionManager = ActionManager()
 	const game = {
 		state: createNewState(),
 		actions,
 		queue: actionManager.enqueue,
-		update() {
+		dequeue() {
 			const nextState = actionManager.dequeue(this.state)
 			this.state = nextState
 		},
