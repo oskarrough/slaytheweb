@@ -44,7 +44,8 @@ export default function createNewGame() {
 		},
 		undo() {
 			const prevGame = actionManager.undo()
-			this.state = prevGame.state
+			if (prevGame) this.state = prevGame.state
+			return prevGame
 		},
 		future: actionManager.future,
 		past: actionManager.past,
