@@ -20,7 +20,7 @@ import ActionManager from './action-manager.js'
 // game.undo()
 // ```
 
-// This exists because actions.createNewGame() doesn't set a dungeon and deck by default.
+// This exists because actions.createNewGame() doesn't set a dungeon and deck.
 function gameState() {
 	let state = actions.createNewGame()
 	state = actions.setDungeon(state)

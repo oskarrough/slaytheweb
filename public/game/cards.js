@@ -1,45 +1,7 @@
 import {uuid} from './utils.js'
 
-// type = [ATTACK, SKILL, POWER, STATUS, CURSE]
-// target = [ENEMY, ALL_ENEMY, PLAYER, NONE, SELF_AND_ENEMY, ALL]
-// this.color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
-// this.rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
-
-// All cards extend this class.
-export class Card {
-	constructor(props) {
-		this.id = uuid()
-		this.name = props.name
-		this.type = props.type
-		this.energy = props.energy
-		this.target = props.target
-		this.damage = props.damage
-		this.block = props.block
-		this.powers = props.powers
-		this.description = props.description
-	}
-}
-
-// Turns a plain object card into a class-based one.
-// We do this so we can define the cards without using class syntax.
-export function createCard(name) {
-	const baseCard = cards.find((card) => card.name === name)
-	if (!baseCard) throw new Error(`Card not found: ${name}`)
-	return new Card(baseCard)
-}
-
-// Returns X amount of random cards.
-export function getRandomCards(amount = 3) {
-	const cardNames = cards.map((card) => card.name)
-	let results = []
-	for (let i = 0; i < amount; i++) {
-		const randomIndex = Math.floor(Math.random() * cardNames.length)
-		const name = cardNames[randomIndex]
-		const card = createCard(name)
-		results.push(card)
-	}
-	return results
-}
+// This file contains all the cards in the game as well as a few utility methods.
+// While cards are described in this object form, they are always converted to a class equivalent.
 
 // All our cards.
 export const cards = [
@@ -130,3 +92,44 @@ export const cards = [
 	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
 	// {name: 'Body Slam', energy: 1, type: 'Attack', description: 'Deal Damage equal to your Block'},
 ]
+
+// All cards extend this class.
+export class Card {
+	constructor(props) {
+		this.id = uuid()
+		this.name = props.name
+		this.type = props.type
+		this.energy = props.energy
+		this.target = props.target
+		this.damage = props.damage
+		this.block = props.block
+		this.powers = props.powers
+		this.description = props.description
+	}
+}
+
+// Turns a plain object card into a class-based one.
+// We do this so we can define the cards without using class syntax.
+export function createCard(name) {
+	const baseCard = cards.find((card) => card.name === name)
+	if (!baseCard) throw new Error(`Card not found: ${name}`)
+	return new Card(baseCard)
+}
+
+// Returns X amount of random cards.
+export function getRandomCards(amount = 3) {
+	const cardNames = cards.map((card) => card.name)
+	let results = []
+	for (let i = 0; i < amount; i++) {
+		const randomIndex = Math.floor(Math.random() * cardNames.length)
+		const name = cardNames[randomIndex]
+		const card = createCard(name)
+		results.push(card)
+	}
+	return results
+}
+
+// type = [ATTACK, SKILL, POWER, STATUS, CURSE]
+// target = [ENEMY, ALL_ENEMY, PLAYER, NONE, SELF_AND_ENEMY, ALL]
+// this.color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
+// this.rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]

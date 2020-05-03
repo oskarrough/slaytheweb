@@ -11,7 +11,11 @@ test('it all', (t) => {
 	// can add a card
 	const strike = createCard('Strike')
 	game.enqueue({type: 'addCardToHand', card: strike})
+	t.is(game.future.list.length, 1)
+	t.is(game.past.list.length, 0)
 	game.dequeue()
+	t.is(game.future.list.length, 0)
+	t.is(game.past.list.length, 1)
 	t.is(game.state.hand.length, 6)
 	t.is(game.state.hand[game.state.hand.length - 1].id, strike.id)
 	// we can undo
@@ -21,4 +25,11 @@ test('it all', (t) => {
 	game.enqueue({type: 'drawCards'})
 	game.dequeue()
 	t.is(game.state.hand.length, 10)
+})
+
+test('game also contains actions', (t) => {
+	const game = createNewGame()
+	game.state.hand = []
+	game.state = game.actions.drawCards(game.state)
+	t.is(game.state.hand.length, 5)
 })
