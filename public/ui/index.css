@@ -182,6 +182,7 @@ h2 {
 	background-color: var(--teal);
 	text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 	box-shadow: 0 0 0.1em var(--lightblue);
+	margin-left: 1rem;
 }
 
 .Card {
@@ -223,6 +224,7 @@ h2 {
 	left: -0.5em;
 	width: 1.7rem;
 	height: 1.9rem;
+	margin-left: 0;
 }
 .Card[disabled] .EnergyBadge {
 	color: red;
@@ -264,7 +266,8 @@ h2 {
 }
 .Target.is-dragOver .Healthbar {
 	transition-duration: 100ms;
-	box-shadow: 0 0 2em var(--yellow), 3px 3px 1px black;
+	box-shadow: 1em 0 2em var(--yellow), 3px 3px 1px black;
+	filter: invert(1);
 }
 .Target--isDead {
 	pointer-events: none;
