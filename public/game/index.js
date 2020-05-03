@@ -20,24 +20,27 @@ import ActionManager from './action-manager.js'
 // game.undo()
 // ```
 
-export default function createNewGame() {
-	// This exists because the createNewGame action doesn't set a dungeon and deck by default.
-	function createNewState() {
-		let state = actions.createNewGame()
-		state = actions.setDungeon(state)
-		state = actions.addStarterDeck(state)
-		// state = actions.drawCards(state)
-		return state
-	}
+// This exists because actions.createNewGame() doesn't set a dungeon and deck by default.
+function gameState() {
+	let state = actions.createNewGame()
+	state = actions.setDungeon(state)
+	state = actions.addStarterDeck(state)
+	return state
+}
 
+export default function createNewGame() {
 	const actionManager = ActionManager()
-	const game = {
-		state: createNewState(),
+	return {
+		state: gameState(),
 		actions,
-		queue: actionManager.enqueue,
+		enqueue: actionManager.enqueue,
 		dequeue() {
-			const nextState = actionManager.dequeue(this.state)
-			this.state = nextState
+			try {
+				const nextState = actionManager.dequeue(this.state)
+				this.state = nextState
+			} catch (err) {
+				console.warn(err)
+			}
 		},
 		undo() {
 			const prevGame = actionManager.undo()
@@ -46,5 +49,4 @@ export default function createNewGame() {
 		future: actionManager.future,
 		past: actionManager.past,
 	}
-	return game
 }
