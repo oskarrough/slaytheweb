@@ -2,10 +2,11 @@
 import {html, Component} from '../../web_modules/htm/preact/standalone.module.js'
 
 // Game logic
-import ActionManager from '../game/action-manager.js'
-import actions from './../game/actions.js'
+import createNewGame from '../game/index.js'
+// import ActionManager from '../game/action-manager.js'
+// import actions from './../game/actions.js'
 import {getCurrRoom, isCurrentRoomCompleted} from '../game/utils.js'
-import {createCard, getRandomCards} from './../game/cards.js'
+import {getRandomCards} from './../game/cards.js'
 
 // Components
 import DragDrop from './dragdrop.js'
@@ -31,8 +32,6 @@ const Overlay = (props) => html`
 export default class App extends Component {
 	constructor() {
 		super()
-		// Set up our action manager.
-		this.am = ActionManager()
 		this.overlayIndex = 11
 
 		// Scope methods
@@ -44,54 +43,42 @@ export default class App extends Component {
 		if (savedGame) {
 			this.state = savedGame
 		} else {
-			let state = actions.createNewGame()
-			state = actions.setDungeon(state)
-			state = actions.addStarterDeck(state)
-			state = actions.drawCards(state)
-			this.state = state
+			const game = createNewGame()
+			this.game = game
+			this.state = game.state
 		}
 
 		// Enable debugging in the browser.
 		window.slaytheweb = {
 			component: this,
-			actions,
-			createCard,
+			game: this.game,
 		}
-	}
-	enqueue(action) {
-		this.am.enqueue(action)
 	}
 	dequeue(callback) {
-		try {
-			const nextState = this.am.dequeue(this.state)
-			this.setState(nextState, callback)
-			// save(nextState)
-		} catch (err) {
-			console.log(err)
-			alert(err)
-		}
+		this.game.dequeue()
+		this.setState(this.game.state, callback)
+		// save(nextState)
 	}
 	undo() {
-		const prev = this.am.past.pop()
-		if (!prev) return
-		this.setState(prev.state)
+		this.game.undo()
+		this.setState(this.game.state)
 	}
 	endTurn() {
-		this.enqueue({type: 'endTurn'})
+		this.game.enqueue({type: 'endTurn'})
 		this.dequeue()
 	}
 	goToNextRoom() {
-		this.enqueue({type: 'endTurn'})
-		this.enqueue({type: 'goToNextRoom'})
+		this.game.enqueue({type: 'endTurn'})
+		this.game.enqueue({type: 'goToNextRoom'})
 		this.dequeue(() => this.dequeue())
 	}
 	playCard(cardId, target) {
 		const card = this.state.hand.find((c) => c.id === cardId)
-		this.enqueue({type: 'playCard', card, target})
+		this.game.enqueue({type: 'playCard', card, target})
 		this.dequeue()
 	}
 	handlePlayerReward(card) {
-		this.enqueue({type: 'rewardPlayer', card: card})
+		this.game.enqueue({type: 'rewardPlayer', card: card})
 		this.dequeue()
 	}
 	handleShortcuts(event) {
@@ -164,7 +151,7 @@ export default class App extends Component {
 								<button onclick=${() => save(state)}>Save</button>
 								<button onclick=${() => window.location.reload()}>Quit</button>
 							</p>
-							<${History} future=${this.am.future.list} past=${this.am.past.list} />
+							<${History} future=${this.game.future.list} past=${this.game.past.list} />
 							<p>
 								<button onclick=${() => this.undo()}><u>U</u>ndo</button><br />
 							</p>
