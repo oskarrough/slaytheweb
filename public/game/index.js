@@ -10,7 +10,7 @@ import ActionManager from './action-manager.js'
 // Here's an example:
 // ```
 // const game = createNewGame()
-// game.queue({type: 'drawCards'})
+// game.enqueue({type: 'drawCards'})
 // // game.future.length === 1
 // game.update()
 // // game.future.length === 0

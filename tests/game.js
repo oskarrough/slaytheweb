@@ -10,7 +10,7 @@ test('it all', (t) => {
 	t.is(game.state.player.currentHealth, 72)
 	// can add a card
 	const strike = createCard('Strike')
-	game.queue({type: 'addCardToHand', card: strike})
+	game.enqueue({type: 'addCardToHand', card: strike})
 	game.dequeue()
 	t.is(game.state.hand.length, 1)
 	t.is(game.state.hand[0].id, strike.id)
@@ -18,7 +18,7 @@ test('it all', (t) => {
 	game.undo()
 	// and draw cards
 	t.is(game.state.hand.length, 0)
-	game.queue({type: 'drawCards'})
+	game.enqueue({type: 'drawCards'})
 	game.dequeue()
 	t.is(game.state.hand.length, 5)
 })
