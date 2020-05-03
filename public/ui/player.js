@@ -55,11 +55,11 @@ function Healthbar({value, max, block}) {
 // Shows currently active powers.
 const Powers = ({powers}) =>
 	html`
-		<p>
-			${powers.vulnerable > 0 ? `Vulnerable ${powers.vulnerable}` : ''}
-			${powers.regen > 0 ? `Regen ${powers.regen}` : ''}
-			${powers.weak > 0 ? `Weak ${powers.weak}` : ''}
-		</p>
+		<div class="Target-powers">
+			<span>${powers.vulnerable > 0 ? `Vulnerable ${powers.vulnerable}` : ''}</span>
+			<span>${powers.regen > 0 ? `Regen ${powers.regen}` : ''}</span>
+			<span>${powers.weak > 0 ? `Weak ${powers.weak}` : ''}</span>
+		</div>
 	`
 
 // Floating Combat Text. Give it a number and it'll animate it.
