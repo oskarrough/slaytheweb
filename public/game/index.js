@@ -25,6 +25,7 @@ function gameState() {
 	let state = actions.createNewGame()
 	state = actions.setDungeon(state)
 	state = actions.addStarterDeck(state)
+	state = actions.drawCards(state)
 	return state
 }
 

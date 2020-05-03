@@ -12,13 +12,13 @@ test('it all', (t) => {
 	const strike = createCard('Strike')
 	game.enqueue({type: 'addCardToHand', card: strike})
 	game.dequeue()
-	t.is(game.state.hand.length, 1)
-	t.is(game.state.hand[0].id, strike.id)
+	t.is(game.state.hand.length, 6)
+	t.is(game.state.hand[game.state.hand.length - 1].id, strike.id)
 	// we can undo
 	game.undo()
-	// and draw cards
-	t.is(game.state.hand.length, 0)
+	t.is(game.state.hand.length, 5)
+	// and draw cards again
 	game.enqueue({type: 'drawCards'})
 	game.dequeue()
-	t.is(game.state.hand.length, 5)
+	t.is(game.state.hand.length, 10)
 })
