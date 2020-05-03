@@ -252,7 +252,8 @@ h2 {
 .Target h2 {
 	margin: 0 0.5rem 0;
 	padding: 0.1em 0.5em;
-	background: var(--text-inverse);
+	/* background: var(--text-inverse); */
+	background: linear-gradient(10deg, black -80%, transparent 80%);
 	border-top-left-radius: 0.5em;
 	border-top-right-radius: 0.5em;
 }
@@ -267,6 +268,7 @@ h2 {
 }
 .Target-powers {
 	margin-top: 0;
+	margin-left: 1em;
 	min-height: 1.2em;
 }
 .Target-powers span {
