@@ -8,15 +8,16 @@ export default function () {
 	const future = new Queue()
 	const past = new Queue()
 
-	// Enqueued items are added to the "future" list.
+	// Enqueued items are added to the "future" list. An action looks like this:
+	// {type: 'dealDamage', amount: 7, ... }
 	function enqueue(action) {
-		future.addToTop({action})
+		future.enqueue({action})
 	}
 
-	// Once dequeued, they end up in the "past".
-	// Returns a new state.
+	// Deqeueing means running the oldest action in the queue on a game state.
+	// The action is then moved to the "past". Returns the next state.
 	function dequeue(state) {
-		const {action} = future.takeFromBottom() || {}
+		const {action} = future.dequeue() || {}
 		let nextState
 		if (!action) return
 		try {
@@ -24,13 +25,13 @@ export default function () {
 		} catch (err) {
 			throw new Error(err)
 		}
-		past.addToTop({state, action})
+		past.enqueue({state, action})
 		return nextState
 	}
 
-	// Undo the latest action from the passt.
+	// Returns an object with the most recently run action and how the state looked before.
 	function undo() {
-		return this.past.takeFromTop()
+		return this.past.list.pop()
 	}
 
 	return {

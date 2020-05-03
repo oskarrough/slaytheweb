@@ -1,21 +1,14 @@
+// A queue is a list of objects that are inserted and removed first-in-first-out (FIFO).
 export default class Queue {
 	constructor(items = []) {
 		this.list = items
 	}
-	// Add to the front
-	addToTop(item) {
+	// Enqueue and add an item at the end of the queue.
+	enqueue(item) {
 		this.list.push(item)
 	}
-	// Add to the end
-	addToBottom(item) {
-		this.list.unshift(item)
-	}
-	// Removes and returns the last/newest item
-	takeFromTop() {
-		return this.list.pop()
-	}
-	// Removes and returns the first/oldest item
-	takeFromBottom() {
+	// Dequeue and remove an item at the front of the queue.
+	dequeue() {
 		return this.list.shift()
 	}
 }

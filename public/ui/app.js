@@ -72,7 +72,7 @@ export default class App extends Component {
 		}
 	}
 	undo() {
-		const prev = this.am.past.takeFromTop()
+		const prev = this.am.past.pop()
 		if (!prev) return
 		this.setState(prev.state)
 	}
