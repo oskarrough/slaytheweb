@@ -6,6 +6,8 @@ This is a browser-based card game engine based on Slay The Spire, a fantastic vi
 
 🎴 Play it on https://slaytheweb.now.sh/
 
+![Screenshot of the game](https://i.imgur.com/m9CRCsa.png)
+
 Why what? After many runs in the Spire, I really got into the theory behind the game. Inspired by the modding community, I thought it'd be neat and a great learning experience to try and implement the core logic of the game in JavaScript for the web. And that is what _Slay the Web_ is. The idea is to provide a stable game logic to play the game with any kind of interface. Be it the browser, a command line or whatever. This repo also contains an example interface for the game.
 
 ## How to work on the code
