@@ -31,14 +31,14 @@ export function createCard(name) {
 // Returns X amount of random cards.
 export function getRandomCards(amount = 3) {
 	const cardNames = cards.map((card) => card.name)
-	let cards = []
+	let results = []
 	for (let i = 0; i < amount; i++) {
 		const randomIndex = Math.floor(Math.random() * cardNames.length)
 		const name = cardNames[randomIndex]
 		const card = createCard(name)
-		cards.push(card)
+		results.push(card)
 	}
-	return cards
+	return results
 }
 
 // All our cards.
