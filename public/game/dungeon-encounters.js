@@ -44,8 +44,8 @@ const CultistMonster = () =>
 export const createSimpleDungeon = () => {
 	return Dungeon({
 		rooms: [
-			MonsterRoom(Monster({intents})),
-			MonsterRoom(Monster({intents}), ScalingMonster),
+			MonsterRoom(Monster({hp: 18, intents})),
+			MonsterRoom(Monster({intents}), ScalingMonster()),
 			MonsterRoom(STSMonster()),
 			MonsterRoom(CultistMonster()),
 			MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents: scalingIntents})),

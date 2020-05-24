@@ -129,3 +129,4 @@ A collection of related links, inspiration and ideas.
 - [Slay the Spire Reference](https://docs.google.com/spreadsheets/u/1/d/1ZsxNXebbELpcCi8N7FVOTNGdX_K9-BRC_LMgx4TORo4/edit?usp=sharing)
 - [Slay the Spire Discord](https://discord.gg/slaythespire)
 - https://klei.com/games/griftlands
+- https://github.com/adnzzzzZ/blog
