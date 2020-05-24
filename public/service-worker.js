@@ -1,9 +1,9 @@
 /* global importScripts, workbox */
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js')
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.3/workbox-sw.js')
 
 const {registerRoute} = workbox.routing
 const {precacheAndRoute} = workbox.precaching
-const {CacheFirst, NetworkFirst} = workbox.strategies
+const {CacheFirst, NetworkFirst, StaleWhileRevalidate} = workbox.strategies
 
 console.log('hello from service worker')
 if (workbox) {
@@ -13,14 +13,19 @@ if (workbox) {
 }
 
 // Make sure index.html is cached.
-precacheAndRoute([{url: '/index.html', revision: '1'}])
+precacheAndRoute([{url: '/index.html', revision: '2'}])
 
-// Catch all js and css files and cache them.
+// Cache script resources, i.e. JS files.
 registerRoute(
-	/\.(?:js|css)$/,
-	new NetworkFirst({
-		cacheName: 'static-resources',
-	})
+  ({request}) => request.destination === 'script',
+  new NetworkFirst()
+)
+
+// Cache style resources, i.e. CSS files.
+registerRoute(
+  ({request}) => request.destination === 'style',
+  // Use cache but update in the background.
+  new StaleWhileRevalidate()
 )
 
 // Also cache images.
