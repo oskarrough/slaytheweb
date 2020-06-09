@@ -1,7 +1,7 @@
 import test from 'ava'
 import actions from '../public/game/actions'
 import Dungeon, {CampfireRoom, MonsterRoom, Monster} from '../public/game/dungeon'
-import {getCurrRoom, isCurrentRoomCompleted} from '../public/game/utils'
+import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../public/game/utils'
 
 const a = actions
 
@@ -34,6 +34,18 @@ test('we know when a monster room is won', (t) => {
 	t.false(isCurrentRoomCompleted(state))
 	room.monsters[0].currentHealth = 0
 	t.true(isCurrentRoomCompleted(state))
+})
+
+test('we know when the entire dungeon has been cleared', (t) => {
+	const dungeon = Dungeon({
+		rooms: [MonsterRoom(Monster()), MonsterRoom(Monster())],
+	})
+	const state = {dungeon}
+	t.false(isDungeonCompleted(state))
+	state.dungeon.rooms[0].monsters[0].currentHealth = 0
+	t.false(isDungeonCompleted(state))
+	state.dungeon.rooms[1].monsters[0].currentHealth = 0
+	t.true(isDungeonCompleted(state))
 })
 
 test('we know when a monster room with many monsters is won', (t) => {

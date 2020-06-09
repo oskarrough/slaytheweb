@@ -5,7 +5,7 @@ import {html, Component} from '../../web_modules/htm/preact/standalone.module.js
 import createNewGame from '../game/index.js'
 // import ActionManager from '../game/action-manager.js'
 // import actions from './../game/actions.js'
-import {getCurrRoom, isCurrentRoomCompleted} from '../game/utils.js'
+import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../game/utils.js'
 import {getRandomCards} from './../game/cards.js'
 
 // Components
@@ -103,7 +103,9 @@ export default class App extends Component {
 	render(props, state) {
 		const isDead = state.player.currentHealth < 1
 		const didWin = isCurrentRoomCompleted(state)
+		const didWinGame = isDungeonCompleted(state)
 		const room = getCurrRoom(state)
+
 		return html`
 			<${DragDrop} key=${state.dungeon.index} onAdd=${this.playCard}>
 				<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
@@ -112,7 +114,11 @@ export default class App extends Component {
 						<p>You are dead.</p>
 						<button onclick=${() => this.props.onLoose()}>Try again?</button>
 					<//> `}
-					${didWin &&
+					${didWinGame &&
+					html`<${Overlay}>
+						<p center><button onclick=${() => this.props.onWin()}>You win!</button></p>
+					<//> `}
+					${!didWinGame && didWin &&
 					html`<${Overlay}>
 						<${Rewards} cards=${getRandomCards()} rewardWith=${this.handlePlayerReward} />
 						<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>

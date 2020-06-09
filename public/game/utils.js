@@ -53,10 +53,7 @@ export function getTargets(state, target) {
 	throw new Error(`Can not find monster with target: "${target}"`)
 }
 
-// Check if the current room in a game has been cleared.
-export function isCurrentRoomCompleted(state) {
-	const room = getCurrRoom(state)
-
+export function isRoomCompleted(room) {
 	if (room.type === 'monster') {
 		const deadMonsters = room.monsters.filter((m) => m.currentHealth < 1)
 		return deadMonsters.length === room.monsters.length
@@ -65,6 +62,18 @@ export function isCurrentRoomCompleted(state) {
 	if (room.type === 'campfire') {
 		// @todo
 	}
+}
+
+// Check if the current room in a game has been cleared.
+export function isCurrentRoomCompleted(state) {
+	const room = getCurrRoom(state)
+	return isRoomCompleted(room)
+}
+
+// Checks if the whole dungeon (all rooms) has been cleared.
+export function isDungeonCompleted(state) {
+	const clearedRooms = state.dungeon.rooms.map(isRoomCompleted).filter(Boolean)
+	return clearedRooms.length === state.dungeon.rooms.length
 }
 
 // Use it to generate a range of numbers like range(3) === [1,2,3] or range(3, 6) === [6,7,8]
