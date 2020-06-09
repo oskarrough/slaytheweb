@@ -54,10 +54,10 @@ const SplashScreen = (props) => html`
 		<p><button autofocus onClick=${props.onNewGame}>Play</a></p>
 		<details class="Splash-details">
 			<summary>How to play</summary>
-			<p>Slay the Web is a single player card game where you fight monsters to reach the end of the web. It's a game of planning, strategy and knowing when to play which card.</p>
-			<p>Every turn you get 3 energy to play cards. Cards deal damage to monsters, block enemy attacks or make enemies weak, vulnerable, heal you and other things.</p>
-			<p>Beware, whenever your turn is ended, the monsters take turn.</p>
-			<p>Should you manage to kill the monsters in a room before they end you, you'll proceed to the next room. Can you reach the end?</p>
+			<p>Slay the Web is a single player card game where you fight monsters to reach the end of the web. It's a game of planning and knowing when to play which card.</p>
+			<p>Every turn you get 3 energy to play cards. Cards have different energy costs to play. Cards can deal damage to monsters, block enemy attacks or make enemies weak, vulnerable, heal you and other things. You'll figure it out.</p>
+			<p>Beware, whenever you end your turn, the monsters take turn.</p>
+			<p>Should you manage to kill the monsters in a room before they end you, you'll proceed to the next room. There will be rewards. Can you reach the end?</p>
 		</details>
 	</article>
 `
