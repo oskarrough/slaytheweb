@@ -28,12 +28,18 @@ export function shuffle(array) {
 	return array
 }
 
+// Generate a range of numbers like range(3) === [1,2,3] or range(3, 6) === [6,7,8]
+export function range(size, startAt = 0) {
+	return [...Array(size).keys()].map((i) => i + startAt)
+}
+
 // Returns the current room in a dungeon.
 export function getCurrRoom(state) {
 	return state.dungeon.rooms[state.dungeon.index || 0]
 }
 
-// Support a target like "enemyx", where x is the order of the monster.
+// Returns an array of targets (player or monsters)
+// "target" can be "player", "enemyx" (where x is the index) or "all enemies"
 export function getTargets(state, target) {
 	if (target.startsWith('player')) {
 		return [state.player]
@@ -53,10 +59,7 @@ export function getTargets(state, target) {
 	throw new Error(`Can not find monster with target: "${target}"`)
 }
 
-// Check if the current room in a game has been cleared.
-export function isCurrentRoomCompleted(state) {
-	const room = getCurrRoom(state)
-
+export function isRoomCompleted(room) {
 	if (room.type === 'monster') {
 		const deadMonsters = room.monsters.filter((m) => m.currentHealth < 1)
 		return deadMonsters.length === room.monsters.length
@@ -67,7 +70,14 @@ export function isCurrentRoomCompleted(state) {
 	}
 }
 
-// Use it to generate a range of numbers like range(3) === [1,2,3] or range(3, 6) === [6,7,8]
-export function range(size, startAt = 0) {
-	return [...Array(size).keys()].map((i) => i + startAt)
+// Check if the current room in a game has been cleared.
+export function isCurrentRoomCompleted(state) {
+	const room = getCurrRoom(state)
+	return isRoomCompleted(room)
+}
+
+// Checks if the whole dungeon (all rooms) has been cleared.
+export function isDungeonCompleted(state) {
+	const clearedRooms = state.dungeon.rooms.map(isRoomCompleted).filter(Boolean)
+	return clearedRooms.length === state.dungeon.rooms.length
 }
