@@ -97,7 +97,7 @@ export default class App extends Component {
 		const didWin = isCurrentRoomCompleted(state)
 		const didWinGame = isDungeonCompleted(state)
 		const room = getCurrRoom(state)
-
+		// There's a lot here because I did not want to split into too many files.
 		return html`
 			<${DragDrop} key=${state.dungeon.index} onAdd=${this.playCard}>
 				<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
