@@ -1,11 +1,9 @@
 import actions from './actions.js'
 import ActionManager from './action-manager.js'
 
-// EXPERIMENTAL: nothing in this file is currently used.
-
-// While it's possible to play and do everything with actions directly and alone,
-// you have to keep passing the state around. This is an attempt at an easier API,
-// without changing any code outside of this file. If we see that this API is nicer we can refactor.
+// This function returns a "game" object with everything you need to play and control the game.
+// Note: it IS possible to modify all aspects of the game using actions directly.
+// This is purely a nicer API.
 
 // Here's an example:
 // ```
@@ -20,19 +18,20 @@ import ActionManager from './action-manager.js'
 // game.undo()
 // ```
 
-// This exists because actions.createNewGame() doesn't set a dungeon and deck.
-function gameState() {
-	let state = actions.createNewGame()
-	state = actions.setDungeon(state)
-	state = actions.addStarterDeck(state)
-	state = actions.drawCards(state)
-	return state
-}
-
 export default function createNewGame() {
 	const actionManager = ActionManager()
+
+	// This exists because actions.createNewGame() doesn't set a dungeon and deck.
+	function createNewState() {
+		let state = actions.createNewGame()
+		state = actions.setDungeon(state)
+		state = actions.addStarterDeck(state)
+		state = actions.drawCards(state)
+		return state
+	}
+
 	return {
-		state: gameState(),
+		state: createNewState(),
 		actions,
 		enqueue: actionManager.enqueue,
 		dequeue() {

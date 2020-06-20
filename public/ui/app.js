@@ -1,33 +1,23 @@
 // Third party dependencies
 import {html, Component} from '../../web_modules/htm/preact/standalone.module.js'
 
-// Game logic
+// Game logic.
 import createNewGame from '../game/index.js'
-// import ActionManager from '../game/action-manager.js'
-// import actions from './../game/actions.js'
 import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../game/utils.js'
 import {getRandomCards} from './../game/cards.js'
 
-// Components
-import DragDrop from './dragdrop.js'
-import {Player, Monster} from './player.js'
+// UI Components
 import Cards from './cards.js'
+import DragDrop from './dragdrop.js'
 import History from './history.js'
 import Map from './map.js'
+import Overlay from './overlay.js'
+import {Player, Monster} from './player.js'
 import Rewards from './rewards.js'
 
 // Puts and gets the game state in the URL.
 const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state)))
 const load = () => JSON.parse(decodeURIComponent(window.location.hash.split('#')[1]))
-
-// A tiny overlay UI component.
-const Overlay = (props) => html`
-	<div class="Splash Overlay" topleft open>
-		<div class="Splash-details">
-			${props.children}
-		</div>
-	</div>
-`
 
 export default class App extends Component {
 	constructor() {
@@ -41,7 +31,7 @@ export default class App extends Component {
 		// Set up a new game
 		const game = createNewGame()
 		this.game = game
-			this.state = game.state
+		this.state = game.state
 
 		// If there is a saved game state, use it.
 		const savedGame = window.location.hash && load()
@@ -58,11 +48,17 @@ export default class App extends Component {
 	dequeue(callback) {
 		this.game.dequeue()
 		this.setState(this.game.state, callback)
+		// This blocks Chrome for ~2 secs, so is disabled for now. Works in Firefox.
 		// save(nextState)
 	}
 	undo() {
 		this.game.undo()
 		this.setState(this.game.state)
+	}
+	playCard(cardId, target) {
+		const card = this.state.hand.find((c) => c.id === cardId)
+		this.game.enqueue({type: 'playCard', card, target})
+		this.dequeue()
 	}
 	endTurn() {
 		this.game.enqueue({type: 'endTurn'})
@@ -72,11 +68,6 @@ export default class App extends Component {
 		this.game.enqueue({type: 'endTurn'})
 		this.game.enqueue({type: 'goToNextRoom'})
 		this.dequeue(() => this.dequeue())
-	}
-	playCard(cardId, target) {
-		const card = this.state.hand.find((c) => c.id === cardId)
-		this.game.enqueue({type: 'playCard', card, target})
-		this.dequeue()
 	}
 	handlePlayerReward(card) {
 		this.game.enqueue({type: 'rewardPlayer', card: card})
@@ -119,7 +110,8 @@ export default class App extends Component {
 					html`<${Overlay}>
 						<p center><button onclick=${() => this.props.onWin()}>You win!</button></p>
 					<//> `}
-					${!didWinGame && didWin &&
+					${!didWinGame &&
+					didWin &&
 					html`<${Overlay}>
 						<${Rewards} cards=${getRandomCards()} rewardWith=${this.handlePlayerReward} />
 						<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
