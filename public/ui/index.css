@@ -124,8 +124,8 @@ h2 {
 }
 
 .App {
-	position: absolute;
-	z-index: 2;
+	/* position: absolute; */
+	/* z-index: 2; */
 	width: 100%;
 	height: 100%;
 	padding: 2rem 0rem 0;
@@ -464,6 +464,7 @@ h2 {
 	flex-wrap: wrap;
 	gap: 1rem;
 	align-content: center;
+	align-items: center;
 	min-height: calc(100vh - 4rem);
 }
 
@@ -513,7 +514,7 @@ h2 {
 	margin-top: 2rem;
 }
 .RewardsBox .Card {
-	min-height: 100%;
+	min-height: var(--card-height);
 }
 .CardBox {
 	cursor: pointer;
