@@ -12,18 +12,14 @@ Why what? After many runs in the Spire, I really got into the theory behind the 
 
 ## How to work on the code
 
+1. `yarn build` downloads ESM dependencies into ./public/web_modules 
+2. `yarn start` starts a local file server on ./public folder
+
 - The `public/game` folder contains the game engine
 - The `public/index.html` and `public/ui` is an example interface/website
 - The `tests` folder is filled with tests for the game
 
-The entire `public` folder can be deployed to any static web server. It does not require any compilation. It does require you to download the dependencies once.
-
-### To develop locally:
-
-1. `yarn build` downloads ESM dependencies into ./public/web_modules 
-2. `yarn start` starts a local file server on ./public folder
-
-Also see https://kinopio.club/slay-the-web-Dh3xUjjHbol7RbCuqZQDn for a more or less up to date overview.
+The entire `public` folder can now be deployed to any static web server. It does not require any compilation, but you *do need* to run `npm build` at least once. 
 
 ### Testing
 
@@ -38,9 +34,11 @@ Additionally you can run `yarn eslint public --fix` to automatically format all 
 
 ### Deploying
 
-The master branch automatically deploys to https://slaytheweb.now.sh via Zeit's now. 
+The master branch automatically deploys to https://slaytheweb.now.sh via Zeit's now. If you open a PR, it'll give you a staging URL as well.
 
-## A summary of the current state of the game
+## How the game works
+
+- https://kinopio.club/slay-the-web-Dh3xUjjHbol7RbCuqZQDn (could be outdated)
 
 ### Game state
 
@@ -48,7 +46,7 @@ The full game state is always stored in a single, large "game state" object. It 
 
 ### Actions
 
-An action is a function that takes a `state` object, modifies it, and returns a new one. There are actions for drawing a card, dealing damage, applying a debuff and basically everything that is possible in the game. 
+An action is a function that takes a `state` object, modifies it, and returns a new one. There are actions for drawing a card, dealing damage, applying a debuff... everything you want to do, there's an action.
 
 See all actions in `./public/game/actions.js`. Most have comments and corresponding tests you can check.
 
