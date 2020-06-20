@@ -38,14 +38,15 @@ export default class App extends Component {
 		this.handlePlayerReward = this.handlePlayerReward.bind(this)
 		this.playCard = this.playCard.bind(this)
 
-		// Set up either a saved or new game.
+		// Set up a new game
+		const game = createNewGame()
+		this.game = game
+			this.state = game.state
+
+		// If there is a saved game state, use it.
 		const savedGame = window.location.hash && load()
 		if (savedGame) {
 			this.state = savedGame
-		} else {
-			const game = createNewGame()
-			this.game = game
-			this.state = game.state
 		}
 
 		// Enable debugging in the browser.
