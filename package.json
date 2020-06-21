@@ -50,10 +50,5 @@
     "hooks": {
       "after:bump": "npx auto-changelog -p"
     }
-  },
-  "now": {
-    "github": {
-      "silent": true
-    }
   }
 }
