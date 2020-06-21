@@ -1,4 +1,5 @@
 import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
+import gsap from './../web_modules/gsap.js'
 
 export default class Cards extends Component {
 	// props = {	cards: [], isHand: false, energy: 123 }
@@ -8,9 +9,15 @@ export default class Cards extends Component {
 	componentDidUpdate() {
 		this.positionCards()
 	}
+	animateOnce() {
+		if (this.didAnimate) return
+		gsap.from('.Cards', {duration: 1, y: 100})
+		this.didAnimate = true
+	}
 	positionCards() {
 		const cards = this.base.querySelectorAll('.Card')
 		if (this.props.isHand && cards.length) {
+			this.animateOnce()
 			cards.forEach((card, index) => {
 				const offset = parseInt(index, 10) - 2
 				card.style.transform = `rotate(${offset * 4}deg)`

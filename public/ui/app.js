@@ -1,5 +1,6 @@
 // Third party dependencies
 import {html, Component} from '../../web_modules/htm/preact/standalone.module.js'
+import gsap from '../../web_modules/gsap.js'
 
 // Game logic.
 import createNewGame from '../game/index.js'
@@ -61,8 +62,19 @@ export default class App extends Component {
 		this.dequeue()
 	}
 	endTurn() {
-		this.game.enqueue({type: 'endTurn'})
-		this.dequeue()
+		const x = document.querySelector('.Hand .Cards').getBoundingClientRect().width
+		gsap.to('.Hand .Card', {
+			duration: 0.5,
+			rotation: 25,
+			x,
+			stagger: 0.1,
+			ease: 'elastic',
+			onComplete: reallyEndTurn.bind(this),
+		})
+		function reallyEndTurn() {
+			this.game.enqueue({type: 'endTurn'})
+			this.dequeue()
+		}
 	}
 	goToNextRoom() {
 		this.game.enqueue({type: 'endTurn'})
@@ -101,21 +113,28 @@ export default class App extends Component {
 		return html`
 			<${DragDrop} key=${state.dungeon.index} onAdd=${this.playCard}>
 				<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
-					${isDead &&
-					html`<${Overlay}>
-						<p>You are dead.</p>
-						<button onclick=${() => this.props.onLoose()}>Try again?</button>
-					<//> `}
-					${didWinGame &&
-					html`<${Overlay}>
-						<p center><button onclick=${() => this.props.onWin()}>You win!</button></p>
-					<//> `}
-					${!didWinGame &&
-					didWin &&
-					html`<${Overlay}>
-						<${Rewards} cards=${getRandomCards()} rewardWith=${this.handlePlayerReward} />
-						<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
-					<//> `}
+					<figure class="App-background"></div>
+					${
+						isDead &&
+						html`<${Overlay}>
+							<p>You are dead.</p>
+							<button onclick=${() => this.props.onLoose()}>Try again?</button>
+						<//> `
+					}
+					${
+						didWinGame &&
+						html`<${Overlay}>
+							<p center><button onclick=${() => this.props.onWin()}>You win!</button></p>
+						<//> `
+					}
+					${
+						!didWinGame &&
+						didWin &&
+						html`<${Overlay}>
+							<${Rewards} cards=${getRandomCards()} rewardWith=${this.handlePlayerReward} />
+							<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
+						<//> `
+					}
 
 					<div class="Targets Split">
 						<div class="Targets-group">
