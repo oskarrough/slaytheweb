@@ -13,7 +13,7 @@ export default class Rewards extends Component {
 				${state.didChoose
 					? html`<p>Added <em>${state.didChoose.name}</em> to your deck.</p>`
 					: html`
-							<p>Add a card to your deck.</p>
+							<p>Pick a card to add to your deck.</p>
 							<div class="Cards">
 								${props.cards.map(
 									(card) =>

@@ -173,12 +173,8 @@ h2 {
 }
 
 @keyframes fade-in {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
+	from { opacity: 0; }
+	to { opacity: 1; }
 }
 
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
@@ -403,9 +399,10 @@ h2 {
 	padding-right: 4rem;
 }
 .Hand .Card {
+	/* opacity: 0; */
 	margin-left: -1.5rem;
 	margin-bottom: -2rem;
-	transition-duration: 120ms;
+	/* transition-duration: 120ms; */
 	cursor: grab;
 	cursor: url(images/grab-open.png) 10 0, auto;
 }
@@ -417,8 +414,8 @@ h2 {
 	cursor: not-allowed;
 }
 .Hand .Card:hover {
-	transition-duration: 60ms;
-	transform: translate3d(0, -1rem, 0) scale(1.25) rotate(0deg) !important;
+	/* transition-duration: 60ms; */
+	/* transform: translate3d(0, -1rem, 0) scale(1.25) rotate(0deg) !important; */
 	box-shadow: 0 0 0.75em gold;
 	z-index: 1;
 }
