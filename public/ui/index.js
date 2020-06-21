@@ -1,5 +1,16 @@
 import {html, render, Component} from '../web_modules/htm/preact/standalone.module.js'
+import gsap from './../web_modules/gsap.js'
 import App from './app.js'
+
+// or get other plugins:
+// import Draggable from 'gsap/Draggable'
+// import ScrollTrigger from 'gsap/ScrollTrigger'
+
+// or all tools are exported from the "all" file (excluding bonus plugins):
+// import {gsap, ScrollTrigger, Draggable, MotionPathPlugin} from 'gsap/all'
+
+// don't forget to register plugins
+// gsap.registerPlugin(ScrollTrigger, Draggable, MotionPathPlugin)
 
 // This component decides what to render:
 // A splash screen, a "win" screen or the game/app itself.
@@ -38,29 +49,45 @@ class Main extends Component {
 	}
 }
 
-const SplashScreen = (props) => html`
-	<article class="Splash">
-		<h1>Slay the Web</h1>
-		<h2>A little card crawl adventure for you and your browser.</h2>
-		${
-			location.hash &&
-			html`
-				<p>
-					Oh, it seems you have a saved game.
-					<button autofocus onClick=${props.onContinue}>Continue?</button>
-				</p>
-			`
-		}
-		<p><button autofocus onClick=${props.onNewGame}>Play</a></p>
-		<details class="Splash-details">
-			<summary>How to play</summary>
-			<p>Slay the Web is a single player card game where you fight monsters to reach the end of the web. It's a game of planning and knowing when to play which card.</p>
-			<p>Every turn you get 3 energy to play cards. Cards have different energy costs to play. Cards can deal damage to monsters, block enemy attacks or make enemies weak, vulnerable, heal you and other things. You'll figure it out.</p>
-			<p>Beware, whenever you end your turn, the monsters take turn.</p>
-			<p>Should you manage to kill the monsters in a room before they end you, you'll proceed to the next room. There will be rewards. Can you reach the end?</p>
-		</details>
-	</article>
-`
+class SplashScreen extends Component {
+	componentDidMount() {
+		gsap.from('.Splash--fadein', {duration: 0.5, opacity: 0, scale: 0.9})
+		gsap.from('.Splash--fadein button', {
+			delay: 0.2,
+			duration: 1,
+			y: -20,
+			scale: 0.1,
+			ease: 'bounce',
+		})
+		gsap.from('.Splash--fadein details', {delay: 0.1, x: -50, duration: 0.4, opacity: 0})
+	}
+	render(props) {
+		return html`
+			<article class="Splash Splash--fadein">
+				<h1>Slay the Web</h1>
+				<h2>A little card crawl adventure for you and your browser.</h2>
+				${
+					location.hash &&
+					html`
+						<p>
+							Oh, it seems you have a saved game.
+							<button autofocus onClick=${props.onContinue}>Continue?</button>
+						</p>
+					`
+				}
+				<p><button autofocus onClick=${props.onNewGame}>Play</a></p>
+				<details class="Splash-details">
+					<summary>Tutorial</summary>
+					<p>Slay the Web is a single player card game where you fight monsters to reach the end of the web. It's a game of planning and knowing when to play which card.</p>
+					<p>Every turn you get 3 energy to play cards. Cards have different energy costs to play. Cards deal damage to monsters, block enemy attacks or make enemies weak, vulnerable, heal you and other things. You'll figure it out.</p>
+					<p>Beware, whenever you end your turn, the monsters take turn.</p>
+					<p>Should you manage to kill the monsters in a room before they end you, you'll proceed to the next room. There will be rewards. Can you reach the end?</p>
+					<p><a target="_blank" href="https://github.com/oskarrough/slaytheweb">View source</a></p>
+				</details>
+			</article>
+		`
+	}
+}
 
 const WinScreen = (props) => html`
 	<article class="Splash">
