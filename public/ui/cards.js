@@ -9,21 +9,49 @@ export default class Cards extends Component {
 	componentDidUpdate() {
 		this.positionCards()
 	}
-	animateOnce() {
-		if (this.didAnimate) return
-		gsap.from('.Cards', {duration: 1, y: 100})
-		this.didAnimate = true
-	}
 	positionCards() {
 		const cards = this.base.querySelectorAll('.Card')
 		if (this.props.isHand && cards.length) {
-			this.animateOnce()
-			cards.forEach((card, index) => {
-				const offset = parseInt(index, 10) - 2
-				card.style.transform = `rotate(${offset * 4}deg)`
-			})
+			gsap.set(cards, {x: 0})
+			const x = this.base.getBoundingClientRect().width
+			gsap.killTweensOf(cards)
+			gsap.fromTo(
+				cards,
+				{
+					rotation: -25,
+					x: -x,
+					y: 100,
+					scale: 0.5,
+				},
+				{
+					duration: 0.8,
+					scale: 1,
+					delay: 0.4,
+					x: 0,
+					// y: 0,
+					y: function (index) {
+						const offset = parseInt(index, 10) - 2
+						return offset * 20
+					},
+					rotation: function (index) {
+						const offset = parseInt(index, 10) - 2
+						return offset * 2
+					},
+					stagger: -0.1,
+					// rotation: gsap.utils.random(-2, 2),
+					ease: 'back.out(0.3)',
+				}
+			)
 		}
 	}
+	// spreadCards() {
+	// 	const cards = this.base.querySelectorAll('.Card')
+	// 	cards.forEach((card, index) => {
+	// 		const offset = parseInt(index, 10) - 2
+	// 		card.style.transform = ''
+	// 		card.style.transform = `rotate(${offset * 4}deg)`
+	// 	})
+	// }
 	render(props) {
 		return html`
 			<div class="Cards">

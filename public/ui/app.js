@@ -63,12 +63,14 @@ export default class App extends Component {
 	}
 	endTurn() {
 		const x = document.querySelector('.Hand .Cards').getBoundingClientRect().width
-		gsap.to('.Hand .Card', {
-			duration: 0.5,
+		const cards = document.querySelectorAll('.Hand .Card')
+		gsap.killTweensOf(cards).to(cards, {
+			duration: 0.8,
 			rotation: 25,
 			x,
-			stagger: 0.1,
-			ease: 'elastic',
+			stagger: -0.1,
+			scale: 0.5,
+			ease: 'power2.inOut',
 			onComplete: reallyEndTurn.bind(this),
 		})
 		function reallyEndTurn() {
