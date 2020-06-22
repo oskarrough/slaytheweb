@@ -62,7 +62,11 @@ export default class App extends Component {
 			this.game.enqueue({type: 'playCard', card, target})
 			this.dequeue()
 		}
-		gsap.effects.discardCard(cardElement, {onComplete})
+		onComplete()
+		// Create a clone of the card to animate.
+		const clone = cardElement.cloneNode(true)
+		cardElement.parentNode.insertBefore(clone, cardElement)
+		gsap.effects.discardCard(clone)
 	}
 	endTurn() {
 		gsap.effects.discardHand('.Hand .Card', {
