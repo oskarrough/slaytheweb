@@ -2,16 +2,6 @@ import {html, render, Component} from '../web_modules/htm/preact/standalone.modu
 import gsap from './../web_modules/gsap.js'
 import App from './app.js'
 
-// or get other plugins:
-// import Draggable from 'gsap/Draggable'
-// import ScrollTrigger from 'gsap/ScrollTrigger'
-
-// or all tools are exported from the "all" file (excluding bonus plugins):
-// import {gsap, ScrollTrigger, Draggable, MotionPathPlugin} from 'gsap/all'
-
-// don't forget to register plugins
-// gsap.registerPlugin(ScrollTrigger, Draggable, MotionPathPlugin)
-
 // This component decides what to render:
 // A splash screen, a "win" screen or the game/app itself.
 // It also detects if there's a saved game in the URL and allows the player to continue.

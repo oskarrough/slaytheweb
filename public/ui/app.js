@@ -56,10 +56,13 @@ export default class App extends Component {
 		this.game.undo()
 		this.setState(this.game.state)
 	}
-	playCard(cardId, target) {
-		const card = this.state.hand.find((c) => c.id === cardId)
-		this.game.enqueue({type: 'playCard', card, target})
-		this.dequeue()
+	playCard(cardId, target, cardElement) {
+		const onComplete = () => {
+			const card = this.state.hand.find(c => c.id === cardId)
+			this.game.enqueue({type: 'playCard', card, target})
+			this.dequeue()
+		}
+		gsap.effects.discardCard(cardElement, {onComplete})
 	}
 	endTurn() {
 		gsap.effects.discardHand('.Hand .Card', {
