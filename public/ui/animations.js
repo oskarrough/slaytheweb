@@ -1,6 +1,7 @@
 import gsap from './../web_modules/gsap.js'
 
-//
+// https://greensock.com/cheatsheet/
+
 export default gsap
 
 // So we can use it in the browser.
