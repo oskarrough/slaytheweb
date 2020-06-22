@@ -1,8 +1,8 @@
 // Third party dependencies
 import {html, Component} from '../../web_modules/htm/preact/standalone.module.js'
-import gsap from '../../web_modules/gsap.js'
+import gsap from './animations.js'
 
-// Game logic.
+// Game logic
 import createNewGame from '../game/index.js'
 import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../game/utils.js'
 import {getRandomCards} from './../game/cards.js'
@@ -62,20 +62,14 @@ export default class App extends Component {
 		this.dequeue()
 	}
 	endTurn() {
-		const x = document.querySelector('.Hand .Cards').getBoundingClientRect().width
-		const cards = document.querySelectorAll('.Hand .Card')
-		gsap.killTweensOf(cards).to(cards, {
-			duration: 0.8,
-			rotation: 25,
-			x,
-			stagger: -0.1,
-			scale: 0.5,
-			ease: 'power2.inOut',
-			onComplete: reallyEndTurn.bind(this),
+		gsap.effects.discardHand('.Hand .Card', {
+			onComplete: reallyEndTurn.bind(this)
 		})
 		function reallyEndTurn() {
 			this.game.enqueue({type: 'endTurn'})
-			this.dequeue()
+			this.dequeue(() => {
+				gsap.effects.dealCards('.Hand .Card')
+			})
 		}
 	}
 	goToNextRoom() {
