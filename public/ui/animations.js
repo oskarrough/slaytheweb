@@ -16,6 +16,7 @@ window.gsap = gsap
 // don't forget to register plugins
 // gsap.registerPlugin(ScrollTrigger, Draggable, MotionPathPlugin)
 
+// Fly in the cards from the left (draw pile) to your hand.
 gsap.registerEffect({
 	name: 'dealCards',
 	effect: (targets, config) => {
@@ -52,6 +53,7 @@ gsap.registerEffect({
 	}
 })
 
+// Flies all cards in your hand to the right, towards discard pile.
 gsap.registerEffect({
 	name: 'discardHand',
 	effect: (targets, config) => {
@@ -69,23 +71,24 @@ gsap.registerEffect({
 	}
 })
 
-
+// This throws the card out towards the discard pile in the bottom right corner.
 gsap.registerEffect({
 	name: 'discardCard',
 	effect: (targets, config) => {
-		// debugger
-		// gsap.killTweensOf(targets)
-		// const x = window.innerWidth
-		return gsap.fromTo(targets, {
-			autoAlpha: 1},{
-			duration: 0.8,
-			x: window.innerWidth,
-			y: window.innerHeight,
-			rotation: 90,
-			scale: 0.5,
-			ease: 'power2.inOut',
-			onComplete: config.onComplete
-		})
+		return gsap.fromTo(
+			targets,
+			{
+				autoAlpha: 1
+			},
+			{
+				duration: 0.4,
+				x: window.innerWidth,
+				y: window.innerHeight,
+				rotation: 90,
+				scale: 0.5,
+				ease: 'power2.inOut',
+				onComplete: config.onComplete
+			}
+		)
 	}
 })
-
