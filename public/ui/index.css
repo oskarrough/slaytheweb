@@ -189,7 +189,7 @@ h2 {
 	height: 30vh;
 	z-index: -1;
 }
-.App::after {
+.App-background::after {
 	top: initial;
 	bottom: 0;
 	background: linear-gradient(to top, #0f1642, transparent);
