@@ -46,9 +46,11 @@ export default class App extends Component {
 				onAdd(event) {
 					const {item, to} = event
 					const index = Array.from(to.parentNode.children).indexOf(to)
-					let target = to.dataset.type + index
+					const target = to.dataset.type + index
+					// Remove active class from any other targets.
 					targets.forEach((t) => t.classList.remove(overClass))
-					onAdd(item.dataset.id, target)
+					// Callback
+					onAdd(item.dataset.id, target, item)
 				},
 			})
 		})

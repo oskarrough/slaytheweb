@@ -1,7 +1,8 @@
 // Third party dependencies
 import {html, Component} from '../../web_modules/htm/preact/standalone.module.js'
+import gsap from './animations.js'
 
-// Game logic.
+// Game logic
 import createNewGame from '../game/index.js'
 import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../game/utils.js'
 import {getRandomCards} from './../game/cards.js'
@@ -55,14 +56,28 @@ export default class App extends Component {
 		this.game.undo()
 		this.setState(this.game.state)
 	}
-	playCard(cardId, target) {
-		const card = this.state.hand.find((c) => c.id === cardId)
-		this.game.enqueue({type: 'playCard', card, target})
-		this.dequeue()
+	playCard(cardId, target, cardElement) {
+		const onComplete = () => {
+			const card = this.state.hand.find(c => c.id === cardId)
+			this.game.enqueue({type: 'playCard', card, target})
+			this.dequeue()
+		}
+		onComplete()
+		// Create a clone of the card to animate.
+		const clone = cardElement.cloneNode(true)
+		cardElement.parentNode.insertBefore(clone, cardElement)
+		gsap.effects.discardCard(clone)
 	}
 	endTurn() {
-		this.game.enqueue({type: 'endTurn'})
-		this.dequeue()
+		gsap.effects.discardHand('.Hand .Card', {
+			onComplete: reallyEndTurn.bind(this)
+		})
+		function reallyEndTurn() {
+			this.game.enqueue({type: 'endTurn'})
+			this.dequeue(() => {
+				gsap.effects.dealCards('.Hand .Card')
+			})
+		}
 	}
 	goToNextRoom() {
 		this.game.enqueue({type: 'endTurn'})
@@ -101,21 +116,28 @@ export default class App extends Component {
 		return html`
 			<${DragDrop} key=${state.dungeon.index} onAdd=${this.playCard}>
 				<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
-					${isDead &&
-					html`<${Overlay}>
-						<p>You are dead.</p>
-						<button onclick=${() => this.props.onLoose()}>Try again?</button>
-					<//> `}
-					${didWinGame &&
-					html`<${Overlay}>
-						<p center><button onclick=${() => this.props.onWin()}>You win!</button></p>
-					<//> `}
-					${!didWinGame &&
-					didWin &&
-					html`<${Overlay}>
-						<${Rewards} cards=${getRandomCards()} rewardWith=${this.handlePlayerReward} />
-						<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
-					<//> `}
+					<figure class="App-background"></div>
+					${
+						isDead &&
+						html`<${Overlay}>
+							<p>You are dead.</p>
+							<button onclick=${() => this.props.onLoose()}>Try again?</button>
+						<//> `
+					}
+					${
+						didWinGame &&
+						html`<${Overlay}>
+							<p center><button onclick=${() => this.props.onWin()}>You win!</button></p>
+						<//> `
+					}
+					${
+						!didWinGame &&
+						didWin &&
+						html`<${Overlay}>
+							<${Rewards} cards=${getRandomCards()} rewardWith=${this.handlePlayerReward} />
+							<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
+						<//> `
+					}
 
 					<div class="Targets Split">
 						<div class="Targets-group">
