@@ -49,8 +49,8 @@ gsap.registerEffect({
 		})
 	},
 	defaults: {
-		delay: 0.4,
-		duration: 0.8
+		delay: 0.2,
+		duration: 0.4
 	}
 })
 
@@ -61,12 +61,12 @@ gsap.registerEffect({
 		gsap.killTweensOf(targets)
 		const x = window.innerWidth
 		return gsap.to(targets, {
-			duration: 0.8,
+			duration: 0.6,
 			x,
 			rotation: 25,
 			stagger: -0.1,
 			scale: 0.5,
-			ease: 'power2.inOut',
+			ease: 'power2.out',
 			onComplete: config.onComplete
 		})
 	}
@@ -76,20 +76,26 @@ gsap.registerEffect({
 gsap.registerEffect({
 	name: 'discardCard',
 	effect: (targets, config) => {
-		return gsap.fromTo(
-			targets,
-			{
+		const tl = gsap.timeline()
+		return tl.fromTo(targets, {
 				autoAlpha: 1
 			},
 			{
-				duration: 0.4,
-				x: window.innerWidth,
-				y: window.innerHeight,
-				rotation: 90,
-				scale: 0.5,
-				ease: 'power2.inOut',
+				duration: 0.6,
+				y: -100,
+				rotation: 50,
+				scale: 0.8,
+				ease: 'power3.out',
 				onComplete: config.onComplete
 			}
-		)
+		).to(targets, {
+				delay: -0.3,
+				duration: 0.8,
+				scale: 0.5,
+				rotation: 90,
+				x: window.innerWidth,
+				y: window.innerHeight,
+				ease: 'power3.inOut',
+		})
 	}
 })
