@@ -399,12 +399,12 @@ h2 {
 	padding-right: 4rem;
 }
 .Hand .Card {
-	/* opacity: 0; */
 	margin-left: -1.5rem;
 	margin-bottom: -2rem;
-	/* transition-duration: 120ms; */
 	cursor: grab;
 	cursor: url(images/grab-open.png) 10 0, auto;
+	/* hidden because we animate them with js*/
+	opacity: 0;
 }
 .Hand .Card-inner {
 	/* because of negative margin */

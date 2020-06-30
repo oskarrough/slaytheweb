@@ -28,18 +28,21 @@ export default class App extends Component {
 		// Scope methods
 		this.handlePlayerReward = this.handlePlayerReward.bind(this)
 		this.playCard = this.playCard.bind(this)
-
+	}
+	componentDidMount() {
+		function animateCards() {
+			gsap.effects.dealCards('.Hand .Card')
+		}
 		// Set up a new game
 		const game = createNewGame()
 		this.game = game
-		this.state = game.state
-
+		this.setState(game.state, animateCards)
 		// If there is a saved game state, use it.
-		const savedGame = window.location.hash && load()
-		if (savedGame) {
-			this.state = savedGame
+		const savedGameState = window.location.hash && load()
+		if (savedGameState) {
+			this.game.state = savedGameState
+			this.setState(savedGameState, animateCards)
 		}
-
 		// Enable debugging in the browser.
 		window.slaytheweb = {
 			component: this,
@@ -66,7 +69,7 @@ export default class App extends Component {
 		// Create a clone of the card to animate.
 		const clone = cardElement.cloneNode(true)
 		cardElement.parentNode.insertBefore(clone, cardElement)
-		gsap.effects.discardCard(clone)
+		gsap.effects.playCard(clone)
 	}
 	endTurn() {
 		gsap.effects.discardHand('.Hand .Card', {
@@ -108,6 +111,7 @@ export default class App extends Component {
 		if (key === 'm') toggle(this.base.querySelector('.Map'))
 	}
 	render(props, state) {
+		if (!state.player) return
 		const isDead = state.player.currentHealth < 1
 		const didWin = isCurrentRoomCompleted(state)
 		const didWinGame = isDungeonCompleted(state)

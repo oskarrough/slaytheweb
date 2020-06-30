@@ -27,7 +27,8 @@ gsap.registerEffect({
 			rotation: -25,
 			x: -x,
 			y: 100,
-			scale: 0.5
+			scale: 0.5,
+			opacity: 1
 		})
 		return gsap.to(targets, {
 			duration: config.duration,
@@ -35,21 +36,21 @@ gsap.registerEffect({
 			scale: 1,
 			x: 0,
 			y: 0,
-			// y: function (index) {
-			// 	const offset = parseInt(index, 10) - 2
-			// 	return offset * 20
-			// },
-			rotation: function (index) {
-				const offset = parseInt(index, 10) - 2
+			y(index) {
+				const offset = index - 2
+				return offset * offset * 5
+			},
+			rotation(index) {
+				const offset = index - 2
 				return offset * 2
 			},
-			stagger: -0.1,
 			// rotation: gsap.utils.random(-2, 2),
+			stagger: -0.1,
 			ease: 'back.out(0.3)'
 		})
 	},
 	defaults: {
-		delay: 0.2,
+		delay: 0.1,
 		duration: 0.4
 	}
 })
@@ -61,10 +62,10 @@ gsap.registerEffect({
 		gsap.killTweensOf(targets)
 		const x = window.innerWidth
 		return gsap.to(targets, {
-			duration: 0.6,
+			duration: 0.4,
 			x,
 			rotation: 25,
-			stagger: -0.1,
+			stagger: -0.05,
 			scale: 0.5,
 			ease: 'power2.out',
 			onComplete: config.onComplete
@@ -74,7 +75,7 @@ gsap.registerEffect({
 
 // This throws the card out towards the discard pile in the bottom right corner.
 gsap.registerEffect({
-	name: 'discardCard',
+	name: 'playCard',
 	effect: (targets, config) => {
 		const tl = gsap.timeline()
 		return tl.fromTo(targets, {
