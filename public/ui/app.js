@@ -85,7 +85,9 @@ export default class App extends Component {
 	goToNextRoom() {
 		this.game.enqueue({type: 'endTurn'})
 		this.game.enqueue({type: 'goToNextRoom'})
-		this.dequeue(() => this.dequeue())
+		this.dequeue(() => this.dequeue(() => {
+			gsap.effects.dealCards('.Hand .Card')
+		}))
 	}
 	handlePlayerReward(card) {
 		this.game.enqueue({type: 'rewardPlayer', card: card})
