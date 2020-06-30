@@ -421,13 +421,17 @@ h2 {
 }
 
 .Card.sortable-drag {
-	opacity: 0.5;
+	/* opacity: 0.5; */
 }
+
 /* Don't show copy of the dragged card on target */
 .Target .Card {
 	position: absolute;
 	right: 20%;
-	opacity: 0;
+	z-index: 1;
+}
+.Target .Card.sortable-ghost {
+	opacity: 0 !important;
 }
 
 /* Overlays */
