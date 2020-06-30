@@ -17,7 +17,9 @@ export function Card(card, currentEnergy) {
 		<article class="Card" key=${card.id} data-id=${card.id} disabled=${isDisabled}>
 			<div class="Card-inner">
 				<h3 class="Card-title">${card.name}</h3>
-				<p class="Card-energy EnergyBadge">${card.energy}</p>
+				<p class="Card-energy EnergyBadge">
+				<div> ${card.energy} </div>
+				</p>
 				<p class="Card-type">${card.type}</p>
 				<p class="Card-description">${card.description}</p>
 			</div>
