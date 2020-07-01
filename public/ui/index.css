@@ -173,8 +173,12 @@ h2 {
 }
 
 @keyframes fade-in {
-	from { opacity: 0; }
-	to { opacity: 1; }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
@@ -275,7 +279,7 @@ h2 {
 .no-energy .EnergyBadge {
 	background: #272d2b;
 }
-@keyframes pulse{
+@keyframes pulse {
 	from {
 		background: var(--lightblue);
 	}
@@ -402,7 +406,21 @@ h2 {
 	text-align: left;
 	margin: 0 auto;
 }
-
+.Splash-spiderweb {
+	width: 50%;
+	filter: invert();
+	position: absolute;
+	right: -19%;
+	top: -31%;
+	z-index: -1;
+}
+.Splash-spoder {
+	width: 10%;
+	position: absolute;
+	left: -20%;
+	top: 1%;
+	transform: rotate(130deg);
+}
 /* Normal card layout in one row */
 .Cards {
 	display: flex;
