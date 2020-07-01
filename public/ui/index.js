@@ -51,7 +51,7 @@ class SplashScreen extends Component {
 		})
 		gsap.from('.Splash--fadein details', {delay: 0.1, x: -50, duration: 0.4, opacity: 0})
 
-		gsap.to(".Splash-spoder", {x: 180, y: 40, duration: 3, delay: 5})
+		gsap.to(".Splash-spoder", {x: 420, y: 60, duration: 3, delay: 5})
 	}
 	render(props) {
 		return html`
