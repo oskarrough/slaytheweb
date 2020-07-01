@@ -163,7 +163,9 @@ export default class App extends Component {
 								<div>${state.player.currentEnergy}/${state.player.maxEnergy} </div>
 						</div>
 						<p class="Actions">
-							<button onclick=${() => this.endTurn()}><u>E</u>nd turn</button>
+							<button class="EndTurn" onclick=${() => this.endTurn()}>
+							<u>E</u>nd turn
+						</button>
 						</p>
 					</div>
 
