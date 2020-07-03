@@ -85,7 +85,9 @@ export default class App extends Component {
 	goToNextRoom() {
 		this.game.enqueue({type: 'endTurn'})
 		this.game.enqueue({type: 'goToNextRoom'})
-		this.dequeue(() => this.dequeue())
+		this.dequeue(() => this.dequeue(() => {
+			gsap.effects.dealCards('.Hand .Card')
+		}))
 	}
 	handlePlayerReward(card) {
 		this.game.enqueue({type: 'rewardPlayer', card: card})
@@ -116,6 +118,7 @@ export default class App extends Component {
 		const didWin = isCurrentRoomCompleted(state)
 		const didWinGame = isDungeonCompleted(state)
 		const room = getCurrRoom(state)
+		const noEnergy = !state.player.currentEnergy
 		// There's a lot here because I did not want to split into too many files.
 		return html`
 			<${DragDrop} key=${state.dungeon.index} onAdd=${this.playCard}>
@@ -155,12 +158,14 @@ export default class App extends Component {
 						</div>
 					</div>
 
-					<div class="Split">
+					<div class="Split ${noEnergy ? 'no-energy' : ''}">
 						<div class="EnergyBadge">
-							${state.player.currentEnergy}/${state.player.maxEnergy}
+								<div>${state.player.currentEnergy}/${state.player.maxEnergy} </div>
 						</div>
 						<p class="Actions">
-							<button onclick=${() => this.endTurn()}><u>E</u>nd turn</button>
+							<button class="EndTurn" onclick=${() => this.endTurn()}>
+							<u>E</u>nd turn
+						</button>
 						</p>
 					</div>
 

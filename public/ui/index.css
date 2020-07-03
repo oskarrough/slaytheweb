@@ -173,8 +173,12 @@ h2 {
 }
 
 @keyframes fade-in {
-	from { opacity: 0; }
-	to { opacity: 1; }
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
@@ -212,11 +216,15 @@ h2 {
 	justify-content: center;
 	align-items: center;
 	border: 3px solid hsla(0, 0%, 0%, 0.8);
-	border-radius: 50%;
+	transform: rotate(45deg);
 	background-color: var(--teal);
 	text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 	box-shadow: 0 0 0.1em var(--lightblue);
 	margin-left: 1rem;
+	transition: background 700ms;
+}
+.EnergyBadge div {
+	transform: rotate(-45deg);
 }
 
 .Card {
@@ -254,14 +262,35 @@ h2 {
 }
 .Card-energy {
 	position: absolute;
-	top: -1.5em;
-	left: -0.5em;
-	width: 1.7rem;
-	height: 1.9rem;
+	top: -1.3em;
+	left: -0.3em;
+	width: 1.3rem;
+	height: 1.3rem;
 	margin-left: 0;
+	box-shadow: none;
+	border-width: 0.15rem;
+	background: #ad7a41;
+	font-size: small;
 }
 .Card[disabled] .EnergyBadge {
 	color: red;
+}
+
+.no-energy .EnergyBadge {
+	background: #272d2b;
+}
+@keyframes pulse {
+	from {
+		background: var(--lightblue);
+	}
+	to {
+		background: white;
+		box-shadow: 0px 0px 13px 3px var(--yellow);
+	}
+}
+.no-energy button {
+	animation: pulse 1.5s infinite alternate;
+	animation-timing-function: ease-out;
 }
 
 .Targets {
@@ -377,7 +406,21 @@ h2 {
 	text-align: left;
 	margin: 0 auto;
 }
-
+.Splash-spiderweb {
+	width: 50%;
+	filter: invert();
+	position: absolute;
+	right: -19%;
+	top: -31%;
+	z-index: -1;
+}
+.Splash-spoder {
+	width: 10%;
+	position: absolute;
+	left: -20%;
+	top: 1%;
+	transform: rotate(130deg);
+}
 /* Normal card layout in one row */
 .Cards {
 	display: flex;
@@ -561,4 +604,7 @@ h2 {
 
 [center] {
 	text-align: center;
+}
+.EndTurn:hover {
+	box-shadow: 0px 0px 15px 10px var(--yellow);
 }
