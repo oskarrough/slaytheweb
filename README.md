@@ -12,8 +12,10 @@ Why what? After many runs in the Spire, I really got into the theory behind the 
 
 ## How to work on the code
 
-1. `yarn build` downloads ESM dependencies into ./public/web_modules 
-2. `yarn start` starts a local file server on ./public folder
+You will need `yarn` or `npm` installed on your computer.
+
+1. Run `yarn build` once. It downloads ESM dependencies into ./public/web_modules 
+2. Run `yarn start` to start a local file server 
 
 - The `public/game` folder contains the game engine
 - The `public/index.html` and `public/ui` is an example interface/website

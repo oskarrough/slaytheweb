@@ -47,7 +47,8 @@ function Healthbar({value, max, block}) {
 	return html`
 		<div class="Healthbar ${block ? `Healthbar--hasBlock` : ''}">
 			<p class="Healthbar-label">
-				${block ? html`<strong>[${block}]</strong>` : ''} ${value}/${max}</p>
+				${block ? html`<strong>[${block}]</strong>` : ''} ${value}/${max}
+			</p>
 			<div class="Healthbar-bar" style=${`width: ${(value / max) * 100}%`}></div>
 		</div>
 	`

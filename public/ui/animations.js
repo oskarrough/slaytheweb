@@ -28,14 +28,13 @@ gsap.registerEffect({
 			x: -x,
 			y: 100,
 			scale: 0.5,
-			opacity: 1
+			opacity: 1,
 		})
 		return gsap.to(targets, {
 			duration: config.duration,
 			delay: config.delay,
 			scale: 1,
 			x: 0,
-			y: 0,
 			y(index) {
 				const offset = index - 2
 				return offset * offset * 5
@@ -46,13 +45,13 @@ gsap.registerEffect({
 			},
 			// rotation: gsap.utils.random(-2, 2),
 			stagger: -0.1,
-			ease: 'back.out(0.3)'
+			ease: 'back.out(0.3)',
 		})
 	},
 	defaults: {
 		delay: 0.1,
-		duration: 0.4
-	}
+		duration: 0.4,
+	},
 })
 
 // Flies all cards in your hand to the right, towards discard pile.
@@ -68,9 +67,9 @@ gsap.registerEffect({
 			stagger: -0.05,
 			scale: 0.5,
 			ease: 'power2.out',
-			onComplete: config.onComplete
+			onComplete: config.onComplete,
 		})
-	}
+	},
 })
 
 // This throws the card out towards the discard pile in the bottom right corner.
@@ -78,18 +77,22 @@ gsap.registerEffect({
 	name: 'playCard',
 	effect: (targets, config) => {
 		const tl = gsap.timeline()
-		return tl.fromTo(targets, {
-				autoAlpha: 1
-			},
-			{
-				duration: 0.6,
-				y: -100,
-				rotation: 50,
-				scale: 0.8,
-				ease: 'power3.out',
-				onComplete: config.onComplete
-			}
-		).to(targets, {
+		return tl
+			.fromTo(
+				targets,
+				{
+					autoAlpha: 1,
+				},
+				{
+					duration: 0.6,
+					y: -100,
+					rotation: 50,
+					scale: 0.8,
+					ease: 'power3.out',
+					onComplete: config.onComplete,
+				}
+			)
+			.to(targets, {
 				delay: -0.3,
 				duration: 0.8,
 				scale: 0.5,
@@ -97,6 +100,6 @@ gsap.registerEffect({
 				x: window.innerWidth,
 				y: window.innerHeight,
 				ease: 'power3.inOut',
-		})
-	}
+			})
+	},
 })

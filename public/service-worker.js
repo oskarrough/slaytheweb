@@ -16,16 +16,13 @@ if (workbox) {
 precacheAndRoute([{url: '/index.html', revision: '2'}])
 
 // Cache script resources, i.e. JS files.
-registerRoute(
-  ({request}) => request.destination === 'script',
-  new NetworkFirst()
-)
+registerRoute(({request}) => request.destination === 'script', new NetworkFirst())
 
 // Cache style resources, i.e. CSS files.
 registerRoute(
-  ({request}) => request.destination === 'style',
-  // Use cache but update in the background.
-  new StaleWhileRevalidate()
+	({request}) => request.destination === 'style',
+	// Use cache but update in the background.
+	new StaleWhileRevalidate()
 )
 
 // Also cache images.

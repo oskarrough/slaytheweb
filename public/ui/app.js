@@ -61,7 +61,7 @@ export default class App extends Component {
 	}
 	playCard(cardId, target, cardElement) {
 		const onComplete = () => {
-			const card = this.state.hand.find(c => c.id === cardId)
+			const card = this.state.hand.find((c) => c.id === cardId)
 			this.game.enqueue({type: 'playCard', card, target})
 			this.dequeue()
 		}
@@ -73,7 +73,7 @@ export default class App extends Component {
 	}
 	endTurn() {
 		gsap.effects.discardHand('.Hand .Card', {
-			onComplete: reallyEndTurn.bind(this)
+			onComplete: reallyEndTurn.bind(this),
 		})
 		function reallyEndTurn() {
 			this.game.enqueue({type: 'endTurn'})
@@ -85,9 +85,11 @@ export default class App extends Component {
 	goToNextRoom() {
 		this.game.enqueue({type: 'endTurn'})
 		this.game.enqueue({type: 'goToNextRoom'})
-		this.dequeue(() => this.dequeue(() => {
-			gsap.effects.dealCards('.Hand .Card')
-		}))
+		this.dequeue(() =>
+			this.dequeue(() => {
+				gsap.effects.dealCards('.Hand .Card')
+			})
+		)
 	}
 	handlePlayerReward(card) {
 		this.game.enqueue({type: 'rewardPlayer', card: card})
