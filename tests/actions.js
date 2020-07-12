@@ -142,6 +142,20 @@ test('can play a strike card from hand and see the effects on state', (t) => {
 	t.is(getTargets(state2, 'enemy0')[0].currentHealth, originalHealth - card.damage)
 })
 
+test('Applying weak makes a monster deal 25% less damage', (t) => {
+	let {state} = t.context
+	t.is(getTargets(state, 'player')[0].currentHealth, 72)
+	t.deepEqual(
+		getTargets(state, 'enemy0')[0].intents[1],
+		{damage: 10},
+		'second turn monster deals 10 dmg'
+	)
+	let nextState = a.endTurn(state)
+	getTargets(nextState, 'enemy0')[0].powers.weak = 2
+	nextState = a.endTurn(nextState)
+	t.is(getTargets(nextState, 'player')[0].currentHealth, 65)
+})
+
 test('Applying weak makes you deal 25% less damage', (t) => {
 	let {state} = t.context
 	t.is(getTargets(state, 'enemy0')[0].currentHealth, 42)
