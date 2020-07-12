@@ -55,14 +55,14 @@ test('monster can apply vulnerable and weak', (t) => {
 	})
 	state.dungeon.rooms[0].monsters[0] = monster
 	state = a.endTurn(state)
-	t.is(state.player.powers.vulnerable, 2)
-	state = a.endTurn(state)
 	t.is(state.player.powers.vulnerable, 1)
-	t.is(state.player.powers.weak, 5)
+	state = a.endTurn(state)
+	t.is(state.player.powers.vulnerable, 0)
+	t.is(state.player.powers.weak, 4)
 	state = a.endTurn(state)
 	state = a.endTurn(state)
-	t.is(state.player.powers.vulnerable, 1, '1 because it lost one and gained 2')
-	t.is(state.player.powers.weak, 8, 'same logic')
+	t.is(state.player.powers.vulnerable, 0)
+	t.is(state.player.powers.weak, 7)
 })
 
 test('two monsters both do damage in same turn', (t) => {

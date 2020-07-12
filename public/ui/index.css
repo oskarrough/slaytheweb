@@ -396,6 +396,7 @@ h2 {
 	flex-flow: column;
 	text-align: center;
 	padding: 0 1rem;
+	overflow: hidden;
 }
 .Splash h2 {
 	margin-bottom: 1rem;
