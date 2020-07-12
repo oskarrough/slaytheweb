@@ -215,8 +215,8 @@ function endTurn(state) {
 			draft.player.currentHealth = newHealth
 		})
 	}
-	newState = decreasePowerStacks(newState)
 	newState = takeMonsterTurn(newState)
+	newState = decreasePowerStacks(newState)
 	newState = newTurn(newState)
 	return newState
 }
@@ -267,11 +267,10 @@ function takeMonsterTurn(state) {
 			}
 
 			if (intent.damage) {
-				var newHp = removeHealth(draft, {
-					target: 'player',
-					amount: intent.damage,
-					// amount: shuffle(range(5, monster.damage - 2))[0]
-				}).player.currentHealth
+				let amount = intent.damage
+				if (monster.powers.weak) amount = powers.weak.use(amount)
+				// amount = shuffle(range(5, monster.damage - 2))[0]
+				const newHp = removeHealth(draft, {target: 'player', amount}).player.currentHealth
 				draft.player.currentHealth = newHp
 			}
 
