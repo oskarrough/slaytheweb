@@ -130,4 +130,4 @@ A collection of related links, inspiration and ideas.
 - [Slay the Spire Discord](https://discord.gg/slaythespire)
 - https://klei.com/games/griftlands
 - https://github.com/adnzzzzZ/blog
-- https://news.ycombinator.com/item?id=23910006
+- https://forgottenarbiter.github.io/Is-Every-Seed-Winnable/ ([discussion](https://news.ycombinator.com/item?id=23910006))
