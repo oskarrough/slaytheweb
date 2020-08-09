@@ -409,14 +409,6 @@ h2 {
 	text-align: left;
 	margin: 0 auto;
 }
-.Splash-spiderweb {
-	width: 50%;
-	filter: invert();
-	position: absolute;
-	right: -19%;
-	top: -31%;
-	z-index: -1;
-}
 .Splash-spoder {
 	width: 10%;
 	position: absolute;

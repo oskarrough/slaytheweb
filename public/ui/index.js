@@ -41,7 +41,7 @@ class Main extends Component {
 
 class SplashScreen extends Component {
 	componentDidMount() {
-		gsap.from('.Splash--fadein', {duration: 0.5, opacity: 0, scale: 0.9})
+		gsap.from('.Splash--fadein', {duration: 0.5, autoAlpha: 0, scale: 0.95})
 		gsap.from('.Splash--fadein button', {
 			delay: 0.2,
 			duration: 1,
@@ -50,7 +50,6 @@ class SplashScreen extends Component {
 			ease: 'bounce',
 		})
 		gsap.from('.Splash--fadein details', {delay: 0.1, x: -50, duration: 0.4, opacity: 0})
-
 		gsap.to('.Splash-spoder', {x: 420, y: 60, duration: 3, delay: 5})
 	}
 	render(props) {
@@ -58,7 +57,6 @@ class SplashScreen extends Component {
 			<article class="Splash Splash--fadein">
 				<h1>Slay the Web</h1>
 				<h2>A little card crawl adventure for you and your browser.</h2>
-				<img class="Splash-spiderweb" src="ui/images/spiderweb.png" />
 				<img class="Splash-spoder" src="ui/images/spoder.png"/>
 				${
 					location.hash &&
@@ -70,7 +68,6 @@ class SplashScreen extends Component {
 					`
 				}
 				<p><button autofocus onClick=${props.onNewGame}>Play</a></p>
-
 				<details class="Splash-details">
 					<summary>Tutorial</summary>
 					<p>Slay the Web is a single player card game where you fight monsters to reach the end of the web. It's a game of planning and knowing when to play which card.</p>
