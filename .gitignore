@@ -1,10 +1,9 @@
-package-lock.json
-node_modules/
-.DS_Store
 *.swp
-yarn-error.log
-public/web_modules/
-docs/
+.DS_Store
+.now
 .nyc_output
 coverage/
-.now
+docs/
+node_modules/
+package-lock.json
+yarn-error.log
