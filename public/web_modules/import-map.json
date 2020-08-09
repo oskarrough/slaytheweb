@@ -1,0 +1,8 @@
+{
+  "imports": {
+    "gsap": "./gsap.js",
+    "htm/preact/standalone.module.js": "./htm/preact/standalone.module.js",
+    "immer": "./immer.js",
+    "sortablejs/modular/sortable.core.esm.js": "./sortablejs/modular/sortable.core.esm.js"
+  }
+}
