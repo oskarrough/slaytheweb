@@ -56,7 +56,8 @@ html {
 
 html,
 button {
-	font-family: 'Port Lligat Slab', serif;
+	font-family: 'concourse_t3', 'Port Lligat Slab', serif;
+	font-feature-settings: 'kern' 1;
 }
 
 body {
@@ -253,6 +254,7 @@ h2 {
 	user-select: none;
 }
 .Card-type {
+	font-family: 'concourse_c3';
 	margin-top: -0.5em;
 	font-size: small;
 	opacity: 0.6;
@@ -608,4 +610,50 @@ h2 {
 }
 .EndTurn:hover {
 	box-shadow: 0px 0px 15px 10px var(--yellow);
+}
+
+/**
+ * Fonts
+ */
+
+@font-face {
+	font-family: 'concourse_c3';
+	src: url('fonts/concourse/concourse_c3_regular.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/* @font-face { */
+/* 	font-family: 'concourse_c3'; */
+/* 	src: url('fonts/concourse/concourse_c4_regular.woff') format('woff'); */
+/* 	font-weight: bold; */
+/* 	font-style: normal; */
+/* } */
+
+@font-face {
+	font-family: 'concourse_t3';
+	src: url('fonts/concourse/concourse_t3_regular.woff') format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'concourse_t3';
+	src: url('fonts/concourse/concourse_t3_italic.woff') format('woff');
+	font-weight: normal;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'concourse_t3';
+	src: url('fonts/concourse/concourse_t3_bold.woff') format('woff');
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'concourse_t3';
+	src: url('fonts/concourse/concourse_t3_bold_italic.woff') format('woff');
+	font-weight: bold;
+	font-style: italic;
 }
