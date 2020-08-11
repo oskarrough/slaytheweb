@@ -224,8 +224,8 @@ function endTurn(state) {
 			draft.player.currentHealth = newHealth
 		})
 	}
-	newState = takeMonsterTurn(newState)
 	newState = decreasePlayerPowerStacks(newState)
+	newState = takeMonsterTurn(newState)
 	newState = decreaseMonsterPowerStacks(newState)
 	newState = newTurn(newState)
 	return newState
