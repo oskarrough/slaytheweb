@@ -237,7 +237,7 @@ function reshuffleAndDraw(state) {
 	const nextState = produce(state, (draft) => {
 		draft.hand = []
 		draft.discardPile = []
-		draft.drawPile = draft.deck
+		draft.drawPile = shuffle(draft.deck)
 	})
 	return drawCards(nextState)
 }
