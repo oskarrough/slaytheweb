@@ -1,11 +1,7 @@
 import gsap from './../web_modules/gsap.js'
+import {Draggable} from './../web_modules/gsap/Draggable.js'
 
 // https://greensock.com/cheatsheet/
-
-export default gsap
-
-// So we can use it in the browser.
-window.gsap = gsap
 
 // or get other plugins:
 // import Draggable from 'gsap/Draggable'
@@ -16,6 +12,7 @@ window.gsap = gsap
 
 // don't forget to register plugins
 // gsap.registerPlugin(ScrollTrigger, Draggable, MotionPathPlugin)
+gsap.registerPlugin(Draggable)
 
 // Fly in the cards from the left (draw pile) to your hand.
 gsap.registerEffect({
@@ -103,3 +100,8 @@ gsap.registerEffect({
 			})
 	},
 })
+
+export default gsap
+
+// So we can use it in the browser.
+window.gsap = gsap

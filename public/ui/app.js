@@ -9,12 +9,12 @@ import {getRandomCards} from './../game/cards.js'
 
 // UI Components
 import Cards from './cards.js'
-import DragDrop from './dragdrop.js'
 import History from './history.js'
 import Map from './map.js'
 import Overlay from './overlay.js'
 import {Player, Monster} from './player.js'
 import Rewards from './rewards.js'
+import enableDragDrop from './dragdrop.js'
 
 // Puts and gets the game state in the URL.
 const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state)))
@@ -32,6 +32,7 @@ export default class App extends Component {
 	componentDidMount() {
 		function animateCards() {
 			gsap.effects.dealCards('.Hand .Card')
+			enableDragDrop(this.base, this.playCard)
 		}
 		// Set up a new game
 		const game = createNewGame()
@@ -57,7 +58,10 @@ export default class App extends Component {
 	}
 	undo() {
 		this.game.undo()
-		this.setState(this.game.state)
+		this.setState(this.game.state, () => {
+			gsap.effects.dealCards('.Hand .Card')
+			enableDragDrop(this.base, this.playCard)
+		})
 	}
 	playCard(cardId, target, cardElement) {
 		const onComplete = () => {
@@ -69,7 +73,9 @@ export default class App extends Component {
 		// Create a clone of the card to animate.
 		const clone = cardElement.cloneNode(true)
 		cardElement.parentNode.insertBefore(clone, cardElement)
-		gsap.effects.playCard(clone)
+		gsap.effects.playCard(clone).then(() => {
+			clone.parentNode.removeChild(clone)
+		})
 	}
 	endTurn() {
 		gsap.effects.discardHand('.Hand .Card', {
@@ -79,6 +85,7 @@ export default class App extends Component {
 			this.game.enqueue({type: 'endTurn'})
 			this.dequeue(() => {
 				gsap.effects.dealCards('.Hand .Card')
+				enableDragDrop(this.base, this.playCard)
 			})
 		}
 	}
@@ -88,6 +95,7 @@ export default class App extends Component {
 		this.dequeue(() =>
 			this.dequeue(() => {
 				gsap.effects.dealCards('.Hand .Card')
+				enableDragDrop(this.base, this.playCard)
 			})
 		)
 	}
@@ -123,7 +131,6 @@ export default class App extends Component {
 		const noEnergy = !state.player.currentEnergy
 		// There's a lot here because I did not want to split into too many files.
 		return html`
-			<${DragDrop} key=${state.dungeon.index} onAdd=${this.playCard}>
 				<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
 					<figure class="App-background"></div>
 					${
@@ -204,7 +211,6 @@ export default class App extends Component {
 						<${Cards} cards=${state.discardPile} />
 					</details>
 				</div>
-			<//>
 		`
 	}
 }

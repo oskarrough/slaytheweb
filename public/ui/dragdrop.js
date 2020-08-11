@@ -1,61 +1,47 @@
 import {html, Component} from '../../web_modules/htm/preact/standalone.module.js'
-import {Sortable, OnSpill} from '../../web_modules/sortablejs/modular/sortable.core.esm.js'
-
-// Enable required plugin for the 'revertOnSpill' option.
-Sortable.mount(OnSpill)
+import {Draggable} from './../web_modules/gsap/Draggable.js'
+import gsap from './animations.js'
 
 // Class to add to the element we are dragging over.
 const overClass = 'is-dragOver'
 
-export default class App extends Component {
-	componentDidMount() {
-		this.enableDrop()
-	}
-	enableDrop() {
-		const cards = this.base.querySelector('.Hand .Cards')
-		const targets = this.base.querySelectorAll('.Target')
-		const {onAdd} = this.props
+export default function enableDragDrop(container, onAdd) {
+	const targets = container.querySelectorAll('.Target')
 
-		// Allow dragging cards.
-		new Sortable(cards, {
-			group: 'cards',
-			draggable: '.Card:not([disabled])',
-			sort: false,
-			revertOnSpill: true,
-			onSpill() {
-				targets.forEach((t) => t.classList.remove(overClass))
+	container.querySelectorAll('.Hand .Card').forEach(card => {
+		Draggable.create(card, {
+			// While dragging, highlight any targets we are dragging over.
+			onDrag() {
+				let i = targets.length
+				while (--i > -1) {
+					if (this.hitTest(targets[i], '50%')) {
+						targets[i].classList.add(overClass)
+					} else {
+						targets[i].classList.remove(overClass)
+					}
+				}
 			},
-			onMove(event) {
-				// Highlight the target you are holding a card over.
-				// Do as little as possible here. It gets called a lot.
-				targets.forEach((t) => t.classList.remove(overClass))
-				event.to.classList.add(overClass)
-			},
+			onRelease() {
+				// Which target are we dropping the card on?
+				let targetElement = undefined
+				let i = targets.length
+				while (--i > -1) {
+					if (this.hitTest(targets[i], '50%')) {
+						targetElement = targets[i]
+						break
+					}
+				}
+				if (targetElement) {
+					const cardElement = this.target
+					const index = Array.from(targetElement.parentNode.children).indexOf(targetElement)
+					const target = targetElement.dataset.type + index
+					onAdd(cardElement.dataset.id, target, cardElement)
+				} else {
+					gsap.to(this.target, {x: this.startX, y: this.startY})
+				}
+				// Remove active class from any other targets.
+				targets.forEach(t => t.classList.remove(overClass))
+			}
 		})
-
-		// Allow dropping cards on top of "targets". Dropping a card triggers props.onAdd().
-		targets.forEach((el) => {
-			new Sortable(el, {
-				group: {
-					name: 'target',
-					pull: false,
-					put: ['cards'],
-				},
-				draggable: '.TRICKYOUCANT',
-				// When you drop, play the card.
-				onAdd(event) {
-					const {item, to} = event
-					const index = Array.from(to.parentNode.children).indexOf(to)
-					const target = to.dataset.type + index
-					// Remove active class from any other targets.
-					targets.forEach((t) => t.classList.remove(overClass))
-					// Callback
-					onAdd(item.dataset.id, target, item)
-				},
-			})
-		})
-	}
-	render({children}) {
-		return html`<div class="DragDrop">${children}</div>`
-	}
+	})
 }
