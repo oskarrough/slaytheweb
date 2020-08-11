@@ -18,7 +18,8 @@ class Main extends Component {
 		this.handleLoadGame = this.handleLoadGame.bind(this)
 	}
 	handleNewGame() {
-		window.location.hash = ''
+		// Clear any previous saved game.
+		window.history.pushState('', document.title, window.location.pathname)
 		this.setState({isPlaying: true, didWin: false})
 	}
 	handleWin() {
