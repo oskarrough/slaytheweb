@@ -74,7 +74,7 @@ export default class App extends Component {
 		const clone = cardElement.cloneNode(true)
 		cardElement.parentNode.insertBefore(clone, cardElement)
 		gsap.effects.playCard(clone).then(() => {
-			clone.remove()
+			clone.parentNode.removeChild(clone)
 		})
 	}
 	endTurn() {
