@@ -9,6 +9,7 @@ import {createSimpleDungeon} from './dungeon-encounters.js'
 // This is the big object of game state. Everything should start here.
 function createNewGame() {
 	return {
+		turn: 1,
 		deck: [],
 		drawPile: [],
 		hand: [],
@@ -226,6 +227,7 @@ function newTurn(state) {
 	let newState = drawCards(state)
 
 	return produce(newState, (draft) => {
+		draft.turn++
 		draft.player.currentEnergy = 3
 		draft.player.block = 0
 	})

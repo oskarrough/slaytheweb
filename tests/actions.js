@@ -19,6 +19,7 @@ test('new game state is ok', (t) => {
 	t.true(state.dungeon.rooms.length > 0, 'we have a dungeon with rooms')
 	delete state.dungeon // deleting for rest of test because can't deepequal ids
 	t.deepEqual(state, {
+		turn: 1,
 		deck: [],
 		drawPile: [],
 		hand: [],

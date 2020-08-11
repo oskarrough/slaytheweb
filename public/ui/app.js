@@ -157,12 +157,12 @@ export default class App extends Component {
 
 					<div class="Targets Split">
 						<div class="Targets-group">
-							<${Player} model=${state.player} name="You" />
+							<${Player} model=${state.player} name="Player" />
 						</div>
 						<div class="Targets-group">
 							${room.monsters.map(
 								(monster, index) =>
-									html` <${Monster} model=${monster} name=${`Monster ${index}`} /> `
+									html` <${Monster} model=${monster} name=${`Monster ${index + 1}`} /> `
 							)}
 						</div>
 					</div>
