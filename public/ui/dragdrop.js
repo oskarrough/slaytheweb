@@ -1,6 +1,8 @@
 import {html, Component} from '../../web_modules/htm/preact/standalone.module.js'
 import {Draggable} from './../web_modules/gsap/Draggable.js'
 import gsap from './animations.js'
+import {cards} from '../game/cards.js'
+import {canPlayCard} from '../game/utils.js'
 
 // Class to add to the element we are dragging over.
 const overClass = 'is-dragOver'
@@ -12,7 +14,7 @@ export default function enableDragDrop(container, onAdd) {
 		Draggable.create(card, {
 			// While dragging, highlight any targets we are dragging over.
 			onDrag() {
-				if(this.target.attributes.disabled) {
+				if (this.target.attributes.disabled) {
 					this.endDrag()
 				}
 				let i = targets.length
@@ -34,14 +36,24 @@ export default function enableDragDrop(container, onAdd) {
 						break
 					}
 				}
-				if (targetElement) {
-					const cardElement = this.target
-					const index = Array.from(targetElement.parentNode.children).indexOf(targetElement)
-					const target = targetElement.dataset.type + index
-					onAdd(cardElement.dataset.id, target, cardElement)
-				} else {
-					gsap.to(this.target, {x: this.startX, y: this.startY})
+
+				if (!targetElement) {
+					return gsap.to(this.target, {x: this.startX, y: this.startY})
 				}
+
+				const cardElement = this.target
+				const targetIndex  = Array.from(targetElement.parentNode.children).indexOf(targetElement)
+				const target = targetElement.dataset.type + targetIndex
+
+				// Check if the card allows us to drop it here.
+				const cardName = cardElement.querySelector('.Card-title').textContent
+				const card = cards.find(c => c.name === cardName)
+				if (!canPlayCard(card, target)) {
+					return gsap.to(this.target, {x: this.startX, y: this.startY})
+				}
+
+				onAdd(cardElement.dataset.id, target, cardElement)
+
 				// Remove active class from any other targets.
 				targets.forEach(t => t.classList.remove(overClass))
 			}

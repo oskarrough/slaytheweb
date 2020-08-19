@@ -57,12 +57,10 @@ export default class App extends Component {
 		this.setState(this.game.state, this.dealCards)
 	}
 	playCard(cardId, target, cardElement) {
-		const onComplete = () => {
-			const card = this.state.hand.find((c) => c.id === cardId)
-			this.game.enqueue({type: 'playCard', card, target})
-			this.dequeue()
-		}
-		onComplete()
+		// Play the card.
+		const card = this.state.hand.find((c) => c.id === cardId)
+		this.game.enqueue({type: 'playCard', card, target})
+		this.dequeue()
 		// Create a clone of the card to animate.
 		const clone = cardElement.cloneNode(true)
 		cardElement.parentNode.insertBefore(clone, cardElement)
