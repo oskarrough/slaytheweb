@@ -112,7 +112,6 @@ export class Card {
 		this.powers = props.powers
 		this.description = props.description
 		this.conditions = props.conditions
-
 	}
 }
 
@@ -154,7 +153,7 @@ export function getRandomCards(amount = 3) {
 // 		},
 // 		conditions: [
 // 			{
-// 				action: enum',
+// 				action: enum,
 // 				type: enum
 // 			}
 // 		]
