@@ -30,14 +30,10 @@ export default class App extends Component {
 		this.playCard = this.playCard.bind(this)
 	}
 	componentDidMount() {
-		function animateCards() {
-			gsap.effects.dealCards('.Hand .Card')
-			enableDragDrop(this.base, this.playCard)
-		}
 		// Set up a new game
 		const game = createNewGame()
 		this.game = game
-		this.setState(game.state, animateCards)
+		this.setState(game.state, this.dealCards)
 		// If there is a saved game state, use it.
 		const savedGameState = window.location.hash && load()
 		if (savedGameState) {
@@ -58,10 +54,7 @@ export default class App extends Component {
 	}
 	undo() {
 		this.game.undo()
-		this.setState(this.game.state, () => {
-			gsap.effects.dealCards('.Hand .Card')
-			enableDragDrop(this.base, this.playCard)
-		})
+		this.setState(this.game.state, this.dealCards)
 	}
 	playCard(cardId, target, cardElement) {
 		const onComplete = () => {
@@ -83,20 +76,18 @@ export default class App extends Component {
 		})
 		function reallyEndTurn() {
 			this.game.enqueue({type: 'endTurn'})
-			this.dequeue(() => {
-				gsap.effects.dealCards('.Hand .Card')
-				enableDragDrop(this.base, this.playCard)
-			})
+			this.dequeue(this.dealCards)
 		}
+	}
+	dealCards() {
+		gsap.effects.dealCards('.Hand .Card')
+		enableDragDrop(this.base, this.playCard)
 	}
 	goToNextRoom() {
 		this.game.enqueue({type: 'endTurn'})
 		this.game.enqueue({type: 'goToNextRoom'})
 		this.dequeue(() =>
-			this.dequeue(() => {
-				gsap.effects.dealCards('.Hand .Card')
-				enableDragDrop(this.base, this.playCard)
-			})
+			this.dequeue(this.dealCards)
 		)
 	}
 	handlePlayerReward(card) {
