@@ -54,7 +54,7 @@ export const cards = [
 		energy: 1,
 		damage: 5,
 		block: 5,
-		target: 'self and enemy',
+		target: 'enemy',
 		description: 'Gain 5 Block. Deal 5 damage.',
 	},
 	{
