@@ -398,6 +398,21 @@ test('add a reward card in the deck after winning a room', (t) => {
 	t.is(newState.deck.length, 11)
 })
 
+test('can not play card if target doesnt match', (t) => {
+	const {state} = t.context
+	const card = createCard('Strike')
+	t.throws(() => {
+		const nextState = a.playCard(state, {card, target: 'yolo'})
+	})
+	t.throws(() => {
+		const nextState = a.playCard(state, {card, target: 'enemy1'})
+	})
+	t.throws(() => {
+		const nextState = a.playCard(state, {card, target: 'naaah'})
+	})
+	const nextState = a.playCard(state, {card, target: 'player'})
+})
+
 test.todo('playing defend on an enemy ?')
 test.todo('Cleave targets all monsters')
 test.todo('can apply a power to a specific monster')
