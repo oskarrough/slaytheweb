@@ -12,6 +12,9 @@ export default function enableDragDrop(container, onAdd) {
 		Draggable.create(card, {
 			// While dragging, highlight any targets we are dragging over.
 			onDrag() {
+				if(this.target.attributes.disabled) {
+					this.endDrag()
+				}
 				let i = targets.length
 				while (--i > -1) {
 					if (this.hitTest(targets[i], '50%')) {
