@@ -5,14 +5,29 @@ export default class Cards extends Component {
 	render(props) {
 		return html`
 			<div class="Cards">
-				${props.cards.map((card) => Card(card, props.energy))}
+				${props.cards.map(card => Card(card, props.energy, props.cards))}
 			</div>
 		`
 	}
 }
 
-export function Card(card, currentEnergy) {
-	const isDisabled = currentEnergy < card.energy
+
+
+export function Card(card, currentEnergy, cards) {
+	let isDisabled = currentEnergy < card.energy;
+
+	if(card.conditions && cards) {
+		card.conditions.forEach(condition => {
+			if (condition.action === 'ONLY') {
+				cards.forEach(card => {
+					if(card.type !== condition.type) {
+						isDisabled = true;		
+					}
+				})
+			}
+		});
+	}
+
 	return html`
 		<article class="Card" key=${card.id} data-id=${card.id} disabled=${isDisabled}>
 			<div class="Card-inner">
