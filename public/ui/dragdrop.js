@@ -46,7 +46,7 @@ export default function enableDragDrop(container, onAdd) {
 				const target = targetElement.dataset.type + targetIndex
 
 				// Check if the card allows us to drop it here.
-				const cardName = cardElement.querySelector('.Card-title').textContent
+				const cardName = cardElement.querySelector('.Card-name').textContent
 				const card = cards.find(c => c.name === cardName)
 				if (!canPlayCard(card, target)) {
 					return gsap.to(this.target, {x: this.startX, y: this.startY})
