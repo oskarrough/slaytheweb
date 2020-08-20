@@ -99,12 +99,12 @@ const discardHand = (state) =>
 // The funky part of this action is the `target` argument. It needs to be a special type of string:
 // Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getTargets
 function playCard(state, {card, target}) {
-	target = target ? target : card.target
+	if (!target) target = card.target
+	if (typeof target !== 'string')
+		throw new Error(`Wrong target to play card: ${target},${card.target}`)
 	if (target === 'enemy') throw new Error('Did you mean "enemy0" or "all enemies"?')
 	if (!card) throw new Error('No card to play')
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
-	if (!target || typeof target !== 'string')
-		throw new Error(`Wrong target to play card: ${target},${card.target}`)
 	let newState = discardCard(state, {card})
 	newState = produce(newState, (draft) => {
 		// Use energy

@@ -60,7 +60,11 @@ export function getTargets(state, target) {
 }
 
 export function canPlayCard(card, target) {
-	return card.target === 'player' && target.includes('player') || card.target === 'enemy' && target.includes('enemy')
+	return (
+		(card.target === 'player' && target.includes('player')) ||
+		(card.target === 'enemy' && target.includes('enemy')) ||
+		(card.target === 'all enemies' && target.includes('enemy'))
+	)
 }
 
 export function isRoomCompleted(room) {
