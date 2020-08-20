@@ -16,7 +16,7 @@ export function Card(card, currentEnergy) {
 	return html`
 		<article class="Card" key=${card.id} data-id=${card.id} disabled=${isDisabled}>
 			<div class="Card-inner">
-				<h3 class="Card-title">${card.name}</h3>
+				<h3 class="Card-name">${card.name}</h3>
 				<p class="Card-energy EnergyBadge">
 				<div> ${card.energy} </div>
 				</p>
