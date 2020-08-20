@@ -18,6 +18,13 @@ export const cards = [
 		type: 'Attack',
 		energy: 1,
 		target: 'enemy',
+		conditions: [
+			{
+				action: 'ATLEAST',
+				amount: 2,
+				type: 'Skill'
+			}
+		],
 		damage: 6,
 		description: 'Deal 6 Damage.',
 	},
@@ -27,6 +34,12 @@ export const cards = [
 		energy: 2,
 		damage: 8,
 		target: 'enemy',
+		// conditions: [
+		// 	{
+		// 		action: 'NONE',
+		// 		type: 'Skill'
+		// 	}
+		// ],
 		powers: {
 			vulnerable: 2,
 		},
@@ -140,6 +153,12 @@ export function getRandomCards(amount = 3) {
 // target = [ENEMY, ALL_ENEMY, PLAYER, NONE, SELF_AND_ENEMY, ALL]
 // this.color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
 // this.rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
+// this.conditions = [
+// 		{
+// 			action: ['ONLY', 'NONE'],
+// 			type: this.type
+// 		}
+// ]
 //    this.card = {
 // 		name: enum,
 // 		type: enum,

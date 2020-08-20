@@ -20,10 +20,29 @@ function isCardDisabled(card, currentEnergy, cards) {
 	// Should probably be a isolated function
 	else if (card.conditions && cards) {
 		card.conditions.forEach(condition => {
+
 			if (condition.action === 'ONLY') {
 				cards.forEach(card => {
 					if(card.type !== condition.type) {
 						isDisabled = true;		
+					}
+				})
+			}
+
+			if (condition.action === 'NONE') {
+				cards.forEach(card => {
+					if(card.type === condition.type) {
+						isDisabled = true;		
+					}
+				})
+			}
+
+			if (condition.action === 'ATLEAST') {
+				let amount = 0;
+				cards.forEach(card => {
+					if(card.type === condition.type) {
+						amount++
+						isDisabled = amount < condition.amount; 		
 					}
 				})
 			}
