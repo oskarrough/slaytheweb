@@ -59,7 +59,7 @@ export function getTargets(state, target) {
 	throw new Error(`Can not find monster with target: "${target}"`)
 }
 
-export function canPlayCard(card, target) {
+export function cardHasValidTarget(card, target) {
 	return (
 		(card.target === 'player' && target.includes('player')) ||
 		(card.target === 'enemy' && target.includes('enemy')) ||

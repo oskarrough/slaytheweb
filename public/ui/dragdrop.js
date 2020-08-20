@@ -2,7 +2,7 @@ import {html, Component} from '../../web_modules/htm/preact/standalone.module.js
 import {Draggable} from './../web_modules/gsap/Draggable.js'
 import gsap from './animations.js'
 import {cards} from '../game/cards.js'
-import {canPlayCard} from '../game/utils.js'
+import {cardHasValidTarget} from '../game/utils.js'
 
 // Class to add to the element we are dragging over.
 const overClass = 'is-dragOver'
@@ -38,7 +38,7 @@ export default function enableDragDrop(container, onAdd) {
 				while (--i > -1) {
 					// Highlight only if valid target.
 					if (this.hitTest(targets[i], '50%')) {
-						if (canPlayCard(getCardFromElement(cardEl), getTargetStringFromElement(targets[i]))) {
+						if (cardHasValidTarget(getCardFromElement(cardEl), getTargetStringFromElement(targets[i]))) {
 							targets[i].classList.add(overClass)
 						}
 					} else {
@@ -63,7 +63,7 @@ export default function enableDragDrop(container, onAdd) {
 
 				// If card is allowed here, trigger the callback with target, else animate back.
 				const targetString = getTargetStringFromElement(targetEl)
-				if (canPlayCard(getCardFromElement(cardEl), targetString)) {
+				if (cardHasValidTarget(getCardFromElement(cardEl), targetString)) {
 					onAdd(cardEl.dataset.id, targetString, cardEl)
 				} else {
 					animateCardToHand(this)
