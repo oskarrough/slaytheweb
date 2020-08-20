@@ -12,7 +12,7 @@ export default class Cards extends Component {
 }
 
 function isCardDisabled(card, currentEnergy, cards) {
-	let isDisabled;
+	let isDisabled = false
 	if(currentEnergy < card.energy) {
 		isDisabled = true
 	} 
