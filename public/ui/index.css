@@ -19,7 +19,7 @@ html {
 	font-size: 14px;
 	line-height: 1.2;
 	color: var(--text);
-	cursor: url(images/default.png), auto;
+	cursor: url(images/cursors/default.png), auto;
 	height: 100%;
 	background: linear-gradient(
 		163deg,
@@ -71,13 +71,13 @@ body {
 a,
 button,
 summary {
-	cursor: url(images/point.png) 10 0, auto;
+	cursor: url(images/cursors/point.png) 10 0, auto;
 }
 
 input,
 textarea,
 select {
-	cursor: url(images/select.png) 10 0, auto;
+	cursor: url(images/cursors/select.png) 10 0, auto;
 }
 
 a {
@@ -440,7 +440,7 @@ h2 {
 	margin-left: -1.5rem;
 	margin-bottom: -2rem;
 	cursor: grab;
-	cursor: url(images/grab-open.png) 10 0, auto;
+	cursor: url(images/cursors/grab-open.png) 10 0, auto;
 	/* hidden because we animate them with js*/
 	opacity: 0;
 }
@@ -595,6 +595,7 @@ h2 {
 }
 .CardBox {
 	cursor: pointer;
+	cursor: url(images/cursors/grab-open.png) 10 0, auto;
 }
 
 [center] {
