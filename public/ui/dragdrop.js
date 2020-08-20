@@ -7,6 +7,11 @@ import {canPlayCard} from '../game/utils.js'
 // Class to add to the element we are dragging over.
 const overClass = 'is-dragOver'
 
+// Makes the card fly back into the hand.
+function cancelDrag(draggable) {
+	return gsap.to(draggable.target, {x: draggable.startX, y: draggable.startY})
+}
+
 export default function enableDragDrop(container, onAdd) {
 	const targets = container.querySelectorAll('.Target')
 
@@ -37,9 +42,7 @@ export default function enableDragDrop(container, onAdd) {
 					}
 				}
 
-				if (!targetElement) {
-					return gsap.to(this.target, {x: this.startX, y: this.startY})
-				}
+				if (!targetElement) return cancelDrag(this)
 
 				const cardElement = this.target
 				const targetIndex  = Array.from(targetElement.parentNode.children).indexOf(targetElement)
@@ -48,9 +51,7 @@ export default function enableDragDrop(container, onAdd) {
 				// Check if the card allows us to drop it here.
 				const cardName = cardElement.querySelector('.Card-name').textContent
 				const card = cards.find(c => c.name === cardName)
-				if (!canPlayCard(card, target)) {
-					return gsap.to(this.target, {x: this.startX, y: this.startY})
-				}
+				if (!canPlayCard(card, target)) return cancelDrag(this)
 
 				onAdd(cardElement.dataset.id, target, cardElement)
 
