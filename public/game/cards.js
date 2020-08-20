@@ -38,6 +38,12 @@ export const cards = [
 		energy: 0,
 		damage: 14,
 		target: 'enemy',
+		conditions: [
+			{
+				action: 'ONLY',
+				type: 'Attack'
+			}
+		],
 		description: 'Can only be played if every card in your hand is an Attack. Deal 14 damage.',
 	},
 	{
@@ -105,6 +111,7 @@ export class Card {
 		this.block = props.block
 		this.powers = props.powers
 		this.description = props.description
+		this.conditions = props.conditions
 	}
 }
 
@@ -133,3 +140,21 @@ export function getRandomCards(amount = 3) {
 // target = [ENEMY, ALL_ENEMY, PLAYER, NONE, SELF_AND_ENEMY, ALL]
 // this.color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
 // this.rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
+//    this.card = {
+// 		name: enum,
+// 		type: enum,
+// 		energy: number,
+// 		target: enum,
+// 		description: string,
+// 		powers: {
+// 			regen: number,
+// 			vulnerable: number,
+// 			weak: number
+// 		},
+// 		conditions: [
+// 			{
+// 				action: enum,
+// 				type: enum
+// 			}
+// 		]
+//    }
