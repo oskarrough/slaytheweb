@@ -46,11 +46,9 @@ export default class App extends Component {
 			game: this.game,
 		}
 	}
-	dequeue(callback) {
+	update(callback) {
 		this.game.dequeue()
 		this.setState(this.game.state, callback)
-		// This blocks Chrome for ~2 secs, so is disabled for now. Works in Firefox.
-		// save(nextState)
 	}
 	undo() {
 		this.game.undo()
@@ -60,7 +58,7 @@ export default class App extends Component {
 		// Play the card.
 		const card = this.state.hand.find((c) => c.id === cardId)
 		this.game.enqueue({type: 'playCard', card, target})
-		this.dequeue()
+		this.update()
 		// Create a clone of the card to animate.
 		const clone = cardElement.cloneNode(true)
 		cardElement.parentNode.insertBefore(clone, cardElement)
@@ -74,9 +72,10 @@ export default class App extends Component {
 		})
 		function reallyEndTurn() {
 			this.game.enqueue({type: 'endTurn'})
-			this.dequeue(this.dealCards)
+			this.update(this.dealCards)
 		}
 	}
+	// Cards are hidden with CSS by default. This animates them in.
 	dealCards() {
 		gsap.effects.dealCards('.Hand .Card')
 		enableDragDrop(this.base, this.playCard)
@@ -84,13 +83,13 @@ export default class App extends Component {
 	goToNextRoom() {
 		this.game.enqueue({type: 'endTurn'})
 		this.game.enqueue({type: 'goToNextRoom'})
-		this.dequeue(() =>
-			this.dequeue(this.dealCards)
+		this.update(() =>
+			this.update(this.dealCards)
 		)
 	}
 	handlePlayerReward(card) {
 		this.game.enqueue({type: 'rewardPlayer', card: card})
-		this.dequeue()
+		this.update()
 	}
 	handleShortcuts(event) {
 		const {key} = event

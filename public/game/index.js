@@ -10,7 +10,7 @@ import ActionManager from './action-manager.js'
 // const game = createNewGame()
 // game.enqueue({type: 'drawCards'})
 // // game.future.length === 1
-// game.update()
+// game.dequeue()
 // // game.future.length === 0
 // // game.past.length === 1
 // // game.state now includes the updated state.
@@ -37,7 +37,7 @@ export default function createNewGame() {
 		dequeue() {
 			try {
 				const nextState = actionManager.dequeue(this.state)
-				this.state = nextState
+				if (nextState) this.state = nextState
 			} catch (err) {
 				console.warn(err)
 			}
