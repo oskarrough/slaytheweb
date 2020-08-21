@@ -96,9 +96,14 @@ const discardHand = (state) =>
 		draft.hand = []
 	})
 
+function testAction(state, {card, target}) {
+	console.warn('testAction', state, {card, target})
+	return removeHealth(state, {target, amount: 20})
+}
+
 // The funky part of this action is the `target` argument. It needs to be a special type of string:
 // Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getTargets
-function playCard(state, {card, target}) {
+function playCard(state, {card, target, game}) {
 	if (!target) target = card.target
 	if (typeof target !== 'string')
 		throw new Error(`Wrong target to play card: ${target},${card.target}`)
@@ -123,6 +128,10 @@ function playCard(state, {card, target}) {
 		newState = removeHealth(newState, {target: newTarget, amount})
 	}
 	if (card.powers) newState = applyCardPowers(newState, {target, card})
+	if(card.use && game) {
+		card.use(game, target, card, state)
+	}
+
 	return newState
 }
 
@@ -138,9 +147,10 @@ function addHealth(state, {target, amount}) {
 
 // See the note on `target` above.
 const removeHealth = (state, {target, amount}) => {
+	console.warn('removeHealth', target)
 	return produce(state, (draft) => {
 		const targets = getTargets(draft, target)
-		// console.log('removing health', targets, amount)
+		console.warn('removing health', targets, amount)
 		targets.forEach((t) => {
 			// Adjust damage if the monster is vulnerable.
 			if (t.powers.vulnerable) {
@@ -330,4 +340,5 @@ export default {
 	setDungeon,
 	takeMonsterTurn,
 	rewardPlayer,
+	testAction,
 }

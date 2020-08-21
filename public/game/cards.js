@@ -2,7 +2,6 @@ import {uuid} from './utils.js'
 
 // This file contains all the cards in the game as well as a few utility methods.
 // While cards are described in this object form, they are always converted to a class equivalent.
-
 // All our cards.
 export const cards = [
 	{
@@ -11,7 +10,7 @@ export const cards = [
 		energy: 1,
 		block: 5,
 		target: 'player',
-		description: 'Gain 5 Block.',
+		description: 'Gain 5 Block and one life'
 	},
 	{
 		name: 'Strike',
@@ -20,6 +19,12 @@ export const cards = [
 		target: 'enemy',
 		damage: 6,
 		description: 'Deal 6 Damage.',
+		use(game, target, card, state) {
+			console.warn('card.use')
+			game.enqueue({type: 'testAction', card, target, state})
+			// comment and uncomment dequeue to see side effects
+			game.dequeue()
+		}
 	},
 	{
 		name: 'Bash',
@@ -112,6 +117,7 @@ export class Card {
 		this.powers = props.powers
 		this.description = props.description
 		this.conditions = props.conditions
+		this.use = props.use
 	}
 }
 
