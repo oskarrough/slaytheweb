@@ -417,3 +417,12 @@ test.todo('playing defend on an enemy ?')
 test.todo('Cleave targets all monsters')
 test.todo('can apply a power to a specific monster')
 test.todo("Clash can only be played if it's the only attack")
+
+test('Summer of sam card gains 1 life', (t) => {
+	const {state} = t.context
+	const card = createCard('Summer of Sam')
+	t.is(typeof card.use, 'function')
+	const originalHealth = state.player.currentHealth
+	const newState = a.playCard(state, {target: 'player', card})
+	t.is(newState.player.currentHealth, originalHealth + 1, 'gain 1 life')
+})

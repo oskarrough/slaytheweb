@@ -1,4 +1,5 @@
 import {uuid} from './utils.js'
+import actions from './actions.js'
 
 // This file contains all the cards in the game as well as a few utility methods.
 // While cards are described in this object form, they are always converted to a class equivalent.
@@ -94,6 +95,18 @@ export const cards = [
 			regen: 5,
 		},
 	},
+	{
+		name: 'Summer of Sam',
+		type: 'Skill',
+		energy: 1,
+		target: 'player',
+		description: 'Gain 1 HP',
+		use(state, target) {
+			let newState = actions.addHealth(state, {target, amount: 1})
+			// newState = actions.drawCards(newState, 2)
+			return newState
+		}
+	}
 	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
 	// {name: 'Body Slam', energy: 1, type: 'Attack', description: 'Deal Damage equal to your Block'},
 ]

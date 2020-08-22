@@ -64,7 +64,7 @@ export default class App extends Component {
 	playCard(cardId, target, cardElement) {
 		// Play the card.
 		const card = this.state.hand.find((c) => c.id === cardId)
-		this.game.enqueue({type: 'playCard', card, target, game: this.game})
+		this.game.enqueue({type: 'playCard', card, target})
 		this.update()
 		// Create a clone of the card to animate.
 		const clone = cardElement.cloneNode(true)

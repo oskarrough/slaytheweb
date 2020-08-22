@@ -128,10 +128,9 @@ function playCard(state, {card, target, game}) {
 		newState = removeHealth(newState, {target: newTarget, amount})
 	}
 	if (card.powers) newState = applyCardPowers(newState, {target, card})
-	if(card.use && game) {
-		card.use(game, target, card, state)
+	if (card.use) {
+		newState = card.use(newState, target)
 	}
-
 	return newState
 }
 
@@ -147,10 +146,10 @@ function addHealth(state, {target, amount}) {
 
 // See the note on `target` above.
 const removeHealth = (state, {target, amount}) => {
-	console.warn('removeHealth', target)
+	// console.warn('removeHealth', target)
 	return produce(state, (draft) => {
 		const targets = getTargets(draft, target)
-		console.warn('removing health', targets, amount)
+		// console.warn('removing health', targets, amount)
 		targets.forEach((t) => {
 			// Adjust damage if the monster is vulnerable.
 			if (t.powers.vulnerable) {
