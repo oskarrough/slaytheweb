@@ -98,7 +98,7 @@ export const cards = [
 	{
 		name: 'Summer of Sam',
 		type: 'Skill',
-		energy: 1,
+		energy: 2,
 		target: 'player',
 		description: 'Gain 1 HP and draw 2 cards',
 		use(state, target) {
