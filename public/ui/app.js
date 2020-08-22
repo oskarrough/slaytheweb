@@ -5,7 +5,7 @@ import gsap from './animations.js'
 // Game logic
 import createNewGame from '../game/index.js'
 import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../game/utils.js'
-import {getRandomCards} from './../game/cards.js'
+import {createCard, getRandomCards} from './../game/cards.js'
 
 // UI Components
 import Cards from './cards.js'
@@ -34,16 +34,23 @@ export default class App extends Component {
 		const game = createNewGame()
 		this.game = game
 		this.setState(game.state, this.dealCards)
+
 		// If there is a saved game state, use it.
 		const savedGameState = window.location.hash && load()
 		if (savedGameState) {
 			this.game.state = savedGameState
 			this.setState(savedGameState, animateCards)
 		}
-		// Enable debugging in the browser.
-		window.slaytheweb = {
-			component: this,
+
+		// Enable a "console" in the browser.
+		// Now you can for example do stw.game.player.maxHealth = 999; stw.update()
+		// or stw.game.enqueue({type: 'drawCards', amount: 2}); stw.update(); stw.dealCards()
+		window.stw = {
 			game: this.game,
+			update: this.update.bind(this),
+			createCard,
+			dealCards: this.dealCards.bind(this)
+			// component: this,
 		}
 	}
 	update(callback) {
