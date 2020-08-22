@@ -100,10 +100,10 @@ export const cards = [
 		type: 'Skill',
 		energy: 1,
 		target: 'player',
-		description: 'Gain 1 HP',
+		description: 'Gain 1 HP and draw 2 cards',
 		use(state, target) {
 			let newState = actions.addHealth(state, {target, amount: 1})
-			// newState = actions.drawCards(newState, 2)
+			newState = actions.drawCards(newState, 2)
 			return newState
 		}
 	}
