@@ -10,7 +10,7 @@ export const cards = [
 		energy: 1,
 		block: 5,
 		target: 'player',
-		description: 'Gain 5 Block and one life'
+		description: 'Gain 5 Block'
 	},
 	{
 		name: 'Strike',
@@ -18,13 +18,7 @@ export const cards = [
 		energy: 1,
 		target: 'enemy',
 		damage: 6,
-		description: 'Deal 6 Damage.',
-		use(game, target, card, state) {
-			console.warn('card.use')
-			game.enqueue({type: 'testAction', card, target, state})
-			// comment and uncomment dequeue to see side effects
-			game.dequeue()
-		}
+		description: 'Deal 6 Damage.'
 	},
 	{
 		name: 'Bash',
