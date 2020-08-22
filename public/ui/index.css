@@ -140,6 +140,7 @@ h2 {
 	position: absolute;
 	top: 0;
 	left: 0;
+	z-index: -1;
 	width: 100%;
 	height: 100%;
 	background-size: cover;
@@ -153,6 +154,7 @@ h2 {
 	/* background-image: url('images/scenes/mononoke.jpg'); */
 	/* background-image: url('images/scenes/nausicaa.jpg'); */
 	/* background-image: url('images/scenes/ponyo.jpg'); */
+	/* background-image: url('images/scenes/bauhaus.jpg'); */
 }
 
 .App-background,

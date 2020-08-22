@@ -56,6 +56,7 @@ class SplashScreen extends Component {
 	render(props) {
 		return html`
 			<article class="Splash Splash--fadein">
+				<!-- <figure class="App-background"></div> -->
 				<h1>Slay the Web</h1>
 				<h2>A little card crawl adventure for you and your browser.</h2>
 				<img class="Splash-spoder" src="ui/images/spoder.png"/>
