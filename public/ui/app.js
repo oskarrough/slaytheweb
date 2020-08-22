@@ -82,7 +82,7 @@ export default class App extends Component {
 			this.update(this.dealCards)
 		}
 	}
-	// Cards are hidden with CSS by default. This animates them in.
+	// Cards are hidden with CSS by default. This is purely animation.
 	dealCards() {
 		gsap.effects.dealCards('.Hand .Card')
 		enableDragDrop(this.base, this.playCard)
