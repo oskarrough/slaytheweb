@@ -107,27 +107,32 @@ A collection of related links, inspiration and ideas.
 - http://www.cardofdarkness.com/
 - https://freesound.org/
 - https://game-icons.net/
-- https://github.com/Gremious/StS-DefaultModBase
 - https://github.com/RonenNess/RPGUI
--	https://github.com/daviscook477/BaseMod
-- https://github.com/kiooeht/Hubris/
-- https://github.com/kiooeht/StSLib/wiki/Power-Hooks
 - https://hundredrabbits.itch.io/donsol [Source](https://github.com/hundredrabbits/Donsol/tree/master/desktop/sources/scripts)
 - https://itch.io/games/tag-card-game/tag-roguelike
 - https://nathanwentworth.itch.io/deck-dungeon [Source](https://github.com/nathanwentworth/deck-dungeon/)
+- https://www.reddit.com/r/slaythespire/comments/a7lhpq/any_recommended_games_similar_to_slay_the_spire/
+- https://twitter.com/fabynou/status/1212534790672408578
+- https://www.gamasutra.com/blogs/JoshGe/20181029/329512/How_to_Make_a_Roguelike.php
+- https://www.reddit.com/r/roguelikedev/
+- https://klei.com/games/griftlands
+
+### Slay the Spire modding, tools and things
+
 - https://en.wikipedia.org/wiki/Slay_the_Spire
 - https://slay-the-spire.fandom.com/wiki/Slay_the_Spire_Wiki
 - https://spirelogs.com/
-- https://twitter.com/fabynou/status/1212534790672408578
-- https://www.gamasutra.com/blogs/JoshGe/20181029/329512/How_to_Make_a_Roguelike.php
-- https://www.gdcvault.com/play/1025731/-Slay-the-Spire-Metrics
-- https://www.reddit.com/r/roguelikedev/
-- https://www.reddit.com/r/slaythespire/comments/a7lhpq/any_recommended_games_similar_to_slay_the_spire/
+- https://maybelatergames.co.uk/tools/slaythespire/		
+-	https://github.com/daviscook477/BaseMod
+- https://github.com/Gremious/StS-DefaultModBase
+-	https://github.com/Gremious/StS-DefaultModBase/wiki
+- https://github.com/kiooeht/Hubris/
+- https://github.com/kiooeht/StSLib/wiki/Power-Hooks
 - https://www.gdcvault.com/play/1025731/-Slay-the-Spire-Metrics
 - https://github.com/Dementophobia/slay-the-spire-sensei
 - https://www.rockpapershotgun.com/2018/02/19/why-revealing-all-is-the-secret-of-slay-the-spires-success/
-- [Slay the Spire Reference](https://docs.google.com/spreadsheets/u/1/d/1ZsxNXebbELpcCi8N7FVOTNGdX_K9-BRC_LMgx4TORo4/edit?usp=sharing)
+- [Slay the Spire Reference spreadsheet](https://docs.google.com/spreadsheets/u/1/d/1ZsxNXebbELpcCi8N7FVOTNGdX_K9-BRC_LMgx4TORo4/edit?usp=sharing)
 - [Slay the Spire Discord](https://discord.gg/slaythespire)
-- https://klei.com/games/griftlands
 - https://github.com/adnzzzzZ/blog
 - https://forgottenarbiter.github.io/Is-Every-Seed-Winnable/ ([discussion](https://news.ycombinator.com/item?id=23910006))
+- https://www.twitch.tv/telnetthespire

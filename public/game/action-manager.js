@@ -3,7 +3,6 @@ import actions from '../game/actions.js'
 
 // The action manager makes use of queues to keep track of
 // future and past actions in the game state. Also allowing us to undo.
-// Actions are always run one sequentially.
 export default function () {
 	const future = new Queue()
 	const past = new Queue()

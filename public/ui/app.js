@@ -5,7 +5,7 @@ import gsap from './animations.js'
 // Game logic
 import createNewGame from '../game/index.js'
 import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../game/utils.js'
-import {getRandomCards} from './../game/cards.js'
+import {createCard, getRandomCards} from './../game/cards.js'
 
 // UI Components
 import Cards from './cards.js'
@@ -34,23 +34,28 @@ export default class App extends Component {
 		const game = createNewGame()
 		this.game = game
 		this.setState(game.state, this.dealCards)
+
 		// If there is a saved game state, use it.
 		const savedGameState = window.location.hash && load()
 		if (savedGameState) {
 			this.game.state = savedGameState
 			this.setState(savedGameState, animateCards)
 		}
-		// Enable debugging in the browser.
-		window.slaytheweb = {
-			component: this,
+
+		// Enable a "console" in the browser.
+		// Now you can for example do stw.game.player.maxHealth = 999; stw.update()
+		// or stw.game.enqueue({type: 'drawCards', amount: 2}); stw.update(); stw.dealCards()
+		window.stw = {
 			game: this.game,
+			update: this.update.bind(this),
+			createCard,
+			dealCards: this.dealCards.bind(this)
+			// component: this,
 		}
 	}
-	dequeue(callback) {
+	update(callback) {
 		this.game.dequeue()
 		this.setState(this.game.state, callback)
-		// This blocks Chrome for ~2 secs, so is disabled for now. Works in Firefox.
-		// save(nextState)
 	}
 	undo() {
 		this.game.undo()
@@ -60,7 +65,7 @@ export default class App extends Component {
 		// Play the card.
 		const card = this.state.hand.find((c) => c.id === cardId)
 		this.game.enqueue({type: 'playCard', card, target, game: this.game})
-		this.dequeue()
+		this.update()
 		// Create a clone of the card to animate.
 		const clone = cardElement.cloneNode(true)
 		cardElement.parentNode.insertBefore(clone, cardElement)
@@ -74,9 +79,10 @@ export default class App extends Component {
 		})
 		function reallyEndTurn() {
 			this.game.enqueue({type: 'endTurn'})
-			this.dequeue(this.dealCards)
+			this.update(this.dealCards)
 		}
 	}
+	// Cards are hidden with CSS by default. This is purely animation.
 	dealCards() {
 		gsap.effects.dealCards('.Hand .Card')
 		enableDragDrop(this.base, this.playCard)
@@ -84,13 +90,13 @@ export default class App extends Component {
 	goToNextRoom() {
 		this.game.enqueue({type: 'endTurn'})
 		this.game.enqueue({type: 'goToNextRoom'})
-		this.dequeue(() =>
-			this.dequeue(this.dealCards)
+		this.update(() =>
+			this.update(this.dealCards)
 		)
 	}
 	handlePlayerReward(card) {
 		this.game.enqueue({type: 'rewardPlayer', card: card})
-		this.dequeue()
+		this.update()
 	}
 	handleShortcuts(event) {
 		const {key} = event
