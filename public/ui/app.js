@@ -39,7 +39,7 @@ export default class App extends Component {
 		const savedGameState = window.location.hash && load()
 		if (savedGameState) {
 			this.game.state = savedGameState
-			this.setState(savedGameState, animateCards)
+			this.setState(savedGameState, this.dealCards)
 		}
 
 		// Enable a "console" in the browser.
@@ -82,7 +82,7 @@ export default class App extends Component {
 			this.update(this.dealCards)
 		}
 	}
-	// Cards are hidden with CSS by default. This is purely animation.
+	// Animate the cards in and make sure any new cards are draggable.
 	dealCards() {
 		gsap.effects.dealCards('.Hand .Card')
 		enableDragDrop(this.base, this.playCard)

@@ -1,17 +1,10 @@
 import gsap from './../web_modules/gsap.js'
 import {Draggable} from './../web_modules/gsap/Draggable.js'
 
+// This file contains some resuable animations/effects.
 // https://greensock.com/cheatsheet/
 
-// or get other plugins:
-// import Draggable from 'gsap/Draggable'
-// import ScrollTrigger from 'gsap/ScrollTrigger'
-
-// or all tools are exported from the "all" file (excluding bonus plugins):
-// import {gsap, ScrollTrigger, Draggable, MotionPathPlugin} from 'gsap/all'
-
-// don't forget to register plugins
-// gsap.registerPlugin(ScrollTrigger, Draggable, MotionPathPlugin)
+// Don't forget to register plugins.
 gsap.registerPlugin(Draggable)
 
 // Fly in the cards from the left (draw pile) to your hand.

@@ -259,7 +259,6 @@ h2 {
 	font-family: 'concourse_c3';
 	margin-top: -0.5em;
 	font-size: small;
-	opacity: 0.6;
 }
 .Card-description {
 	font-size: smaller;
@@ -443,8 +442,6 @@ h2 {
 	margin-bottom: -2rem;
 	cursor: grab;
 	cursor: url(images/cursors/grab-open.png) 10 0, auto;
-	/* hidden because we animate them with js*/
-	opacity: 0;
 }
 .Hand .Card-inner {
 	/* because of negative margin */
@@ -460,18 +457,11 @@ h2 {
 	z-index: 1;
 }
 
-.Card.sortable-drag {
-	/* opacity: 0.5; */
-}
-
 /* Don't show copy of the dragged card on target */
 .Target .Card {
 	position: absolute;
 	right: 20%;
 	z-index: 1;
-}
-.Target .Card.sortable-ghost {
-	opacity: 0 !important;
 }
 
 /* Overlays */
