@@ -1,3 +1,6 @@
+// A collection of utility functions.
+// None are allowed to modify the game state!
+
 // Returns a random-looking string for ids.
 export function uuid(a) {
 	return a
@@ -28,7 +31,7 @@ export function shuffle(array) {
 	return array
 }
 
-// Generate a range of numbers like range(3) === [1,2,3] or range(3, 6) === [6,7,8]
+// Returns a range of numbers. Example: range(3) === [1,2,3] or range(3, 6) === [6,7,8]
 export function range(size, startAt = 0) {
 	return [...Array(size).keys()].map((i) => i + startAt)
 }
@@ -38,8 +41,8 @@ export function getCurrRoom(state) {
 	return state.dungeon.rooms[state.dungeon.index || 0]
 }
 
-// Returns an array of targets (player or monsters)
-// "target" can be "player", "enemyx" (where x is the index) or "all enemies"
+// Returns an array of targets (player or monsters) in the current room.
+// The "target" argument must be either "player", "enemyx" (where x is the index) or "all enemies"
 export function getTargets(state, target) {
 	if (target.startsWith('player')) {
 		return [state.player]
