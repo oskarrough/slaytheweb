@@ -25,8 +25,8 @@ function getTargetStringFromElement(el) {
 
 export default function enableDragDrop(container, onAdd) {
 	const targets = container.querySelectorAll('.Target')
-
-	container.querySelectorAll('.Hand .Card').forEach((card) => {
+	const cards = container.querySelectorAll('.Hand .Card')
+	cards.forEach((card) => {
 		Draggable.create(card, {
 			// While dragging, highlight any targets we are dragging over.
 			onDrag() {

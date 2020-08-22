@@ -65,7 +65,9 @@ export default class App extends Component {
 		// Play the card.
 		const card = this.state.hand.find((c) => c.id === cardId)
 		this.game.enqueue({type: 'playCard', card, target})
-		this.update()
+		this.update(() => {
+			enableDragDrop(this.base, this.playCard)
+		})
 		// Create a clone of the card to animate.
 		const clone = cardElement.cloneNode(true)
 		cardElement.parentNode.insertBefore(clone, cardElement)
