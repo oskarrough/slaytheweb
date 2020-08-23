@@ -5,7 +5,7 @@ export default class Cards extends Component {
 	render(props) {
 		return html`
 			<div class="Cards">
-				${props.cards.map(card => Card(card, props.state))}
+				${props.state.hand.map(card => Card(card, props.state))}
 			</div>
 		`
 	}
