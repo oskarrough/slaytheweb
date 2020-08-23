@@ -23,9 +23,7 @@ function runOnUse(actions, state, target) {
 	let newState = state;
 	if (actions && state) {
 		actions.forEach(onUse => {
-			// terrible hack
-			const lolHowToSolveArguments = onUse.action === 'addHealth' ? {target, amount: onUse.amount} : onUse.amount;
-			newState = actionsMethods[onUse.action](newState, lolHowToSolveArguments)
+			newState = actionsMethods[onUse.action](newState, onUse.parameter)
 		});
 	}
 
@@ -135,11 +133,14 @@ export const cards = [
 		onUse: [
 			{
 				action: 'addHealth',
-				amount: 1
+				parameter: {
+					target: 'playerX',
+					amount: 1
+				}
 			},
 			{
 				action: 'drawCards',
-				amount: 2
+				parameter: 2
 			}
 		],
 		use(state, target) {
