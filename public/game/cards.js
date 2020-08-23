@@ -114,9 +114,26 @@ export const cards = [
 		energy: 0,
 		target: 'player',
 		description: 'Gain 1 HP and draw 2 cards',
+		onUse: [
+			{
+				action: 'addHealth',
+				amount: 1
+			},
+			{
+				action: 'drawCards',
+				amount: 2
+			}
+		],
 		use(state, target) {
-			let newState = actions.addHealth(state, {target, amount: 1})
-			newState = actions.drawCards(newState, 2)
+			let newState = state;
+			if (this.onUse && state) {
+				this.onUse.forEach(onUse => {
+					// terrible hack
+					const lolHowToSolveArguments = onUse.action === 'addHealth' ? {target, amount: onUse.amount} : onUse.amount;
+					newState = actions[onUse.action](newState, lolHowToSolveArguments)
+				});
+			}
+
 			return newState
 		},
 		conditions: [
@@ -160,6 +177,7 @@ export class Card {
 		this.description = props.description
 		this.conditions = props.conditions
 		this.use = props.use
+		this.onUse = props.onUse
 		this.condition = props.condition
 	}
 }
