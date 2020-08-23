@@ -176,7 +176,7 @@ export default class App extends Component {
 					</div>
 
 					<div class="Hand">
-						<${Cards} cards=${state.hand} isHand=${true} energy=${state.player.currentEnergy} />
+						<${Cards} cards=${state.hand} isHand=${true} state=${state} />
 					</div>
 
 					<details class="Menu Overlay" topleft>

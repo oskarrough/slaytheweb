@@ -45,12 +45,12 @@ export const cards = [
 				type: 'Attack'
 			}
 		],
-		condition(cards) {
+		condition(state) {
 			let boolean = false;
-			if (this.conditions && cards) {
+			if (this.conditions && state) {
 				this.conditions.forEach(condition => {
-					if (conditionsMethods[condition.action]) {
-						boolean = conditionsMethods[condition.action](cards, condition)
+					if (!boolean && conditionsMethods[condition.action]) {
+						boolean = conditionsMethods[condition.action](state, condition)
 					}
 				});
 			}
@@ -111,14 +111,36 @@ export const cards = [
 	{
 		name: 'Summer of Sam',
 		type: 'Skill',
-		energy: 2,
+		energy: 0,
 		target: 'player',
 		description: 'Gain 1 HP and draw 2 cards',
 		use(state, target) {
 			let newState = actions.addHealth(state, {target, amount: 1})
 			newState = actions.drawCards(newState, 2)
 			return newState
-		}
+		},
+		conditions: [
+			{
+				action: 'onlyType',
+				type: 'Skill'
+			},
+			{
+				action: 'shouldNotHaveLessThen',
+				percentage: 100
+			}
+		],
+		condition(state) {
+			let boolean = false;
+			if (this.conditions && state) {
+				this.conditions.forEach(condition => {
+					if (!boolean && conditionsMethods[condition.action]) {
+						boolean = conditionsMethods[condition.action](state, condition)
+					}
+				});
+			}
+
+			return boolean
+		},
 	}
 	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
 	// {name: 'Body Slam', energy: 1, type: 'Attack', description: 'Deal Damage equal to your Block'},

@@ -1,8 +1,8 @@
 
 
-function onlyType(cards, condition) {
+function onlyType(state, condition) {
     let boolean = false;
-    cards.forEach(card => {
+    state.hand.forEach(card => {
         if(card.type !== condition.type) {
             boolean = true;		
         }
@@ -11,6 +11,27 @@ function onlyType(cards, condition) {
     return boolean
 }
 
+function shouldNotHaveLessThen(state, condition) {
+    let boolean = false;
+    const player = state.player;
+    if((player.currentHealth / player.maxHealth) * 100 < condition.percentage) {
+        boolean = true
+    }
+    return boolean
+}
+
+function shouldNotHaveMoreThen(state, condition) {
+    let boolean = false;
+    const player = state.player;
+    if((player.currentHealth / player.maxHealth) * 100 > condition.percentage) {
+        boolean = true
+    }
+    return boolean
+}
+
+
 export default {
-    onlyType
+    onlyType,
+    shouldNotHaveLessThen,
+    shouldNotHaveMoreThen
 }

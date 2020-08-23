@@ -5,25 +5,25 @@ export default class Cards extends Component {
 	render(props) {
 		return html`
 			<div class="Cards">
-				${props.cards.map(card => Card(card, props.energy, props.cards))}
+				${props.cards.map(card => Card(card, props.state))}
 			</div>
 		`
 	}
 }
 
-function isCardDisabled(card, currentEnergy, cards) {
+function isCardDisabled(card, state) {
 	let isDisabled = false
-	if(currentEnergy < card.energy) {
+	if(state.player.currentEnergy < card.energy) {
 		isDisabled = true
-	} else if (card.conditions && card.condition && cards) {
-		isDisabled = card.condition(cards)
+	} else if (card.conditions && card.condition && state) {
+		isDisabled = card.condition(state)
 	}
 	
 	return isDisabled;
 }
 
-export function Card(card, currentEnergy, cards) {
-	let isDisabled = isCardDisabled(card, currentEnergy, cards);
+export function Card(card, state) {
+	let isDisabled = isCardDisabled(card, state);
 
 	return html`
 		<article class="Card" key=${card.id} data-id=${card.id} disabled=${isDisabled}>
