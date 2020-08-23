@@ -95,7 +95,16 @@ export const cards = [
 		type: 'Skill',
 		energy: 2,
 		target: 'player',
-		description: 'Gain 5 regen.',
+		description: 'Gain 5 regen. Can only be played if player is under 50% health',
+		conditions: [
+			{
+				action: 'shouldNotHaveMoreThen',
+				percentage: 50
+			}
+		],
+		condition(state) {
+			return checkConditions(this.conditions, state)
+		},
 		powers: {
 			regen: 5,
 		},
@@ -155,9 +164,20 @@ function checkConditions(conditions, state) {
 
 function runOnUse(actions, state, target) {
 	let newState = state;
+
 	if (actions && state) {
 		actions.forEach(onUse => {
-			newState = actionsMethods[onUse.action](newState, onUse.parameter)
+
+			// Trick to replace the target in the parameters
+			let param = onUse.parameter;
+			if (onUse.parameter.target) {
+				delete onUse.parameter.target
+				param = {
+					target,
+					...onUse.parameter
+				}
+			}
+			newState = actionsMethods[onUse.action](newState, param)
 		});
 	}
 
