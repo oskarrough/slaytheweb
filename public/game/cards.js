@@ -6,30 +6,6 @@ import conditionsMethods from './conditions.js'
 // While cards are described in this object form, they are always converted to a class equivalent.
 // All our cards.
 
-function checkConditions(conditions, state) {
-	let boolean = false;
-	if (conditions && state) {
-		conditions.forEach(condition => {
-			if (!boolean && conditionsMethods[condition.action]) {
-				boolean = conditionsMethods[condition.action](state, condition)
-			}
-		});
-	}
-
-	return boolean
-}
-
-function runOnUse(actions, state, target) {
-	let newState = state;
-	if (actions && state) {
-		actions.forEach(onUse => {
-			newState = actionsMethods[onUse.action](newState, onUse.parameter)
-		});
-	}
-
-	return newState
-}
-
 export const cards = [
 	{
 		name: 'Defend',
@@ -163,6 +139,31 @@ export const cards = [
 	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
 	// {name: 'Body Slam', energy: 1, type: 'Attack', description: 'Deal Damage equal to your Block'},
 ]
+
+function checkConditions(conditions, state) {
+	let boolean = false;
+	if (conditions && state) {
+		conditions.forEach(condition => {
+			if (!boolean && conditionsMethods[condition.action]) {
+				boolean = conditionsMethods[condition.action](state, condition)
+			}
+		});
+	}
+
+	return boolean
+}
+
+function runOnUse(actions, state, target) {
+	let newState = state;
+	if (actions && state) {
+		actions.forEach(onUse => {
+			newState = actionsMethods[onUse.action](newState, onUse.parameter)
+		});
+	}
+
+	return newState
+}
+
 
 // All cards extend this class.
 export class Card {
