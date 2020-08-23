@@ -1,5 +1,6 @@
 import {uuid} from './utils.js'
 import actions from './actions.js'
+import conditionsMethods from './conditions.js'
 
 // This file contains all the cards in the game as well as a few utility methods.
 // While cards are described in this object form, they are always converted to a class equivalent.
@@ -40,10 +41,22 @@ export const cards = [
 		target: 'enemy',
 		conditions: [
 			{
-				action: 'ONLY',
+				action: 'onlyType',
 				type: 'Attack'
 			}
 		],
+		condition(cards) {
+			let boolean = false;
+			if (this.conditions && cards) {
+				this.conditions.forEach(condition => {
+					if (conditionsMethods[condition.action]) {
+						boolean = conditionsMethods[condition.action](cards, condition)
+					}
+				});
+			}
+
+			return boolean
+		},
 		description: 'Can only be played if every card in your hand is an Attack. Deal 14 damage.',
 	},
 	{
@@ -125,6 +138,7 @@ export class Card {
 		this.description = props.description
 		this.conditions = props.conditions
 		this.use = props.use
+		this.condition = props.condition
 	}
 }
 
