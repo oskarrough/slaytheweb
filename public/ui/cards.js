@@ -5,7 +5,7 @@ export default class Cards extends Component {
 	render(props) {
 		return html`
 			<div class="Cards">
-				${props.state.hand.map(card => Card(card, props.state))}
+				${props.state[props.type].map(card => Card(card, props.state))}
 			</div>
 		`
 	}
@@ -23,7 +23,10 @@ function isCardDisabled(card, state) {
 }
 
 export function Card(card, state) {
-	let isDisabled = isCardDisabled(card, state);
+	let isDisabled;
+	if (state) {
+		isDisabled = isCardDisabled(card, state);
+	}
 
 	return html`
 		<article class="Card" key=${card.id} data-id=${card.id} disabled=${isDisabled}>
