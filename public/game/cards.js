@@ -125,6 +125,12 @@ export const cards = [
 			},
 			{
 				action: 'drawCards',
+				preConditions: [
+					{
+						action: 'shouldNotHaveLessThen',
+						percentage: 100
+					}
+				],
 				parameter: 2
 			}
 		],
@@ -138,7 +144,7 @@ export const cards = [
 			},
 			{
 				action: 'shouldNotHaveLessThen',
-				percentage: 100
+				percentage: 60
 			}
 		],
 		condition(state) {
@@ -168,15 +174,21 @@ function runOnUse(actions, state, target) {
 	if (actions && state) {
 		actions.forEach(onUse => {
 
-			// Trick to replace the target in the parameters
-			let param = onUse.parameter;
-			if (onUse.parameter.target) {
-				delete onUse.parameter.target
-				param = {
-					target,
-					...onUse.parameter
-				}
+			if (onUse.preConditions && checkConditions(onUse.preConditions, state)) {
+				return newState;
 			}
+
+			// Trick to replace the target in the parameters
+			// It creates problem now 
+			// TODO fix it
+			let param = onUse.parameter;
+			// if (onUse.parameter.target) {
+			// 	delete onUse.parameter.target
+			// 	param = {
+			// 		target,
+			// 		...onUse.parameter
+			// 	}
+			// }
 			newState = actionsMethods[onUse.action](newState, param)
 		});
 	}
