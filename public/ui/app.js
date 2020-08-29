@@ -176,7 +176,7 @@ export default class App extends Component {
 					</div>
 
 					<div class="Hand">
-						<${Cards} state=${state} type="hand" />
+						<${Cards} gameState=${state} type="hand" />
 					</div>
 
 					<details class="Menu Overlay" topleft>
@@ -201,11 +201,11 @@ export default class App extends Component {
 					</details>
 					<details class="DrawPile Overlay" bottomleft>
 						<summary>Dr<u>a</u>w pile ${state.drawPile.length}</summary>
-						<${Cards} state=${state} type="drawPile" />
+						<${Cards} gameState=${state} type="drawPile" />
 					</details>
 					<details class="DiscardPile Overlay" bottomright>
 						<summary align-right>Di<u>s</u>card pile ${state.discardPile.length}</summary>
-						<${Cards} state=${state} type="discardPile" />
+						<${Cards} gameState=${state} type="discardPile" />
 					</details>
 				</div>
 		`
