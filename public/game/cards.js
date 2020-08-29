@@ -201,12 +201,12 @@ export class Card {
 		this.conditions = props.conditions
 		this.onUse = props.onUse
 
-		this.use = (state, target) => {
+		this.use = this.onUse ? (state, target) => {
 			return runOnUse(this.onUse, state, target)
-		}
-		this.condition = (state) => {
+		} : null;
+		this.condition = this.conditions ? (state) => {
 			return checkConditions(this.conditions, state)
-		};
+		} : null;
 	}
 }
 
