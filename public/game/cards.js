@@ -46,9 +46,7 @@ export const cards = [
 				type: 'Attack'
 			}
 		],
-		condition(state) {
-			return checkConditions(this.conditions, state)
-		},
+		  
 		description: 'Can only be played if every card in your hand is an Attack. Deal 14 damage.',
 	},
 	{
@@ -102,9 +100,6 @@ export const cards = [
 				percentage: 50
 			}
 		],
-		condition(state) {
-			return checkConditions(this.conditions, state)
-		},
 		powers: {
 			regen: 5,
 		},
@@ -134,9 +129,6 @@ export const cards = [
 				parameter: 2
 			}
 		],
-		use(state, target) {
-			return runOnUse(this.onUse, state, target)
-		},
 		conditions: [
 			{
 				action: 'onlyType',
@@ -146,10 +138,7 @@ export const cards = [
 				action: 'shouldNotHaveLessThen',
 				percentage: 60
 			}
-		],
-		condition(state) {
-			return checkConditions(this.conditions, state)
-		},
+		]
 	}
 	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
 	// {name: 'Body Slam', energy: 1, type: 'Attack', description: 'Deal Damage equal to your Block'},
@@ -210,9 +199,14 @@ export class Card {
 		this.powers = props.powers
 		this.description = props.description
 		this.conditions = props.conditions
-		this.use = props.use
 		this.onUse = props.onUse
-		this.condition = props.condition
+
+		this.use = (state, target) => {
+			return runOnUse(this.onUse, state, target)
+		}
+		this.condition = (state) => {
+			return checkConditions(this.conditions, state)
+		};
 	}
 }
 
