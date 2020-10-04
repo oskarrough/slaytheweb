@@ -115,6 +115,7 @@ A collection of related links, inspiration and ideas.
 - https://twitter.com/fabynou/status/1212534790672408578
 - https://www.gamasutra.com/blogs/JoshGe/20181029/329512/How_to_Make_a_Roguelike.php
 - https://www.reddit.com/r/roguelikedev/
+- https://www.reddit.com/r/roguelikes/
 - https://klei.com/games/griftlands
 
 ### Slay the Spire modding, tools and things
