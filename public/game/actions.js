@@ -123,9 +123,7 @@ function playCard(state, {card, target}) {
 		newState = removeHealth(newState, {target: newTarget, amount})
 	}
 	if (card.powers) newState = applyCardPowers(newState, {target, card})
-	if (card.use) {
-		newState = card.use(newState, target)
-	}
+	if (card.use) newState = card.use(newState)
 	return newState
 }
 

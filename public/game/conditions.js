@@ -1,34 +1,26 @@
+// Returns true if all cards in your hand are of the same type.
 function onlyType(state, condition) {
-	let boolean = false
-	state.hand.forEach((card) => {
-		if (card.type !== condition.type) {
-			boolean = true
-		}
+	return state.hand.some((card) => {
+		return card.type !== condition.cardType
 	})
-
-	return boolean
 }
 
-function shouldNotHaveLessThen(state, condition) {
-	let boolean = false
+// Returns true if hp is below condition.percentage
+function healthPercentageBelow(state, condition) {
 	const player = state.player
-	if ((player.currentHealth / player.maxHealth) * 100 < condition.percentage) {
-		boolean = true
-	}
-	return boolean
+	const percentage = (player.currentHealth / player.maxHealth) * 100
+	return percentage < condition.percentage
 }
 
-function shouldNotHaveMoreThen(state, condition) {
-	let boolean = false
+// Returns true if hp is above condition.percentage
+function healthPercentageAbove(state, condition) {
 	const player = state.player
-	if ((player.currentHealth / player.maxHealth) * 100 > condition.percentage) {
-		boolean = true
-	}
-	return boolean
+	const percentage = (player.currentHealth / player.maxHealth) * 100
+	return percentage > condition.percentage
 }
 
 export default {
 	onlyType,
-	shouldNotHaveLessThen,
-	shouldNotHaveMoreThen,
+	healthPercentageBelow,
+	healthPercentageAbove,
 }

@@ -2,10 +2,16 @@ import {uuid} from './utils.js'
 import actionsMethods from './actions.js'
 import conditionsMethods from './conditions.js'
 
-// This file contains all the cards in the game as well as a few utility methods.
-// While cards are described in this object form, they are always converted to a class equivalent.
-// All our cards.
+/*
+This file contains all the cards in the game as well as a few utility methods.
+While cards are described in this object form, they are always converted to a class equivalent.
 
+Cards can _optionally_ define an array of actions named `onUse`. These actions will be run when the card is played.
+In the same way, you can define a list of `conditions` that have to pass for the card to be playable.
+Your "onUse" actions can ALSO define a list of conditions.
+*/
+
+// All our cards.
 export const cards = [
 	{
 		name: 'Defend',
@@ -42,11 +48,10 @@ export const cards = [
 		target: 'enemy',
 		conditions: [
 			{
-				action: 'onlyType',
-				type: 'Attack',
+				type: 'onlyType',
+				cardType: 'Attack',
 			},
 		],
-
 		description: 'Can only be played if every card in your hand is an Attack. Deal 14 damage.',
 	},
 	{
@@ -93,13 +98,19 @@ export const cards = [
 		type: 'Skill',
 		energy: 2,
 		target: 'player',
-		description: 'Gain 5 regen. Can only be played if player is under 50% health',
+		description: 'Gain 5 regen. Can only be played if player is below 50% health',
 		conditions: [
 			{
-				action: 'shouldNotHaveMoreThen',
+				type: 'healthPercentageBelow',
 				percentage: 50,
 			},
 		],
+		/*
+		// Not implemented. Playing around with syntax
+		condition(state) {
+			const percentage = state.player.currentHealth / state.player.maxHealth * 100
+			return percentage < 50
+		},*/
 		powers: {
 			regen: 5,
 		},
@@ -109,36 +120,36 @@ export const cards = [
 		type: 'Skill',
 		energy: 0,
 		target: 'player',
-		description: 'Gain 1 HP and draw 2 cards',
+		description: 'Gain 1 HP. Draw 2 cards if your hp is below 50',
 		onUse: [
 			{
-				action: 'addHealth',
+				type: 'addHealth',
 				parameter: {
 					target: 'playerX',
 					amount: 1,
 				},
 			},
 			{
-				action: 'drawCards',
-				preConditions: [
+				type: 'drawCards',
+				parameter: 2,
+				conditions: [
 					{
-						action: 'shouldNotHaveLessThen',
-						percentage: 100,
+						type: 'healthPercentageBelow',
+						percentage: 50,
 					},
 				],
-				parameter: 2,
 			},
 		],
-		conditions: [
-			{
-				action: 'onlyType',
-				type: 'Skill',
-			},
-			{
-				action: 'shouldNotHaveLessThen',
-				percentage: 60,
-			},
-		],
+		// conditions: [
+		// 	{
+		// 		type: 'onlyType',
+		// 		cardType: 'Skill',
+		// 	},
+		// 	{
+		// 		type: 'healthPercentageAbove',
+		// 		percentage: 60,
+		// 	},
+		// ],
 	},
 	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
 	// {name: 'Body Slam', energy: 1, type: 'Attack', description: 'Deal Damage equal to your Block'},
@@ -146,42 +157,13 @@ export const cards = [
 
 function checkConditions(conditions, state) {
 	let boolean = false
-	if (conditions && state) {
-		conditions.forEach((condition) => {
-			if (!boolean && conditionsMethods[condition.action]) {
-				boolean = conditionsMethods[condition.action](state, condition)
-			}
-		})
-	}
-
+	conditions.forEach((condition) => {
+		if (!boolean && conditionsMethods[condition.type]) {
+			console.log('checking condition', condition, state)
+			boolean = conditionsMethods[condition.type](state, condition)
+		}
+	})
 	return boolean
-}
-
-function runOnUse(actions, state, target) {
-	let newState = state
-
-	if (actions && state) {
-		actions.forEach((onUse) => {
-			if (onUse.preConditions && checkConditions(onUse.preConditions, state)) {
-				return newState
-			}
-
-			// Trick to replace the target in the parameters
-			// It creates problem now
-			// TODO fix it
-			let param = onUse.parameter
-			// if (onUse.parameter.target) {
-			// 	delete onUse.parameter.target
-			// 	param = {
-			// 		target,
-			// 		...onUse.parameter
-			// 	}
-			// }
-			newState = actionsMethods[onUse.action](newState, param)
-		})
-	}
-
-	return newState
 }
 
 // All cards extend this class.
@@ -198,17 +180,22 @@ export class Card {
 		this.description = props.description
 		this.conditions = props.conditions
 		this.onUse = props.onUse
-
-		this.use = this.onUse
-			? (state, target) => {
-					return runOnUse(this.onUse, state, target)
-			  }
-			: null
-		this.condition = this.conditions
-			? (state) => {
-					return checkConditions(this.conditions, state)
-			  }
-			: null
+	}
+	use(state) {
+		if (!this.onUse) return state
+		let newState = state
+		this.onUse.forEach((action) => {
+			console.log('onuse', {action})
+			if (action.conditions && !checkConditions(action.conditions, state)) {
+				return newState
+			}
+			console.log('onuse:noprecondition')
+			newState = actionsMethods[action.type](newState, action.parameter)
+		})
+		return newState
+	}
+	checkConditions(state) {
+		return checkConditions(this.conditions, state)
 	}
 }
 
@@ -246,8 +233,8 @@ export function getRandomCards(amount = 3) {
 // 	},
 // 	conditions: [
 // 		{
-// 			action: enum,
 // 			type: enum
+// 			action: enum,
 // 		}
 // 	]
 // }

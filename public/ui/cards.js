@@ -15,8 +15,10 @@ function isCardDisabled(card, gameState) {
 	let isDisabled = false
 	if (gameState.player.currentEnergy < card.energy) {
 		isDisabled = true
-	} else if (card.conditions && card.condition && gameState) {
-		isDisabled = card.condition(gameState)
+	} else if (card.conditions) {
+		// We only need to check if the card is in hand.
+		let inHand = gameState.hand.find((c) => c.id === card.id)
+		isDisabled = inHand && card.checkConditions(gameState)
 	}
 
 	return isDisabled
