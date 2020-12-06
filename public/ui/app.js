@@ -49,7 +49,7 @@ export default class App extends Component {
 			game: this.game,
 			update: this.update.bind(this),
 			createCard,
-			dealCards: this.dealCards.bind(this)
+			dealCards: this.dealCards.bind(this),
 			// component: this,
 		}
 	}
@@ -92,9 +92,7 @@ export default class App extends Component {
 	goToNextRoom() {
 		this.game.enqueue({type: 'endTurn'})
 		this.game.enqueue({type: 'goToNextRoom'})
-		this.update(() =>
-			this.update(this.dealCards)
-		)
+		this.update(() => this.update(this.dealCards))
 	}
 	handlePlayerReward(card) {
 		this.game.enqueue({type: 'rewardPlayer', card: card})

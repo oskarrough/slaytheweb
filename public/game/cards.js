@@ -13,7 +13,7 @@ export const cards = [
 		energy: 1,
 		block: 5,
 		target: 'player',
-		description: 'Gain 5 Block'
+		description: 'Gain 5 Block',
 	},
 	{
 		name: 'Strike',
@@ -21,7 +21,7 @@ export const cards = [
 		energy: 1,
 		target: 'enemy',
 		damage: 6,
-		description: 'Deal 6 Damage.'
+		description: 'Deal 6 Damage.',
 	},
 	{
 		name: 'Bash',
@@ -43,10 +43,10 @@ export const cards = [
 		conditions: [
 			{
 				action: 'onlyType',
-				type: 'Attack'
-			}
+				type: 'Attack',
+			},
 		],
-		  
+
 		description: 'Can only be played if every card in your hand is an Attack. Deal 14 damage.',
 	},
 	{
@@ -97,8 +97,8 @@ export const cards = [
 		conditions: [
 			{
 				action: 'shouldNotHaveMoreThen',
-				percentage: 50
-			}
+				percentage: 50,
+			},
 		],
 		powers: {
 			regen: 5,
@@ -115,62 +115,61 @@ export const cards = [
 				action: 'addHealth',
 				parameter: {
 					target: 'playerX',
-					amount: 1
-				}
+					amount: 1,
+				},
 			},
 			{
 				action: 'drawCards',
 				preConditions: [
 					{
 						action: 'shouldNotHaveLessThen',
-						percentage: 100
-					}
+						percentage: 100,
+					},
 				],
-				parameter: 2
-			}
+				parameter: 2,
+			},
 		],
 		conditions: [
 			{
 				action: 'onlyType',
-				type: 'Skill'
+				type: 'Skill',
 			},
 			{
 				action: 'shouldNotHaveLessThen',
-				percentage: 60
-			}
-		]
-	}
+				percentage: 60,
+			},
+		],
+	},
 	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
 	// {name: 'Body Slam', energy: 1, type: 'Attack', description: 'Deal Damage equal to your Block'},
 ]
 
 function checkConditions(conditions, state) {
-	let boolean = false;
+	let boolean = false
 	if (conditions && state) {
-		conditions.forEach(condition => {
+		conditions.forEach((condition) => {
 			if (!boolean && conditionsMethods[condition.action]) {
 				boolean = conditionsMethods[condition.action](state, condition)
 			}
-		});
+		})
 	}
 
 	return boolean
 }
 
 function runOnUse(actions, state, target) {
-	let newState = state;
+	let newState = state
 
 	if (actions && state) {
-		actions.forEach(onUse => {
-
+		actions.forEach((onUse) => {
 			if (onUse.preConditions && checkConditions(onUse.preConditions, state)) {
-				return newState;
+				return newState
 			}
 
 			// Trick to replace the target in the parameters
-			// It creates problem now 
+			// It creates problem now
 			// TODO fix it
-			let param = onUse.parameter;
+			let param = onUse.parameter
 			// if (onUse.parameter.target) {
 			// 	delete onUse.parameter.target
 			// 	param = {
@@ -179,12 +178,11 @@ function runOnUse(actions, state, target) {
 			// 	}
 			// }
 			newState = actionsMethods[onUse.action](newState, param)
-		});
+		})
 	}
 
 	return newState
 }
-
 
 // All cards extend this class.
 export class Card {
@@ -201,12 +199,16 @@ export class Card {
 		this.conditions = props.conditions
 		this.onUse = props.onUse
 
-		this.use = this.onUse ? (state, target) => {
-			return runOnUse(this.onUse, state, target)
-		} : null;
-		this.condition = this.conditions ? (state) => {
-			return checkConditions(this.conditions, state)
-		} : null;
+		this.use = this.onUse
+			? (state, target) => {
+					return runOnUse(this.onUse, state, target)
+			  }
+			: null
+		this.condition = this.conditions
+			? (state) => {
+					return checkConditions(this.conditions, state)
+			  }
+			: null
 	}
 }
 

@@ -5,7 +5,7 @@ export default class Cards extends Component {
 	render(props) {
 		return html`
 			<div class="Cards">
-				${props.gameState[props.type].map(card => Card(card, props.gameState))}
+				${props.gameState[props.type].map((card) => Card(card, props.gameState))}
 			</div>
 		`
 	}
@@ -13,19 +13,19 @@ export default class Cards extends Component {
 
 function isCardDisabled(card, gameState) {
 	let isDisabled = false
-	if(gameState.player.currentEnergy < card.energy) {
+	if (gameState.player.currentEnergy < card.energy) {
 		isDisabled = true
 	} else if (card.conditions && card.condition && gameState) {
 		isDisabled = card.condition(gameState)
 	}
-	
-	return isDisabled;
+
+	return isDisabled
 }
 
 export function Card(card, gameState) {
-	let isDisabled;
+	let isDisabled
 	if (gameState) {
-		isDisabled = isCardDisabled(card, gameState);
+		isDisabled = isCardDisabled(card, gameState)
 	}
 
 	return html`

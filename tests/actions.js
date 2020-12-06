@@ -402,15 +402,15 @@ test('can not play card if target doesnt match', (t) => {
 	const {state} = t.context
 	const card = createCard('Strike')
 	t.throws(() => {
-		const nextState = a.playCard(state, {card, target: 'yolo'})
+		a.playCard(state, {card, target: 'yolo'})
 	})
 	t.throws(() => {
-		const nextState = a.playCard(state, {card, target: 'enemy1'})
+		a.playCard(state, {card, target: 'enemy1'})
 	})
 	t.throws(() => {
-		const nextState = a.playCard(state, {card, target: 'naaah'})
+		a.playCard(state, {card, target: 'naaah'})
 	})
-	const nextState = a.playCard(state, {card, target: 'player'})
+	a.playCard(state, {card, target: 'player'})
 })
 
 test.todo('playing defend on an enemy ?')

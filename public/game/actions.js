@@ -206,7 +206,7 @@ function decreasePlayerPowerStacks(state) {
 
 // Decrease monster's power stacks.
 function decreaseMonsterPowerStacks(state) {
-	return produce(state, (draft) => {
+	return produce(state, () => {
 		getCurrRoom(state).monsters.forEach((monster) => {
 			decreasePowers(monster.powers)
 		})
