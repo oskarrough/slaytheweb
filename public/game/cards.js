@@ -1,6 +1,6 @@
 import {uuid} from './utils.js'
-import actionsMethods from './actions.js'
-import conditionsMethods from './conditions.js'
+import actionMethods from './actions.js'
+import conditionMethods from './conditions.js'
 
 /*
 This file contains all the cards in the game as well as a few utility methods.
@@ -158,9 +158,9 @@ export const cards = [
 function checkConditions(conditions, state) {
 	let boolean = false
 	conditions.forEach((condition) => {
-		if (!boolean && conditionsMethods[condition.type]) {
+		if (!boolean && conditionMethods[condition.type]) {
 			console.log('checking condition', condition, state)
-			boolean = conditionsMethods[condition.type](state, condition)
+			boolean = conditionMethods[condition.type](state, condition)
 		}
 	})
 	return boolean
@@ -190,7 +190,7 @@ export class Card {
 				return newState
 			}
 			console.log('onuse:noprecondition')
-			newState = actionsMethods[action.type](newState, action.parameter)
+			newState = actionMethods[action.type](newState, action.parameter)
 		})
 		return newState
 	}
