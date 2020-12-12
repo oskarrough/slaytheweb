@@ -224,23 +224,30 @@ export function getRandomCards(amount = 3) {
 	return results
 }
 
-// this.card = {
-// 	name: enum,
-// 	type: enum, // [ATTACK, SKILL, POWER, STATUS, CURSE]
-// 	energy: number,
-// 	target: enum, // [ENEMY, ALL_ENEMY, PLAYER, NONE, SELF_AND_ENEMY, ALL]
-// 	description: string,
-// 	powers: {
-// 		regen: number,
-// 		vulnerable: number,
-// 		weak: number
-// 	},
-// 	conditions: [
-// 		{
-// 			type: enum
-// 			action: enum,
-// 		}
-// 	]
-// }
-// color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
-// rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
+/*
+this.card = {
+	name: enum,
+	type: enum, // [ATTACK, SKILL, POWER, STATUS, CURSE]
+	energy: number,
+	target: enum, // [player, enemy, all enemies] @todo? [NONE, SELF_AND_ENEMY, ALL]
+	description: string,
+	powers: {
+		regen: number,
+		vulnerable: number,
+		weak: number
+	},
+	actions: [
+		type: enum,
+		parameter: object,
+		condition: condition
+	]
+	conditions: [
+		{
+			type: enum
+			.. more optinal props
+		}
+	]
+}
+color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
+rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
+*/
