@@ -152,7 +152,18 @@ export const cards = [
 		// ],
 	},
 	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
-	// {name: 'Body Slam', energy: 1, type: 'Attack', description: 'Deal Damage equal to your Block'},
+	{
+		name: 'Body Slam',
+		energy: 1,
+		type: 'Attack',
+		target: 'enemy',
+		description: 'Deal Damage equal to your Block',
+		onUse: [
+			{
+				type: 'dealDamageEqualToBlock',
+			},
+		],
+	},
 ]
 
 function checkConditions(conditions, state) {

@@ -315,7 +315,14 @@ function goToNextRoom(state) {
 		draft.dungeon.index = number + 1
 	})
 }
+
+function dealDamageEqualToBlock(state, {target}) {
+	const block = state.player.block
+	return removeHealth(state, {target, amount: block})
+}
+
 export default {
+	dealDamageEqualToBlock,
 	addCardToHand,
 	addHealth,
 	addStarterDeck,
