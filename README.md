@@ -14,14 +14,13 @@ Why what? After many runs in the Spire, I really got into the theory behind the 
 
 You will need `yarn` or `npm` installed on your computer.
 
-1. Run `yarn build` once. It downloads ESM dependencies into ./public/web_modules 
-2. Run `yarn start` to start a local file server 
+1. Run `yarn start` to start a local file server 
 
 - The `public/game` folder contains the game engine
 - The `public/index.html` and `public/ui` is an example interface/website
 - The `tests` folder is filled with tests for the game
 
-The entire `public` folder can now be deployed to any static web server. It does not require any compilation, but you *do need* to run `npm build` at least once. 
+The entire `public` folder can now be deployed to any static web server. It does not require any compilation, and dependencies are checked in to `public/web_modules`.
 
 ### Testing
 
@@ -72,6 +71,8 @@ You have a deck of cards. Cards have different energy cost and can trigge other 
 Once the draw pile is empty, and you attempt to draw, the discard pile is reshuffled into the draw pile.
 
 Cards also have a `target` property to suggest which targets the card should affect. Targets include `player`, `enemyX` (where x is the monster's index, starting from 0) and `all enemies`.
+
+For more advanced cards, you can define (custom) actions to run when the card is played. To limit when a a card can be played, use "conditions" (see the source code).
 
 ### Powers
 
