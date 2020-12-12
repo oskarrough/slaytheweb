@@ -4,7 +4,7 @@ This is a browser-based card game engine based on Slay The Spire, a fantastic vi
 
 > We fused card games and roguelikes together to make the best single player deckbuilder we could. Craft a unique deck, encounter bizarre creatures, discover relics of immense power, and Slay the Spire!
 
-🎴 Play it on https://slaytheweb.now.sh/
+🎴 Play it on https://slaytheweb.cards/
 
 ![Screenshot of the game](https://i.imgur.com/m9CRCsa.png)
 
@@ -35,7 +35,7 @@ Additionally you can run `yarn eslint public --fix` to automatically format all 
 
 ### Deploying
 
-The master branch automatically deploys to https://slaytheweb.now.sh via Zeit's now. If you open a PR, it'll give you a staging URL as well.
+The master branch automatically deploys to https://slaytheweb.cards via Zeit's now. If you open a PR, it'll give you a staging URL as well.
 
 ## How the game works
 

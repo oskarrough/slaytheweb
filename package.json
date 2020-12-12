@@ -2,6 +2,8 @@
   "name": "slaytheweb",
   "version": "0.9.0",
   "license": "MIT",
+  "homepage": "https://slaytheweb.cards",
+  "bugs": "https://github.com/oskarrough/slaytheweb/issues",
   "scripts": {
     "start": "servor public --reload",
     "lint": "eslint public tests --fix",
