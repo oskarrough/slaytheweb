@@ -6,9 +6,9 @@ import conditionMethods from './conditions.js'
 This file contains all the cards in the game as well as a few utility methods.
 While cards are described in this object form, they are always converted to a class equivalent.
 
-Cards can _optionally_ define an array of actions named `onUse`. These actions will be run when the card is played.
+Cards can _optionally_ define an array of actions named `actions`. These actions will be run when the card is played.
 In the same way, you can define a list of `conditions` that have to pass for the card to be playable.
-Your "onUse" actions can ALSO define a list of conditions.
+Your "actions" actions can ALSO define a list of conditions.
 */
 
 // All our cards.
@@ -99,6 +99,9 @@ export const cards = [
 		energy: 2,
 		target: 'player',
 		description: 'Gain 5 regen. Can only be played if player is below 50% health',
+		powers: {
+			regen: 5,
+		},
 		conditions: [
 			{
 				type: 'healthPercentageBelow',
@@ -111,9 +114,6 @@ export const cards = [
 			const percentage = state.player.currentHealth / state.player.maxHealth * 100
 			return percentage < 50
 		},*/
-		powers: {
-			regen: 5,
-		},
 	},
 	{
 		name: 'Summer of Sam',
@@ -121,11 +121,10 @@ export const cards = [
 		energy: 0,
 		target: 'player',
 		description: 'Gain 1 HP. Draw 2 cards if your hp is below 50',
-		onUse: [
+		actions: [
 			{
 				type: 'addHealth',
 				parameter: {
-					target: 'playerX',
 					amount: 1,
 				},
 			},
@@ -140,42 +139,21 @@ export const cards = [
 				],
 			},
 		],
-		// conditions: [
-		// 	{
-		// 		type: 'onlyType',
-		// 		cardType: 'Skill',
-		// 	},
-		// 	{
-		// 		type: 'healthPercentageAbove',
-		// 		percentage: 60,
-		// 	},
-		// ],
 	},
-	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
 	{
 		name: 'Body Slam',
 		energy: 1,
 		type: 'Attack',
 		target: 'enemy',
 		description: 'Deal Damage equal to your Block',
-		onUse: [
+		actions: [
 			{
 				type: 'dealDamageEqualToBlock',
 			},
 		],
 	},
+	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
 ]
-
-function checkConditions(conditions, state) {
-	let boolean = false
-	conditions.forEach((condition) => {
-		if (!boolean && conditionMethods[condition.type]) {
-			console.log('checking condition', condition, state)
-			boolean = conditionMethods[condition.type](state, condition)
-		}
-	})
-	return boolean
-}
 
 // All cards extend this class.
 export class Card {
@@ -190,18 +168,21 @@ export class Card {
 		this.powers = props.powers
 		this.description = props.description
 		this.conditions = props.conditions
-		this.onUse = props.onUse
+		this.actions = props.actions
 	}
-	use(state, {target}) {
-		if (!this.onUse) return state
+	// Runs through a list of actions and return the updated state.
+	// Called when the card is played. Use it for more advanced cards.
+	use(state, {target /*, card*/}) {
+		if (!this.actions) return state
 		let newState = state
-		this.onUse.forEach((action) => {
-			console.log('onuse', {action})
+		this.actions.forEach((action) => {
+			// Don't run action if it has an invalid condition.
 			if (action.conditions && !checkConditions(action.conditions, state)) {
 				return newState
 			}
-			console.log('onuse:noprecondition')
-			if (target && !action.parameter) action.parameter = {target}
+			// Make sure the action is called with a target.
+			action.parameter.target = target
+			// Run the action
 			newState = actionMethods[action.type](newState, action.parameter)
 		})
 		return newState
@@ -209,6 +190,17 @@ export class Card {
 	checkConditions(state) {
 		return checkConditions(this.conditions, state)
 	}
+}
+
+// Returns false if at least one condition fails
+function checkConditions(conditions, state) {
+	let boolean = false
+	conditions.forEach((condition) => {
+		if (!boolean && conditionMethods[condition.type]) {
+			boolean = conditionMethods[condition.type](state, condition)
+		}
+	})
+	return boolean
 }
 
 // Turns a plain object card into a class-based one.

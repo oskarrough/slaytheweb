@@ -123,7 +123,7 @@ function playCard(state, {card, target}) {
 		newState = removeHealth(newState, {target: newTarget, amount})
 	}
 	if (card.powers) newState = applyCardPowers(newState, {target, card})
-	if (card.use) newState = card.use(newState, {target})
+	if (card.use) newState = card.use(newState, {target, card})
 	return newState
 }
 
@@ -180,7 +180,6 @@ function applyCardPowers(state, {card, target}) {
 				const index = target.split('enemy')[1]
 				const monster = draft.dungeon.rooms[state.dungeon.index].monsters[index]
 				if (monster.currentHealth < 1) return
-				// console.log(target, t)
 				const newStacks = (monster.powers[name] || 0) + stacks
 				monster.powers[name] = newStacks
 			}
