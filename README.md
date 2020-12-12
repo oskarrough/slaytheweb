@@ -17,6 +17,7 @@ You will need `yarn` or `npm` installed on your computer.
 1. Run `yarn start` to start a local file server 
 
 - The `public/game` folder contains the game engine
+- The `public/content` folder contains example cards, dungeon and monsters using the game engine
 - The `public/index.html` and `public/ui` is an example interface/website
 - The `tests` folder is filled with tests for the game
 

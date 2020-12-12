@@ -6,7 +6,7 @@ export default [
 		energy: 1,
 		block: 5,
 		target: 'player',
-		description: 'Gain 5 Block',
+		description: 'Gain 5 Block.',
 	},
 	{
 		name: 'Strike',
@@ -67,7 +67,7 @@ export default [
 		powers: {
 			weak: 1,
 		},
-		description: 'Deal 7 damage. Apply 1 Weak.',
+		description: 'Deal 7 Damage. Apply 1 Weak.',
 	},
 	{
 		name: 'Thunderclap',
@@ -78,14 +78,14 @@ export default [
 		powers: {
 			vulnerable: 1,
 		},
-		description: 'Deal 4 damage and apply 1 Vulnerable to all enemies.',
+		description: 'Deal 4 Damage. Apply 1 Vulnerable to all enemies.',
 	},
 	{
 		name: 'Flourish',
 		type: 'Skill',
 		energy: 2,
 		target: 'player',
-		description: 'Gain 5 regen. Can only be played if player is below 50% health',
+		description: 'Gain 5 Regen. Can only be played if your health is below 50%.',
 		powers: {
 			regen: 5,
 		},
@@ -107,7 +107,7 @@ export default [
 		type: 'Skill',
 		energy: 0,
 		target: 'player',
-		description: 'Gain 1 HP. Draw 2 cards if your hp is below 50',
+		description: 'Gain 1 Health. Draw 2 Cards if your health is below 50%.',
 		actions: [
 			{
 				type: 'addHealth',
