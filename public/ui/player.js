@@ -1,6 +1,8 @@
 import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
 
-export const Player = (props) => html` <${Target} ...${props} type="player" /> `
+export const Player = (props) => {
+	return html`<${Target} ...${props} type="player" />`
+}
 
 export const Monster = (props) => {
 	const intent = props.model.intents[props.model.nextIntent]
@@ -47,9 +49,10 @@ function Healthbar({value, max, block}) {
 	return html`
 		<div class="Healthbar ${block ? `Healthbar--hasBlock` : ''}">
 			<p class="Healthbar-label">
-				${block ? html`<strong>[${block}]</strong>` : ''} ${value}/${max}
+				${value}/${max}
 			</p>
 			<div class="Healthbar-bar" style=${`width: ${(value / max) * 100}%`}></div>
+			<div class="Healthbar-bar Healthbar-blockBar" style=${`width: ${(block / max) * 100}%`}>${block ? block : ''}</div>
 		</div>
 	`
 }

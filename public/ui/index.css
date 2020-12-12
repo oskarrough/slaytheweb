@@ -363,7 +363,7 @@ h2 {
 	border: 3px solid;
 	border-radius: 0.5rem;
 }
-.Healthbar--hasBlock .Healthbar-bar {
+.Healthbar--hasBlock .Healthbar-blockBar {
 	background: #afafff;
 }
 .Healthbar-label {
@@ -371,7 +371,8 @@ h2 {
 	z-index: 1;
 	font-size: 1.25rem;
 	margin: 0.2em 0;
-	text-shadow: 0px 0px 2px hsla(0, 0%, 75%, 0.8);
+	text-shadow: 1px 1px 0 hsla(0, 0%, 95%, 0.8);
+	font-weight: bold;
 }
 .Healthbar-bar {
 	position: absolute;
@@ -383,6 +384,10 @@ h2 {
 	background: var(--yellow);
 	transition: width 400ms, background 200ms;
 	border-radius: 0.5rem;
+	font-size: 1.25rem;
+	line-height: 1.6;
+	font-weight: bold;
+	text-shadow: 1px 1px 0 hsla(0, 0%, 95%, 0.8);
 }
 
 .Actions {
