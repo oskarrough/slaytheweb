@@ -38,8 +38,6 @@ function List({items}) {
 
 function Item(item) {
 	return html`
-		<li key=${item}>
-			${item.action.type} ${item.action.card && item.action.card.name}
-		</li>
+		<li key=${item}>${item.action.type} ${item.action.card && item.action.card.name}</li>
 	`
 }
