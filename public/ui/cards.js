@@ -5,36 +5,30 @@ export default class Cards extends Component {
 	render(props) {
 		return html`
 			<div class="Cards">
-				${props.cards.map(card => Card(card, props.energy, props.cards))}
+				${props.gameState[props.type].map((card) => Card(card, props.gameState))}
 			</div>
 		`
 	}
 }
 
-function isCardDisabled(card, currentEnergy, cards) {
+function isCardDisabled(card, gameState) {
 	let isDisabled = false
-	if(currentEnergy < card.energy) {
+	if (gameState.player.currentEnergy < card.energy) {
 		isDisabled = true
-	} 
-	// Example of how we could handle cards conditions
-	// Should probably be a isolated function
-	else if (card.conditions && cards) {
-		card.conditions.forEach(condition => {
-			if (condition.action === 'ONLY') {
-				cards.forEach(card => {
-					if(card.type !== condition.type) {
-						isDisabled = true;		
-					}
-				})
-			}
-		});
+	} else if (card.conditions) {
+		// We only need to check if the card is in hand.
+		let inHand = gameState.hand.find((c) => c.id === card.id)
+		isDisabled = inHand && card.checkConditions(gameState)
 	}
-	
-	return isDisabled;
+
+	return isDisabled
 }
 
-export function Card(card, currentEnergy, cards) {
-	let isDisabled = isCardDisabled(card, currentEnergy, cards);
+export function Card(card, gameState) {
+	let isDisabled
+	if (gameState) {
+		isDisabled = isCardDisabled(card, gameState)
+	}
 
 	return html`
 		<article class="Card" key=${card.id} data-id=${card.id} disabled=${isDisabled}>

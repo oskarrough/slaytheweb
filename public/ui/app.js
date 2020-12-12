@@ -49,7 +49,7 @@ export default class App extends Component {
 			game: this.game,
 			update: this.update.bind(this),
 			createCard,
-			dealCards: this.dealCards.bind(this)
+			dealCards: this.dealCards.bind(this),
 			// component: this,
 		}
 	}
@@ -65,7 +65,9 @@ export default class App extends Component {
 		// Play the card.
 		const card = this.state.hand.find((c) => c.id === cardId)
 		this.game.enqueue({type: 'playCard', card, target})
-		this.update()
+		this.update(() => {
+			enableDragDrop(this.base, this.playCard)
+		})
 		// Create a clone of the card to animate.
 		const clone = cardElement.cloneNode(true)
 		cardElement.parentNode.insertBefore(clone, cardElement)
@@ -90,9 +92,7 @@ export default class App extends Component {
 	goToNextRoom() {
 		this.game.enqueue({type: 'endTurn'})
 		this.game.enqueue({type: 'goToNextRoom'})
-		this.update(() =>
-			this.update(this.dealCards)
-		)
+		this.update(() => this.update(this.dealCards))
 	}
 	handlePlayerReward(card) {
 		this.game.enqueue({type: 'rewardPlayer', card: card})
@@ -174,7 +174,7 @@ export default class App extends Component {
 					</div>
 
 					<div class="Hand">
-						<${Cards} cards=${state.hand} isHand=${true} energy=${state.player.currentEnergy} />
+						<${Cards} gameState=${state} type="hand" />
 					</div>
 
 					<details class="Menu Overlay" topleft>
@@ -199,11 +199,11 @@ export default class App extends Component {
 					</details>
 					<details class="DrawPile Overlay" bottomleft>
 						<summary>Dr<u>a</u>w pile ${state.drawPile.length}</summary>
-						<${Cards} cards=${state.drawPile} />
+						<${Cards} gameState=${state} type="drawPile" />
 					</details>
 					<details class="DiscardPile Overlay" bottomright>
 						<summary align-right>Di<u>s</u>card pile ${state.discardPile.length}</summary>
-						<${Cards} cards=${state.discardPile} />
+						<${Cards} gameState=${state} type="discardPile" />
 					</details>
 				</div>
 		`

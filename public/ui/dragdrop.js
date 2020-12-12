@@ -1,4 +1,3 @@
-import {html, Component} from '../../web_modules/htm/preact/standalone.module.js'
 import {Draggable} from './../web_modules/gsap/Draggable.js'
 import gsap from './animations.js'
 import {cards} from '../game/cards.js'
@@ -25,8 +24,8 @@ function getTargetStringFromElement(el) {
 
 export default function enableDragDrop(container, onAdd) {
 	const targets = container.querySelectorAll('.Target')
-
-	container.querySelectorAll('.Hand .Card').forEach((card) => {
+	const cards = container.querySelectorAll('.Hand .Card')
+	cards.forEach((card) => {
 		Draggable.create(card, {
 			// While dragging, highlight any targets we are dragging over.
 			onDrag() {
@@ -38,7 +37,9 @@ export default function enableDragDrop(container, onAdd) {
 				while (--i > -1) {
 					// Highlight only if valid target.
 					if (this.hitTest(targets[i], '50%')) {
-						if (cardHasValidTarget(getCardFromElement(cardEl), getTargetStringFromElement(targets[i]))) {
+						if (
+							cardHasValidTarget(getCardFromElement(cardEl), getTargetStringFromElement(targets[i]))
+						) {
 							targets[i].classList.add(overClass)
 						}
 					} else {

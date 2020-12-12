@@ -402,18 +402,27 @@ test('can not play card if target doesnt match', (t) => {
 	const {state} = t.context
 	const card = createCard('Strike')
 	t.throws(() => {
-		const nextState = a.playCard(state, {card, target: 'yolo'})
+		a.playCard(state, {card, target: 'yolo'})
 	})
 	t.throws(() => {
-		const nextState = a.playCard(state, {card, target: 'enemy1'})
+		a.playCard(state, {card, target: 'enemy1'})
 	})
 	t.throws(() => {
-		const nextState = a.playCard(state, {card, target: 'naaah'})
+		a.playCard(state, {card, target: 'naaah'})
 	})
-	const nextState = a.playCard(state, {card, target: 'player'})
+	a.playCard(state, {card, target: 'player'})
 })
 
 test.todo('playing defend on an enemy ?')
 test.todo('Cleave targets all monsters')
 test.todo('can apply a power to a specific monster')
 test.todo("Clash can only be played if it's the only attack")
+
+test('Summer of sam card gains 1 life', (t) => {
+	const {state} = t.context
+	const card = createCard('Summer of Sam')
+	t.is(typeof card.use, 'function')
+	const originalHealth = state.player.currentHealth
+	const newState = a.playCard(state, {target: 'player', card})
+	t.is(newState.player.currentHealth, originalHealth + 1, 'gain 1 life')
+})

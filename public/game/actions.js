@@ -38,8 +38,8 @@ function setDungeon(state, dungeon) {
 // Draws a "starter" deck to your discard pile. Normally you'd run this as you start the game.
 function addStarterDeck(state) {
 	const deck = [
-		createCard('Defend'),
-		createCard('Defend'),
+		createCard('Summer of Sam'),
+		createCard('Clash'),
 		createCard('Defend'),
 		createCard('Defend'),
 		createCard('Defend'),
@@ -123,6 +123,7 @@ function playCard(state, {card, target}) {
 		newState = removeHealth(newState, {target: newTarget, amount})
 	}
 	if (card.powers) newState = applyCardPowers(newState, {target, card})
+	if (card.use) newState = card.use(newState, {target, card})
 	return newState
 }
 
@@ -138,9 +139,10 @@ function addHealth(state, {target, amount}) {
 
 // See the note on `target` above.
 const removeHealth = (state, {target, amount}) => {
+	// console.warn('removeHealth', target)
 	return produce(state, (draft) => {
 		const targets = getTargets(draft, target)
-		// console.log('removing health', targets, amount)
+		// console.warn('removing health', targets, amount)
 		targets.forEach((t) => {
 			// Adjust damage if the monster is vulnerable.
 			if (t.powers.vulnerable) {
@@ -178,7 +180,6 @@ function applyCardPowers(state, {card, target}) {
 				const index = target.split('enemy')[1]
 				const monster = draft.dungeon.rooms[state.dungeon.index].monsters[index]
 				if (monster.currentHealth < 1) return
-				// console.log(target, t)
 				const newStacks = (monster.powers[name] || 0) + stacks
 				monster.powers[name] = newStacks
 			}
@@ -202,7 +203,7 @@ function decreasePlayerPowerStacks(state) {
 
 // Decrease monster's power stacks.
 function decreaseMonsterPowerStacks(state) {
-	return produce(state, (draft) => {
+	return produce(state, () => {
 		getCurrRoom(state).monsters.forEach((monster) => {
 			decreasePowers(monster.powers)
 		})
@@ -313,7 +314,14 @@ function goToNextRoom(state) {
 		draft.dungeon.index = number + 1
 	})
 }
+
+function dealDamageEqualToBlock(state, {target}) {
+	const block = state.player.block
+	return removeHealth(state, {target, amount: block})
+}
+
 export default {
+	dealDamageEqualToBlock,
 	addCardToHand,
 	addHealth,
 	addStarterDeck,
