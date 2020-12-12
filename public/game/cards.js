@@ -1,161 +1,47 @@
 import {uuid} from './utils.js'
 import actionMethods from './actions.js'
 import conditionMethods from './conditions.js'
+import cards from '../content/cards.js'
 
 /*
-This file contains all the cards in the game as well as a few utility methods.
-While cards are described in this object form, they are always converted to a class equivalent.
+	This file contains the logic to create cards.
+	While cards are described in an object form, they are always converted to a class equivalent.
 
-Cards can _optionally_ define an array of actions named `actions`. These actions will be run when the card is played.
-In the same way, you can define a list of `conditions` that have to pass for the card to be playable.
-Your "actions" actions can ALSO define a list of conditions.
+	You can find cards themselves in content/cards.js
+
+	Cards can _optionally_ define an array of actions named `actions`. These actions will be run when the card is played.
+	In the same way, you can define a list of `conditions` that have to pass for the card to be playable.
+	Your "actions" actions can ALSO define a list of conditions.
 */
 
-// All our cards.
-export const cards = [
-	{
-		name: 'Defend',
-		type: 'Skill',
-		energy: 1,
-		block: 5,
-		target: 'player',
-		description: 'Gain 5 Block',
-	},
-	{
-		name: 'Strike',
-		type: 'Attack',
-		energy: 1,
-		target: 'enemy',
-		damage: 6,
-		description: 'Deal 6 Damage.',
-	},
-	{
-		name: 'Bash',
-		type: 'Attack',
-		energy: 2,
-		damage: 8,
-		target: 'enemy',
-		powers: {
-			vulnerable: 2,
-		},
-		description: 'Deal 8 damage. Apply 2 Vulnerable.',
-	},
-	{
-		name: 'Clash',
-		type: 'Attack',
-		energy: 0,
-		damage: 14,
-		target: 'enemy',
-		conditions: [
-			{
-				type: 'onlyType',
-				cardType: 'Attack',
-			},
-		],
-		description: 'Can only be played if every card in your hand is an Attack. Deal 14 damage.',
-	},
-	{
-		name: 'Cleave',
-		type: 'Attack',
-		energy: 1,
-		damage: 8,
-		target: 'all enemies',
-		description: 'Deal 8 damage to ALL enemies.',
-	},
-	{
-		name: 'Iron Wave',
-		type: 'Skill',
-		energy: 1,
-		damage: 5,
-		block: 5,
-		target: 'enemy',
-		description: 'Gain 5 Block. Deal 5 damage.',
-	},
-	{
-		name: 'Sucker Punch',
-		type: 'Attack',
-		energy: 1,
-		damage: 7,
-		target: 'enemy',
-		powers: {
-			weak: 1,
-		},
-		description: 'Deal 7 damage. Apply 1 Weak.',
-	},
-	{
-		name: 'Thunderclap',
-		type: 'Attack',
-		energy: 1,
-		damage: 4,
-		target: 'all enemies',
-		powers: {
-			vulnerable: 1,
-		},
-		description: 'Deal 4 damage and apply 1 Vulnerable to all enemies.',
-	},
-	{
-		name: 'Flourish',
-		type: 'Skill',
-		energy: 2,
-		target: 'player',
-		description: 'Gain 5 regen. Can only be played if player is below 50% health',
-		powers: {
-			regen: 5,
-		},
-		conditions: [
-			{
-				type: 'healthPercentageBelow',
-				percentage: 50,
-			},
-		],
-		/*
-		// Not implemented. Playing around with syntax
-		condition(state) {
-			const percentage = state.player.currentHealth / state.player.maxHealth * 100
-			return percentage < 50
-		},*/
-	},
-	{
-		name: 'Summer of Sam',
-		type: 'Skill',
-		energy: 0,
-		target: 'player',
-		description: 'Gain 1 HP. Draw 2 cards if your hp is below 50',
-		actions: [
-			{
-				type: 'addHealth',
-				parameter: {
-					amount: 1,
-				},
-			},
-			{
-				type: 'drawCards',
-				parameter: 2,
-				conditions: [
-					{
-						type: 'healthPercentageBelow',
-						percentage: 50,
-					},
-				],
-			},
-		],
-	},
-	{
-		name: 'Body Slam',
-		energy: 1,
-		type: 'Attack',
-		target: 'enemy',
-		description: 'Deal Damage equal to your Block',
-		actions: [
-			{
-				type: 'dealDamageEqualToBlock',
-			},
-		],
-	},
-	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
-]
-
 // All cards extend this class.
+/*
+this.card = {
+	name: enum,
+	type: enum, // [ATTACK, SKILL, POWER, STATUS, CURSE]
+	energy: number,
+	target: enum, // [player, enemy, all enemies] @todo? [NONE, SELF_AND_ENEMY, ALL]
+	description: string,
+	powers: {
+		regen: number,
+		vulnerable: number,
+		weak: number
+	},
+	actions: [
+		type: enum,
+		parameter: object,
+		condition: condition
+	]
+	conditions: [
+		{
+			type: enum
+			.. more optinal props
+		}
+	]
+}
+color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
+rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
+*/
 export class Card {
 	constructor(props) {
 		this.id = uuid()
@@ -223,31 +109,3 @@ export function getRandomCards(amount = 3) {
 	}
 	return results
 }
-
-/*
-this.card = {
-	name: enum,
-	type: enum, // [ATTACK, SKILL, POWER, STATUS, CURSE]
-	energy: number,
-	target: enum, // [player, enemy, all enemies] @todo? [NONE, SELF_AND_ENEMY, ALL]
-	description: string,
-	powers: {
-		regen: number,
-		vulnerable: number,
-		weak: number
-	},
-	actions: [
-		type: enum,
-		parameter: object,
-		condition: condition
-	]
-	conditions: [
-		{
-			type: enum
-			.. more optinal props
-		}
-	]
-}
-color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
-rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
-*/

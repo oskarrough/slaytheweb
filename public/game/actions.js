@@ -2,7 +2,7 @@ import produce from '../web_modules/immer.js'
 import {createCard} from './cards.js'
 import {shuffle, getTargets, getCurrRoom /*, range*/} from './utils.js'
 import powers from './powers.js'
-import {createSimpleDungeon} from './dungeon-encounters.js'
+import {createSimpleDungeon} from '../content/dungeon-encounters.js'
 
 // The idea is that we have one big object with game state. Whenever we want to change something, we call an "action" from this file. Each action takes two arguments: 1) the current state, 2) an object of arguments.
 

@@ -1,4 +1,4 @@
-import Dungeon, {MonsterRoom, Monster} from './dungeon.js'
+import Dungeon, {MonsterRoom, Monster} from '../game/dungeon.js'
 
 // This file contains ready-to-use dungeons filled with rooms and exciting monsters.
 
