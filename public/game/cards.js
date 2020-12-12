@@ -181,7 +181,7 @@ export class Card {
 		this.conditions = props.conditions
 		this.onUse = props.onUse
 	}
-	use(state) {
+	use(state, {target}) {
 		if (!this.onUse) return state
 		let newState = state
 		this.onUse.forEach((action) => {
@@ -190,6 +190,7 @@ export class Card {
 				return newState
 			}
 			console.log('onuse:noprecondition')
+			if (target && !action.parameter) action.parameter = {target}
 			newState = actionMethods[action.type](newState, action.parameter)
 		})
 		return newState
