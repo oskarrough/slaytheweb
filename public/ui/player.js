@@ -1,4 +1,5 @@
 import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
+import {weak} from '../game/powers.js'
 
 export const Player = (props) => {
 	return html`<${Target} ...${props} type="player" />`
@@ -7,7 +8,13 @@ export const Player = (props) => {
 export const Monster = (props) => {
 	const intent = props.model.intents[props.model.nextIntent]
 	const type = intent && Object.keys(intent)[0]
-	const damage = intent && intent.damage
+	let damage = intent && intent.damage
+
+	// If weakened, show modified damage.
+	if (props.model.powers.weak && damage) {
+		damage = weak.use(damage)
+	}
+
 	return html`
 		<${Target} ...${props} type="enemy">
 			${intent &&
@@ -52,7 +59,9 @@ function Healthbar({value, max, block}) {
 				<span>${value}/${max}</span>
 			</p>
 			<div class="Healthbar-bar" style=${`width: ${(value / max) * 100}%`}></div>
-			<div class="Healthbar-bar Healthbar-blockBar" style=${`width: ${(block / max) * 100}%`}>${block ? block : ''}</div>
+			<div class="Healthbar-bar Healthbar-blockBar" style=${`width: ${(block / max) * 100}%`}>
+				${block ? block : ''}
+			</div>
 		</div>
 	`
 }
