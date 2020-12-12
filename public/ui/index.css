@@ -273,7 +273,7 @@ h2 {
 	box-shadow: none;
 	border-width: 0.15rem;
 	background: #ad7a41;
-	font-size: small;
+	font-size: large;
 }
 .Card[disabled] .EnergyBadge {
 	color: red;
@@ -369,6 +369,7 @@ h2 {
 .Healthbar-label {
 	position: relative;
 	z-index: 1;
+	font-size: 1.25rem;
 	margin: 0.2em 0;
 	text-shadow: 0px 0px 2px hsla(0, 0%, 75%, 0.8);
 }

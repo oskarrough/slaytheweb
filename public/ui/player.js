@@ -30,7 +30,7 @@ class Target extends Component {
 		const hp = isDead ? 0 : model.currentHealth
 		return html`
 			<div class=${`Target${isDead ? ' Target--isDead' : ''}`} data-type=${type}>
-				<h2>${name} ${children}</h2>
+				<h2><span class="Target-name">${name}</span> ${children}</h2>
 				<${Healthbar} max=${model.maxHealth} value=${hp} block=${model.block} />
 				<${Powers} powers=${model.powers} />
 				<div class="Target-combatText Split">
