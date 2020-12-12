@@ -67,6 +67,7 @@ export class Card {
 				return newState
 			}
 			// Make sure the action is called with a target.
+			if (!action.parameter) action.parameter = {}
 			action.parameter.target = target
 			// Run the action
 			newState = actionMethods[action.type](newState, action.parameter)
