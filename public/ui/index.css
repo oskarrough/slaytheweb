@@ -385,7 +385,7 @@ h2 {
 }
 .Healthbar-label span {
 	display: inline-block;
-	transform: scale(3);
+	transform: scale(1.8);
 }
 .Healthbar-bar {
 	position: absolute;
