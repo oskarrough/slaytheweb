@@ -680,3 +680,15 @@ h2 {
 	font-weight: bold;
 	font-style: italic;
 }
+
+.CardGrid {
+	display: flex;
+	flex-flow: row wrap;
+	gap: 1rem;
+	justify-content: center;
+}
+
+.CardGrid > .Card {
+	width: var(--card-width);
+	min-height: var(--card-height);
+}
