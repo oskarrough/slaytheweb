@@ -262,7 +262,9 @@ h2 {
 }
 .Card-media img {
 	display: block;
-	max-width: 100%;
+	width: 100%;
+	height: 120px;
+	object-fit: cover;
 }
 .Card-type {
 	font-family: 'concourse_c3';

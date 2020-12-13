@@ -30,6 +30,14 @@ export function Card(card, gameState) {
 		isDisabled = isCardDisabled(card, gameState)
 	}
 
+	// 500x380
+	let image = ''
+	if (card.name === 'Strike') image = 'the-angel-of-death.jpg'
+	if (card.name === 'Defend') image = 'angel-messenger.jpg'
+	if (card.name === 'Bash') image = 'apteryx-mantelli.jpg'
+	if (card.name === 'Flourish') image = 'serpentine-dancer.jpg'
+	if (card.name === 'Summer of Sam') image = 'bare-feet-of-god.jpg'
+
 	return html`
 		<article class="Card" key=${card.id} data-id=${card.id} disabled=${isDisabled}>
 			<div class="Card-inner">
@@ -37,7 +45,7 @@ export function Card(card, gameState) {
 				<div> ${card.energy} </div>
 				</p>
 				<figure class="Card-media">
-					<img src="/ui/images/cards/rediscovery.png" alt=${card.name} />
+					<img src=${`/ui/images/cards/` + image} alt=${card.name} />
 				</figure>
 				<h3 class="Card-name">${card.name}</h3>
 				<p class="Card-type">${card.type}</p>
