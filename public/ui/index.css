@@ -251,14 +251,22 @@ h2 {
 }
 .Card-name {
 	margin: 0;
-	padding: 0.6em 1em 0.8em;
+	padding: 0.5em 1em 0.1em;
 	background: linear-gradient(to bottom, hsla(0, 0%, 0%, 0.2), transparent);
 	text-shadow: 1px 1px 1px var(--text-inverse);
 	user-select: none;
 }
+.Card-media {
+	margin: 0;
+	border-bottom: 2px solid #2a3335;
+}
+.Card-media img {
+	display: block;
+	max-width: 100%;
+}
 .Card-type {
 	font-family: 'concourse_c3';
-	margin-top: -0.5em;
+	margin-top: 0;
 	font-size: small;
 }
 .Card-description {

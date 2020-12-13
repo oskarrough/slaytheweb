@@ -33,10 +33,13 @@ export function Card(card, gameState) {
 	return html`
 		<article class="Card" key=${card.id} data-id=${card.id} disabled=${isDisabled}>
 			<div class="Card-inner">
-				<h3 class="Card-name">${card.name}</h3>
 				<p class="Card-energy EnergyBadge">
 				<div> ${card.energy} </div>
 				</p>
+				<figure class="Card-media">
+					<img src="/ui/images/cards/rediscovery.png" alt=${card.name} />
+				</figure>
+				<h3 class="Card-name">${card.name}</h3>
 				<p class="Card-type">${card.type}</p>
 				<p class="Card-description">${card.description}</p>
 			</div>
