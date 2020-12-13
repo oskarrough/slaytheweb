@@ -310,6 +310,7 @@ h2 {
 	flex: 1;
 	display: flex;
 	flex-flow: column;
+	transition: opacity 200ms;
 
 	justify-content: center;
 	max-width: 20rem;
@@ -349,6 +350,7 @@ h2 {
 }
 .Target--isDead {
 	pointer-events: none;
+	opacity: 0.2;
 }
 .Target--isDead .Healthbar {
 	background: var(--red);
