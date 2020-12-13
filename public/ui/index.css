@@ -251,7 +251,7 @@ h2 {
 }
 .Card-name {
 	margin: 0;
-	padding: 0.5em 1em 0.1em;
+	padding: 0.3em 1em 0.1em;
 	background: linear-gradient(to bottom, hsla(0, 0%, 0%, 0.2), transparent);
 	text-shadow: 1px 1px 1px var(--text-inverse);
 	user-select: none;
@@ -272,7 +272,8 @@ h2 {
 	font-size: small;
 }
 .Card-description {
-	font-size: smaller;
+	font-size: medium;
+	min-height: 3.6em;
 }
 .Card-energy {
 	position: absolute;
