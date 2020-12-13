@@ -35,7 +35,7 @@ export function Card(card, gameState) {
 			<div class="Card-inner">
 				<h3 class="Card-name">${card.name}</h3>
 				<p class="Card-energy EnergyBadge">
-				<div> ${card.energy} </div>
+					<span>${card.energy}</span>
 				</p>
 				<p class="Card-type">${card.type}</p>
 				<p class="Card-description">${card.description}</p>
