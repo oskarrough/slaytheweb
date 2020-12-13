@@ -33,7 +33,7 @@ export function Monster(props = {}) {
 	return {
 		id: uuid(),
 		maxHealth: props.hp || 42,
-		currentHealth: props.hp || 42,
+		currentHealth: props.currentHealth || props.hp || 42,
 		damage: props.damage || 5,
 		block: props.block || 0,
 		powers: props.powers || {},
