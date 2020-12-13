@@ -165,7 +165,7 @@ stw.dealCards()
 
 					<div class="Split ${noEnergy ? 'no-energy' : ''}">
 						<div class="EnergyBadge">
-								<div>${state.player.currentEnergy}/${state.player.maxEnergy} </div>
+								<span>${state.player.currentEnergy}/${state.player.maxEnergy}</span>
 						</div>
 						<p class="Actions">
 							<button class="EndTurn" onclick=${() => this.endTurn()}>

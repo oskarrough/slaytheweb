@@ -42,7 +42,7 @@ export function Card(card, gameState) {
 		<article class="Card" key=${card.id} data-id=${card.id} disabled=${isDisabled}>
 			<div class="Card-inner">
 				<p class="Card-energy EnergyBadge">
-				<div> ${card.energy} </div>
+					<span>${card.energy}</span>
 				</p>
 				<figure class="Card-media">
 					<img src=${`/ui/images/cards/` + image} alt=${card.name} />
