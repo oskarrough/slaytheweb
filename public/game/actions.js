@@ -38,11 +38,11 @@ function setDungeon(state, dungeon) {
 // Draws a "starter" deck to your discard pile. Normally you'd run this as you start the game.
 function addStarterDeck(state) {
 	const deck = [
-		createCard('Summer of Sam'),
-		createCard('Clash'),
 		createCard('Defend'),
 		createCard('Defend'),
 		createCard('Defend'),
+		createCard('Defend'),
+		createCard('Strike'),
 		createCard('Strike'),
 		createCard('Strike'),
 		createCard('Strike'),
