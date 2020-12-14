@@ -1,26 +1,29 @@
 import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
-import {weak} from '../game/powers.js'
+import {weak as weakPower, vulnerable as vulnerablePower} from '../game/powers.js'
 
 export const Player = (props) => {
 	return html`<${Target} ...${props} type="player" />`
 }
 
 export const Monster = (props) => {
-	const intent = props.model.intents[props.model.nextIntent]
-	const type = intent && Object.keys(intent)[0]
-	let damage = intent && intent.damage
+	const monster = props.model
+	const state = props.gameState
+	// {damage: 6, block: 2}
+	const intent = monster.intents[monster.nextIntent]
 
-	// If weakened, show modified damage.
-	if (props.model.powers.weak && damage) {
-		damage = weak.use(damage)
+	function MonsterIntent([type, amount]) {
+		const weakened = monster.powers.weak
+		const vulnerable = state.player.powers.vulnerable
+		if (type === 'damage' && weakened) amount = weakPower.use(amount)
+		if (type === 'damage' && vulnerable) amount = vulnerablePower.use(amount)
+		return html`
+			<div class="Target-intent"><img alt=${type} src="ui/images/${type}.png" /> ${amount}</div>
+		`
 	}
 
 	return html`
 		<${Target} ...${props} type="enemy">
-			${intent &&
-			html`
-				<div class="Target-intent"><img alt=${type} src="ui/images/${type}.png" /> ${damage}</div>
-			`}
+			${Object.entries(intent).map((intent) => MonsterIntent(intent, monster, props.gameState))}
 		<//>
 	`
 }

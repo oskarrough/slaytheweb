@@ -159,7 +159,7 @@ stw.dealCards()
 							<${Player} model=${state.player} name="Player" />
 						</div>
 						<div class="Targets-group">
-							${room.monsters.map((monster) => html`<${Monster} model=${monster} />`)}
+							${room.monsters.map((monster) => html`<${Monster} model=${monster} gameState=${state} />`)}
 						</div>
 					</div>
 
