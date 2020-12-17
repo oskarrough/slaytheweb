@@ -1,4 +1,5 @@
 import Dungeon, {MonsterRoom, Monster} from '../game/dungeon.js'
+import gsap from '../web_modules/gsap.js'
 
 // This file contains ready-to-use dungeons filled with rooms and exciting monsters.
 
@@ -41,10 +42,17 @@ const CultistMonster = () =>
 		intents: [{weak: 1}, {damage: 6}],
 	})
 
+const RandomMonster = () =>
+	Monster({
+		random: 2,
+		hp: 36,
+		intents: [{damage: 5}, {damage: 10}, {damage: 5}],
+	})
 export const createSimpleDungeon = () => {
 	return Dungeon({
 		rooms: [
 			MonsterRoom(Monster({hp: 18, intents})),
+			MonsterRoom(RandomMonster()),
 			MonsterRoom(Monster({intents}), ScalingMonster()),
 			MonsterRoom(STSMonster()),
 			MonsterRoom(CultistMonster()),

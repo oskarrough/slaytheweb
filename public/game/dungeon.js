@@ -1,4 +1,5 @@
 import {uuid} from './utils.js'
+import {shuffle, range} from './utils.js'
 
 // A dungeon is where the adventure starts.
 export default function Dungeon(props) {
@@ -30,6 +31,19 @@ export function MonsterRoom(...monsters) {
 // A monster has health, probably some damage and a list of intents.
 // Intents are cycled through as the monster plays its turn.
 export function Monster(props = {}) {
+	let intents = props.intents
+
+	// By setting props.random to a number, all damage intents will be randomized with this range.
+	if (typeof props.random === 'number') {
+		intents = props.intents.map((intent) => {
+			if (intent.damage) {
+				let newDamage = shuffle(range(5, intent.damage - props.random))[0]
+				intent.damage = newDamage
+			}
+			return intent
+		})
+	}
+
 	return {
 		id: uuid(),
 		maxHealth: props.hp || 42,
@@ -37,7 +51,7 @@ export function Monster(props = {}) {
 		damage: props.damage || 5,
 		block: props.block || 0,
 		powers: props.powers || {},
-		intents: props.intents || [],
+		intents: intents || [],
 		nextIntent: 0,
 	}
 }
