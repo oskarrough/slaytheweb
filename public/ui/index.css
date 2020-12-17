@@ -1,6 +1,6 @@
 :root {
-	--card-width: 10rem;
-	--card-height: 11rem;
+	--card-width: 9em;
+	--card-height: 11em;
 	--yellow: #ffc107;
 	--teal: #116f54;
 	--lightblue: hsl(194.7, 53.3%, 79%);
@@ -44,6 +44,9 @@ html {
 }
 
 @media (min-height: 800px) {
+	:root {
+	--card-width: 10em;
+	}
 	html {
 		font-size: 18px;
 	}
