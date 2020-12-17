@@ -48,6 +48,19 @@ const RandomMonster = () =>
 		hp: 36,
 		intents: [{damage: 5}, {damage: 10}, {damage: 5}],
 	})
+
+const TrioMonsterA = () =>
+	Monster({
+		hp: gsap.utils.random(39, 46, 1),
+		intents: [{damage: 10}, {weak: 1}],
+	})
+
+const TrioMonsterB = () =>
+	Monster({
+		hp: gsap.utils.random(39, 46, 1),
+		intents: [{weak: 1}, {damage: 10}],
+	})
+
 export const createSimpleDungeon = () => {
 	return Dungeon({
 		rooms: [
@@ -58,6 +71,7 @@ export const createSimpleDungeon = () => {
 			MonsterRoom(CultistMonster()),
 			MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents: scalingIntents})),
 			MonsterRoom(Monster({hp: 92, intents}), Monster({intents: scalingIntents})),
+			MonsterRoom(TrioMonsterB(), TrioMonsterA(), TrioMonsterB()),
 		],
 	})
 }
