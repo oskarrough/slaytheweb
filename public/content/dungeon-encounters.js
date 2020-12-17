@@ -1,5 +1,5 @@
 import Dungeon, {MonsterRoom, Monster} from '../game/dungeon.js'
-import gsap from '../web_modules/gsap.js'
+import {random} from '../game/utils.js'
 
 // This file contains ready-to-use dungeons filled with rooms and exciting monsters.
 
@@ -51,13 +51,13 @@ const RandomMonster = () =>
 
 const TrioMonsterA = () =>
 	Monster({
-		hp: gsap.utils.random(39, 46, 1),
+		hp: random(39, 46),
 		intents: [{damage: 10}, {weak: 1}],
 	})
 
 const TrioMonsterB = () =>
 	Monster({
-		hp: gsap.utils.random(39, 46, 1),
+		hp: random(39, 46),
 		intents: [{weak: 1}, {damage: 10}],
 	})
 
