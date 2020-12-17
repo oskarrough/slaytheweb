@@ -1,6 +1,6 @@
 import produce from '../web_modules/immer.js'
 import {createCard} from './cards.js'
-import {shuffle, getTargets, getCurrRoom /*, range*/} from './utils.js'
+import {shuffle, getTargets, getCurrRoom} from './utils.js'
 import powers from './powers.js'
 import {createSimpleDungeon} from '../content/dungeon-encounters.js'
 
@@ -281,7 +281,6 @@ function takeMonsterTurn(state) {
 			if (intent.damage) {
 				let amount = intent.damage
 				if (monster.powers.weak) amount = powers.weak.use(amount)
-				// amount = shuffle(range(5, monster.damage - 2))[0]
 				const newHp = removeHealth(draft, {target: 'player', amount}).player.currentHealth
 				draft.player.currentHealth = newHp
 			}
