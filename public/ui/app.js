@@ -181,13 +181,13 @@ stw.dealCards()
 							<${Player} model=${state.player} name="Player" />
 						</div>
 						<div class="Targets-group">
-							${room.monsters.map((monster) => html`<${Monster} model=${monster} />`)}
+							${room.monsters.map((monster) => html`<${Monster} model=${monster} gameState=${state} />`)}
 						</div>
 					</div>
 
 					<div class="Split ${noEnergy ? 'no-energy' : ''}">
 						<div class="EnergyBadge">
-								<div>${state.player.currentEnergy}/${state.player.maxEnergy} </div>
+								<span>${state.player.currentEnergy}/${state.player.maxEnergy}</span>
 						</div>
 						<p class="Actions">
 							<button class="EndTurn" onclick=${() => this.endTurn()}>

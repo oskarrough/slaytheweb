@@ -64,7 +64,6 @@ class SplashScreen extends Component {
 					location.hash &&
 					html`
 						<p>
-							Oh, it seems you have a saved game.
 							<button autofocus onClick=${props.onContinue}>Continue Game</button>
 						</p>
 					`
