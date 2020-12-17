@@ -153,7 +153,7 @@ stw.dealCards()
 		// There's a lot here because I did not want to split into too many files.
 		return html`
 				<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
-					<figure class="App-background"></div>
+					<figure class="App-background" data-room-index=${state.dungeon.index}></div>
 					${
 						isDead &&
 						html`<${Overlay}>
