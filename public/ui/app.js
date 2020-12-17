@@ -1,7 +1,7 @@
 // Third party dependencies
 import {html, Component} from '../../web_modules/htm/preact/standalone.module.js'
 import gsap from './animations.js'
-import {Flip} from './../web_modules/gsap/Flip.js'
+import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 
 // Game logic
 import createNewGame from '../game/index.js'
@@ -70,25 +70,35 @@ stw.dealCards()
 		// Play the card.
 		const card = this.state.hand.find((c) => c.id === cardId)
 		this.game.enqueue({type: 'playCard', card, target})
+
+		const supportsFlip = typeof Flip !== 'undefined'
+		let flip
+
 		// For the hand animation later.
-		const flip = Flip.getState('.Hand .Card')
+		if (supportsFlip) flip = Flip.getState('.Hand .Card')
+
 		// Create a clone on top of the card to animate.
 		const clone = cardElement.cloneNode(true)
 		document.body.appendChild(clone)
-		Flip.fit(clone, cardElement, {absolute: true})
+		if (supportsFlip) Flip.fit(clone, cardElement, {absolute: true})
+
 		// Update state and re-enable dragdrop
 		this.update(() => {
 			enableDragDrop(this.base, this.playCard)
+
 			// Animate cloned card away
 			gsap.effects.playCard(clone).then(() => {
 				clone.parentNode.removeChild(clone)
 			})
+
 			// Reposition hand
-			Flip.from(flip, {
-				duration: 0.3,
-				ease: 'power3.inOut',
-				absolute: true
-			})
+			if (supportsFlip) {
+				Flip.from(flip, {
+					duration: 0.3,
+					ease: 'power3.inOut',
+					absolute: true,
+				})
+			}
 		})
 	}
 	endTurn() {
