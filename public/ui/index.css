@@ -327,7 +327,7 @@ h2 {
 	border-top-right-radius: 0.5em;
 }
 .Target-intent {
-	display: inline;
+	display: inline-block;
 }
 .Target-intent img {
 	vertical-align: bottom;
