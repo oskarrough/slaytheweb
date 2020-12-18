@@ -117,7 +117,9 @@ export default [
 			},
 			{
 				type: 'drawCards',
-				parameter: 2,
+				parameter: {
+					amount: 2,
+				},
 				conditions: [
 					{
 						type: 'healthPercentageBelow',
