@@ -139,9 +139,10 @@ stw.dealCards()
 			openOverlays.forEach((el) => el.removeAttribute('open'))
 			toggle(this.base.querySelector('.Menu'))
 		}
-		if (key === 'a') toggle(this.base.querySelector('.DrawPile'))
-		if (key === 's') toggle(this.base.querySelector('.DiscardPile'))
-		if (key === 'm') toggle(this.base.querySelector('.Map'))
+		if (key === 'd') toggle(this.base.querySelector('#Deck'))
+		if (key === 'a') toggle(this.base.querySelector('#DrawPile'))
+		if (key === 's') toggle(this.base.querySelector('#DiscardPile'))
+		if (key === 'm') toggle(this.base.querySelector('#Map'))
 	}
 	render(props, state) {
 		if (!state.player) return
@@ -200,7 +201,7 @@ stw.dealCards()
 					<${Cards} gameState=${state} type="hand" />
 				</div>
 
-				<${OverlayWithButton} name="Menu" topleft>
+				<${OverlayWithButton} id="Menu" topleft>
 					<summary><u>Esc</u>ape</summary>
 					<div class="Splash">
 						<h1>Slay the Web</h1>
@@ -214,21 +215,21 @@ stw.dealCards()
 						</p>
 					</div>
 				<//>
-				<${OverlayWithButton} name="Map" topright>
+				<${OverlayWithButton} id="Map" topright>
 					<summary align-right><u>M</u>ap</summary>
 					<div class="Splash">
 						<div class="Splash-details"><${Map} dungeon=${state.dungeon} /></div>
 					</div>
 				<//>
-				<${OverlayWithButton} name="Oskar" topright topright2>
-					<summary>Deck ${state.deck.length}</summary>
+				<${OverlayWithButton} id="Deck" topright topright2>
+					<summary><u>D</u>eck ${state.deck.length}</summary>
 					<${Cards} gameState=${state} type="deck" />
 				<//>
-				<${OverlayWithButton} name="DrawPile" bottomleft>
+				<${OverlayWithButton} id="DrawPile" bottomleft>
 					<summary>Dr<u>a</u>w pile ${state.drawPile.length}</summary>
 					<${Cards} gameState=${state} type="drawPile" />
 				<//>
-				<${OverlayWithButton} name="DiscardPile" bottomright>
+				<${OverlayWithButton} id="DiscardPile" bottomright>
 					<summary align-right>Di<u>s</u>card pile ${state.discardPile.length}</summary>
 					<${Cards} gameState=${state} type="discardPile" />
 				<//>
