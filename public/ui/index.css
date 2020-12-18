@@ -454,6 +454,8 @@ h2 {
 	max-width: 40em;
 	text-align: left;
 	margin: 0 auto;
+	position: relative;
+	z-index: 2;
 }
 .Splash-spoder {
 	width: 10%;
@@ -574,6 +576,9 @@ h2 {
 .Overlay[open] .Overlay-bg {
 	transform: translateX(0);
 	background: var(--text-inverse);
+}
+.Overlay[open] .Overlay-bg--mild {
+	background: hsla(0, 0%, 0%, 0.6);
 }
 
 .Overlay[open][topleft] summary,
