@@ -12,7 +12,7 @@ import {createCard, getCardRewards} from './../game/cards.js'
 import Cards from './cards.js'
 import History from './history.js'
 import Map from './map.js'
-import Overlay from './overlay.js'
+import {Overlay, OverlayWithButton} from './overlays.js'
 import {Player, Monster} from './player.js'
 import Rewards from './rewards.js'
 import enableDragDrop from './dragdrop.js'
@@ -200,7 +200,7 @@ stw.dealCards()
 					<${Cards} gameState=${state} type="hand" />
 				</div>
 
-				<details class="Menu Overlay" topleft>
+				<${OverlayWithButton} name="Menu" topleft>
 					<summary><u>Esc</u>ape</summary>
 					<div class="Splash">
 						<h1>Slay the Web</h1>
@@ -213,30 +213,25 @@ stw.dealCards()
 							<button onclick=${() => this.undo()}><u>U</u>ndo</button><br />
 						</p>
 					</div>
-					<figure class="Overlay-bg"></figure>
-				</details>
-				<details class="Map Overlay" topright>
+				<//>
+				<${OverlayWithButton} name="Map" topright>
 					<summary align-right><u>M</u>ap</summary>
 					<div class="Splash">
 						<div class="Splash-details"><${Map} dungeon=${state.dungeon} /></div>
 					</div>
-					<figure class="Overlay-bg"></figure>
-				</details>
-				<details class="Overlay" topright topright2>
+				<//>
+				<${OverlayWithButton} name="Oskar" topright topright2>
 					<summary>Deck ${state.deck.length}</summary>
 					<${Cards} gameState=${state} type="deck" />
-					<figure class="Overlay-bg"></figure>
-				</details>
-				<details class="DrawPile Overlay" bottomleft>
+				<//>
+				<${OverlayWithButton} name="DrawPile" bottomleft>
 					<summary>Dr<u>a</u>w pile ${state.drawPile.length}</summary>
 					<${Cards} gameState=${state} type="drawPile" />
-					<figure class="Overlay-bg"></figure>
-				</details>
-				<details class="DiscardPile Overlay" bottomright>
+				<//>
+				<${OverlayWithButton} name="DiscardPile" bottomright>
 					<summary align-right>Di<u>s</u>card pile ${state.discardPile.length}</summary>
 					<${Cards} gameState=${state} type="discardPile" />
-					<figure class="Overlay-bg"></figure>
-				</details>
+				<//>
 			</div>
 		`
 	}
