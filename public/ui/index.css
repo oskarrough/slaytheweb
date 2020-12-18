@@ -511,48 +511,73 @@ h2 {
 
 /* Overlays */
 .Overlay {
-	position: absolute;
-	z-index: 1;
-	transition: background 400ms;
 }
-.Overlay[topleft] {
+.Overlay[topleft] summary {
 	top: 0;
 	left: 0;
 }
-.Overlay[topright] {
+.Overlay[topright] summary {
 	top: 0;
 	right: 0;
 }
-.Overlay[bottomleft] {
+.Overlay[topright2] summary {
+	right: 5rem;
+}
+.Overlay[open][topright2] {
+	/* right: 0; */
+}
+.Overlay[bottomleft] summary {
 	bottom: 0;
 	left: 0;
 }
-.Overlay[bottomright] {
+.Overlay[bottomright] summary {
 	bottom: 0;
 	right: 0;
 }
 .Overlay summary {
+	position: absolute;
 	padding: 1rem;
 	user-select: none;
-	z-index: 1;
+	z-index: 3;
 }
 .Overlay summary + * {
-	margin-left: 1rem;
-	margin-right: 1rem;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
 	opacity: 0;
-	transform: translate3d(0, 5rem, 0);
+	transform: translate3d(0, 4rem, 0);
+	padding-top: 4rem;
 }
+.Overlay-bg {
+	transition: background 400ms;
+	margin: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1;
+}
+
 /* Open overlays */
 .Overlay[open] {
 	z-index: 10;
-	width: 100%;
-	height: 100%;
-	background: var(--text-inverse);
 }
 .Overlay[open] summary {
 	position: absolute;
 	background: linear-gradient(to right, brown 40%, transparent);
 }
+.Overlay[open] summary + * {
+	overflow-y: auto;
+	z-index: 2;
+	opacity: 1;
+}
+.Overlay[open] .Overlay-bg {
+	background: var(--text-inverse);
+}
+
 .Overlay[open][topleft] summary,
 .Overlay[open][topright] summary {
 	top: 0;
@@ -567,6 +592,9 @@ h2 {
 	right: 0;
 	background: linear-gradient(to left, brown 40%, transparent);
 }
+.Overlay[open][topright2] summary {
+	right: 5rem;
+}
 .Overlay[open] summary + * {
 	opacity: 1;
 	transform: translate3d(0, 0, 0);
@@ -577,7 +605,7 @@ h2 {
 .Overlay .Cards {
 	flex-wrap: wrap;
 	gap: 1rem;
-	align-content: center;
+	align-content: flex-start;
 	align-items: center;
 	min-height: calc(100vh - 4rem);
 }
