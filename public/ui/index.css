@@ -163,7 +163,7 @@ h2 {
 .App-background[data-room-index='2'] {
 	background-image: url('images/scenes/bauhaus.jpg');
 }
-.App-background[data-room-index='4'] {
+.App-background[data-room-index='3'] {
 	background-image: url('images/scenes/chihiro.jpg');
 }
 .App-background[data-room-index='4'] {
@@ -578,7 +578,7 @@ h2 {
 	background: var(--text-inverse);
 }
 .Overlay[open] .Overlay-bg--mild {
-	background: hsla(0, 0%, 0%, 0.6);
+	background: hsla(0, 0%, 0%, 0.8);
 }
 
 .Overlay[open][topleft] summary,
