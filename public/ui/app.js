@@ -6,7 +6,7 @@ import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 // Game logic
 import createNewGame from '../game/index.js'
 import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../game/utils.js'
-import {createCard, getRandomCards} from './../game/cards.js'
+import {createCard, getCardRewards} from './../game/cards.js'
 
 // UI Components
 import Cards from './cards.js'
@@ -171,7 +171,7 @@ stw.dealCards()
 						!didWinGame &&
 						didWin &&
 						html`<${Overlay}>
-							<${Rewards} cards=${getRandomCards()} rewardWith=${this.handlePlayerReward} />
+							<${Rewards} cards=${getCardRewards(3)} rewardWith=${this.handlePlayerReward} />
 							<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
 						<//> `
 					}
