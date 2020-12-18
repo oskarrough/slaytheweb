@@ -12,7 +12,7 @@ import {createCard, getCardRewards} from './../game/cards.js'
 import Cards from './cards.js'
 import History from './history.js'
 import Map from './map.js'
-import Overlay from './overlay.js'
+import {Overlay, OverlayWithButton} from './overlays.js'
 import {Player, Monster} from './player.js'
 import Rewards from './rewards.js'
 import enableDragDrop from './dragdrop.js'
@@ -152,83 +152,87 @@ stw.dealCards()
 		const noEnergy = !state.player.currentEnergy
 		// There's a lot here because I did not want to split into too many files.
 		return html`
-				<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
-					<figure class="App-background" data-room-index=${state.dungeon.index}></div>
-					${
-						isDead &&
-						html`<${Overlay}>
-							<p>You are dead.</p>
-							<button onclick=${() => this.props.onLoose()}>Try again?</button>
-						<//> `
-					}
-					${
-						didWinGame &&
-						html`<${Overlay}>
-							<p center><button onclick=${() => this.props.onWin()}>You win!</button></p>
-						<//> `
-					}
-					${
-						!didWinGame &&
-						didWin &&
-						html`<${Overlay}>
-							<${Rewards} cards=${getCardRewards(3)} rewardWith=${this.handlePlayerReward} />
-							<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
-						<//> `
-					}
+			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
+				<figure class="App-background" data-room-index=${state.dungeon.index}></div>
+				${
+					isDead &&
+					html`<${Overlay}>
+						<p>You are dead.</p>
+						<button onclick=${() => this.props.onLoose()}>Try again?</button>
+					<//> `
+				}
+				${
+					didWinGame &&
+					html`<${Overlay}>
+						<p center><button onclick=${() => this.props.onWin()}>You win!</button></p>
+					<//> `
+				}
+				${
+					!didWinGame &&
+					didWin &&
+					html`<${Overlay}>
+						<${Rewards} cards=${getCardRewards(3)} rewardWith=${this.handlePlayerReward} />
+						<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
+					<//> `
+				}
 
-					<div class="Targets Split">
-						<div class="Targets-group">
-							<${Player} model=${state.player} name="Player" />
-						</div>
-						<div class="Targets-group">
-							${room.monsters.map((monster) => html`<${Monster} model=${monster} gameState=${state} />`)}
-						</div>
+				<div class="Targets Split">
+					<div class="Targets-group">
+						<${Player} model=${state.player} name="Player" />
 					</div>
+					<div class="Targets-group">
+						${room.monsters.map((monster) => html`<${Monster} model=${monster} gameState=${state} />`)}
+					</div>
+				</div>
 
-					<div class="Split ${noEnergy ? 'no-energy' : ''}">
-						<div class="EnergyBadge">
-								<span>${state.player.currentEnergy}/${state.player.maxEnergy}</span>
-						</div>
-						<p class="Actions">
-							<button class="EndTurn" onclick=${() => this.endTurn()}>
+				<div class="Split ${noEnergy ? 'no-energy' : ''}">
+					<div class="EnergyBadge">
+							<span>${state.player.currentEnergy}/${state.player.maxEnergy}</span>
+					</div>
+					<p class="Actions">
+						<button class="EndTurn" onclick=${() => this.endTurn()}>
 							<u>E</u>nd turn
 						</button>
+					</p>
+				</div>
+
+				<div class="Hand">
+					<${Cards} gameState=${state} type="hand" />
+				</div>
+
+				<${OverlayWithButton} name="Menu" topleft>
+					<summary><u>Esc</u>ape</summary>
+					<div class="Splash">
+						<h1>Slay the Web</h1>
+						<p>
+							<button onclick=${() => save(state)}>Save</button>
+							<button onclick=${() => window.location.reload()}>Quit</button>
+						</p>
+						<${History} future=${this.game.future.list} past=${this.game.past.list} />
+						<p>
+							<button onclick=${() => this.undo()}><u>U</u>ndo</button><br />
 						</p>
 					</div>
-
-					<div class="Hand">
-						<${Cards} gameState=${state} type="hand" />
+				<//>
+				<${OverlayWithButton} name="Map" topright>
+					<summary align-right><u>M</u>ap</summary>
+					<div class="Splash">
+						<div class="Splash-details"><${Map} dungeon=${state.dungeon} /></div>
 					</div>
-
-					<details class="Menu Overlay" topleft>
-						<summary><u>Esc</u>ape</summary>
-						<div class="Splash">
-							<h1>Slay the Web</h1>
-							<p>
-								<button onclick=${() => save(state)}>Save</button>
-								<button onclick=${() => window.location.reload()}>Quit</button>
-							</p>
-							<${History} future=${this.game.future.list} past=${this.game.past.list} />
-							<p>
-								<button onclick=${() => this.undo()}><u>U</u>ndo</button><br />
-							</p>
-						</div>
-					</details>
-					<details class="Map Overlay" topright>
-						<summary align-right><u>M</u>ap</summary>
-						<div class="Splash">
-							<div class="Splash-details"><${Map} dungeon=${state.dungeon} /></div>
-						</div>
-					</details>
-					<details class="DrawPile Overlay" bottomleft>
-						<summary>Dr<u>a</u>w pile ${state.drawPile.length}</summary>
-						<${Cards} gameState=${state} type="drawPile" />
-					</details>
-					<details class="DiscardPile Overlay" bottomright>
-						<summary align-right>Di<u>s</u>card pile ${state.discardPile.length}</summary>
-						<${Cards} gameState=${state} type="discardPile" />
-					</details>
-				</div>
+				<//>
+				<${OverlayWithButton} name="Oskar" topright topright2>
+					<summary>Deck ${state.deck.length}</summary>
+					<${Cards} gameState=${state} type="deck" />
+				<//>
+				<${OverlayWithButton} name="DrawPile" bottomleft>
+					<summary>Dr<u>a</u>w pile ${state.drawPile.length}</summary>
+					<${Cards} gameState=${state} type="drawPile" />
+				<//>
+				<${OverlayWithButton} name="DiscardPile" bottomright>
+					<summary align-right>Di<u>s</u>card pile ${state.discardPile.length}</summary>
+					<${Cards} gameState=${state} type="discardPile" />
+				<//>
+			</div>
 		`
 	}
 }
