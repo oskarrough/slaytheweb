@@ -320,12 +320,12 @@ function dealDamageEqualToBlock(state, {target}) {
 }
 
 export default {
-	dealDamageEqualToBlock,
 	addCardToHand,
 	addHealth,
 	addStarterDeck,
 	applyCardPowers,
 	createNewGame,
+	dealDamageEqualToBlock,
 	discardCard,
 	discardHand,
 	drawCards,
@@ -334,7 +334,7 @@ export default {
 	playCard,
 	removeHealth,
 	reshuffleAndDraw,
+	rewardPlayer,
 	setDungeon,
 	takeMonsterTurn,
-	rewardPlayer,
 }

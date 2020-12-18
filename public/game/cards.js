@@ -1,6 +1,6 @@
 import {uuid} from './utils.js'
 import actionMethods from './actions.js'
-import conditionMethods from './conditions.js'
+import * as conditionMethods from './conditions.js'
 import cards from '../content/cards.js'
 
 /*
