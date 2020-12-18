@@ -36,6 +36,12 @@ export function range(size, startAt = 0) {
 	return [...Array(size).keys()].map((i) => i + startAt)
 }
 
+// Get a random number within a range
+export function random(from, to) {
+	const r = range(to - from, from)
+	return shuffle(r)[0]
+}
+
 // Returns the current room in a dungeon.
 export function getCurrRoom(state) {
 	return state.dungeon.rooms[state.dungeon.index || 0]

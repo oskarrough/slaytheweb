@@ -1,6 +1,6 @@
 import produce from '../web_modules/immer.js'
 import {createCard} from './cards.js'
-import {shuffle, getTargets, getCurrRoom /*, range*/} from './utils.js'
+import {shuffle, getTargets, getCurrRoom} from './utils.js'
 import powers from './powers.js'
 import {createSimpleDungeon} from '../content/dungeon-encounters.js'
 
@@ -56,8 +56,8 @@ function addStarterDeck(state) {
 }
 
 // Move X cards from deck to hand.
-function drawCards(state, amount = 5) {
-	if (typeof amount !== 'number') amount = 5
+function drawCards(state, options) {
+	const amount = options ? options.amount : 5
 	return produce(state, (draft) => {
 		// When there aren't enough cards to draw, we recycle all cards from the discard pile to the draw pile. Should we shuffle?
 		if (state.drawPile.length < amount) {
@@ -281,7 +281,6 @@ function takeMonsterTurn(state) {
 			if (intent.damage) {
 				let amount = intent.damage
 				if (monster.powers.weak) amount = powers.weak.use(amount)
-				// amount = shuffle(range(5, monster.damage - 2))[0]
 				const newHp = removeHealth(draft, {target: 'player', amount}).player.currentHealth
 				draft.player.currentHealth = newHp
 			}
@@ -321,12 +320,12 @@ function dealDamageEqualToBlock(state, {target}) {
 }
 
 export default {
-	dealDamageEqualToBlock,
 	addCardToHand,
 	addHealth,
 	addStarterDeck,
 	applyCardPowers,
 	createNewGame,
+	dealDamageEqualToBlock,
 	discardCard,
 	discardHand,
 	drawCards,
@@ -335,7 +334,7 @@ export default {
 	playCard,
 	removeHealth,
 	reshuffleAndDraw,
+	rewardPlayer,
 	setDungeon,
 	takeMonsterTurn,
-	rewardPlayer,
 }

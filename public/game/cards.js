@@ -1,6 +1,6 @@
 import {uuid} from './utils.js'
 import actionMethods from './actions.js'
-import conditionMethods from './conditions.js'
+import * as conditionMethods from './conditions.js'
 import cards from '../content/cards.js'
 
 /*
@@ -99,8 +99,8 @@ export function createCard(name) {
 }
 
 // Returns X amount of random cards.
-export function getRandomCards(amount = 3) {
-	const cardNames = cards.map((card) => card.name)
+export function getRandomCards(list, amount) {
+	const cardNames = list.map((card) => card.name)
 	let results = []
 	for (let i = 0; i < amount; i++) {
 		const randomIndex = Math.floor(Math.random() * cardNames.length)
@@ -109,4 +109,23 @@ export function getRandomCards(amount = 3) {
 		results.push(card)
 	}
 	return results
+}
+
+// Returns X random, nicer and unique cards.
+export function getCardRewards(amount = 3) {
+	// Remove boring cards from rewards.
+	const niceCards = cards
+		.filter((card) => card.name !== 'Strike')
+		.filter((card) => card.name !== 'Defend')
+	// List of random card rewards.
+	const rewards = []
+	while (rewards.length < amount) {
+		const card = getRandomCards(niceCards, 1)[0]
+		// Avoid duplicates
+		const isDuplicate = Boolean(rewards.find((c) => c.name === card.name))
+		if (!isDuplicate) {
+			rewards.push(card)
+		}
+	}
+	return rewards
 }

@@ -39,7 +39,13 @@ export function Card(card, gameState) {
 	if (card.name === 'Summer of Sam') image = 'bare-feet-of-god.jpg'
 
 	return html`
-		<article class="Card" key=${card.id} data-id=${card.id} disabled=${isDisabled}>
+		<article
+			class="Card"
+			data-card-type=${card.type}
+			key=${card.id}
+			data-id=${card.id}
+			disabled=${isDisabled}
+		>
 			<div class="Card-inner">
 				<p class="Card-energy EnergyBadge">
 					<span>${card.energy}</span>

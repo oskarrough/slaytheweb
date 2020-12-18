@@ -51,12 +51,12 @@ export default [
 	},
 	{
 		name: 'Iron Wave',
-		type: 'Skill',
+		type: 'Attack',
 		energy: 1,
 		damage: 5,
 		block: 5,
 		target: 'enemy',
-		description: 'Gain 5 Block. Deal 5 damage.',
+		description: 'Deal 5 damage. Gain 5 Block.',
 	},
 	{
 		name: 'Sucker Punch',
@@ -117,7 +117,9 @@ export default [
 			},
 			{
 				type: 'drawCards',
-				parameter: 2,
+				parameter: {
+					amount: 2,
+				},
 				conditions: [
 					{
 						type: 'healthPercentageBelow',

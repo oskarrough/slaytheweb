@@ -8,12 +8,12 @@ export default class Rewards extends Component {
 	}
 	render(props, state) {
 		return html`
-			<div class="RewardsBox">
-				<h2>You win</h2>
+			<article class="RewardsBox">
+				<h1 medium>Victory. Onwards!</h1>
 				${state.didChoose
 					? html`<p>Added <em>${state.didChoose.name}</em> to your deck.</p>`
 					: html`
-							<p>Pick a card to add to your deck.</p>
+							<p>Here are your rewards. Pick a card to add to your deck.</p>
 							<div class="Cards">
 								${props.cards.map(
 									(card) =>
@@ -23,7 +23,7 @@ export default class Rewards extends Component {
 								)}
 							</div>
 					  `}
-			</div>
+			</article>
 		`
 	}
 }
