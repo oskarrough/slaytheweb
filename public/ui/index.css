@@ -45,7 +45,7 @@ html {
 
 @media (min-height: 800px) {
 	:root {
-	--card-width: 10em;
+		--card-width: 10em;
 	}
 	html {
 		font-size: 18px;
@@ -124,6 +124,9 @@ h1 {
 	text-shadow: 1px 2px #0c0cd526;
 	letter-spacing: -1px;
 }
+h1[medium] {
+	font-size: 6vw;
+}
 h2 {
 	font-size: 1.25rem;
 	margin: 1rem 0 0.5rem;
@@ -154,12 +157,24 @@ h2 {
 	background-image: url('images/scenes/moonlit-landscape-1904.jpg');
 }
 
-.App-background[data-room-index="1"] { background-image: url('images/scenes/arietty.jpg'); }
-.App-background[data-room-index="2"] { background-image: url('images/scenes/bauhaus.jpg'); }
-.App-background[data-room-index="4"] { background-image: url('images/scenes/chihiro.jpg'); }
-.App-background[data-room-index="4"] { background-image: url('images/scenes/howl.jpg'); }
-.App-background[data-room-index="5"] { background-image: url('images/scenes/laputa.jpg'); }
-.App-background[data-room-index="6"] { background-image: url('images/scenes/nausicaa.jpg'); }
+.App-background[data-room-index='1'] {
+	background-image: url('images/scenes/arietty.jpg');
+}
+.App-background[data-room-index='2'] {
+	background-image: url('images/scenes/bauhaus.jpg');
+}
+.App-background[data-room-index='4'] {
+	background-image: url('images/scenes/chihiro.jpg');
+}
+.App-background[data-room-index='4'] {
+	background-image: url('images/scenes/howl.jpg');
+}
+.App-background[data-room-index='5'] {
+	background-image: url('images/scenes/laputa.jpg');
+}
+.App-background[data-room-index='6'] {
+	background-image: url('images/scenes/nausicaa.jpg');
+}
 
 .App-background,
 .Targets,
@@ -265,7 +280,7 @@ h2 {
 	font-size: small;
 }
 .Card-description {
-	font-size: smaller;
+	font-size: medium;
 }
 .Card-energy {
 	position: absolute;
@@ -276,7 +291,7 @@ h2 {
 	margin-left: 0;
 	box-shadow: none;
 	border-width: 0.15rem;
-	font-size: large;
+	font-size: inherit;
 }
 .Card[disabled] .EnergyBadge {
 	color: red;
@@ -614,6 +629,9 @@ h2 {
 }
 .RewardsBox .Card {
 	min-height: var(--card-height);
+}
+.RewardsBox .CardBox:hover .Card {
+	box-shadow: 0 0 0.75em gold;
 }
 .CardBox {
 	cursor: pointer;
