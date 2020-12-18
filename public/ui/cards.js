@@ -31,7 +31,13 @@ export function Card(card, gameState) {
 	}
 
 	return html`
-		<article class="Card" key=${card.id} data-id=${card.id} disabled=${isDisabled}>
+		<article
+			class="Card"
+			data-card-type=${card.type}
+			key=${card.id}
+			data-id=${card.id}
+			disabled=${isDisabled}
+		>
 			<div class="Card-inner">
 				<h3 class="Card-name">${card.name}</h3>
 				<p class="Card-energy EnergyBadge">
