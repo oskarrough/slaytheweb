@@ -69,6 +69,10 @@ body {
 	overflow: hidden;
 }
 
+[center] {
+	text-align: center;
+}
+
 [align-right] {
 	text-align: right;
 }
@@ -127,11 +131,15 @@ h1 {
 h1[medium] {
 	font-size: 6vw;
 }
-h2 {
+h2,
+h3 {
 	font-size: 1.25rem;
-	margin: 1rem 0 0.5rem;
 	text-shadow: 1px 1px 1px var(--text-inverse);
 }
+h2 {
+	margin: 1rem 0 0.5rem;
+}
+h3 {}
 
 .App {
 	position: relative;
@@ -156,7 +164,6 @@ h2 {
 	background-position: center;
 	background-image: url('images/scenes/moonlit-landscape-1904.jpg');
 }
-
 .App-background[data-room-index='1'] {
 	background-image: url('images/scenes/arietty.jpg');
 }
@@ -181,34 +188,6 @@ h2 {
 .App-background[data-room-index='8'] {
 	background-image: url('images/scenes/ponyo.jpg');
 }
-
-.App-background,
-.Targets,
-.Split,
-.Overlay {
-	animation: fade-in 1000ms cubic-bezier(0.23, 1, 0.32, 1);
-	animation-fill-mode: both;
-}
-
-.Targets {
-	animation-delay: 200ms;
-	/* animation-duration: 1000ms; */
-}
-
-.Split:not(.Targets) {
-	animation-delay: 150ms;
-	animation-duration: 2000ms;
-}
-
-@keyframes fade-in {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
-	}
-}
-
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
 .App-background::before,
 .App-background::after {
@@ -225,6 +204,32 @@ h2 {
 	top: initial;
 	bottom: 0;
 	background: linear-gradient(to top, #0f1642, transparent);
+}
+
+.App-background,
+.Targets,
+.Split,
+.Overlay {
+	animation: fade-in 1000ms cubic-bezier(0.23, 1, 0.32, 1);
+	animation-fill-mode: both;
+}
+
+.Targets {
+	animation-delay: 200ms;
+}
+
+.Split:not(.Targets) {
+	animation-delay: 150ms;
+	animation-duration: 2000ms;
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
 }
 
 .Split {
@@ -280,16 +285,15 @@ h2 {
 	margin: 0;
 	padding: 0.6em 1em 0.8em;
 	background: linear-gradient(to bottom, hsla(0, 0%, 0%, 0.2), transparent);
-	text-shadow: 1px 1px 1px var(--text-inverse);
 	user-select: none;
 }
 .Card-type {
 	font-family: 'concourse_c3';
 	margin-top: -0.5em;
-	font-size: small;
+	font-size: 0.75rem;
 }
 .Card-description {
-	font-size: medium;
+	font-size: 0.875rem;
 }
 .Card-energy {
 	position: absolute;
@@ -309,6 +313,7 @@ h2 {
 .no-energy .EnergyBadge {
 	background: #272d2b;
 }
+
 @keyframes pulse {
 	from {
 		background: var(--lightblue);
@@ -318,6 +323,7 @@ h2 {
 		box-shadow: 0px 0px 13px 3px var(--yellow);
 	}
 }
+
 .no-energy button {
 	animation: pulse 1.5s infinite alternate;
 	animation-timing-function: ease-out;
@@ -338,7 +344,6 @@ h2 {
 	display: flex;
 	flex-flow: column;
 	transition: opacity 200ms;
-
 	justify-content: center;
 	max-width: 20rem;
 }
@@ -395,7 +400,6 @@ h2 {
 .Healthbar--hasBlock .Healthbar-blockBar {
 	background: #afafff;
 }
-
 .Healthbar-label {
 	position: relative;
 	z-index: 1;
@@ -678,9 +682,6 @@ h2 {
 	cursor: url(images/cursors/grab-open.png) 10 0, auto;
 }
 
-[center] {
-	text-align: center;
-}
 .EndTurn:hover {
 	box-shadow: 0px 0px 15px 10px var(--yellow);
 }
