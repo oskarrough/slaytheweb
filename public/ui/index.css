@@ -139,7 +139,8 @@ h3 {
 h2 {
 	margin: 1rem 0 0.5rem;
 }
-h3 {}
+h3 {
+}
 
 .App {
 	position: relative;
@@ -278,8 +279,8 @@ h3 {}
 	background: #2a3335;
 	text-align: center;
 }
-.Card[data-card-type="Attack"] .Card-inner {
-	 background: hsl(0deg 33% 19%);
+.Card[data-card-type='Attack'] .Card-inner {
+	background: hsl(0deg 33% 19%);
 }
 .Card-name {
 	margin: 0;
