@@ -86,3 +86,27 @@ export const createTestDungeon = () => {
 		],
 	})
 }
+
+export const createProperDungeon = () => {
+	return Dungeon({
+		rooms: [
+			CampfireRoom(),
+			MonsterRoom(Monster({hp: 4})),
+			MonsterRoom(Monster({hp: 40})),
+			MonsterRoom(Monster({hp: 40})),
+			CampfireRoom(),
+			MonsterRoom(Monster({hp: 40})),
+			MonsterRoom(Monster({hp: 100})),
+			CampfireRoom(),
+			MonsterRoom(Monster({hp: 40})),
+			// TreasureRoom(),
+			CampfireRoom(),
+			MonsterRoom(Monster({hp: 40})),
+			// UnknownRoom(),
+			MonsterRoom(Monster({hp: 40})),
+			MonsterRoom(Monster({hp: 100})),
+			CampfireRoom(),
+			MonsterRoom(Monster({hp: 200})),
+		],
+	})
+}
