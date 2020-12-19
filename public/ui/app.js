@@ -150,8 +150,8 @@ stw.dealCards()
 	campfireRest() {
 		const amount = Math.floor(this.game.state.player.maxHealth * 0.3)
 		this.game.enqueue({type: 'addHealth', target: 'player', amount})
-		this.continueFromCampfire()
-		alert(`Ahh.. rested for ${amount}.`)
+		this.continueFromCampfire('rest')
+		// alert(`Ahh.. rested for ${amount}.`)
 	}
 	campfireRemoveCard() {
 		this.setState({isRemovingCard: !this.state.isRemovingCard})
@@ -160,10 +160,12 @@ stw.dealCards()
 		this.game.enqueue({type: 'removeCard', card})
 		this.update()
 		this.setState({isRemovingCard: false})
-		this.continueFromCampfire()
-		alert(`Gone. ${card.name} has been removed from your deck.`)
+		this.continueFromCampfire('removeCard', card)
+		// alert(`Gone. ${card.name} has been removed from your deck.`)
 	}
-	continueFromCampfire() {
+	continueFromCampfire(choice, reward) {
+		getCurrRoom(this.state).choice = choice
+		if (reward) getCurrRoom(this.state).reward = reward
 		this.game.enqueue({type: 'goToNextRoom'})
 		this.update(() => this.update(this.dealCards))
 	}

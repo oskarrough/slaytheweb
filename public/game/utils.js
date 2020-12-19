@@ -83,7 +83,7 @@ export function isRoomCompleted(room) {
 	}
 
 	if (room.type === 'campfire') {
-		// @todo
+		return Boolean(room.choice)
 	}
 }
 
