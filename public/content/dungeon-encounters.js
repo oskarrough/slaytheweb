@@ -77,7 +77,7 @@ export const createSimpleDungeon = () => {
 }
 
 // This is the dungeon used in tests. Don't change it without running tests.
-export const testDungeon = () => {
+export const createTestDungeon = () => {
 	return Dungeon({
 		rooms: [
 			MonsterRoom(Monster({hp: 42, intents})),
