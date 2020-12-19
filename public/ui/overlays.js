@@ -3,8 +3,12 @@ import {html} from '../../web_modules/htm/preact/standalone.module.js'
 // A tiny overlay UI component.
 export function Overlay(props) {
 	return html`
-		<div class="Splash Overlay" topleft open>
-			<div class="Splash-details">${props.children}</div>
+		<div class="Overlay" topleft open>
+			<div class="Overlay-content">
+				<div class="Splash">
+					<div class="Splash-details">${props.children}</div>
+				</div>
+			</div>
 			<figure class="Overlay-bg Overlay-bg--mild"></figure>
 		</div>
 	`

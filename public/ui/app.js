@@ -79,7 +79,7 @@ stw.dealCards()
 
 		// Create a clone on top of the card to animate.
 		const clone = cardElement.cloneNode(true)
-		document.body.appendChild(clone)
+		this.base.appendChild(clone)
 		if (supportsFlip) Flip.fit(clone, cardElement, {absolute: true})
 
 		// Update state and re-enable dragdrop
