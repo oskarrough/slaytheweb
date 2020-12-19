@@ -119,6 +119,9 @@ A collection of related links, inspiration and ideas.
 - https://www.reddit.com/r/roguelikedev/
 - https://www.reddit.com/r/roguelikes/
 - https://klei.com/games/griftlands
+- https://forgottenarbiter.github.io/Is-Every-Seed-Winnable/
+- https://www.cloudfallstudios.com/blog/2020/11/2/game-design-tips-reverse-engineering-slay-the-spires-decisions
+- https://www.cloudfallstudios.com/blog/2018/5/7/guide-deckbuilder-tips-for-beginners-prompts-for-the-experienced-part-23
 
 ### Slay the Spire modding, tools and things
 
