@@ -143,3 +143,7 @@ A collection of related links, inspiration and ideas.
 - https://forgottenarbiter.github.io/Is-Every-Seed-Winnable/ ([discussion](https://news.ycombinator.com/item?id=23910006))
 - https://www.twitch.tv/telnetthespire
 - [Slay the Spire Reference Spreadsheet](https://docs.google.com/spreadsheets/u/1/d/1ZsxNXebbELpcCi8N7FVOTNGdX_K9-BRC_LMgx4TORo4/edit#gid=1146624812)
+
+### Open source artwork
+
+Credits to http://ronenness.github.io/RPGUI/ and https://github.com/game-icons/icons for providing great and free graphics.
