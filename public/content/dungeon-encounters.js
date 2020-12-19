@@ -90,9 +90,9 @@ export const createTestDungeon = () => {
 export const createProperDungeon = () => {
 	return Dungeon({
 		rooms: [
-			CampfireRoom(),
 			MonsterRoom(Monster({hp: 4})),
-			MonsterRoom(Monster({hp: 40})),
+			MonsterRoom(Monster({hp: 4})),
+			CampfireRoom(),
 			MonsterRoom(Monster({hp: 40})),
 			CampfireRoom(),
 			MonsterRoom(Monster({hp: 40})),

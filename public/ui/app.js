@@ -14,7 +14,7 @@ import History from './history.js'
 import Map from './map.js'
 import {Overlay, OverlayWithButton} from './overlays.js'
 import {Player, Monster} from './player.js'
-import Rewards, {CardChooser} from './rewards.js'
+import CardChooser from './card-chooser.js'
 import enableDragDrop from './dragdrop.js'
 
 // Puts and gets the game state in the URL.
@@ -119,11 +119,8 @@ stw.dealCards()
 	goToNextRoom() {
 		this.game.enqueue({type: 'endTurn'})
 		this.game.enqueue({type: 'goToNextRoom'})
+		this.setState({didPickCard: false})
 		this.update(() => this.update(this.dealCards))
-	}
-	handlePlayerReward(card) {
-		this.game.enqueue({type: 'rewardPlayer', card: card})
-		this.update()
 	}
 	handleShortcuts(event) {
 		const {key} = event
@@ -144,6 +141,11 @@ stw.dealCards()
 		if (key === 'a') toggle(this.base.querySelector('#DrawPile'))
 		if (key === 's') toggle(this.base.querySelector('#DiscardPile'))
 		if (key === 'm') toggle(this.base.querySelector('#Map'))
+	}
+	handlePlayerReward(card) {
+		this.game.enqueue({type: 'rewardPlayer', card: card})
+		this.setState({didPickCard: card})
+		this.update()
 	}
 	campfireRest() {
 		const amount = Math.floor(this.game.state.player.maxHealth * 0.3)
@@ -179,7 +181,7 @@ stw.dealCards()
 				${
 					isDead &&
 					html`<${Overlay}>
-						<p>You are dead.</p>
+						<p center>You are dead.</p>
 						<button onclick=${() => this.props.onLoose()}>Try again?</button>
 					<//> `
 				}
@@ -193,7 +195,16 @@ stw.dealCards()
 					!didWinEntireGame &&
 					didWin &&
 					html`<${Overlay}>
-						<${Rewards} cards=${getCardRewards(3)} rewardWith=${this.handlePlayerReward} />
+						<h1 center medium>Victory. Onwards!</h1>
+						${!state.didPickCard
+							? html`
+									<p center>Here is your reward. Pick a card to add to your deck.</p>
+									<${CardChooser}
+										cards=${getCardRewards(3)}
+										didSelectCard=${this.handlePlayerReward}
+									/>
+							  `
+							: html`<p center>Added <strong>${state.didPickCard.name}</strong> to your deck.</p>`}
 						<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
 					<//> `
 				}
@@ -212,7 +223,9 @@ stw.dealCards()
 								cards=${state.deck}
 								didSelectCard=${this.campfireReallyRemoveCard}
 							/>`}
-						<p center><button onclick=${() => this.continueFromCampfire()}>Continue</button></p>
+						<p center>
+							<button onclick=${() => this.continueFromCampfire()}>Go to next room</button>
+						</p>
 					<//> `
 				}
 
