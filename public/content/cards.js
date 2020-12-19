@@ -6,7 +6,13 @@ export default [
 		energy: 1,
 		block: 5,
 		target: 'player',
-		description: 'Gain 5 Block.',
+		description: 'Gain 8 Block.',
+		upgrade() {
+			this.block = 8
+			this.upgraded = true
+			this.name = 'Defend+'
+			this.description = 'Gain 8 Block.'
+		},
 	},
 	{
 		name: 'Strike',
@@ -15,6 +21,12 @@ export default [
 		target: 'enemy',
 		damage: 6,
 		description: 'Deal 6 Damage.',
+		upgrade() {
+			this.damage = 9
+			this.upgraded = true
+			this.name = 'Strike+'
+			this.description = 'Deal 9 Damage.'
+		},
 	},
 	{
 		name: 'Bash',
@@ -140,6 +152,10 @@ export default [
 				type: 'dealDamageEqualToBlock',
 			},
 		],
+		upgrade() {
+			this.energy = 0
+			this.name = this.name + '+'
+		},
 	},
 	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
 ]
