@@ -23,7 +23,7 @@ export const Monster = (props) => {
 
 	return html`
 		<${Target} ...${props} type="enemy">
-			${Object.entries(intent).map((intent) => MonsterIntent(intent, monster, props.gameState))}
+			${intent && Object.entries(intent).map((intent) => MonsterIntent(intent, monster, props.gameState))}
 		<//>
 	`
 }
