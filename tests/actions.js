@@ -2,7 +2,7 @@ import test from 'ava'
 import actions from '../public/game/actions'
 import {getTargets, getCurrRoom, isCurrentRoomCompleted} from '../public/game/utils'
 import {createCard} from '../public/game/cards'
-import {testDungeon} from '../public/content/dungeon-encounters'
+import {createTestDungeon} from '../public/content/dungeon-encounters'
 import {MonsterRoom, Monster} from '../public/game/dungeon'
 
 const a = actions
@@ -10,7 +10,7 @@ const a = actions
 // Each test gets a fresh game state with a dungeon set up.
 test.beforeEach((t) => {
 	let state = a.createNewGame()
-	state = a.setDungeon(state, testDungeon())
+	state = a.setDungeon(state, createTestDungeon())
 	t.context = {state}
 })
 
@@ -187,7 +187,7 @@ test('block on enemy actually blocks damage', (t) => {
 
 test('block on player actually blocks damage', (t) => {
 	let state = a.createNewGame()
-	state = a.setDungeon(state, testDungeon())
+	state = a.setDungeon(state, createTestDungeon())
 	state = a.endTurn(state)
 	state = a.playCard(state, {card: createCard('Defend')})
 	t.is(state.player.block, 5)

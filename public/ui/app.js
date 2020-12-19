@@ -148,7 +148,7 @@ stw.dealCards()
 		if (!state.player) return
 		const isDead = state.player.currentHealth < 1
 		const didWin = isCurrentRoomCompleted(state)
-		const didWinGame = isDungeonCompleted(state)
+		const didWinEntireGame = isDungeonCompleted(state)
 		const room = getCurrRoom(state)
 		const noEnergy = !state.player.currentEnergy
 		// There's a lot here because I did not want to split into too many files.
@@ -163,13 +163,13 @@ stw.dealCards()
 					<//> `
 				}
 				${
-					didWinGame &&
+					didWinEntireGame &&
 					html`<${Overlay}>
 						<p center><button onclick=${() => this.props.onWin()}>You win!</button></p>
 					<//> `
 				}
 				${
-					!didWinGame &&
+					!didWinEntireGame &&
 					didWin &&
 					html`<${Overlay}>
 						<${Rewards} cards=${getCardRewards(3)} rewardWith=${this.handlePlayerReward} />
