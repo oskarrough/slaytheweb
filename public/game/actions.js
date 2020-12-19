@@ -96,6 +96,12 @@ const discardHand = (state) =>
 		draft.hand = []
 	})
 
+// Discard a single card from your hand.
+const removeCard = (state, {card}) =>
+	produce(state, (draft) => {
+		draft.deck = state.deck.filter((c) => c.id !== card.id)
+	})
+
 // The funky part of this action is the `target` argument. It needs to be a special type of string:
 // Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getTargets
 function playCard(state, {card, target}) {
@@ -337,4 +343,5 @@ export default {
 	rewardPlayer,
 	setDungeon,
 	takeMonsterTurn,
+	removeCard
 }
