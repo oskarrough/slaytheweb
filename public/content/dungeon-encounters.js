@@ -4,52 +4,6 @@ import {random} from '../game/utils.js'
 // Hello. With the imported functions above you can create a dungeon with different rooms and monsters.
 // This file contains the example dungeon used in Slay the Web.
 
-// Use a list of intents to describe what the monster should do each turn.
-// Supported intents: block, damage, vulnerable and weak.
-const intents = [{block: 7}, {damage: 10}, {damage: 8}, {}, {damage: 14}]
-
-const scalingIntents = [
-	{damage: 1},
-	{damage: 2},
-	{damage: 3},
-	{damage: 4},
-	{damage: 5},
-	{damage: 6},
-	{damage: 7},
-	{damage: 8},
-	{damage: 9},
-	{damage: 10},
-	{damage: 15},
-	{damage: 20},
-	{damage: 30},
-	{damage: 50},
-]
-
-const ScalingMonster = () =>
-	Monster({
-		hp: 13,
-		intents: scalingIntents,
-	})
-
-const STSMonster = () =>
-	Monster({
-		hp: 46,
-		intents: [{damage: 12}, {block: 6, damage: 11}, {block: 5, damage: 16}, {}, {block: 6}],
-	})
-
-const CultistMonster = () =>
-	Monster({
-		hp: 48,
-		intents: [{weak: 1}, {damage: 6}],
-	})
-
-const RandomMonster = () =>
-	Monster({
-		hp: random(18, 25),
-		intents: [{damage: 5}, {damage: 10}, {damage: 5}, {damage: 12}],
-		random: 2,
-	})
-
 const TrioMonsterA = () =>
 	Monster({
 		hp: random(39, 46),
@@ -65,20 +19,85 @@ const TrioMonsterB = () =>
 export const createSimpleDungeon = () => {
 	return Dungeon({
 		rooms: [
-			MonsterRoom(Monster({hp: 18, intents})),
-			MonsterRoom(RandomMonster()),
-			MonsterRoom(Monster({intents}), ScalingMonster()),
-			MonsterRoom(STSMonster()),
-			MonsterRoom(CultistMonster()),
-			MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents: scalingIntents})),
-			MonsterRoom(RandomMonster({hp: 92, intents}), Monster({intents: scalingIntents})),
+			MonsterRoom(
+				Monster({
+					hp: random(13, 17),
+					intents: [{damage: 7}, {damage: 11}, {damage: 6}, {}],
+					random: 2,
+				})
+			),
+			MonsterRoom(
+				Monster({
+					hp: random(53, 57),
+					intents: [{vulnerable: 1}, {damage: 10}, {damage: 6}, {}, {weak: 1}],
+					random: 2,
+				})
+			),
+			CampfireRoom(),
+			MonsterRoom(
+				Monster({
+					hp: random(13, 17),
+					intents: [{damage: 7}, {block: 4, damage: 8}, {damage: 6}, {}, {block: 6}],
+					random: 2,
+				}),
+				Monster({
+					hp: 29,
+					intents: [{damage: 9}, {damage: 8}, {weak: 1}, {damage: 6}, {}],
+					random: 2,
+				})
+			),
+			CampfireRoom(),
+			MonsterRoom(
+				Monster({
+					hp: random(34, 36),
+					intents: [{weak: 1}, {damage: 10}, {damage: 6}, {}, {weak: 1}],
+					random: 2,
+				}),
+				Monster({
+					hp: random(56, 58),
+					intents: [{vulnerable: 1}, {damage: 6}, {damage: 9}, {block: 10}],
+					random: 2,
+				})
+			),
+			MonsterRoom(Monster({hp: 70, block: 12, intents: [{block: 5}, {damage: 16}]})),
+			CampfireRoom(),
+			MonsterRoom(
+				Monster({hp: random(12, 15), random: 1, intents: [{damage: 6}]}),
+				Monster({hp: random(12, 15), random: 1, intents: [{damage: 6}]}),
+				Monster({hp: random(10, 16), random: 3, intents: [{damage: 6}]})
+			),
+			// TreasureRoom(),
+			CampfireRoom(),
+			MonsterRoom(
+				Monster({
+					hp: 46,
+					intents: [{damage: 12}, {block: 6, damage: 11}, {block: 5, damage: 16}, {}, {block: 6}],
+				})
+			),
+			// UnknownRoom(),
 			MonsterRoom(TrioMonsterA(), TrioMonsterB(), TrioMonsterA()),
+			MonsterRoom(Monster({hp: 60, intents: [{damage: 12}], random: 5})),
+			MonsterRoom(
+				Monster({
+					hp: 48,
+					intents: [{weak: 1}, {damage: 6}],
+				})
+			),
+			CampfireRoom(),
+			MonsterRoom(
+				Monster({
+					hp: random(160, 190),
+					intents: [{damage: 12}, {block: 6}, {damage: 16}],
+					random: 5,
+				})
+			),
 		],
 	})
 }
 
 // This is the dungeon used in tests. Don't change it without running tests.
 export const createTestDungeon = () => {
+	const intents = [{block: 7}, {damage: 10}, {damage: 8}, {}, {damage: 14}]
 	return Dungeon({
 		rooms: [
 			MonsterRoom(Monster({hp: 42, intents})),
@@ -87,26 +106,18 @@ export const createTestDungeon = () => {
 	})
 }
 
-export const createProperDungeon = () => {
-	return Dungeon({
-		rooms: [
-			MonsterRoom(Monster({hp: 4})),
-			MonsterRoom(Monster({hp: 4})),
-			CampfireRoom(),
-			MonsterRoom(Monster({hp: 40})),
-			CampfireRoom(),
-			MonsterRoom(Monster({hp: 40})),
-			MonsterRoom(Monster({hp: 100})),
-			CampfireRoom(),
-			MonsterRoom(Monster({hp: 40})),
-			// TreasureRoom(),
-			CampfireRoom(),
-			MonsterRoom(Monster({hp: 40})),
-			// UnknownRoom(),
-			MonsterRoom(Monster({hp: 40})),
-			MonsterRoom(Monster({hp: 100})),
-			CampfireRoom(),
-			MonsterRoom(Monster({hp: 200})),
-		],
-	})
-}
+// const ScalingMonster = () =>
+// 	Monster({
+// 		hp: 13,
+// 		intents: [
+// 			{damage: 1},
+// 			{damage: 3},
+// 			{damage: 5},
+// 			{damage: 7},
+// 			{damage: 10},
+// 			{damage: 15},
+// 			{damage: 20},
+// 			{damage: 30},
+// 			{damage: 50},
+// 		],
+// 	})

@@ -1,6 +1,5 @@
 import actions from './actions.js'
 import ActionManager from './action-manager.js'
-import {createProperDungeon} from '../content/dungeon-encounters.js'
 
 // This function returns a "game" object with everything you need to play and control the game.
 // Note: it IS possible to modify all aspects of the game using actions directly.
@@ -25,7 +24,7 @@ export default function createNewGame() {
 	// This exists because actions.createNewGame() doesn't set a dungeon and deck.
 	function createNewState() {
 		let state = actions.createNewGame()
-		state = actions.setDungeon(state, createProperDungeon())
+		state = actions.setDungeon(state)
 		state = actions.addStarterDeck(state)
 		state = actions.drawCards(state)
 		return state

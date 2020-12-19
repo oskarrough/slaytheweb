@@ -29,6 +29,8 @@ export function MonsterRoom(...monsters) {
 }
 
 // A monster has health, probably some damage and a list of intents.
+// Use a list of intents to describe what the monster should do each turn.
+// Supported intents: block, damage, vulnerable and weak.
 // Intents are cycled through as the monster plays its turn.
 export function Monster(props = {}) {
 	let intents = props.intents
