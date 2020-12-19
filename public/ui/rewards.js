@@ -33,7 +33,7 @@ export class CardChooser extends Component {
 		this.setState({didChoose: card})
 		this.props.didSelectCard(card)
 	}
-	render(props, state) {
+	render(props) {
 		return html`
 			<article class="RewardsBox">
 				<div class="Cards">

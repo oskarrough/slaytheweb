@@ -343,5 +343,5 @@ export default {
 	rewardPlayer,
 	setDungeon,
 	takeMonsterTurn,
-	removeCard
+	removeCard,
 }

@@ -18,4 +18,3 @@ export function healthPercentageBelow(state, condition) {
 export function healthPercentageAbove(state, condition) {
 	return healthPercentage(state) > condition.percentage
 }
-
