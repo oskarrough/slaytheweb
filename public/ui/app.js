@@ -14,7 +14,7 @@ import History from './history.js'
 import Map from './map.js'
 import {Overlay, OverlayWithButton} from './overlays.js'
 import {Player, Monster} from './player.js'
-import Rewards from './rewards.js'
+import Rewards, {CardChooser} from './rewards.js'
 import enableDragDrop from './dragdrop.js'
 
 // Puts and gets the game state in the URL.
@@ -29,6 +29,7 @@ export default class App extends Component {
 		// Scope methods
 		this.handlePlayerReward = this.handlePlayerReward.bind(this)
 		this.playCard = this.playCard.bind(this)
+		this.campfireReallyRemoveCard = this.campfireReallyRemoveCard.bind(this)
 	}
 	componentDidMount() {
 		// Set up a new game
@@ -144,6 +145,26 @@ stw.dealCards()
 		if (key === 's') toggle(this.base.querySelector('#DiscardPile'))
 		if (key === 'm') toggle(this.base.querySelector('#Map'))
 	}
+	campfireRest() {
+		const amount = Math.floor(this.game.state.player.maxHealth * 0.3)
+		this.game.enqueue({type: 'addHealth', target: 'player', amount})
+		this.continueFromCampfire()
+		alert(`Ahh.. rested for ${amount}.`)
+	}
+	campfireRemoveCard() {
+		this.setState({isRemovingCard: !this.state.isRemovingCard})
+	}
+	campfireReallyRemoveCard(card) {
+		this.game.enqueue({type: 'removeCard', card})
+		this.update()
+		this.setState({isRemovingCard: false})
+		this.continueFromCampfire()
+		alert(`Gone. ${card.name} has been removed from your deck.`)
+	}
+	continueFromCampfire() {
+		this.game.enqueue({type: 'goToNextRoom'})
+		this.update(() => this.update(this.dealCards))
+	}
 	render(props, state) {
 		if (!state.player) return
 		const isDead = state.player.currentHealth < 1
@@ -177,12 +198,35 @@ stw.dealCards()
 					<//> `
 				}
 
+				${
+					room.type === 'campfire' &&
+					html`<${Overlay}>
+						<h1 center medium>Campfire</h1>
+						<ul class="Options">
+							<li><button onclick=${() => this.campfireRest()}>Rest</button></li>
+							<li><button onclick=${() => this.campfireRemoveCard()}>Remove card</button></li>
+						</ul>
+						${state.isRemovingCard &&
+						html` <p center>Choose a card to permanently remove from your deck.</p>
+							<${CardChooser}
+								cards=${state.deck}
+								didSelectCard=${this.campfireReallyRemoveCard}
+							/>`}
+						<p center><button onclick=${() => this.continueFromCampfire()}>Continue</button></p>
+					<//> `
+				}
+
 				<div class="Targets Split">
 					<div class="Targets-group">
 						<${Player} model=${state.player} name="Player" />
 					</div>
 					<div class="Targets-group">
-						${room.monsters.map((monster) => html`<${Monster} model=${monster} gameState=${state} />`)}
+						${
+							room.monsters &&
+							room.monsters.map(
+								(monster) => html`<${Monster} model=${monster} gameState=${state} />`
+							)
+						}
 					</div>
 				</div>
 

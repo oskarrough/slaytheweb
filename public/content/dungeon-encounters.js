@@ -1,7 +1,8 @@
-import Dungeon, {MonsterRoom, Monster} from '../game/dungeon.js'
+import Dungeon, {MonsterRoom, Monster, CampfireRoom} from '../game/dungeon.js'
 import {random} from '../game/utils.js'
 
-// This file contains ready-to-use dungeons filled with rooms and exciting monsters.
+// Hello. With the imported functions above you can create a dungeon with different rooms and monsters.
+// This file contains the example dungeon used in Slay the Web.
 
 // Use a list of intents to describe what the monster should do each turn.
 // Supported intents: block, damage, vulnerable and weak.
