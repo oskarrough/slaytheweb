@@ -52,13 +52,13 @@ const RandomMonster = () =>
 const TrioMonsterA = () =>
 	Monster({
 		hp: random(39, 46),
-		intents: [{damage: 10}, {weak: 1}],
+		intents: [{weak: 1}, {damage: 10}],
 	})
 
 const TrioMonsterB = () =>
 	Monster({
 		hp: random(39, 46),
-		intents: [{weak: 1}, {damage: 10}],
+		intents: [{damage: 10}, {weak: 1}],
 	})
 
 export const createSimpleDungeon = () => {
@@ -71,7 +71,7 @@ export const createSimpleDungeon = () => {
 			MonsterRoom(CultistMonster()),
 			MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents: scalingIntents})),
 			MonsterRoom(RandomMonster({hp: 92, intents}), Monster({intents: scalingIntents})),
-			MonsterRoom(TrioMonsterB(), TrioMonsterA(), TrioMonsterB()),
+			MonsterRoom(TrioMonsterA(), TrioMonsterB(), TrioMonsterA()),
 		],
 	})
 }
