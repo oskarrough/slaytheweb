@@ -34,6 +34,7 @@ export function Card(card, gameState) {
 		<article
 			class="Card"
 			data-card-type=${card.type}
+			data-card-target=${card.target}
 			key=${card.id}
 			data-id=${card.id}
 			disabled=${isDisabled}
