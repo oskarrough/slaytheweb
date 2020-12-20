@@ -12,11 +12,11 @@ export default class Cards extends Component {
 }
 
 function canPlayCard(card, gameState) {
-	const notEnoughEnergy = gameState.player.currentEnergy < card.energy
-	const cardIsInHand = gameState.hand.find((c) => c.id === card.id)
+	const notEnoughEnergy = gameState && gameState.player.currentEnergy < card.energy
+	const cardIsInHand = gameState && gameState.hand.find((c) => c.id === card.id)
 	if (!cardIsInHand) return false
 	if (notEnoughEnergy) return false
-	if (card.conditions) {
+	if (gameState && card.conditions) {
 		return card.canPlay(gameState)
 	}
 	return true
