@@ -38,6 +38,13 @@ export default [
 			vulnerable: 2,
 		},
 		description: 'Deal 8 damage. Apply 2 Vulnerable.',
+		upgrade() {
+			this.damage = 10
+			this.upgraded = true
+			this.name = 'Bash+'
+			this.powers.vulnerable = 3
+			this.description = 'Deal 10 Damage. Apply 3 Vulnerable'
+		},
 	},
 	{
 		name: 'Clash',
