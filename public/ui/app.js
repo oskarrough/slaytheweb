@@ -158,22 +158,18 @@ stw.dealCards()
 
 		room.choice = choice
 		if (choice === 'rest') {
-			const amount = Math.floor(this.game.state.player.maxHealth * 0.3)
-			this.game.enqueue({type: 'addHealth', target: 'player', amount})
-			room.reward = amount
+			reward = Math.floor(this.game.state.player.maxHealth * 0.3)
+			this.game.enqueue({type: 'addHealth', target: 'player', amount: reward})
 		}
 		if (choice === 'upgrade') {
 			reward.upgrade()
-			room.reward = reward
-			this.update()
-			this.goToNextRoom()
 		}
 		if (choice === 'remove') {
 			this.game.enqueue({type: 'removeCard', card: reward})
-			this.update()
-			room.reward = reward
-			this.goToNextRoom()
 		}
+		room.reward = reward
+		this.update()
+		this.goToNextRoom()
 	}
 	goToNextRoom() {
 		if (getCurrRoom(this.state).type === 'monster') {
