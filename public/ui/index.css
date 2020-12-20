@@ -303,7 +303,7 @@ h2 {
 	border-width: 0.15rem;
 	font-size: inherit;
 }
-.Card[disabled] .EnergyBadge {
+.Hand .Card[disabled] .EnergyBadge {
 	color: red;
 }
 

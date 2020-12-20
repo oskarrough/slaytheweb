@@ -55,6 +55,7 @@ export class Card {
 		this.description = props.description
 		this.conditions = props.conditions
 		this.actions = props.actions
+		if (props.upgrade) this.upgrade = props.upgrade
 	}
 	// Runs through a list of actions and return the updated state.
 	// Called when the card is played. Use it for more advanced cards.
@@ -76,6 +77,11 @@ export class Card {
 	}
 	canPlay(state) {
 		return canPlay(this.conditions, state)
+	}
+	upgrade() {
+		if (this.upgraded) return
+		// this.name = 'Name+', this.damage = 666
+		// etc...
 	}
 }
 
