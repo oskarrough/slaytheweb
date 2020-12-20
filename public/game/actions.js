@@ -1,6 +1,6 @@
 import produce from '../web_modules/immer.js'
 import {createCard} from './cards.js'
-import {shuffle, getTargets, getCurrRoom} from './utils.js'
+import {shuffle, getTargets, getCurrRoom, clamp} from './utils.js'
 import powers from './powers.js'
 import {createSimpleDungeon} from '../content/dungeon-encounters.js'
 
@@ -132,7 +132,7 @@ function addHealth(state, {target, amount}) {
 	return produce(state, (draft) => {
 		const targets = getTargets(draft, target)
 		targets.forEach((t) => {
-			t.currentHealth = t.currentHealth + amount
+			t.currentHealth = clamp(t.currentHealth + amount, 0, t.maxHealth)
 		})
 	})
 }

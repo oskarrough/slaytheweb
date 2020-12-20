@@ -1,6 +1,8 @@
+// Conditions that decide whether a card can be played or not.
+
 // Returns true if all cards in your hand are of the same type.
 export function onlyType(state, condition) {
-	return state.hand.some((card) => {
+	return !state.hand.some((card) => {
 		return card.type !== condition.cardType
 	})
 }
@@ -18,4 +20,3 @@ export function healthPercentageBelow(state, condition) {
 export function healthPercentageAbove(state, condition) {
 	return healthPercentage(state) > condition.percentage
 }
-

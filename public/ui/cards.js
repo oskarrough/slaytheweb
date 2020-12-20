@@ -11,24 +11,19 @@ export default class Cards extends Component {
 	}
 }
 
-function isCardDisabled(card, gameState) {
-	let isDisabled = false
-	if (gameState.player.currentEnergy < card.energy) {
-		isDisabled = true
-	} else if (card.conditions) {
-		// We only need to check if the card is in hand.
-		let inHand = gameState.hand.find((c) => c.id === card.id)
-		isDisabled = inHand && card.checkConditions(gameState)
+function canPlayCard(card, gameState) {
+	const notEnoughEnergy = gameState.player.currentEnergy < card.energy
+	const cardIsInHand = gameState.hand.find((c) => c.id === card.id)
+	if (!cardIsInHand) return false
+	if (notEnoughEnergy) return false
+	if (card.conditions) {
+		return card.canPlay(gameState)
 	}
-
-	return isDisabled
+	return true
 }
 
 export function Card(card, gameState) {
-	let isDisabled
-	if (gameState) {
-		isDisabled = isCardDisabled(card, gameState)
-	}
+	const isDisabled = !canPlayCard(card, gameState)
 
 	return html`
 		<article
