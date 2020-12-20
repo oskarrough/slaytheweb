@@ -59,6 +59,12 @@ export default [
 			},
 		],
 		description: 'Can only be played if every card in your hand is an Attack. Deal 14 damage.',
+		upgrade() {
+			this.name = 'Clash+'
+			this.damage = 17
+			this.description =
+				'Can only be played if every card in your hand is an Attack. Deal 17 damage.'
+		},
 	},
 	{
 		name: 'Cleave',
@@ -66,12 +72,12 @@ export default [
 		energy: 1,
 		damage: 8,
 		target: 'all enemies',
-		description: 'Deal 8 damage to ALL enemies.',
+		description: 'Deal 8 damage to all enemies.',
 		upgrade() {
 			this.damage = 11
 			this.upgraded = true
 			this.name = 'Cleave+'
-			this.description = 'Deal 11 Damage to ALL enemies.'
+			this.description = 'Deal 11 Damage to all enemies.'
 		},
 	},
 	{
@@ -118,6 +124,11 @@ export default [
 			vulnerable: 1,
 		},
 		description: 'Deal 4 Damage. Apply 1 Vulnerable to all enemies.',
+		upgrade() {
+			this.name = 'Thunderclap+'
+			this.damage = 6
+			this.description = 'Deal 6 Damage. Apply 1 Vulnerable to all enemies.'
+		},
 	},
 	{
 		name: 'Flourish',
@@ -134,6 +145,12 @@ export default [
 				percentage: 50,
 			},
 		],
+		upgrade() {
+			this.name = 'Summer of Sam+'
+			const a = this.actions.find((action) => action.type === 'addHealth')
+			a.parameter.amount = 2
+			this.description = 'Gain 2 Health. Draw 2 Cards if your health is below 50%.'
+		},
 		/*
 		// Not implemented. Playing around with syntax
 		condition(state) {
@@ -144,7 +161,7 @@ export default [
 	{
 		name: 'Summer of Sam',
 		type: 'Skill',
-		energy: 0,
+		energy: 1,
 		target: 'player',
 		description: 'Gain 1 Health. Draw 2 Cards if your health is below 50%.',
 		actions: [
@@ -167,6 +184,12 @@ export default [
 				],
 			},
 		],
+		upgrade() {
+			this.name = 'Summer of Sam+'
+			const a = this.actions.find((action) => action.type === 'addHealth')
+			a.parameter.amount = 2
+			this.description = 'Gain 2 Health. Draw 2 Cards if your health is below 50%.'
+		},
 	},
 	{
 		name: 'Body Slam',
