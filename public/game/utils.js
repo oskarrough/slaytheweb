@@ -83,7 +83,7 @@ export function isRoomCompleted(room) {
 	}
 
 	if (room.type === 'campfire') {
-		return Boolean(room.choice)
+		return room.choice === 'rest' || Boolean(room.reward)
 	}
 }
 

@@ -9,7 +9,7 @@ export function Overlay(props) {
 					<div class="Splash-details">${props.children}</div>
 				</div>
 			</div>
-			<figure class="Overlay-bg Overlay-bg--mild"></figure>
+			<figure class="Overlay-bg"></figure>
 		</div>
 	`
 }

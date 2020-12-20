@@ -138,8 +138,6 @@ h3 {
 h2 {
 	margin: 1rem 0 0.5rem;
 }
-h3 {
-}
 
 .App {
 	position: relative;
@@ -596,9 +594,6 @@ h3 {
 	transform: translateX(0);
 	background: var(--text-inverse);
 }
-.Overlay[open] .Overlay-bg--mild {
-	/* background: hsla(0, 0%, 0%, 0.8); */
-}
 
 /* Position of "buttons" inside open modals */
 .Overlay[open][topleft] summary,
@@ -672,7 +667,6 @@ h3 {
 }
 .RewardsBox .Cards {
 	min-height: 0;
-	margin-top: 2rem;
 }
 .RewardsBox .Card {
 	min-height: var(--card-height);

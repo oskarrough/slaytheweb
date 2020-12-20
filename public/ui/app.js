@@ -29,7 +29,7 @@ export default class App extends Component {
 		// Scope methods
 		this.handlePlayerReward = this.handlePlayerReward.bind(this)
 		this.playCard = this.playCard.bind(this)
-		this.campfireReallyRemoveCard = this.campfireReallyRemoveCard.bind(this)
+		this.handleCampfireChoice = this.handleCampfireChoice.bind(this)
 	}
 	componentDidMount() {
 		// Set up a new game
@@ -116,12 +116,6 @@ stw.dealCards()
 		gsap.effects.dealCards('.Hand .Card')
 		enableDragDrop(this.base, this.playCard)
 	}
-	goToNextRoom() {
-		this.game.enqueue({type: 'endTurn'})
-		this.game.enqueue({type: 'goToNextRoom'})
-		this.setState({didPickCard: false})
-		this.update(() => this.update(this.dealCards))
-	}
 	handleShortcuts(event) {
 		const {key} = event
 		if (key === 'e') this.endTurn()
@@ -147,26 +141,34 @@ stw.dealCards()
 		this.setState({didPickCard: card})
 		this.update()
 	}
-	campfireRest() {
-		const amount = Math.floor(this.game.state.player.maxHealth * 0.3)
-		this.game.enqueue({type: 'addHealth', target: 'player', amount})
-		this.continueFromCampfire('rest')
-		// alert(`Ahh.. rested for ${amount}.`)
+	handleCampfireChoice(choice, reward) {
+		console.log({choice, reward})
+		const room = getCurrRoom(this.state)
+		if (room.choice && (choice === 'upgrade' || choice === 'remove') && !reward) {
+			room.choice = undefined
+			return this.update()
+		}
+		room.choice = choice
+		if (choice === 'rest') {
+			const amount = Math.floor(this.game.state.player.maxHealth * 0.3)
+			this.game.enqueue({type: 'addHealth', target: 'player', amount})
+			room.reward = amount
+		} else if (!reward) {
+			return this.update()
+		}
+		room.reward = reward
+		if (choice === 'upgrade') {
+			reward.upgrade()
+		}
+		if (choice === 'remove') {
+			this.game.enqueue({type: 'removeCard', card: reward})
+		}
+		this.goToNextRoom()
 	}
-	campfireRemoveCard() {
-		this.setState({isRemovingCard: !this.state.isRemovingCard})
-	}
-	campfireReallyRemoveCard(card) {
-		this.game.enqueue({type: 'removeCard', card})
-		this.update()
-		this.setState({isRemovingCard: false})
-		this.continueFromCampfire('removeCard', card)
-		// alert(`Gone. ${card.name} has been removed from your deck.`)
-	}
-	continueFromCampfire(choice, reward) {
-		getCurrRoom(this.state).choice = choice
-		if (reward) getCurrRoom(this.state).reward = reward
+	goToNextRoom() {
+		if (getCurrRoom(this.state).type === 'monster') this.game.enqueue({type: 'endTurn'})
 		this.game.enqueue({type: 'goToNextRoom'})
+		this.setState({didPickCard: false})
 		this.update(() => this.update(this.dealCards))
 	}
 	render(props, state) {
@@ -215,18 +217,32 @@ stw.dealCards()
 					room.type === 'campfire' &&
 					html`<${Overlay}>
 						<h1 center medium>Campfire</h1>
-						<ul class="Options">
-							<li><button onclick=${() => this.campfireRest()}>Rest</button></li>
-							<li><button onclick=${() => this.campfireRemoveCard()}>Remove card</button></li>
-						</ul>
-						${state.isRemovingCard &&
-						html` <p center>Choose a card to permanently remove from your deck.</p>
+						${!room.choice &&
+						html`<ul class="Options">
+							<li><button onclick=${() => this.handleCampfireChoice('rest')}>Rest</button></li>
+							<li>
+								<button onclick=${() => this.handleCampfireChoice('upgrade')}>Upgrade card</button>
+							</li>
+							<li>
+								<button onclick=${() => this.handleCampfireChoice('remove')}>Remove card</button>
+							</li>
+						</ul>`}
+						${room.choice &&
+						room.choice !== 'rest' &&
+						html`<br />
+							<ul class="Options">
+								<li>
+									<button onclick=${() => this.handleCampfireChoice()}>See all choices</button>
+								</li>
+							</ul>
+							<p center>Choose a card to ${room.choice}.</p>
 							<${CardChooser}
 								cards=${state.deck}
-								didSelectCard=${this.campfireReallyRemoveCard}
+								choice=${room.choice}
+								didSelectCard=${this.handleCampfireChoice}
 							/>`}
 						<p center>
-							<button onclick=${() => this.continueFromCampfire()}>Go to next room</button>
+							<button onclick=${() => this.goToNextRoom()}>Nah, just proceed to next room</button>
 						</p>
 					<//> `
 				}
