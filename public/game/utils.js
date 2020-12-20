@@ -98,3 +98,7 @@ export function isDungeonCompleted(state) {
 	const clearedRooms = state.dungeon.rooms.map(isRoomCompleted).filter(Boolean)
 	return clearedRooms.length === state.dungeon.rooms.length
 }
+
+export function clamp(x, lower, upper) {
+	return Math.max(lower, Math.min(x, upper))
+}
