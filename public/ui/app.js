@@ -136,40 +136,54 @@ stw.dealCards()
 		if (key === 's') toggle(this.base.querySelector('#DiscardPile'))
 		if (key === 'm') toggle(this.base.querySelector('#Map'))
 	}
-	handlePlayerReward(card) {
-		this.game.enqueue({type: 'rewardPlayer', card: card})
-		this.setState({didPickCard: card})
+	handlePlayerReward(choice, card) {
+		this.game.enqueue({type: 'rewardPlayer', card})
 		this.update()
+		this.goToNextRoom()
 	}
 	handleCampfireChoice(choice, reward) {
-		console.log({choice, reward})
 		const room = getCurrRoom(this.state)
-		if (room.choice && (choice === 'upgrade' || choice === 'remove') && !reward) {
+
+		// Cancel your current choice.
+		if (!choice) {
 			room.choice = undefined
 			return this.update()
 		}
+
+		// If upgrade or remove, first update UI to show card chooser.
+		if ((choice === 'upgrade' || choice === 'remove') && !reward) {
+			room.choice = choice
+			return this.update()
+		}
+
 		room.choice = choice
 		if (choice === 'rest') {
 			const amount = Math.floor(this.game.state.player.maxHealth * 0.3)
 			this.game.enqueue({type: 'addHealth', target: 'player', amount})
 			room.reward = amount
-		} else if (!reward) {
-			return this.update()
 		}
-		room.reward = reward
 		if (choice === 'upgrade') {
 			reward.upgrade()
+			room.reward = reward
+			this.update()
+			this.goToNextRoom()
 		}
 		if (choice === 'remove') {
 			this.game.enqueue({type: 'removeCard', card: reward})
+			this.update()
+			room.reward = reward
+			this.goToNextRoom()
 		}
-		this.goToNextRoom()
 	}
 	goToNextRoom() {
-		if (getCurrRoom(this.state).type === 'monster') this.game.enqueue({type: 'endTurn'})
-		this.game.enqueue({type: 'goToNextRoom'})
-		this.setState({didPickCard: false})
-		this.update(() => this.update(this.dealCards))
+		if (getCurrRoom(this.state).type === 'monster') {
+			this.game.enqueue({type: 'endTurn'})
+			this.game.enqueue({type: 'goToNextRoom'})
+			this.update(() => this.update(this.dealCards))
+		} else {
+			this.game.enqueue({type: 'goToNextRoom'})
+			this.update(this.dealCards)
+		}
 	}
 	render(props, state) {
 		if (!state.player) return
@@ -198,6 +212,7 @@ stw.dealCards()
 				${
 					!didWinEntireGame &&
 					didWin &&
+					room.type === 'monster' &&
 					html`<${Overlay}>
 						<h1 center medium>Victory. Onwards!</h1>
 						${!state.didPickCard
@@ -205,6 +220,7 @@ stw.dealCards()
 									<p center>Here is your reward. Pick a card to add to your deck.</p>
 									<${CardChooser}
 										cards=${getCardRewards(3)}
+										choice="addCard"
 										didSelectCard=${this.handlePlayerReward}
 									/>
 							  `
@@ -216,7 +232,7 @@ stw.dealCards()
 				${
 					room.type === 'campfire' &&
 					html`<${Overlay}>
-						<h1 center medium>Campfire</h1>
+						<h1 center medium>Campfire ${room.choice}</h1>
 						${!room.choice &&
 						html`<ul class="Options">
 							<li><button onclick=${() => this.handleCampfireChoice('rest')}>Rest</button></li>
@@ -240,9 +256,10 @@ stw.dealCards()
 								cards=${state.deck}
 								choice=${room.choice}
 								didSelectCard=${this.handleCampfireChoice}
+								gameState=${state}
 							/>`}
 						<p center>
-							<button onclick=${() => this.goToNextRoom()}>Nah, just proceed to next room</button>
+							<button onclick=${() => this.goToNextRoom()}>Continue</button>
 						</p>
 					<//> `
 				}

@@ -12,7 +12,9 @@ export default class CardChooser extends Component {
 				<div class="Cards">
 					${props.cards.map(
 						(card) =>
-							html`<div class="CardBox" onClick=${() => this.clickedCard(card)}>${Card(card)}</div>`
+							html`<div class="CardBox" onClick=${() => this.clickedCard(card)}>
+								${Card(card, props.gameState)}
+							</div>`
 					)}
 				</div>
 			</article>
