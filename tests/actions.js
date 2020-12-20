@@ -103,7 +103,7 @@ test('can manipulate player hp', (t) => {
 	t.is(state2.player.currentHealth, 62, 'can remove hp')
 	t.is(state.player.currentHealth, 72, 'immutable')
 	const state3 = a.addHealth(state2, {target: 'player', amount: 20})
-	t.is(state3.player.currentHealth, 82)
+	t.is(state3.player.currentHealth, 72, 'cant go above maxhealth')
 	t.is(state2.player.currentHealth, 62, 'immutable')
 	t.is(state.player.currentHealth, 72, 'immutable')
 })
@@ -422,7 +422,7 @@ test('Summer of sam card gains 1 life', (t) => {
 	const {state} = t.context
 	const card = createCard('Summer of Sam')
 	t.is(typeof card.use, 'function')
-	const originalHealth = state.player.currentHealth
+	state.player.currentHealth = 50
 	const newState = a.playCard(state, {target: 'player', card})
-	t.is(newState.player.currentHealth, originalHealth + 1, 'gain 1 life')
+	t.is(newState.player.currentHealth, 51, 'gain 1 life')
 })
