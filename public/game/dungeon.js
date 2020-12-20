@@ -16,6 +16,7 @@ export function CampfireRoom() {
 	return {
 		id: uuid(),
 		type: 'campfire',
+		choices: ['rest', 'remove', 'upgrade'],
 	}
 }
 
