@@ -150,7 +150,7 @@ const removeHealth = (state, {target, amount}) => {
 		const targets = getTargets(draft, target)
 		// console.warn('removing health', targets, amount)
 		targets.forEach((t) => {
-			// Adjust damage if the monster is vulnerable.
+			// Adjust damage if the target is vulnerable.
 			if (t.powers.vulnerable) {
 				amount = powers.vulnerable.use(amount)
 			}
@@ -231,8 +231,8 @@ function endTurn(state) {
 			draft.player.currentHealth = newHealth
 		})
 	}
-	newState = decreasePlayerPowerStacks(newState)
 	newState = takeMonsterTurn(newState)
+	newState = decreasePlayerPowerStacks(newState)
 	newState = decreaseMonsterPowerStacks(newState)
 	newState = newTurn(newState)
 	return newState
@@ -292,11 +292,12 @@ function takeMonsterTurn(state) {
 			}
 
 			if (intent.vulnerable) {
-				draft.player.powers.vulnerable = (draft.player.powers.vulnerable || 0) + intent.vulnerable
+				draft.player.powers.vulnerable =
+					(draft.player.powers.vulnerable || 0) + intent.vulnerable + 1
 			}
 
 			if (intent.weak) {
-				draft.player.powers.weak = (draft.player.powers.weak || 0) + intent.weak
+				draft.player.powers.weak = (draft.player.powers.weak || 0) + intent.weak + 1
 			}
 		})
 	})

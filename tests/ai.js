@@ -51,18 +51,15 @@ test('monster can apply vulnerable and weak', (t) => {
 	let state = a.setDungeon(a.createNewGame(), createDungeon())
 	// Overwrite the "first" monster.
 	const monster = Monster({
-		intents: [{vulnerable: 2}, {weak: 5}],
+		intents: [{vulnerable: 2}],
 	})
 	state.dungeon.rooms[0].monsters[0] = monster
 	state = a.endTurn(state)
 	t.is(state.player.powers.vulnerable, 2)
 	state = a.endTurn(state)
-	t.is(state.player.powers.vulnerable, 1)
-	t.is(state.player.powers.weak, 5)
+	t.is(state.player.powers.vulnerable, 4)
 	state = a.endTurn(state)
-	state = a.endTurn(state)
-	t.is(state.player.powers.vulnerable, 1)
-	t.is(state.player.powers.weak, 8)
+	t.is(state.player.powers.vulnerable, 6)
 })
 
 test('two monsters both do damage in same turn', (t) => {
