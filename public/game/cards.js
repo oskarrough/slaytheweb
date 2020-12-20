@@ -79,6 +79,7 @@ export class Card {
 		return checkConditions(this.conditions, state)
 	}
 	upgrade() {
+		if (this.upgraded) return
 		// this.name = 'Name+', this.damage = 666
 		// etc...
 	}

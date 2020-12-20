@@ -67,6 +67,12 @@ export default [
 		damage: 8,
 		target: 'all enemies',
 		description: 'Deal 8 damage to ALL enemies.',
+		upgrade() {
+			this.damage = 11
+			this.upgraded = true
+			this.name = 'Cleave+'
+			this.description = 'Deal 11 Damage to ALL enemies.'
+		},
 	},
 	{
 		name: 'Iron Wave',
@@ -76,6 +82,13 @@ export default [
 		block: 5,
 		target: 'enemy',
 		description: 'Deal 5 damage. Gain 5 Block.',
+		upgrade() {
+			this.damage = 7
+			this.block = 7
+			this.upgraded = true
+			this.name = 'Iron Wave+'
+			this.description = 'Deal 7 Damage. Gain 7 Block.'
+		},
 	},
 	{
 		name: 'Sucker Punch',
@@ -87,6 +100,13 @@ export default [
 			weak: 1,
 		},
 		description: 'Deal 7 Damage. Apply 1 Weak.',
+		upgrade() {
+			this.damage = 8
+			this.upgraded = true
+			this.name = 'Sucker Punch+'
+			this.powers.weak = 2
+			this.description = 'Deal 8 Damage. Apply 2 Weak'
+		},
 	},
 	{
 		name: 'Thunderclap',
@@ -161,7 +181,7 @@ export default [
 		],
 		upgrade() {
 			this.energy = 0
-			this.name = this.name + '+'
+			this.name = 'Body Slam+'
 		},
 	},
 	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
