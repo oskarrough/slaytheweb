@@ -16,6 +16,8 @@ export const Monster = (props) => {
 		const vulnerable = state.player.powers.vulnerable
 		if (type === 'damage' && weakened) amount = weakPower.use(amount)
 		if (type === 'damage' && vulnerable) amount = vulnerablePower.use(amount)
+		// Don't reveal how many stacks will be applied.
+		if (type === 'vulnerable' || type === 'weak') amount = undefined
 		return html`
 			<div class="Target-intent"><img alt=${type} src="ui/images/${type}.png" /> ${amount}</div>
 		`
