@@ -6,7 +6,7 @@ export default [
 		energy: 1,
 		block: 5,
 		target: 'player',
-		description: 'Gain 8 Block.',
+		description: 'Gain 5 Block.',
 		upgrade() {
 			this.block = 8
 			this.upgraded = true
