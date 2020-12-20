@@ -20,7 +20,6 @@ import enableDragDrop from './dragdrop.js'
 // Puts and gets the game state in the URL.
 const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state)))
 const load = () => JSON.parse(decodeURIComponent(window.location.hash.split('#')[1]))
-
 export default class App extends Component {
 	constructor() {
 		super()
@@ -57,6 +56,15 @@ stw.dealCards()
 			update: this.update.bind(this),
 			createCard,
 			dealCards: this.dealCards.bind(this),
+			iddqd() {
+				this.game.state.dungeon.rooms.forEach(room => {
+					if (!room.monsters) return
+					room.monsters.forEach(monster => {
+						monster.currentHealth = 1
+					})
+					this.update()
+				})
+			}
 		}
 	}
 	update(callback) {
