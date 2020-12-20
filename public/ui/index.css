@@ -44,9 +44,6 @@ html {
 }
 
 @media (min-height: 800px) {
-	:root {
-		--card-width: 10em;
-	}
 	html {
 		font-size: 18px;
 	}
@@ -340,7 +337,7 @@ h3 {
 .Target {
 	position: relative;
 	margin-top: 1rem;
-	padding: 1px 1em 1.4em;
+	padding: 3em 1em 1.4em;
 	flex: 1;
 	display: flex;
 	flex-flow: column;
