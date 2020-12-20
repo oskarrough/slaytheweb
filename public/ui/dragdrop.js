@@ -28,7 +28,7 @@ export default function enableDragDrop(container, onAdd) {
 				let i = targets.length
 				while (--i > -1) {
 					// Highlight only if valid target.
-					if (this.hitTest(targets[i], '50%')) {
+					if (this.hitTest(targets[i], '40%')) {
 						if (
 							cardHasValidTarget(
 								this.target.getAttribute('data-card-target'),
@@ -49,7 +49,7 @@ export default function enableDragDrop(container, onAdd) {
 				let targetEl
 				let i = targets.length
 				while (--i > -1) {
-					if (this.hitTest(targets[i], '50%')) {
+					if (this.hitTest(targets[i], '40%')) {
 						targetEl = targets[i]
 						break
 					}
