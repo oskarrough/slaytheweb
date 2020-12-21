@@ -2,9 +2,7 @@
 
 // Returns true if all cards in your hand are of the same type.
 export function onlyType(state, condition) {
-	return !state.hand.some((card) => {
-		return card.type !== condition.cardType
-	})
+	return state.hand.every((card) => card.type === condition.cardType)
 }
 
 function healthPercentage(state) {

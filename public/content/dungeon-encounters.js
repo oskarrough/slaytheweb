@@ -22,13 +22,13 @@ export const createSimpleDungeon = () => {
 			MonsterRoom(
 				Monster({
 					hp: random(13, 17),
-					intents: [{damage: 7}, {damage: 11}, {damage: 6}, {}],
+					intents: [{damage: 7}, {damage: 11}, {damage: 6}, {block: 9}],
 					random: 2,
 				})
 			),
 			MonsterRoom(
 				Monster({
-					hp: random(53, 57),
+					hp: random(43, 47),
 					intents: [{vulnerable: 1}, {damage: 10}, {damage: 6}, {}, {weak: 1}],
 					random: 2,
 				})
