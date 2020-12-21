@@ -15,20 +15,23 @@ import Map from './map.js'
 import {Overlay, OverlayWithButton} from './overlays.js'
 import {Player, Monster} from './player.js'
 import CardChooser from './card-chooser.js'
+import CampfireRoom from './campfire.js'
 import enableDragDrop from './dragdrop.js'
 
 // Puts and gets the game state in the URL.
 const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state)))
 const load = () => JSON.parse(decodeURIComponent(window.location.hash.split('#')[1]))
+
 export default class App extends Component {
 	constructor() {
 		super()
 		this.overlayIndex = 11
 
 		// Scope methods
-		this.handlePlayerReward = this.handlePlayerReward.bind(this)
 		this.playCard = this.playCard.bind(this)
+		this.handlePlayerReward = this.handlePlayerReward.bind(this)
 		this.handleCampfireChoice = this.handleCampfireChoice.bind(this)
+		this.goToNextRoom = this.goToNextRoom.bind(this)
 	}
 	componentDidMount() {
 		// Set up a new game
@@ -57,14 +60,14 @@ stw.dealCards()
 			createCard,
 			dealCards: this.dealCards.bind(this),
 			iddqd() {
-				this.game.state.dungeon.rooms.forEach(room => {
+				this.game.state.dungeon.rooms.forEach((room) => {
 					if (!room.monsters) return
-					room.monsters.forEach(monster => {
+					room.monsters.forEach((monster) => {
 						monster.currentHealth = 1
 					})
 					this.update()
 				})
-			}
+			},
 		}
 	}
 	update(callback) {
@@ -150,31 +153,21 @@ stw.dealCards()
 		this.goToNextRoom()
 	}
 	handleCampfireChoice(choice, reward) {
+		// step1
 		const room = getCurrRoom(this.state)
-
-		// Cancel your current choice.
-		if (!choice) {
-			room.choice = undefined
-			return this.update()
-		}
-
-		// If upgrade or remove, first update UI to show card chooser.
-		if ((choice === 'upgrade' || choice === 'remove') && !reward) {
-			room.choice = choice
-			return this.update()
-		}
-
-		room.choice = choice
+		// step2
 		if (choice === 'rest') {
 			reward = Math.floor(this.game.state.player.maxHealth * 0.3)
 			this.game.enqueue({type: 'addHealth', target: 'player', amount: reward})
 		}
-		if (choice === 'upgrade') {
-			reward.upgrade()
+		if (choice === 'upgradeCard') {
+			this.game.enqueue({type: 'upgradeCard', card: reward})
 		}
-		if (choice === 'remove') {
+		if (choice === 'removeCard') {
 			this.game.enqueue({type: 'removeCard', card: reward})
 		}
+		// step3
+		room.choice = choice
 		room.reward = reward
 		this.update()
 		this.goToNextRoom()
@@ -224,8 +217,7 @@ stw.dealCards()
 									<p center>Here is your reward. Pick a card to add to your deck.</p>
 									<${CardChooser}
 										cards=${getCardRewards(3)}
-										choice="addCard"
-										didSelectCard=${this.handlePlayerReward}
+										didSelectCard=${(card) => this.handlePlayerReward('addCard', card)}
 									/>
 							  `
 							: html`<p center>Added <strong>${state.didPickCard.name}</strong> to your deck.</p>`}
@@ -235,37 +227,13 @@ stw.dealCards()
 
 				${
 					room.type === 'campfire' &&
-					html`<${Overlay}>
-						<h1 center medium>Campfire ${room.choice}</h1>
-						${!room.choice &&
-						html`<ul class="Options">
-							<li><button onclick=${() => this.handleCampfireChoice('rest')}>Rest</button></li>
-							<li>
-								<button onclick=${() => this.handleCampfireChoice('upgrade')}>Upgrade card</button>
-							</li>
-							<li>
-								<button onclick=${() => this.handleCampfireChoice('remove')}>Remove card</button>
-							</li>
-						</ul>`}
-						${room.choice &&
-						room.choice !== 'rest' &&
-						html`<br />
-							<ul class="Options">
-								<li>
-									<button onclick=${() => this.handleCampfireChoice()}>See all choices</button>
-								</li>
-							</ul>
-							<p center>Choose a card to ${room.choice}.</p>
-							<${CardChooser}
-								cards=${state.deck}
-								choice=${room.choice}
-								didSelectCard=${this.handleCampfireChoice}
-								gameState=${state}
-							/>`}
-						<p center>
-							<button onclick=${() => this.goToNextRoom()}>Continue</button>
-						</p>
-					<//> `
+					html`<${Overlay}
+						><${CampfireRoom}
+							gameState=${state}
+							room=${room}
+							onChoose=${this.handleCampfireChoice}
+							onContinue=${this.goToNextRoom}
+					/><//>`
 				}
 
 				<div class="Targets Split">

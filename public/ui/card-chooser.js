@@ -3,8 +3,7 @@ import {Card} from './cards.js'
 
 export default class CardChooser extends Component {
 	clickedCard(card) {
-		this.setState({didChoose: card})
-		this.props.didSelectCard(this.props.choice, card)
+		this.props.didSelectCard(card)
 	}
 	render(props) {
 		return html`

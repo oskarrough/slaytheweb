@@ -102,6 +102,11 @@ const removeCard = (state, {card}) =>
 		draft.deck = state.deck.filter((c) => c.id !== card.id)
 	})
 
+const upgradeCard = (state, {card}) =>
+	produce(state, (draft) => {
+		draft.deck.find((c) => c.id === card.id).upgrade()
+	})
+
 // The funky part of this action is the `target` argument. It needs to be a special type of string:
 // Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getTargets
 function playCard(state, {card, target}) {
@@ -311,7 +316,7 @@ function rewardPlayer(state, {card}) {
 
 function goToNextRoom(state) {
 	let nextState = reshuffleAndDraw(state)
-	nextState.player.powers = {} // remove all powers
+	nextState.player.powers = {} // Clear temporary powers.
 	return produce(nextState, (draft) => {
 		const number = state.dungeon.index
 		if (number === state.dungeon.rooms.length - 1) {
@@ -345,4 +350,5 @@ export default {
 	setDungeon,
 	takeMonsterTurn,
 	removeCard,
+	upgradeCard,
 }
