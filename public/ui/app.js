@@ -230,7 +230,6 @@ stw.dealCards()
 					html`<${Overlay}
 						><${CampfireRoom}
 							gameState=${state}
-							room=${room}
 							onChoose=${this.handleCampfireChoice}
 							onContinue=${this.goToNextRoom}
 					/><//>`

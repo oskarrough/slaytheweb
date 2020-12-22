@@ -19,26 +19,36 @@ export default class CampfireRoom extends Component {
 		this.choose(this.state.choice, card)
 	}
 	render(props, state) {
-		const {gameState, room} = props
+		const {gameState} = props
+		const {choice, isChoosingCard} = state
+		let label = ''
+		if (choice === 'upgradeCard') label = 'Choose a card to upgrade'
+		if (choice === 'removeCard') label = 'Choose a card to remove'
 		return html`
-			<h1 center medium>Campfire ${room.choice}</h1>
-
+			<h1 center medium>Campfire</h1>
 			<ul class="Options">
-				<li><button onclick=${() => this.rest()}>Rest</button></li>
-				<li><button onclick=${() => this.choose('upgradeCard')}>Upgrade card</button></li>
-				<li><button onclick=${() => this.choose('removeCard')}>Remove card</button></li>
+				${isChoosingCard
+					? html`
+							<li>
+								<button onclick=${() => this.setState({isChoosingCard: false})}>Cancel</button>
+							</li>
+					  `
+					: html`
+							<li><button onclick=${() => this.rest()}>Rest</button></li>
+							<li><button onclick=${() => this.choose('upgradeCard')}>Upgrade card</button></li>
+							<li><button onclick=${() => this.choose('removeCard')}>Remove card</button></li>
+					  `}
 			</ul>
-
-			${state.isChoosingCard &&
-			html` <p center>Choose a card to ${state.choice}.</p>
+			${isChoosingCard &&
+			html`<br />
+				<p center>${label}</p>
 				<${CardChooser}
+					gameState=${gameState}
 					cards=${gameState.deck}
 					didSelectCard=${(card) => this.onSelectCard(card)}
-					gameState=${gameState}
 				/>`}
-
 			<p center>
-				<button onclick=${() => this.props.onContinue()}>Continue</button>
+				<button onclick=${() => this.props.onContinue()}>No, thanks</button>
 			</p>
 		`
 	}
