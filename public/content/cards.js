@@ -146,10 +146,10 @@ export default [
 			},
 		],
 		upgrade() {
-			this.name = 'Summer of Sam+'
-			const a = this.actions.find((action) => action.type === 'addHealth')
-			a.parameter.amount = 2
-			this.description = 'Gain 2 Health. Draw 2 Cards if your health is below 50%.'
+			this.name = 'Flourish+'
+			const a = this.conditions.find((action) => action.type === 'healthPercentageBelow')
+			a.percentage = 75
+			this.description = 'Gain 5 Regen. Can only be played if your health is below 75%'
 		},
 		/*
 		// Not implemented. Playing around with syntax

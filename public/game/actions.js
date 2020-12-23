@@ -96,6 +96,17 @@ const discardHand = (state) =>
 		draft.hand = []
 	})
 
+// Discard a single card from your hand.
+const removeCard = (state, {card}) =>
+	produce(state, (draft) => {
+		draft.deck = state.deck.filter((c) => c.id !== card.id)
+	})
+
+const upgradeCard = (state, {card}) =>
+	produce(state, (draft) => {
+		draft.deck.find((c) => c.id === card.id).upgrade()
+	})
+
 // The funky part of this action is the `target` argument. It needs to be a special type of string:
 // Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getTargets
 function playCard(state, {card, target}) {
@@ -144,7 +155,7 @@ const removeHealth = (state, {target, amount}) => {
 		const targets = getTargets(draft, target)
 		// console.warn('removing health', targets, amount)
 		targets.forEach((t) => {
-			// Adjust damage if the monster is vulnerable.
+			// Adjust damage if the target is vulnerable.
 			if (t.powers.vulnerable) {
 				amount = powers.vulnerable.use(amount)
 			}
@@ -225,8 +236,8 @@ function endTurn(state) {
 			draft.player.currentHealth = newHealth
 		})
 	}
-	newState = decreasePlayerPowerStacks(newState)
 	newState = takeMonsterTurn(newState)
+	newState = decreasePlayerPowerStacks(newState)
 	newState = decreaseMonsterPowerStacks(newState)
 	newState = newTurn(newState)
 	return newState
@@ -286,11 +297,12 @@ function takeMonsterTurn(state) {
 			}
 
 			if (intent.vulnerable) {
-				draft.player.powers.vulnerable = (draft.player.powers.vulnerable || 0) + intent.vulnerable
+				draft.player.powers.vulnerable =
+					(draft.player.powers.vulnerable || 0) + intent.vulnerable + 1
 			}
 
 			if (intent.weak) {
-				draft.player.powers.weak = (draft.player.powers.weak || 0) + intent.weak
+				draft.player.powers.weak = (draft.player.powers.weak || 0) + intent.weak + 1
 			}
 		})
 	})
@@ -304,7 +316,7 @@ function rewardPlayer(state, {card}) {
 
 function goToNextRoom(state) {
 	let nextState = reshuffleAndDraw(state)
-	nextState.player.powers = {} // remove all powers
+	nextState.player.powers = {} // Clear temporary powers.
 	return produce(nextState, (draft) => {
 		const number = state.dungeon.index
 		if (number === state.dungeon.rooms.length - 1) {
@@ -337,4 +349,6 @@ export default {
 	rewardPlayer,
 	setDungeon,
 	takeMonsterTurn,
+	removeCard,
+	upgradeCard,
 }

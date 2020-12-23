@@ -14,7 +14,8 @@ import History from './history.js'
 import Map from './map.js'
 import {Overlay, OverlayWithButton} from './overlays.js'
 import {Player, Monster} from './player.js'
-import Rewards from './rewards.js'
+import CardChooser from './card-chooser.js'
+import CampfireRoom from './campfire.js'
 import enableDragDrop from './dragdrop.js'
 
 // Puts and gets the game state in the URL.
@@ -27,8 +28,10 @@ export default class App extends Component {
 		this.overlayIndex = 11
 
 		// Scope methods
-		this.handlePlayerReward = this.handlePlayerReward.bind(this)
 		this.playCard = this.playCard.bind(this)
+		this.handlePlayerReward = this.handlePlayerReward.bind(this)
+		this.handleCampfireChoice = this.handleCampfireChoice.bind(this)
+		this.goToNextRoom = this.goToNextRoom.bind(this)
 	}
 	componentDidMount() {
 		// Set up a new game
@@ -56,6 +59,15 @@ stw.dealCards()
 			update: this.update.bind(this),
 			createCard,
 			dealCards: this.dealCards.bind(this),
+			iddqd() {
+				this.game.state.dungeon.rooms.forEach((room) => {
+					if (!room.monsters) return
+					room.monsters.forEach((monster) => {
+						monster.currentHealth = 1
+					})
+					this.update()
+				})
+			},
 		}
 	}
 	update(callback) {
@@ -79,7 +91,7 @@ stw.dealCards()
 
 		// Create a clone on top of the card to animate.
 		const clone = cardElement.cloneNode(true)
-		document.body.appendChild(clone)
+		this.base.appendChild(clone)
 		if (supportsFlip) Flip.fit(clone, cardElement, {absolute: true})
 
 		// Update state and re-enable dragdrop
@@ -115,15 +127,6 @@ stw.dealCards()
 		gsap.effects.dealCards('.Hand .Card')
 		enableDragDrop(this.base, this.playCard)
 	}
-	goToNextRoom() {
-		this.game.enqueue({type: 'endTurn'})
-		this.game.enqueue({type: 'goToNextRoom'})
-		this.update(() => this.update(this.dealCards))
-	}
-	handlePlayerReward(card) {
-		this.game.enqueue({type: 'rewardPlayer', card: card})
-		this.update()
-	}
 	handleShortcuts(event) {
 		const {key} = event
 		if (key === 'e') this.endTurn()
@@ -144,6 +147,41 @@ stw.dealCards()
 		if (key === 's') toggle(this.base.querySelector('#DiscardPile'))
 		if (key === 'm') toggle(this.base.querySelector('#Map'))
 	}
+	handlePlayerReward(choice, card) {
+		this.game.enqueue({type: 'rewardPlayer', card})
+		this.update()
+		this.goToNextRoom()
+	}
+	handleCampfireChoice(choice, reward) {
+		// step1
+		const room = getCurrRoom(this.state)
+		// step2
+		if (choice === 'rest') {
+			reward = Math.floor(this.game.state.player.maxHealth * 0.3)
+			this.game.enqueue({type: 'addHealth', target: 'player', amount: reward})
+		}
+		if (choice === 'upgradeCard') {
+			this.game.enqueue({type: 'upgradeCard', card: reward})
+		}
+		if (choice === 'removeCard') {
+			this.game.enqueue({type: 'removeCard', card: reward})
+		}
+		// step3
+		room.choice = choice
+		room.reward = reward
+		this.update()
+		this.goToNextRoom()
+	}
+	goToNextRoom() {
+		if (getCurrRoom(this.state).type === 'monster') {
+			this.game.enqueue({type: 'endTurn'})
+			this.game.enqueue({type: 'goToNextRoom'})
+			this.update(() => this.update(this.dealCards))
+		} else {
+			this.game.enqueue({type: 'goToNextRoom'})
+			this.update(this.dealCards)
+		}
+	}
 	render(props, state) {
 		if (!state.player) return
 		const isDead = state.player.currentHealth < 1
@@ -158,7 +196,7 @@ stw.dealCards()
 				${
 					isDead &&
 					html`<${Overlay}>
-						<p>You are dead.</p>
+						<p center>You are dead.</p>
 						<button onclick=${() => this.props.onLoose()}>Try again?</button>
 					<//> `
 				}
@@ -171,10 +209,30 @@ stw.dealCards()
 				${
 					!didWinEntireGame &&
 					didWin &&
+					room.type === 'monster' &&
 					html`<${Overlay}>
-						<${Rewards} cards=${getCardRewards(3)} rewardWith=${this.handlePlayerReward} />
+						<h1 center medium>Victory. Onwards!</h1>
+						${!state.didPickCard
+							? html`
+									<p center>Here is your reward. Pick a card to add to your deck.</p>
+									<${CardChooser}
+										cards=${getCardRewards(3)}
+										didSelectCard=${(card) => this.handlePlayerReward('addCard', card)}
+									/>
+							  `
+							: html`<p center>Added <strong>${state.didPickCard.name}</strong> to your deck.</p>`}
 						<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
 					<//> `
+				}
+
+				${
+					room.type === 'campfire' &&
+					html`<${Overlay}
+						><${CampfireRoom}
+							gameState=${state}
+							onChoose=${this.handleCampfireChoice}
+							onContinue=${this.goToNextRoom}
+					/><//>`
 				}
 
 				<div class="Targets Split">
@@ -182,7 +240,12 @@ stw.dealCards()
 						<${Player} model=${state.player} name="Player" />
 					</div>
 					<div class="Targets-group">
-						${room.monsters.map((monster) => html`<${Monster} model=${monster} gameState=${state} />`)}
+						${
+							room.monsters &&
+							room.monsters.map(
+								(monster) => html`<${Monster} model=${monster} gameState=${state} />`
+							)
+						}
 					</div>
 				</div>
 
