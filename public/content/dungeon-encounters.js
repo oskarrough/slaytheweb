@@ -86,7 +86,7 @@ export const createSimpleDungeon = () => {
 			CampfireRoom(),
 			MonsterRoom(
 				Monster({
-					hp: random(160, 190),
+					hp: random(100, 140),
 					intents: [{damage: 12}, {block: 6}, {damage: 16}, {damage: 7}, {weak: 2}],
 					random: 5,
 				})
