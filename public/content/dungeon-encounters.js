@@ -21,8 +21,8 @@ export const createSimpleDungeon = () => {
 		rooms: [
 			MonsterRoom(
 				Monster({
-					hp: random(13, 17),
-					intents: [{damage: 7}, {damage: 11}, {damage: 6}, {block: 9}],
+					hp: random(18, 20),
+					intents: [{damage: 7}, {damage: 11}, {damage: 7}, {block: 9}],
 					random: 2,
 				})
 			),
@@ -80,14 +80,14 @@ export const createSimpleDungeon = () => {
 			MonsterRoom(
 				Monster({
 					hp: 48,
-					intents: [{weak: 1}, {damage: 6}],
+					intents: [{weak: 1}, {block: 10, damage: 10}, {damage: 21}],
 				})
 			),
 			CampfireRoom(),
 			MonsterRoom(
 				Monster({
 					hp: random(160, 190),
-					intents: [{damage: 12}, {block: 6}, {damage: 16}],
+					intents: [{damage: 12}, {block: 6}, {damage: 16}, {damage: 7}, {weak: 2}],
 					random: 5,
 				})
 			),
@@ -105,19 +105,3 @@ export const createTestDungeon = () => {
 		],
 	})
 }
-
-// const ScalingMonster = () =>
-// 	Monster({
-// 		hp: 13,
-// 		intents: [
-// 			{damage: 1},
-// 			{damage: 3},
-// 			{damage: 5},
-// 			{damage: 7},
-// 			{damage: 10},
-// 			{damage: 15},
-// 			{damage: 20},
-// 			{damage: 30},
-// 			{damage: 50},
-// 		],
-// 	})
