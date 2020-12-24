@@ -272,19 +272,23 @@ h2 {
 	background: #2a3335;
 	text-align: center;
 }
-.Card[data-card-type='Attack'] .Card-inner {
-	background: hsl(0deg 33% 19%);
-}
 .Card-name {
 	margin: 0;
-	padding: 0.6em 1em 0.8em;
+	padding: 0.6em 1em 0;
 	background: linear-gradient(to bottom, hsla(0, 0%, 0%, 0.2), transparent);
 	user-select: none;
 }
 .Card-type {
+	display: inline-block;
+	padding: 2px 5px 4px;
+	border-radius: 0.4em;
 	font-family: 'concourse_c3';
-	margin-top: -0.5em;
 	font-size: 0.75rem;
+	margin-top: 0.25rem;
+	background: hsl(191.3, 33.3%, 18.8%);
+}
+.Card[data-card-type='Attack'] .Card-type {
+	background: hsl(0deg 33% 19%);
 }
 .Card-description {
 	font-size: 0.875rem;

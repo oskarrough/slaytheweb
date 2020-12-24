@@ -32,10 +32,10 @@ export function Card(card, gameState) {
 			disabled=${isDisabled}
 		>
 			<div class="Card-inner">
-				<h3 class="Card-name">${card.name}</h3>
 				<p class="Card-energy EnergyBadge">
 					<span>${card.energy}</span>
 				</p>
+				<h3 class="Card-name">${card.name}</h3>
 				<p class="Card-type">${card.type}</p>
 				<p class="Card-description">${card.description}</p>
 			</div>
