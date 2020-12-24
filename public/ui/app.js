@@ -273,7 +273,7 @@ stw.dealCards()
 								save(
 									state
 								)} title="After saving, your entire game is stored in the URL. Copy it">Save</button></li>
-							<li><button onclick=${() => window.location.reload()}>Abandon Game</button></li>
+							<li><button onclick=${() => (window.location = window.location.origin)}>Abandon Game</button></li>
 						</ul>
 						<${History} future=${this.game.future.list} past=${this.game.past.list} />
 						${
