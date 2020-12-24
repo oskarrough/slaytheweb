@@ -7,8 +7,9 @@
   "scripts": {
     "start": "servor public --reload",
     "lint": "eslint public tests --fix",
-    "test": "nyc ava --verbose",
+    "test": "ava",
     "test:watch": "ava --watch",
+    "test:coverage": "nyc ava --verbose",
     "build": "snowpack --include 'public/**/*.js' --clean --dest 'public/web_modules' --stat --optimize",
     "docs": "rm -rf ./docs; cd public/game; docco *.js; mv docs ../../docs",
     "release": "release-it"
