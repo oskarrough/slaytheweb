@@ -267,15 +267,25 @@ stw.dealCards()
 				<${OverlayWithButton} id="Menu" topleft>
 					<summary><u>Esc</u>ape</summary>
 					<div class="Splash">
-						<h1>Slay the Web</h1>
-						<p>
-							<button onclick=${() => save(state)}>Save</button>
-							<button onclick=${() => window.location.reload()}>Quit</button>
-						</p>
+						<h1 medium>Slay the Web</h1>
+						<ul class="Options">
+							<li><button onclick=${() =>
+								save(
+									state
+								)} title="After saving, your entire game is stored in the URL. Copy it">Save</button></li>
+							<li><button onclick=${() => window.location.reload()}>Abandon Game</button></li>
+						</ul>
 						<${History} future=${this.game.future.list} past=${this.game.past.list} />
-						<p>
-							<button onclick=${() => this.undo()}><u>U</u>ndo</button><br />
-						</p>
+						${
+							this.game.past.list.length
+								? html`
+										<p>
+											<button onclick=${() => this.undo()}><u>U</u>ndo</button><br />
+										</p>
+								  `
+								: ''
+						}
+						<p style="margin-top:auto"><a rel="noreferrer" target="_blank" href="https://github.com/oskarrough/slaytheweb">View source</a></p>
 					</div>
 				<//>
 				<${OverlayWithButton} id="Map" topright>

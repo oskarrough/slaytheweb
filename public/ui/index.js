@@ -10,7 +10,7 @@ class Main extends Component {
 	constructor() {
 		super()
 		this.state = {
-			isPlaying: false,
+			isPlaying: !false,
 		}
 		this.handleWin = this.handleWin.bind(this)
 		this.handleNewGame = this.handleNewGame.bind(this)
@@ -56,7 +56,6 @@ class SplashScreen extends Component {
 	render(props) {
 		return html`
 			<article class="Splash Splash--fadein">
-				<!-- <figure class="App-background"></div> -->
 				<h1>Slay the Web</h1>
 				<h2>A little card crawl adventure for you and your browser.</h2>
 				<img class="Splash-spoder" src="ui/images/spoder.png"/>
@@ -75,7 +74,7 @@ class SplashScreen extends Component {
 					<p>Every turn you get 3 energy to play cards. Cards have different energy costs to play. Cards deal damage to monsters, block enemy attacks or make enemies weak, vulnerable, heal you and other things. You'll figure it out.</p>
 					<p>Beware, whenever you end your turn, the monsters take turn.</p>
 					<p>Should you manage to kill the monsters in a room before they end you, you'll proceed to the next room. There will be rewards. Can you reach the end?</p>
-					<p><a target="_blank" href="https://github.com/oskarrough/slaytheweb">View source</a></p>
+					<p><a rel="noreferrer" target="_blank" href="https://github.com/oskarrough/slaytheweb">View source</a></p>
 				</details>
 			</article>
 		`

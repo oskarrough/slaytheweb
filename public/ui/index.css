@@ -447,8 +447,7 @@ h2 {
 .Splash {
 	min-height: 100vh;
 	display: flex;
-	justify-content: center;
-	align-content: center;
+	margin: auto;
 	flex-flow: column;
 	text-align: center;
 	padding: 0 1rem;
@@ -550,8 +549,9 @@ h2 {
 	left: 0;
 	width: 100%;
 	opacity: 0;
-	transform: translate3d(0, 4rem, 0);
+	padding-top: 4rem;
 	overflow-y: auto;
+	transform: translate3d(0, 4rem, 0);
 }
 .Overlay-bg {
 	transition: background 400ms;
@@ -589,7 +589,13 @@ h2 {
 }
 .Overlay[open] .Overlay-bg {
 	transform: translateX(0);
-	background: var(--text-inverse);
+	background: hsla(0, 0%, 0%, 0.9);
+}
+/* Inside overlays cards are allowed to wrap */
+.Overlay[open] .Cards {
+	flex-wrap: wrap;
+	gap: 1rem;
+	align-content: center;
 }
 
 /* Position of "buttons" inside open modals */
@@ -609,16 +615,6 @@ h2 {
 }
 .Overlay[open][topright2] summary {
 	right: 5rem;
-}
-
-/* Inside overlays cards are allowed to wrap */
-.Overlay .Cards {
-	flex-wrap: wrap;
-	gap: 1rem;
-	align-content: flex-start;
-	align-items: center;
-	min-height: calc(100vh - 4rem);
-	padding-top: 2rem;
 }
 
 .MapList {
