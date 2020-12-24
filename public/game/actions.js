@@ -1,12 +1,19 @@
-import produce from '../web_modules/immer.js'
+import produce, {setAutoFreeze} from '../web_modules/immer.js'
 import {createCard} from './cards.js'
 import {shuffle, getTargets, getCurrRoom, clamp} from './utils.js'
 import powers from './powers.js'
 import {createSimpleDungeon} from '../content/dungeon-encounters.js'
 
-// The idea is that we have one big object with game state. Whenever we want to change something, we call an "action" from this file. Each action takes two arguments: 1) the current state, 2) an object of arguments.
+// Without this, immer.js will throw an error if our `state` is modified outside of an action.
+// While in theory a good idea, we're not there yet. It is a useful way to spot modifications
+// of the game state that should not be there.
+setAutoFreeze(false)
 
-// This is the big object of game state. Everything should start here.
+// In Slay the Web, we have one big object with game state.
+// Whenever we want to change something, call an "action" from this file.
+// Each action takes two arguments: 1) the current state, 2) an object of arguments.
+
+// This is the big object of game state. Everything starts here.
 function createNewGame() {
 	return {
 		turn: 1,
@@ -316,8 +323,8 @@ function rewardPlayer(state, {card}) {
 
 function goToNextRoom(state) {
 	let nextState = reshuffleAndDraw(state)
-	nextState.player.powers = {} // Clear temporary powers.
 	return produce(nextState, (draft) => {
+		draft.player.powers = {} // Clear temporary powers.
 		const number = state.dungeon.index
 		if (number === state.dungeon.rooms.length - 1) {
 			throw new Error('You have reached the end of the dungeon. Congratulations.')

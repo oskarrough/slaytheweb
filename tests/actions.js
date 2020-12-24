@@ -430,7 +430,6 @@ test('Summer of sam card gains 1 life', (t) => {
 test('vulnerable is working', (t) => {
 	const {state} = t.context
 	state.player.powers.vulnerable = 1
-	state.player.powers.vulnerable = 1
 	state.dungeon.rooms[0].monsters[0].intents = [{damage: 10}]
 	let newState = a.endTurn(state)
 	t.is(newState.player.currentHealth, 72 - 15)
