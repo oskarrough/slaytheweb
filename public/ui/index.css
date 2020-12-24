@@ -346,7 +346,7 @@ h2 {
 	max-width: 20rem;
 }
 .Target h2 {
-	min-height: 1em;
+	min-height: 1.4em;
 	margin: 0 0.5rem 0;
 	padding: 0.1em 0.5em;
 	/* background: var(--text-inverse); */
