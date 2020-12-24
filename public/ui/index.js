@@ -58,23 +58,31 @@ class SplashScreen extends Component {
 			<article class="Splash Splash--fadein">
 				<h1>Slay the Web</h1>
 				<h2>A little card crawl adventure for you and your browser.</h2>
-				<img class="Splash-spoder" src="ui/images/spoder.png"/>
-				${
-					location.hash &&
-					html`
-						<p>
-							<button autofocus onClick=${props.onContinue}>Continue Game</button>
-						</p>
-					`
-				}
-				<p><button autofocus onClick=${props.onNewGame}>Play</a></p>
+				<img class="Splash-spoder" src="ui/images/spoder.png" />
+				<ul class="Options">
+					${location.hash
+						? html`
+							<li><button autofocus onClick=${props.onContinue}>Continue Game</button></li>
+							<li><button autofocus onClick=${props.onNewGame}>New Game</a></li>
+				`
+						: html`<li><button autofocus onClick=${props.onNewGame}>Play</a></li>`}
+				</ul>
 				<details class="Splash-details">
 					<summary>Tutorial</summary>
-					<p>Slay the Web is a single player card game where you fight monsters to reach the end of the web. It's a game of planning and knowing when to play which card.</p>
-					<p>Every turn you get 3 energy to play cards. Cards have different energy costs to play. Cards deal damage to monsters, block enemy attacks or make enemies weak, vulnerable, heal you and other things. You'll figure it out.</p>
+					<p>
+						Slay the Web is a single player card game where you fight monsters to reach the end of
+						the web. It's a game of planning and knowing when to play which card.
+					</p>
+					<p>
+						Every turn you get 3 energy to play cards. Cards have different energy costs to play.
+						Cards deal damage to monsters, block enemy attacks or make enemies weak, vulnerable,
+						heal you and other things. You'll figure it out.
+					</p>
 					<p>Beware, whenever you end your turn, the monsters take turn.</p>
-					<p>Should you manage to kill the monsters in a room before they end you, you'll proceed to the next room. There will be rewards. Can you reach the end?</p>
-					<p><a rel="noreferrer" target="_blank" href="https://github.com/oskarrough/slaytheweb">View source</a></p>
+					<p>
+						Should you manage to kill the monsters in a room before they end you, you'll proceed to
+						the next room. Maybe there will be rewards. Can you reach the end?
+					</p>
 				</details>
 			</article>
 		`
