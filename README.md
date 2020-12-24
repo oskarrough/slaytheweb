@@ -36,7 +36,7 @@ Additionally you can run `yarn eslint public --fix` to automatically format all 
 
 ### Deploying
 
-The master branch automatically deploys to https://slaytheweb.cards via Zeit's now. If you open a PR, it'll give you a staging URL as well.
+The `main` branch automatically deploys to https://slaytheweb.cards via Zeit's now. If you open a PR, it'll give you a staging URL as well.
 
 ## How the game works
 
