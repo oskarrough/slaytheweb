@@ -17,9 +17,9 @@
   "devDependencies": {
     "ava": "^3.14.0",
     "docco": "^0.8.0",
-    "eslint": "^7.15.0",
-    "eslint-config-prettier": "^7.0.0",
-    "eslint-plugin-prettier": "^3.2.0",
+    "eslint": "^7.16.0",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-prettier": "^3.3.0",
     "nyc": "^15.1.0",
     "prettier": "2.2.1",
     "servor": "^4.0.2",
@@ -29,7 +29,7 @@
     "esm": "^3.2.25",
     "gsap": "^3.5.1",
     "htm": "^3.0.3",
-    "immer": "^7.0.7"
+    "immer": "^8.0.0"
   },
   "ava": {
     "require": [
