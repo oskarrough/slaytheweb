@@ -1,4 +1,4 @@
-import {shuffle, random as randomBetween} from './utils.js'
+import {shuffle, random as randomBetween, random} from './utils.js'
 /*
  * A procedural generated map for Slay the Web.
  * again, heavily inspired by Slay the Spire.
@@ -119,47 +119,89 @@ export class SlayMap extends HTMLElement {
 			line.setAttribute('y2', bPos.top + bPos.height / 2)
 			line.setAttribute('length', line.getTotalLength())
 			svg.appendChild(line)
-			console.log({a, b, line})
+			// console.log({a, b, line})
 		}
 
-		const rows = this.querySelectorAll('slay-map-row')
-		// // const getRow = (index) => this.querySelector(`slay-map-row:nth-child(${index + 1})`)
-		const getEncounter = (rowIndex, index) => {
+		const getFreeNodesInRow = (rowIndex) =>
+			graph[rowIndex] && graph[rowIndex].filter((n) => !n.linked).filter((node) => Boolean(node.type))
+
+		// const getRow = (index) => this.querySelector(`slay-map-row:nth-child(${index + 1})`)
+		const getEncounter = (rowIndex, index, onlyFree = false) => {
+			const rows = this.querySelectorAll('slay-map-row')
 			const row = rows[rowIndex]
 			if (!row) return false
 			// nth-of starts at 1, not 0
+			if (onlyFree) {
+				return row.querySelector(`slay-map-encounter[linked]:nth-of-type(${index + 1})`)
+			}
 			return row.querySelector(`slay-map-encounter:nth-of-type(${index + 1})`)
 		}
 
-		window.getEncounter = getEncounter
+		drawSinglePath()
 
-		// Walk through each level.
-		// for (var i = graph.length; i--;) {
-		for (var i = 0; i < graph.length; i++) {
-			// console.log(i, graph[i], rows[i])
+		function drawSinglePath() {
+			for (let [rowIndex, row] of graph.entries()) {
+				// Get free, starting nodes to choose from.
+				const free = getFreeNodesInRow(rowIndex)
+				if (!free) {
+					return new Error('no free nodes from row', rowIndex)
+				}
+				console.log(rowIndex, {free})
+				// Pick the left-most one.
+				const from = free[0]
+				const fromDOM = getEncounter(rowIndex, 0)
+				console.log(from, fromDOM)
 
-			// Walk through each node in the level.
-			graph[i]
-				.filter((node) => Boolean(node.type))
-				.forEach((node, nodeIndex) => {
-					console.log(`row ${i}, node ${nodeIndex} ${node.type}`)
+				// Do the same for the next row.
+				const to = getFreeNodesInRow(rowIndex + 1)[0]
+				const toDOM = getEncounter(rowIndex + 1, 0)
+				console.log(to, toDOM)
 
-					// Stop at last level.
-					if (!graph[i + 1]) return
+				from.linked = true
+				to.linked = true
+				toDOM.setAttribute('linked', true)
+				fromDOM.setAttribute('linked', true)
+				// connect(fromDOM, toDOM)
+				// setTimeout(() => connect(fromDOM, toDOM), nodeIndex * 1000)
+			}
 
-					const nextNodes = graph[i + 1].filter((n) => !n.links).filter((n) => Boolean(n.type))
-					console.log('can link to', nextNodes)
+			// const toDOM = getEncounter(i + 1, 0)
+			// 	console.log({from, to, fromDOM, toDOM})
+			// 	// console.log(i, nodeIndex)
 
-					const from = node
-					const to = nextNodes[0]
-					const fromDOM = getEncounter(i, nodeIndex)
-					const toDOM = getEncounter(i + 1, 0)
-					// console.log('linking to', to, getEncounter(i + 1, nodeIndex))
-					console.log({from, to, fromDOM, toDOM})
-				})
+			/*for (const [nodeIndex, node] of nodes.entries()) {
+				// nodes.forEach((node, nodeIndex) => {
+				console.log(`row ${i}, node ${nodeIndex} ${node.type}`)
+
+				// Stop at last level.
+				if (!graph[i + 1]) return
+
+				// if (nodeIndex > 0) return
+
+				const nextNodes = graph[i + 1].filter((n) => !n.linked).filter((n) => Boolean(n.type))
+				console.log(`can link to row ${i + 1}`, nextNodes)
+
+				const from = node
+				let toIndex = 0
+				let to = nextNodes[0]
+				// const to = nextNodes[random(0, nextNodes.length)]
+				while (!to && toIndex < nextNodes.length) {
+					to = nextNodes[toIndex]
+					toIndex++
+				}
+
+				if (!to) {
+					console.error('no available node')
+					return
+				}
+
+				to.linked = true
+				console.log('linking to', to)
+
+			}*/
 		}
 
-		console.log({graph})
+		// console.log({graph})
 
 		// rows.forEach((row, i) => {
 		// 	const prevRow = rows[i - 1]
