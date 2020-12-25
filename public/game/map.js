@@ -1,4 +1,4 @@
-import {shuffle, random as randomBetween, random} from './utils.js'
+import {shuffle, random as randomBetween} from './utils.js'
 /*
  * A procedural generated map for Slay the Web.
  * again, heavily inspired by Slay the Spire.
@@ -34,19 +34,6 @@ export function generateGraph(rows, columns) {
 	graph.push([{type: 'end'}])
 	graph.unshift([{type: 'start'}])
 	return graph
-}
-
-// Since el.offsetLeft doesn't respect CSS transforms,
-// and getBounding.. is relative to viewport, not parent, we need this utility.
-function getPosWithin(el, container) {
-	const parent = container.getBoundingClientRect()
-	const rect = el.getBoundingClientRect()
-	return {
-		top: rect.top - parent.top,
-		left: rect.left - parent.left,
-		width: rect.width,
-		height: rect.height,
-	}
 }
 
 function randomEncounter() {
@@ -107,9 +94,9 @@ export class SlayMap extends HTMLElement {
 	}
 	// Playing around with connecting the nodes #naive
 	drawPaths(graph) {
+		const svg = this.querySelector('svg.paths')
 		const connect = (a, b) => {
 			if (!a || !b) return
-			const svg = this.querySelector('svg.paths')
 			const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
 			const aPos = getPosWithin(a, this)
 			const bPos = getPosWithin(b, this)
@@ -117,8 +104,8 @@ export class SlayMap extends HTMLElement {
 			line.setAttribute('y1', aPos.top + aPos.height / 2)
 			line.setAttribute('x2', bPos.left + bPos.width / 2)
 			line.setAttribute('y2', bPos.top + bPos.height / 2)
-			line.setAttribute('length', line.getTotalLength())
 			svg.appendChild(line)
+			line.setAttribute('length', line.getTotalLength())
 			// console.log({a, b, line})
 		}
 
