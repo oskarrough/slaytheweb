@@ -124,7 +124,17 @@ export class SlayMap extends HTMLElement {
 			return row.querySelector(`slay-map-encounter:nth-of-type(${index + 1})`)
 		}
 
-		drawSinglePath()
+		const addElementsToGraph = (graph) => {
+			graph.forEach((row, rowIndex) => {
+				row
+					.filter((n) => n.type)
+					.forEach((node, nodeIndex) => {
+						node.el = getEncounter(rowIndex, nodeIndex)
+						// console.log(node, node.el)
+					})
+			})
+		}
+		addElementsToGraph(graph)
 
 		function drawSinglePath() {
 			for (let [rowIndex, row] of graph.entries()) {
