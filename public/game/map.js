@@ -110,7 +110,14 @@ export class SlayMap extends HTMLElement {
 		}
 
 		const getFreeNodesInRow = (rowIndex) =>
-			graph[rowIndex] && graph[rowIndex].filter((n) => !n.linked).filter((node) => Boolean(node.type))
+			graph[rowIndex] &&
+			graph[rowIndex].filter((n) => !n.linked).filter((node) => Boolean(node.type))
+
+		const getFreeNodeInRow = (rowIndex, nodeIndex) => {
+			const nextFreeNodes = getFreeNodesInRow(rowIndex)
+			const node = nextFreeNodes[nodeIndex]
+			return node
+		}
 
 		// const getRow = (index) => this.querySelector(`slay-map-row:nth-child(${index + 1})`)
 		const getEncounter = (rowIndex, index, onlyFree = false) => {
@@ -136,112 +143,114 @@ export class SlayMap extends HTMLElement {
 		}
 		addElementsToGraph(graph)
 
-		function drawSinglePath() {
+		function drawSinglePath(desiredIndex) {
+			let lastVisited
+
 			for (let [rowIndex, row] of graph.entries()) {
-				// Get free, starting nodes to choose from.
-				const free = getFreeNodesInRow(rowIndex)
-				if (!free) {
-					return new Error('no free nodes from row', rowIndex)
+				let nextRow = graph[rowIndex + 1]
+				// If on last level, stop drawing.
+				if (!nextRow) {
+					console.log('no next row, stopping')
+					break
 				}
-				console.log(rowIndex, {free})
-				// Pick the left-most one.
-				const from = free[0]
-				const fromDOM = getEncounter(rowIndex, 0)
-				console.log(from, fromDOM)
+
+				let from
+				let to
+				let fromIndex = desiredIndex
+				let toIndex = desiredIndex
+
+				// console.log(`Row ${rowIndex}`, {availableNodes})
+
+				// Either we start from last visited OR
+				if (lastVisited) {
+					from = lastVisited
+				} else {
+					const availableNodes = getFreeNodesInRow(rowIndex)
+					if (!availableNodes) {
+						console.log('no available nodes')
+						// return new Error('no availableNodes nodes from row', rowIndex)
+					}
+					while (fromIndex < row.length) {
+						from = getFreeNodeInRow(rowIndex, fromIndex)
+						if (from) break
+						fromIndex++
+					}
+					if (!from) {
+						console.group('double from')
+						fromIndex = 0
+						while (fromIndex < row.length) {
+							from = getFreeNodeInRow(rowIndex, fromIndex)
+							if (from) break
+							fromIndex++
+						}
+						if (!from) {
+							from = row[0]
+						}
+						if (!from) debugger
+					}
+				}
 
 				// Do the same for the next row.
-				const to = getFreeNodesInRow(rowIndex + 1)[0]
-				const toDOM = getEncounter(rowIndex + 1, 0)
-				console.log(to, toDOM)
-
-				from.linked = true
-				to.linked = true
-				toDOM.setAttribute('linked', true)
-				fromDOM.setAttribute('linked', true)
-				// connect(fromDOM, toDOM)
-				// setTimeout(() => connect(fromDOM, toDOM), nodeIndex * 1000)
-			}
-
-			// const toDOM = getEncounter(i + 1, 0)
-			// 	console.log({from, to, fromDOM, toDOM})
-			// 	// console.log(i, nodeIndex)
-
-			/*for (const [nodeIndex, node] of nodes.entries()) {
-				// nodes.forEach((node, nodeIndex) => {
-				console.log(`row ${i}, node ${nodeIndex} ${node.type}`)
-
-				// Stop at last level.
-				if (!graph[i + 1]) return
-
-				// if (nodeIndex > 0) return
-
-				const nextNodes = graph[i + 1].filter((n) => !n.linked).filter((n) => Boolean(n.type))
-				console.log(`can link to row ${i + 1}`, nextNodes)
-
-				const from = node
-				let toIndex = 0
-				let to = nextNodes[0]
-				// const to = nextNodes[random(0, nextNodes.length)]
-				while (!to && toIndex < nextNodes.length) {
-					to = nextNodes[toIndex]
+				while (toIndex < nextRow.length) {
+					to = getFreeNodeInRow(rowIndex + 1, toIndex)
+					if (to) break
 					toIndex++
 				}
 
 				if (!to) {
-					console.error('no available node')
-					return
+					console.log('double "to" looking for', toIndex)
+					// toIndex = 0
+					toIndex = desiredIndex >= nextRow.length ? nextRow.length / 2 : 0
+					while (toIndex < nextRow.length) {
+						to = getFreeNodeInRow(rowIndex + 1, toIndex)
+						if (to) break
+						toIndex++
+					}
+					if (!to) {
+						to = nextRow[0]
+					}
 				}
+				lastVisited = to
 
+				// Draw the path between the two elements.
+				console.log(
+					`connected row ${rowIndex}:${fromIndex} to ${rowIndex + 1}:${toIndex}`,
+					from.el,
+					to.el
+				)
+				from.linked = true
 				to.linked = true
-				console.log('linking to', to)
-
-			}*/
+				to.el.setAttribute('linked', true)
+				from.el.setAttribute('linked', true)
+				// setTimeout(() => {
+				connect(from.el, to.el)
+				// }, rowIndex * 300)
+			}
 		}
 
-		// console.log({graph})
-
-		// rows.forEach((row, i) => {
-		// 	const prevRow = rows[i - 1]
-		// 	const nextRow = rows[i + 1]
-		// 	let prev, next
-
-		// 	// If first row, we always have one encounter.
-		// 	if (!prevRow) {
-		// 		prev = getEncounter(1, 1)
-		// 		prev.setAttribute('selected', true)
-		// 	} else {
-		// 		prev = row.querySelector('slay-map-encounter[selected]')
-		// 	}
-
-		// 	// Where to go?
-		// 	if (!nextRow) {
-		// 		next = getEncounter(12, 1)
-		// 	} else {
-		// 		const possibleNodes = nextRow.querySelectorAll('slay-map-encounter')
-		// 		const random = randomBetween(0, possibleNodes.length - 1)
-		// 		next = possibleNodes[random]
-		// 	}
-
-		// 	// console.log({i, prev, next})
-		// 	if (prev && next) {
-		// 		prev.setAttribute('selected', true)
-		// 		next.setAttribute('selected', true)
-		// 		connect(prev, next)
-		// 	}
-		// })
-
-		// connect bottom
-		// 		connect(getEncounter(12, 1), getEncounter(11, 2))
-		// 		connect(getEncounter(12, 1), getEncounter(11, 3))
-		// 		connect(getEncounter(12, 1), getEncounter(11, 4))
-		// 		connect(getEncounter(12, 1), getEncounter(11, 5))
-		// 		connect(getEncounter(11, 2), getEncounter(10, 2))
-		// 		connect(getEncounter(10, 2), getEncounter(9, 2))
-		// connect(getEncounter(1, 1), getEncounter(2, 3))
-		// connect(getEncounter(1, 1), getEncounter(2, 4))
-		// connect(getEncounter(1, 1), getEncounter(2, 5))
+		// drawSinglePath(666)
+		drawSinglePath(3)
+		drawSinglePath(0)
+		// drawSinglePath(2)
+		// drawSinglePath(3)
+		// setTimeout(() => drawSinglePath(1), graph.length * 300)
+		// setTimeout(() => drawSinglePath(2), graph.length * 300)
 	}
 }
+
+// Since el.offsetLeft doesn't respect CSS transforms,
+// and getBounding.. is relative to viewport, not parent, we need this utility.
+function getPosWithin(el, container) {
+	const parent = container.getBoundingClientRect()
+	const rect = el.getBoundingClientRect()
+	return {
+		top: rect.top - parent.top,
+		left: rect.left - parent.left,
+		width: rect.width,
+		height: rect.height,
+	}
+}
+
 customElements.define('slay-map', SlayMap)
 
 function generate() {
@@ -260,3 +269,77 @@ window.stw = {
 // https://mapbox.github.io/delaunator/
 // https://github.com/anvaka/ngraph.graph
 // https://github.com/anvaka/ngraph.path
+
+/*for (const [nodeIndex, node] of nodes.entries()) {
+// nodes.forEach((node, nodeIndex) => {
+console.log(`row ${i}, node ${nodeIndex} ${node.type}`)
+
+// Stop at last level.
+if (!graph[i + 1]) return
+
+// if (nodeIndex > 0) return
+
+const nextNodes = graph[i + 1].filter((n) => !n.linked).filter((n) => Boolean(n.type))
+console.log(`can link to row ${i + 1}`, nextNodes)
+
+const from = node
+let toIndex = 0
+let to = nextNodes[0]
+// const to = nextNodes[random(0, nextNodes.length)]
+while (!to && toIndex < nextNodes.length) {
+	to = nextNodes[toIndex]
+	toIndex++
+}
+
+if (!to) {
+	console.error('no available node')
+	return
+}
+
+to.linked = true
+console.log('linking to', to)
+
+}*/
+
+// console.log({graph})
+
+// rows.forEach((row, i) => {
+// 	const prevRow = rows[i - 1]
+// 	const nextRow = rows[i + 1]
+// 	let prev, next
+
+// 	// If first row, we always have one encounter.
+// 	if (!prevRow) {
+// 		prev = getEncounter(1, 1)
+// 		prev.setAttribute('selected', true)
+// 	} else {
+// 		prev = row.querySelector('slay-map-encounter[selected]')
+// 	}
+
+// 	// Where to go?
+// 	if (!nextRow) {
+// 		next = getEncounter(12, 1)
+// 	} else {
+// 		const possibleNodes = nextRow.querySelectorAll('slay-map-encounter')
+// 		const random = randomBetween(0, possibleNodes.length - 1)
+// 		next = possibleNodes[random]
+// 	}
+
+// 	// console.log({i, prev, next})
+// 	if (prev && next) {
+// 		prev.setAttribute('selected', true)
+// 		next.setAttribute('selected', true)
+// 		connect(prev, next)
+// 	}
+// })
+
+// connect bottom
+// 		connect(getEncounter(12, 1), getEncounter(11, 2))
+// 		connect(getEncounter(12, 1), getEncounter(11, 3))
+// 		connect(getEncounter(12, 1), getEncounter(11, 4))
+// 		connect(getEncounter(12, 1), getEncounter(11, 5))
+// 		connect(getEncounter(11, 2), getEncounter(10, 2))
+// 		connect(getEncounter(10, 2), getEncounter(9, 2))
+// connect(getEncounter(1, 1), getEncounter(2, 3))
+// connect(getEncounter(1, 1), getEncounter(2, 4))
+// connect(getEncounter(1, 1), getEncounter(2, 5))
