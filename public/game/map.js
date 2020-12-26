@@ -40,6 +40,24 @@ function randomEncounter() {
 	return shuffle(Array.from('💀💀💀💰❓'))[0]
 }
 
+const connectNodes = (a, b, parentEl, svg) => {
+	if (!a || !b) return
+	if (!a.el || !b.el) return
+	const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
+	const aPos = getPosWithin(a.el, parentEl)
+	const bPos = getPosWithin(b.el, parentEl)
+	line.setAttribute('x1', aPos.left + aPos.width / 2)
+	line.setAttribute('y1', aPos.top + aPos.height / 2)
+	line.setAttribute('x2', bPos.left + bPos.width / 2)
+	line.setAttribute('y2', bPos.top + bPos.height / 2)
+	svg.appendChild(line)
+	line.setAttribute('length', line.getTotalLength())
+	a.linked = true
+	b.linked = true
+	a.el.setAttribute('linked', true)
+	b.el.setAttribute('linked', true)
+}
+
 // This is an example of how you can render the graph as a map.
 export class SlayMap extends HTMLElement {
 	connectedCallback() {
@@ -50,8 +68,7 @@ export class SlayMap extends HTMLElement {
 		this.render()
 	}
 	render() {
-		const {rows, columns} = this.state
-		const graph = generateGraph(rows, columns)
+		const graph = generateGraph(this.state.rows, this.state.columns)
 		console.log({graph})
 		this.innerHTML = `
 			${graph
@@ -78,8 +95,22 @@ export class SlayMap extends HTMLElement {
 				.join('')}
 			<svg class="paths"></svg>
 		`
-		this.scatter()
+		if (!graph[0][0].el) this.addElementsToGraph(graph)
+		// this.scatter()
 		this.drawPaths(graph)
+	}
+	addElementsToGraph(graph) {
+		graph.forEach((row, rowIndex) => {
+			row
+				.filter((n) => n.type)
+				.forEach((node, nodeIndex) => {
+					// nth-of starts at 1, not 0
+					node.el = this.querySelector(
+						`slay-map-row:nth-of-type(${rowIndex + 1})
+							 slay-map-encounter:nth-of-type(${nodeIndex + 1})`
+					)
+				})
+		})
 	}
 	// Move the encounters around a bit.
 	scatter() {
@@ -93,21 +124,8 @@ export class SlayMap extends HTMLElement {
 		})
 	}
 	drawPaths(graph) {
+		const parentEl = this
 		const svg = this.querySelector('svg.paths')
-
-		const connect = (a, b) => {
-			if (!a || !b) return
-			const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
-			const aPos = getPosWithin(a, this)
-			const bPos = getPosWithin(b, this)
-			line.setAttribute('x1', aPos.left + aPos.width / 2)
-			line.setAttribute('y1', aPos.top + aPos.height / 2)
-			line.setAttribute('x2', bPos.left + bPos.width / 2)
-			line.setAttribute('y2', bPos.top + bPos.height / 2)
-			svg.appendChild(line)
-			line.setAttribute('length', line.getTotalLength())
-			// console.log({a, b, line})
-		}
 
 		const getFreeNodesInRow = (rowIndex) =>
 			graph[rowIndex] && graph[rowIndex].filter((n) => Boolean(n.type)).filter((n) => !n.linked)
@@ -118,42 +136,25 @@ export class SlayMap extends HTMLElement {
 			return node
 		}
 
-		const getEncounter = (rowIndex, index, onlyFree = false) => {
-			const rows = this.querySelectorAll('slay-map-row')
-			const row = rows[rowIndex]
-			if (!row) return false
-			// nth-of starts at 1, not 0
-			if (onlyFree) {
-				return row.querySelector(`slay-map-encounter[linked]:nth-of-type(${index + 1})`)
-			}
-			return row.querySelector(`slay-map-encounter:nth-of-type(${index + 1})`)
-		}
-
-		const addElementsToGraph = (graph) => {
-			graph.forEach((row, rowIndex) => {
-				row
-					.filter((n) => n.type)
-					.forEach((node, nodeIndex) => {
-						node.el = getEncounter(rowIndex, nodeIndex)
-						// console.log(node, node.el)
-					})
-			})
-		}
-		addElementsToGraph(graph)
+		// Look for a free node in the next row to the right of the "desired index".
+		const isValidNode = (node) => node && Boolean(node.type)
 
 		// Draws a path between the DOM nodes connected to the graph.
 		// Give it your desired index and it'll try to create a straight path to the end.
 		function drawSinglePath(desiredIndex) {
+			console.groupCollapsed('drawing path', desiredIndex)
 			let lastVisited
 
 			// Walk through each row.
 			for (let [rowIndex, row] of graph.entries()) {
+				const nextRow = graph[rowIndex + 1]
+
 				console.group(`row ${rowIndex}`)
 
-				let nextRow = graph[rowIndex + 1]
 				// If on last level, stop drawing.
 				if (!nextRow) {
 					console.log('no next row, stopping')
+					console.groupEnd()
 					break
 				}
 
@@ -218,9 +219,6 @@ export class SlayMap extends HTMLElement {
 					}
 				}
 
-				// Look for a free node in the next row to the right of the "desired index".
-				const isValidNode = (node) => node && Boolean(node.type)
-
 				// Search to the right of our index.
 				for (let i = toIndex; i < nextRow.length; i++) {
 					console.log('forwards', i)
@@ -253,18 +251,17 @@ export class SlayMap extends HTMLElement {
 				console.log(
 					`connected row ${rowIndex}:${fromIndex} to ${rowIndex + 1}:${toIndex}`,
 					from.el,
-					to.el
+					to.el,
+					parentEl
 				)
-				from.linked = true
-				to.linked = true
-				to.el.setAttribute('linked', true)
-				from.el.setAttribute('linked', true)
 				// setTimeout(() => {
-				connect(from.el, to.el)
+				connectNodes(from, to, parentEl, svg)
 				// }, rowIndex * 300)
 
 				console.groupEnd()
 			}
+
+			console.groupEnd()
 		}
 
 		// drawSinglePath(666)
