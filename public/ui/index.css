@@ -798,22 +798,24 @@ slay-map-encounter {
 	visibility: hidden;
 }
 slay-map-encounter {
-	background: hsla(0, 0%, 0%, 0.05);
 	color: gold;
 	position: relative;
 	z-index: 2;
+	font-size: 1.25em;
 }
 slay-map-encounter[linked] {
 	visibility: visible;
-	background: hsl(0, 0%, 0%);
-	/* transform: scale(0.5);
-	transition: 200ms transform cubic-bezier(0.075, 0.82, 0.165, 1); */
 }
 slay-map-encounter:hover {
-	/* transform: scale(1); */
-	background: hsla(0, 0%, 0%, 0.9);
-	transition: background 250ms;
 	cursor: pointer;
+	cursor: url(images/cursors/point.png) 10 0, auto;
+	animation: popOut 250ms cubic-bezier(0.075, 0.82, 0.165, 1);
+	animation-fill-mode: both;
+}
+@keyframes popOut {
+	to {
+		transform: scale(1.25);
+	}
 }
 
 slay-map svg.paths {
