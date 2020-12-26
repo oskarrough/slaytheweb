@@ -40,6 +40,7 @@ function randomEncounter() {
 	return shuffle(Array.from('💀💀💀💰❓'))[0]
 }
 
+// Draws a "path" between to DOM elements using an svg line.
 const connectNodes = (a, b, parentEl, svg) => {
 	if (!a || !b) return
 	if (!a.el || !b.el) return
@@ -56,6 +57,19 @@ const connectNodes = (a, b, parentEl, svg) => {
 	b.linked = true
 	a.el.setAttribute('linked', true)
 	b.el.setAttribute('linked', true)
+}
+
+// Since el.offsetLeft doesn't respect CSS transforms,
+// and getBounding.. is relative to viewport, not parent, we need this utility.
+function getPosWithin(el, container) {
+	const parent = container.getBoundingClientRect()
+	const rect = el.getBoundingClientRect()
+	return {
+		top: rect.top - parent.top,
+		left: rect.left - parent.left,
+		width: rect.width,
+		height: rect.height,
+	}
 }
 
 // This is an example of how you can render the graph as a map.
@@ -127,15 +141,6 @@ export class SlayMap extends HTMLElement {
 		const parentEl = this
 		const svg = this.querySelector('svg.paths')
 
-		const getFreeNodesInRow = (rowIndex) =>
-			graph[rowIndex] && graph[rowIndex].filter((n) => Boolean(n.type)).filter((n) => !n.linked)
-
-		const getFreeNodeInRow = (rowIndex, nodeIndex) => {
-			const nextFreeNodes = getFreeNodesInRow(rowIndex)
-			const node = nextFreeNodes[nodeIndex]
-			return node
-		}
-
 		// Look for a free node in the next row to the right of the "desired index".
 		const isValidNode = (node) => node && Boolean(node.type)
 
@@ -145,11 +150,20 @@ export class SlayMap extends HTMLElement {
 			console.groupCollapsed('drawing path', desiredIndex)
 			let lastVisited
 
+			// const svg = document.createElement('svg')
+			// svg.id = `path${desiredIndex}`
+			// svg.className = 'paths'
+			// parentEl.appendChild(svg)
+
 			// Walk through each row.
 			for (let [rowIndex, row] of graph.entries()) {
-				const nextRow = graph[rowIndex + 1]
-
 				console.group(`row ${rowIndex}`)
+
+				let a = lastVisited
+				let b
+				let aIndex = desiredIndex
+				let bIndex = desiredIndex
+				const nextRow = graph[rowIndex + 1]
 
 				// If on last level, stop drawing.
 				if (!nextRow) {
@@ -158,142 +172,68 @@ export class SlayMap extends HTMLElement {
 					break
 				}
 
-				let from
-				let to
-				let fromIndex = desiredIndex
-				let toIndex = desiredIndex
-
-				// Find FROM
-				if (lastVisited) {
-					from = lastVisited
-				} else {
-					while (fromIndex < row.length) {
-						from = getFreeNodeInRow(rowIndex, fromIndex)
-						if (from) {
-							console.log('yes from', {fromIndex})
-							break
-						} else {
-							console.log('no from', {fromIndex})
-						}
-						fromIndex++
-					}
-					if (!from) {
-						console.log('missing "from node" for', fromIndex)
-						fromIndex = desiredIndex
-						while (fromIndex < row.length) {
-							from = getFreeNodeInRow(rowIndex, fromIndex)
-							if (from) {
-								console.log('2. yes from', {fromIndex})
-								break
-							} else {
-								console.log('2. no from', {fromIndex})
-							}
-							if (from) {
-								console.log({fromIndex})
-								break
-							}
-							fromIndex++
-						}
-						fromIndex = 0
-						while (fromIndex < row.length) {
-							from = getFreeNodeInRow(rowIndex, fromIndex)
-							if (from) {
-								console.log('2. yes from', {fromIndex})
-								break
-							} else {
-								console.log('2. no from', {fromIndex})
-							}
-							if (from) {
-								console.log({fromIndex})
-								break
-							}
-							fromIndex++
-						}
-						if (!from && rowIndex === 0) {
-							console.log('forcing "from" to first node in row')
-							from = row[0]
-						}
-					}
-					if (!from || !from.el) {
-						throw Error('missing from')
-					}
+				// Find the node we came from
+				if (!a) {
+					console.log('forcing "from" to first node in row')
+					a = row[0]
+					if (!a) throw Error('missing from')
 				}
 
+				// 2. Find the node we are going to
 				// Search to the right of our index.
-				for (let i = toIndex; i < nextRow.length; i++) {
+				for (let i = bIndex; i < nextRow.length; i++) {
 					console.log('forwards', i)
 					let node = nextRow[i]
 					if (isValidNode(node)) {
 						console.log('choosing', i)
-						to = node
+						b = node
 						break
 					}
 				}
 				// No result? Search to the left instead.
-				if (!to) {
-					for (let i = toIndex; i >= 0; i--) {
+				if (!b) {
+					for (let i = bIndex; i >= 0; i--) {
 						console.log('backwards', i)
 						let node = nextRow[i]
 						if (isValidNode(node)) {
 							console.log('choosing', i)
-							to = node
+							b = node
 							break
 						}
 					}
+					if (!b) throw Error('missing to')
 				}
-
-				if (!to || !to.el) {
-					throw Error('missing to')
-				}
-				lastVisited = to
+				lastVisited = b
 
 				// Draw the path between the two elements.
-				console.log(
-					`connected row ${rowIndex}:${fromIndex} to ${rowIndex + 1}:${toIndex}`,
-					from.el,
-					to.el,
-					parentEl
-				)
+				console.log(`connected row ${rowIndex}:${aIndex} to ${rowIndex + 1}:${bIndex}`, a.el, b.el)
 				// setTimeout(() => {
-				connectNodes(from, to, parentEl, svg)
-				// }, rowIndex * 300)
-
+				connectNodes(a, b, parentEl, svg)
+				// }, rowIndex * 40)
 				console.groupEnd()
 			}
 
 			console.groupEnd()
 		}
 
-		// drawSinglePath(666)
+		// around ~90-140ms
+		console.time('time to draw all paths')
 		drawSinglePath(0)
-		drawSinglePath(Math.round(graph[0].length / 1.5))
-		drawSinglePath(graph.length)
-		// setTimeout(() => drawSinglePath(1), graph.length * 300)
-		// setTimeout(() => drawSinglePath(2), graph.length * 300)
-	}
-}
-
-// Since el.offsetLeft doesn't respect CSS transforms,
-// and getBounding.. is relative to viewport, not parent, we need this utility.
-function getPosWithin(el, container) {
-	const parent = container.getBoundingClientRect()
-	const rect = el.getBoundingClientRect()
-	return {
-		top: rect.top - parent.top,
-		left: rect.left - parent.left,
-		width: rect.width,
-		height: rect.height,
+		// drawSinglePath(1)
+		drawSinglePath(2)
+		drawSinglePath(3)
+		// drawSinglePath(4)
+		drawSinglePath(5)
+		console.timeEnd('time to draw all paths')
 	}
 }
 
 customElements.define('slay-map', SlayMap)
 
-function generate() {
-	let slayMap = document.querySelector('slay-map')
-	slayMap.render()
-}
-window.stw = {
-	generate,
+// Tool to regenerate the map for testing.
+if (!window.stw) window.stw = {}
+window.stw.generate = function generate() {
+	document.querySelector('slay-map').render()
 }
 
 // https://github.com/oskarrough/slaytheweb/issues/28
