@@ -78,7 +78,7 @@ export class SlayMap extends HTMLElement {
 				.join('')}
 			<svg class="paths"></svg>
 		`
-		// this.scatter()
+		this.scatter()
 		this.drawPaths(graph)
 	}
 	// Move the encounters around a bit.
@@ -87,7 +87,7 @@ export class SlayMap extends HTMLElement {
 		nodes.forEach((node) => {
 			node.style.transform = `translate3d(
 				${randomBetween(-35, 35)}%,
-				${randomBetween(-40, 40)}%,
+				${randomBetween(-35, 35)}%,
 				0)
 			`
 		})
@@ -214,7 +214,7 @@ export class SlayMap extends HTMLElement {
 						}
 					}
 					if (!from || !from.el) {
-						debugger
+						throw Error('missing from')
 					}
 				}
 
@@ -245,8 +245,7 @@ export class SlayMap extends HTMLElement {
 				}
 
 				if (!to || !to.el) {
-					console.log('missing to')
-					debugger
+					throw Error('missing to')
 				}
 				lastVisited = to
 
@@ -270,9 +269,8 @@ export class SlayMap extends HTMLElement {
 
 		// drawSinglePath(666)
 		drawSinglePath(0)
-		// drawSinglePath(0)
-		// drawSinglePath(2)
-		drawSinglePath(9)
+		drawSinglePath(Math.round(graph[0].length / 1.5))
+		drawSinglePath(graph.length)
 		// setTimeout(() => drawSinglePath(1), graph.length * 300)
 		// setTimeout(() => drawSinglePath(2), graph.length * 300)
 	}
@@ -309,77 +307,3 @@ window.stw = {
 // https://mapbox.github.io/delaunator/
 // https://github.com/anvaka/ngraph.graph
 // https://github.com/anvaka/ngraph.path
-
-/*for (const [nodeIndex, node] of nodes.entries()) {
-// nodes.forEach((node, nodeIndex) => {
-console.log(`row ${i}, node ${nodeIndex} ${node.type}`)
-
-// Stop at last level.
-if (!graph[i + 1]) return
-
-// if (nodeIndex > 0) return
-
-const nextNodes = graph[i + 1].filter((n) => !n.linked).filter((n) => Boolean(n.type))
-console.log(`can link to row ${i + 1}`, nextNodes)
-
-const from = node
-let toIndex = 0
-let to = nextNodes[0]
-// const to = nextNodes[random(0, nextNodes.length)]
-while (!to && toIndex < nextNodes.length) {
-	to = nextNodes[toIndex]
-	toIndex++
-}
-
-if (!to) {
-	console.error('no available node')
-	return
-}
-
-to.linked = true
-console.log('linking to', to)
-
-}*/
-
-// console.log({graph})
-
-// rows.forEach((row, i) => {
-// 	const prevRow = rows[i - 1]
-// 	const nextRow = rows[i + 1]
-// 	let prev, next
-
-// 	// If first row, we always have one encounter.
-// 	if (!prevRow) {
-// 		prev = getEncounter(1, 1)
-// 		prev.setAttribute('selected', true)
-// 	} else {
-// 		prev = row.querySelector('slay-map-encounter[selected]')
-// 	}
-
-// 	// Where to go?
-// 	if (!nextRow) {
-// 		next = getEncounter(12, 1)
-// 	} else {
-// 		const possibleNodes = nextRow.querySelectorAll('slay-map-encounter')
-// 		const random = randomBetween(0, possibleNodes.length - 1)
-// 		next = possibleNodes[random]
-// 	}
-
-// 	// console.log({i, prev, next})
-// 	if (prev && next) {
-// 		prev.setAttribute('selected', true)
-// 		next.setAttribute('selected', true)
-// 		connect(prev, next)
-// 	}
-// })
-
-// connect bottom
-// 		connect(getEncounter(12, 1), getEncounter(11, 2))
-// 		connect(getEncounter(12, 1), getEncounter(11, 3))
-// 		connect(getEncounter(12, 1), getEncounter(11, 4))
-// 		connect(getEncounter(12, 1), getEncounter(11, 5))
-// 		connect(getEncounter(11, 2), getEncounter(10, 2))
-// 		connect(getEncounter(10, 2), getEncounter(9, 2))
-// connect(getEncounter(1, 1), getEncounter(2, 3))
-// connect(getEncounter(1, 1), getEncounter(2, 4))
-// connect(getEncounter(1, 1), getEncounter(2, 5))

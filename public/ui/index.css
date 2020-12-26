@@ -795,6 +795,7 @@ slay-map-encounter {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	visibility: hidden;
 }
 slay-map-encounter {
 	background: hsla(0, 0%, 0%, 0.05);
@@ -806,7 +807,8 @@ slay-map-encounter:hover {
 	cursor: pointer;
 }
 slay-map-encounter[linked] {
-	background: hsla(0, 0%, 0%, 0.4);
+	visibility: visible;
+	background: hsla(0, 0%, 0%, 0.1);
 }
 
 slay-map svg.paths {
