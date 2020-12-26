@@ -754,7 +754,7 @@ slay-map {
 	border: 4px solid black;
 	padding: 1em;
 	position: relative;
-	background: (120, 17.5%, 19%);
+	background: hsl(120, 17.5%, 19%);
 }
 
 slay-map-row {
