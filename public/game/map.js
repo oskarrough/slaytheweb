@@ -110,7 +110,7 @@ export class SlayMap extends HTMLElement {
 			<svg class="paths"></svg>
 		`
 		if (!graph[0][0].el) this.addElementsToGraph(graph)
-		// this.scatter()
+		this.scatter()
 		this.drawPaths(graph)
 	}
 	addElementsToGraph(graph) {
