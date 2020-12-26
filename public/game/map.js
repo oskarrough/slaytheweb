@@ -92,9 +92,9 @@ export class SlayMap extends HTMLElement {
 			`
 		})
 	}
-	// Playing around with connecting the nodes #naive
 	drawPaths(graph) {
 		const svg = this.querySelector('svg.paths')
+
 		const connect = (a, b) => {
 			if (!a || !b) return
 			const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
@@ -110,8 +110,7 @@ export class SlayMap extends HTMLElement {
 		}
 
 		const getFreeNodesInRow = (rowIndex) =>
-			graph[rowIndex] &&
-			graph[rowIndex].filter((n) => !n.linked).filter((node) => Boolean(node.type))
+			graph[rowIndex] && graph[rowIndex].filter((n) => Boolean(n.type)).filter((n) => !n.linked)
 
 		const getFreeNodeInRow = (rowIndex, nodeIndex) => {
 			const nextFreeNodes = getFreeNodesInRow(rowIndex)
@@ -119,7 +118,6 @@ export class SlayMap extends HTMLElement {
 			return node
 		}
 
-		// const getRow = (index) => this.querySelector(`slay-map-row:nth-child(${index + 1})`)
 		const getEncounter = (rowIndex, index, onlyFree = false) => {
 			const rows = this.querySelectorAll('slay-map-row')
 			const row = rows[rowIndex]
@@ -143,10 +141,15 @@ export class SlayMap extends HTMLElement {
 		}
 		addElementsToGraph(graph)
 
+		// Draws a path between the DOM nodes connected to the graph.
+		// Give it your desired index and it'll try to create a straight path to the end.
 		function drawSinglePath(desiredIndex) {
 			let lastVisited
 
+			// Walk through each row.
 			for (let [rowIndex, row] of graph.entries()) {
+				console.group(`row ${rowIndex}`)
+
 				let nextRow = graph[rowIndex + 1]
 				// If on last level, stop drawing.
 				if (!nextRow) {
@@ -159,56 +162,91 @@ export class SlayMap extends HTMLElement {
 				let fromIndex = desiredIndex
 				let toIndex = desiredIndex
 
-				// console.log(`Row ${rowIndex}`, {availableNodes})
-
-				// Either we start from last visited OR
+				// Find FROM
 				if (lastVisited) {
 					from = lastVisited
 				} else {
-					const availableNodes = getFreeNodesInRow(rowIndex)
-					if (!availableNodes) {
-						console.log('no available nodes')
-						// return new Error('no availableNodes nodes from row', rowIndex)
-					}
 					while (fromIndex < row.length) {
 						from = getFreeNodeInRow(rowIndex, fromIndex)
-						if (from) break
+						if (from) {
+							console.log('yes from', {fromIndex})
+							break
+						} else {
+							console.log('no from', {fromIndex})
+						}
 						fromIndex++
 					}
 					if (!from) {
-						console.group('double from')
+						console.log('missing "from node" for', fromIndex)
+						fromIndex = desiredIndex
+						while (fromIndex < row.length) {
+							from = getFreeNodeInRow(rowIndex, fromIndex)
+							if (from) {
+								console.log('2. yes from', {fromIndex})
+								break
+							} else {
+								console.log('2. no from', {fromIndex})
+							}
+							if (from) {
+								console.log({fromIndex})
+								break
+							}
+							fromIndex++
+						}
 						fromIndex = 0
 						while (fromIndex < row.length) {
 							from = getFreeNodeInRow(rowIndex, fromIndex)
-							if (from) break
+							if (from) {
+								console.log('2. yes from', {fromIndex})
+								break
+							} else {
+								console.log('2. no from', {fromIndex})
+							}
+							if (from) {
+								console.log({fromIndex})
+								break
+							}
 							fromIndex++
 						}
-						if (!from) {
+						if (!from && rowIndex === 0) {
+							console.log('forcing "from" to first node in row')
 							from = row[0]
 						}
-						if (!from) debugger
+					}
+					if (!from || !from.el) {
+						debugger
 					}
 				}
 
-				// Do the same for the next row.
-				while (toIndex < nextRow.length) {
-					to = getFreeNodeInRow(rowIndex + 1, toIndex)
-					if (to) break
-					toIndex++
-				}
+				// Look for a free node in the next row to the right of the "desired index".
+				const isValidNode = (node) => node && Boolean(node.type)
 
+				// Search to the right of our index.
+				for (let i = toIndex; i < nextRow.length; i++) {
+					console.log('forwards', i)
+					let node = nextRow[i]
+					if (isValidNode(node)) {
+						console.log('choosing', i)
+						to = node
+						break
+					}
+				}
+				// No result? Search to the left instead.
 				if (!to) {
-					console.log('double "to" looking for', toIndex)
-					// toIndex = 0
-					toIndex = desiredIndex >= nextRow.length ? nextRow.length / 2 : 0
-					while (toIndex < nextRow.length) {
-						to = getFreeNodeInRow(rowIndex + 1, toIndex)
-						if (to) break
-						toIndex++
+					for (let i = toIndex; i >= 0; i--) {
+						console.log('backwards', i)
+						let node = nextRow[i]
+						if (isValidNode(node)) {
+							console.log('choosing', i)
+							to = node
+							break
+						}
 					}
-					if (!to) {
-						to = nextRow[0]
-					}
+				}
+
+				if (!to || !to.el) {
+					console.log('missing to')
+					debugger
 				}
 				lastVisited = to
 
@@ -225,14 +263,16 @@ export class SlayMap extends HTMLElement {
 				// setTimeout(() => {
 				connect(from.el, to.el)
 				// }, rowIndex * 300)
+
+				console.groupEnd()
 			}
 		}
 
 		// drawSinglePath(666)
-		drawSinglePath(3)
 		drawSinglePath(0)
+		// drawSinglePath(0)
 		// drawSinglePath(2)
-		// drawSinglePath(3)
+		drawSinglePath(9)
 		// setTimeout(() => drawSinglePath(1), graph.length * 300)
 		// setTimeout(() => drawSinglePath(2), graph.length * 300)
 	}
