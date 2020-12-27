@@ -34,13 +34,17 @@ export function generateGraph(rows, columns) {
 		// Randomize the order.
 		graph.push(shuffle(row))
 	}
-	graph.push([{type: 'end'}])
-	graph.unshift([{type: 'start'}])
+	// Add start end end nodes, in this order.
+	graph.push([Node('🕸️')]) // end
+	graph.unshift([Node('🎴')]) // start
 	return graph
 }
 
+// The type of each encounter on the map is decided by this function.
+// This could be much more "intelligent" for example elite fights should first come later.
+// 🕸️ // 🏔 // 🗻 // 🌋 // 👺
 function randomEncounter() {
-	return shuffle(Array.from('💀💀💀💰❓'))[0]
+	return shuffle(Array.from('💀💀💀💀👹💰❓'))[0]
 }
 
 // Draws a "path" between two DOM elements using an svg line.
