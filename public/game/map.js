@@ -47,6 +47,95 @@ function randomEncounter() {
 	return shuffle(Array.from('💀💀💀💀👹💰❓'))[0]
 }
 
+// Look for a free node in the next row to the right of the "desired index".
+const isEncounter = (node) => node && Boolean(node.type)
+
+// Draws a path between the DOM nodes connected to the graph.
+// Give it your desired index and it'll try to create a straight path to the end.
+function drawSinglePath(graph, graphEl, desiredIndex) {
+	const svg = graphEl.querySelector('svg.paths')
+	console.groupCollapsed('drawing path', desiredIndex)
+	let lastVisited
+
+	// const svg = document.createElement('svg')
+	// svg.id = `path${desiredIndex}`
+	// svg.className = 'paths'
+	// parentEl.appendChild(svg)
+
+	// Walk through each row.
+	for (let [rowIndex, row] of graph.entries()) {
+		console.group(`row ${rowIndex}`)
+
+		let a = lastVisited
+		let b
+		let aIndex = desiredIndex
+		let bIndex = desiredIndex
+		const nextRow = graph[rowIndex + 1]
+
+		// If on last level, stop drawing.
+		if (!nextRow) {
+			console.log('no next row, stopping')
+			console.groupEnd()
+			break
+		}
+
+		// Find the node we came from
+		if (!a) {
+			console.log('forcing "from" to first node in row')
+			a = row[0]
+			if (!a) throw Error('missing from')
+		}
+
+		// 2. Find the node we are going to
+		// Search to the right of our index.
+		for (let i = bIndex; i < nextRow.length; i++) {
+			console.log('forwards', i)
+			let node = nextRow[i]
+			if (isEncounter(node)) {
+				console.log('choosing', i)
+				b = node
+				break
+			}
+		}
+		// No result? Search to the left instead.
+		if (!b) {
+			for (let i = bIndex; i >= 0; i--) {
+				console.log('backwards', i)
+				let node = nextRow[i]
+				if (isEncounter(node)) {
+					console.log('choosing', i)
+					b = node
+					break
+				}
+			}
+			if (!b) throw Error('missing to')
+		}
+		lastVisited = b
+
+		// Draw the path between the two elements.
+		console.log(`connected row ${rowIndex}:${aIndex} to ${rowIndex + 1}:${bIndex}`, a.el, b.el)
+		// setTimeout(() => {
+		connectNodes(a, b, graphEl, svg)
+		// }, rowIndex * 40)
+		console.groupEnd()
+	}
+
+	console.groupEnd()
+}
+
+// Since el.offsetLeft doesn't respect CSS transforms,
+// and getBounding.. is relative to viewport, not parent, we need this utility.
+function getPosWithin(el, container) {
+	const parent = container.getBoundingClientRect()
+	const rect = el.getBoundingClientRect()
+	return {
+		top: rect.top - parent.top,
+		left: rect.left - parent.left,
+		width: rect.width,
+		height: rect.height,
+	}
+}
+
 // Draws a "path" between two DOM elements using an svg line.
 // It expects a and b to be graph nodes with a ".el" DOM element.
 const connectNodes = (a, b, parentEl, svg) => {
@@ -65,19 +154,6 @@ const connectNodes = (a, b, parentEl, svg) => {
 	b.edges.add(a)
 	a.el.setAttribute('linked', true)
 	b.el.setAttribute('linked', true)
-}
-
-// Since el.offsetLeft doesn't respect CSS transforms,
-// and getBounding.. is relative to viewport, not parent, we need this utility.
-function getPosWithin(el, container) {
-	const parent = container.getBoundingClientRect()
-	const rect = el.getBoundingClientRect()
-	return {
-		top: rect.top - parent.top,
-		left: rect.left - parent.left,
-		width: rect.width,
-		height: rect.height,
-	}
 }
 
 // This is an example of how you can render the graph as a map.
@@ -119,7 +195,7 @@ export class SlayMap extends HTMLElement {
 		if (!graph[0][0].el) this.addElementsToGraph(graph)
 		this.scatter()
 		this.drawPaths(graph)
-		console.log({graph})
+		console.log(graph)
 	}
 	addElementsToGraph(graph) {
 		graph.forEach((row, rowIndex) => {
@@ -146,92 +222,9 @@ export class SlayMap extends HTMLElement {
 		})
 	}
 	drawPaths(graph) {
-		const parentEl = this
-		const svg = this.querySelector('svg.paths')
-
-		// Look for a free node in the next row to the right of the "desired index".
-		const isValidNode = (node) => node && Boolean(node.type)
-
-		// Draws a path between the DOM nodes connected to the graph.
-		// Give it your desired index and it'll try to create a straight path to the end.
-		function drawSinglePath(desiredIndex) {
-			console.groupCollapsed('drawing path', desiredIndex)
-			let lastVisited
-
-			// const svg = document.createElement('svg')
-			// svg.id = `path${desiredIndex}`
-			// svg.className = 'paths'
-			// parentEl.appendChild(svg)
-
-			// Walk through each row.
-			for (let [rowIndex, row] of graph.entries()) {
-				console.group(`row ${rowIndex}`)
-
-				let a = lastVisited
-				let b
-				let aIndex = desiredIndex
-				let bIndex = desiredIndex
-				const nextRow = graph[rowIndex + 1]
-
-				// If on last level, stop drawing.
-				if (!nextRow) {
-					console.log('no next row, stopping')
-					console.groupEnd()
-					break
-				}
-
-				// Find the node we came from
-				if (!a) {
-					console.log('forcing "from" to first node in row')
-					a = row[0]
-					if (!a) throw Error('missing from')
-				}
-
-				// 2. Find the node we are going to
-				// Search to the right of our index.
-				for (let i = bIndex; i < nextRow.length; i++) {
-					console.log('forwards', i)
-					let node = nextRow[i]
-					if (isValidNode(node)) {
-						console.log('choosing', i)
-						b = node
-						break
-					}
-				}
-				// No result? Search to the left instead.
-				if (!b) {
-					for (let i = bIndex; i >= 0; i--) {
-						console.log('backwards', i)
-						let node = nextRow[i]
-						if (isValidNode(node)) {
-							console.log('choosing', i)
-							b = node
-							break
-						}
-					}
-					if (!b) throw Error('missing to')
-				}
-				lastVisited = b
-
-				// Draw the path between the two elements.
-				console.log(`connected row ${rowIndex}:${aIndex} to ${rowIndex + 1}:${bIndex}`, a.el, b.el)
-				// setTimeout(() => {
-				connectNodes(a, b, parentEl, svg)
-				// }, rowIndex * 40)
-				console.groupEnd()
-			}
-
-			console.groupEnd()
-		}
-
 		// around ~90-140ms
 		console.time('mapRender')
-		drawSinglePath(0)
-		drawSinglePath(1)
-		drawSinglePath(2)
-		// drawSinglePath(3)
-		drawSinglePath(4)
-		drawSinglePath(5)
+		drawSinglePath(graph, this, 1)
 		console.timeEnd('mapRender')
 	}
 }
