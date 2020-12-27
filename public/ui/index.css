@@ -796,14 +796,15 @@ slay-map-encounter[linked] {
 slay-map-encounter:hover {
 	cursor: pointer;
 	cursor: url(images/cursors/point.png) 10 0, auto;
-	animation: popOut 250ms cubic-bezier(0.075, 0.82, 0.165, 1);
+	/* animation: popOut 250ms cubic-bezier(0.075, 0.82, 0.165, 1);
 	animation-fill-mode: both;
+	transform-origin: center center; */
 }
-@keyframes popOut {
+/* @keyframes popOut {
 	to {
 		transform: scale(1.25);
 	}
-}
+} */
 
 slay-map svg.paths {
 	position: absolute;
@@ -818,4 +819,9 @@ slay-map svg.paths line {
 	stroke: hsla(0, 0%, 0%, 0.9);
 	stroke-width: 3px;
 	stroke-dasharray: 7px;
+}
+
+.Container {
+	margin: auto;
+	padding: 1rem;
 }
