@@ -16,17 +16,20 @@ import {shuffle, random as randomBetween} from './utils.js'
 // Returns a "graph" of the map we want to render,
 // using nested arrays for the rows and columns.
 export function generateGraph(rows, columns) {
+	const Node = (type = false) => {
+		return {type, edges: new Set()}
+	}
 	const graph = []
 	for (let r = 0; r < rows; r++) {
 		const row = []
 		// In each row we want from a to b encounters.
 		const encounters = randomBetween(2, 5)
 		for (let i = 0; i < encounters; i++) {
-			row.push({type: randomEncounter()})
+			row.push(Node(randomEncounter()))
 		}
 		// Fill empty columns.
 		while (row.length < columns) {
-			row.push({type: false})
+			row.push(Node())
 		}
 		// Randomize the order.
 		graph.push(shuffle(row))
@@ -40,7 +43,8 @@ function randomEncounter() {
 	return shuffle(Array.from('💀💀💀💰❓'))[0]
 }
 
-// Draws a "path" between to DOM elements using an svg line.
+// Draws a "path" between two DOM elements using an svg line.
+// It expects a and b to be graph nodes with a ".el" DOM element.
 const connectNodes = (a, b, parentEl, svg) => {
 	if (!a || !b) return
 	if (!a.el || !b.el) return
@@ -53,8 +57,8 @@ const connectNodes = (a, b, parentEl, svg) => {
 	line.setAttribute('y2', bPos.top + bPos.height / 2)
 	svg.appendChild(line)
 	line.setAttribute('length', line.getTotalLength())
-	a.linked = true
-	b.linked = true
+	a.edges.add(b)
+	b.edges.add(a)
 	a.el.setAttribute('linked', true)
 	b.el.setAttribute('linked', true)
 }
@@ -83,7 +87,6 @@ export class SlayMap extends HTMLElement {
 	}
 	render() {
 		const graph = generateGraph(this.state.rows, this.state.columns)
-		console.log({graph})
 		this.innerHTML = `
 			${graph
 				.map(
@@ -112,6 +115,7 @@ export class SlayMap extends HTMLElement {
 		if (!graph[0][0].el) this.addElementsToGraph(graph)
 		this.scatter()
 		this.drawPaths(graph)
+		console.log({graph})
 	}
 	addElementsToGraph(graph) {
 		graph.forEach((row, rowIndex) => {
@@ -217,14 +221,14 @@ export class SlayMap extends HTMLElement {
 		}
 
 		// around ~90-140ms
-		console.time('time to draw all paths')
+		console.time('mapRender')
 		drawSinglePath(0)
-		// drawSinglePath(1)
+		drawSinglePath(1)
 		drawSinglePath(2)
-		drawSinglePath(3)
-		// drawSinglePath(4)
+		// drawSinglePath(3)
+		drawSinglePath(4)
 		drawSinglePath(5)
-		console.timeEnd('time to draw all paths')
+		console.timeEnd('mapRender')
 	}
 }
 
