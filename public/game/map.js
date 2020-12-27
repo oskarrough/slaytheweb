@@ -231,12 +231,6 @@ export class SlayMap extends HTMLElement {
 
 customElements.define('slay-map', SlayMap)
 
-// Tool to regenerate the map for testing.
-if (!window.stw) window.stw = {}
-window.stw.generate = function generate() {
-	document.querySelector('slay-map').render()
-}
-
 // https://github.com/oskarrough/slaytheweb/issues/28
 // https://i.imgur.com/oAofMa0.jpg
 // https://github.com/yurkth/stsmapgen
