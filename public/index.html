@@ -16,10 +16,8 @@
 	</head>
 	<body>
 
-		<div class="Container">
-			<p><button onClick="stw.generate()">Generate new map</button></p>
-			<slay-map rows="10" columns="6"></slay-map>
-		</div>
+		<p><button onClick="stw.generate()">Generate new map</button></p>
+		<slay-map rows="12" columns="6" minEncounters="2" maxEncounters="5"></slay-map>
 		<script async src="game/map.js" type="module"></script>
 		<script async src="ui/map.js" type="module"></script>
 		<script>
