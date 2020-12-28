@@ -92,14 +92,23 @@ export class SlayMap extends HTMLElement {
 		})
 	}
 	drawPaths(graph) {
-		// Draw a path for each col in row1, which connects to start.
-		console.time('mapRender')
-		graph[1].forEach((column, index) => {
-			setTimeout(() => {
-				findAndDrawPath(graph, this, index)
-			}, index * 100)
-		})
-		console.timeEnd('mapRender')
+		const pathOption = this.getAttribute('paths')
+		if (pathOption) {
+			Array.from(pathOption)
+				.map((string) => Number(string))
+				.forEach((pathIndex) => {
+					findAndDrawPath(graph, this, pathIndex)
+				})
+		} else {
+			// Draw a path for each col in row1, which connects to start.
+			console.time('mapRender')
+			graph[1].forEach((column, index) => {
+				setTimeout(() => {
+					findAndDrawPath(graph, this, index)
+				}, index * 100)
+			})
+			console.timeEnd('mapRender')
+		}
 	}
 }
 customElements.define('slay-map', SlayMap)
