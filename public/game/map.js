@@ -50,27 +50,18 @@ function randomEncounter() {
 // Look for a free node in the next row to the right of the "desired index".
 const isEncounter = (node) => node && Boolean(node.type)
 
-// Draws a path between the DOM nodes connected to the graph.
-// Give it your desired index and it'll try to create a straight path to the end.
-function drawSinglePath(graph, graphEl, desiredIndex) {
-	const svg = graphEl.querySelector('svg.paths')
+function findPath(graph, graphEl, desiredIndex) {
+	let path = []
+
 	console.groupCollapsed('drawing path', desiredIndex)
 	let lastVisited
-
-	// const svg = document.createElement('svg')
-	// svg.id = `path${desiredIndex}`
-	// svg.className = 'paths'
-	// parentEl.appendChild(svg)
 
 	// Walk through each row.
 	for (let [rowIndex, row] of graph.entries()) {
 		console.group(`row ${rowIndex}`)
-
-		let a = lastVisited
-		let b
+		const nextRow = graph[rowIndex + 1]
 		let aIndex = desiredIndex
 		let bIndex = desiredIndex
-		const nextRow = graph[rowIndex + 1]
 
 		// If on last level, stop drawing.
 		if (!nextRow) {
@@ -79,21 +70,29 @@ function drawSinglePath(graph, graphEl, desiredIndex) {
 			break
 		}
 
-		// Find the node we came from
-		if (!a) {
+		// Find the node we came from.
+		let a = lastVisited
+		const newAIndex = row.indexOf(a)
+		if (a) {
+			console.log('changing a index to', newAIndex)
+			aIndex = newAIndex
+		} else {
 			console.log('forcing "from" to first node in row')
 			a = row[0]
-			if (!a) throw Error('missing from')
+			aIndex = 0
 		}
+		if (!a) throw Error('missing from')
 
-		// 2. Find the node we are going to
+		// Find the node we are going to.
 		// Search to the right of our index.
+		let b
 		for (let i = bIndex; i < nextRow.length; i++) {
 			console.log('forwards', i)
 			let node = nextRow[i]
 			if (isEncounter(node)) {
 				console.log('choosing', i)
 				b = node
+				bIndex = i
 				break
 			}
 		}
@@ -105,23 +104,59 @@ function drawSinglePath(graph, graphEl, desiredIndex) {
 				if (isEncounter(node)) {
 					console.log('choosing', i)
 					b = node
+					bIndex = i
 					break
 				}
 			}
 			if (!b) throw Error('missing to')
 		}
 		lastVisited = b
+		// debugger
 
-		// Draw the path between the two elements.
-		console.log(`connected row ${rowIndex}:${aIndex} to ${rowIndex + 1}:${bIndex}`, a.el, b.el)
-		// setTimeout(() => {
-		connectNodes(a, b, graphEl, svg)
-		// }, rowIndex * 40)
+		console.log(`connected row ${rowIndex}:${aIndex} to ${rowIndex + 1}:${bIndex}`)
+		path.push([
+			[rowIndex, aIndex], // from
+			[rowIndex + 1, bIndex], // to
+		])
 		console.groupEnd()
 	}
 
 	console.groupEnd()
+	return path
 }
+
+function drawPath(graph, path, graphEl) {
+	const svg = graphEl.querySelector('svg.paths')
+	console.group('drawPath')
+	path.forEach((move, index) => {
+		// console.log(move)
+		const source = move[0]
+		const destination = move[1]
+		const a = graph[source[0]][source[1]]
+		const b = graph[destination[0]][destination[1]]
+		a.edges.add(b)
+		b.edges.add(a)
+		// console.log(index, source, a, '\n', destination, b)
+		console.log(`Move ${index} is from ${source} to ${destination}`, a, b)
+
+		const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
+		const aPos = getPosWithin(a.el, graphEl)
+		const bPos = getPosWithin(b.el, graphEl)
+		line.setAttribute('x1', aPos.left + aPos.width / 2)
+		line.setAttribute('y1', aPos.top + aPos.height / 2)
+		line.setAttribute('x2', bPos.left + bPos.width / 2)
+		line.setAttribute('y2', bPos.top + bPos.height / 2)
+		svg.appendChild(line)
+		line.setAttribute('length', line.getTotalLength())
+		a.el.setAttribute('linked', true)
+		b.el.setAttribute('linked', true)
+	})
+	console.groupEnd()
+}
+// const svg = document.createElement('svg')
+// svg.id = `path${desiredIndex}`
+// svg.className = 'paths'
+// parentEl.appendChild(svg)
 
 // Since el.offsetLeft doesn't respect CSS transforms,
 // and getBounding.. is relative to viewport, not parent, we need this utility.
@@ -136,28 +171,8 @@ function getPosWithin(el, container) {
 	}
 }
 
-// Draws a "path" between two DOM elements using an svg line.
-// It expects a and b to be graph nodes with a ".el" DOM element.
-const connectNodes = (a, b, parentEl, svg) => {
-	if (!a || !b) return
-	if (!a.el || !b.el) return
-	const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
-	const aPos = getPosWithin(a.el, parentEl)
-	const bPos = getPosWithin(b.el, parentEl)
-	line.setAttribute('x1', aPos.left + aPos.width / 2)
-	line.setAttribute('y1', aPos.top + aPos.height / 2)
-	line.setAttribute('x2', bPos.left + bPos.width / 2)
-	line.setAttribute('y2', bPos.top + bPos.height / 2)
-	svg.appendChild(line)
-	line.setAttribute('length', line.getTotalLength())
-	a.edges.add(b)
-	b.edges.add(a)
-	a.el.setAttribute('linked', true)
-	b.el.setAttribute('linked', true)
-}
-
 // This is an example of how you can render the graph as a map.
-export class SlayMap extends HTMLElement {
+class SlayMap extends HTMLElement {
 	connectedCallback() {
 		this.state = {
 			rows: this.getAttribute('rows'),
@@ -195,7 +210,7 @@ export class SlayMap extends HTMLElement {
 		if (!graph[0][0].el) this.addElementsToGraph(graph)
 		this.scatter()
 		this.drawPaths(graph)
-		console.log(graph)
+		console.log({graph})
 	}
 	addElementsToGraph(graph) {
 		graph.forEach((row, rowIndex) => {
@@ -224,11 +239,13 @@ export class SlayMap extends HTMLElement {
 	drawPaths(graph) {
 		// around ~90-140ms
 		console.time('mapRender')
-		drawSinglePath(graph, this, 1)
+		drawPath(graph, findPath(graph, this, 0), this)
+		// drawPath(graph, findPath(graph, this, 2), this)
+		// drawPath(graph, findPath(graph, this, 3), this)
+		drawPath(graph, findPath(graph, this, 5), this)
 		console.timeEnd('mapRender')
 	}
 }
-
 customElements.define('slay-map', SlayMap)
 
 // https://github.com/oskarrough/slaytheweb/issues/28
