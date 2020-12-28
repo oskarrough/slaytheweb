@@ -44,7 +44,7 @@ export function generateGraph(rows, columns) {
 // This could be much more "intelligent" for example elite fights should first come later.
 // 🕸️ // 🏔 // 🗻 // 🌋 // 👺
 function randomEncounter() {
-	return shuffle(Array.from('💀💀💀💀👹💰❓'))[0]
+	return shuffle(Array.from('💀💀💀💀💰❓👹'))[0]
 }
 
 // Look for a free node in the next row to the right of the "desired index".

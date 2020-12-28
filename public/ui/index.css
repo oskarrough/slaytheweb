@@ -777,20 +777,20 @@ slay-map-row:last-of-type slay-map-encounter {
 
 slay-map-node,
 slay-map-encounter {
-	border: 1px solid;
+	/* border: 1px solid; */
 	margin: 0.25rem;
 	border-radius: 50%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	/* visibility: hidden; */
-	opacity: 0.1;
+	visibility: hidden;
+	/* opacity: 0.1; */
 }
 slay-map-encounter {
 	color: gold;
 	position: relative;
 	z-index: 2;
-	font-size: 1.25em;
+	font-size: 1.5em;
 }
 slay-map-encounter[linked] {
 	visibility: visible;

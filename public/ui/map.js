@@ -88,12 +88,10 @@ export class SlayMap extends HTMLElement {
 		// around ~90-140ms
 		console.time('mapRender')
 		drawPath(graph, findPath(graph, this, 0), this)
-		// drawPath(graph, findPath(graph, this, 2), this)
-		// drawPath(graph, findPath(graph, this, 3), this)
+		drawPath(graph, findPath(graph, this, 2), this)
+		drawPath(graph, findPath(graph, this, 3), this)
 		drawPath(graph, findPath(graph, this, 5), this)
 		console.timeEnd('mapRender')
 	}
 }
 customElements.define('slay-map', SlayMap)
-
-
