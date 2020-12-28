@@ -761,7 +761,7 @@ slay-map {
 slay-map-row {
 	display: grid;
 	grid-template-columns: repeat(var(--columns), 1fr);
-	grid-gap: 1em;
+	grid-gap: 0.5em;
 }
 
 slay-map-row:first-of-type,
@@ -783,6 +783,7 @@ slay-map-encounter {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	visibility: hidden;
 	opacity: 0;
 	transition: opacity 300ms;
 }

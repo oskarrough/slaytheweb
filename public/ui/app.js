@@ -288,7 +288,7 @@ stw.dealCards()
 						<p style="margin-top:auto"><a rel="noreferrer" target="_blank" href="https://github.com/oskarrough/slaytheweb">View source</a></p>
 					</div>
 				<//>
-				<${OverlayWithButton} id="Map" topright>
+				<${OverlayWithButton} open id="Map" topright>
 					<summary align-right><u>M</u>ap</summary>
 					<div class="Splash">
 						<div class="Splash-details"><${Map} dungeon=${state.dungeon} /></div>

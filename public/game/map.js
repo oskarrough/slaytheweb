@@ -125,8 +125,6 @@ export function findPath(graph, preferredIndex) {
 			if (!b) throw Error('missing to')
 		}
 		lastVisited = b
-		// debugger
-
 		console.log(`connected row ${rowIndex}:${aIndex} to ${rowIndex + 1}:${bIndex}`)
 		path.push([
 			[rowIndex, aIndex], // from
@@ -155,6 +153,9 @@ export function drawPath(graph, path, graphEl, preferredIndex) {
 		// Create a line between each element.
 		const aPos = getPosWithin(a.el, graphEl)
 		const bPos = getPosWithin(b.el, graphEl)
+		if (!aPos.top) {
+			throw Error('Could not render the svg path. Is the graph\'s container element rendered/visible?')
+		}
 		const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
 		line.setAttribute('x1', aPos.left + aPos.width / 2)
 		line.setAttribute('y1', aPos.top + aPos.height / 2)

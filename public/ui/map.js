@@ -6,6 +6,15 @@ export default function map({dungeon}) {
 	function capitalize(string) {
 		return string.charAt(0).toUpperCase() + string.slice(1)
 	}
+	// function dungeonToGraph(dungeon) {
+	// 	return generateGraph({
+	// 		rows: dungeon.rooms.length,
+	// 		columns: 1,
+	// 		encounters: 'mmmmc',
+	// 	})
+	// }
+	// const graph = dungeonToGraph(dungeon)
+	// debugger
 	return html`
 		<h2>Map of the dungeon</h2>
 		<ul class="MapList">
@@ -16,6 +25,13 @@ export default function map({dungeon}) {
 					</li>`
 			)}
 		</ul>
+		<slay-map
+			encounters="💀💀💀💀🦚"
+			rows=${dungeon.rooms.length}
+			columns="1"
+			minEncounters="1"
+			maxEncounters="1"
+		></slay-map>
 	`
 }
 
