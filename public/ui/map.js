@@ -27,11 +27,14 @@ export class SlayMap extends HTMLElement {
 	render() {
 		const rows = Number(this.getAttribute('rows'))
 		const columns = Number(this.getAttribute('columns'))
+		const encounters = this.getAttribute('encounters')
 		const minEncounters = Number(this.getAttribute('minEncounters'))
 		const maxEncounters = Number(this.getAttribute('maxEncounters'))
 		this.style.setProperty('--rows', rows)
 		this.style.setProperty('--columns', columns)
-		const graph = generateGraph({rows, columns, minEncounters, maxEncounters})
+		const graphOptions = {rows, columns, minEncounters, maxEncounters}
+		if (encounters) graphOptions.encounters = encounters
+		const graph = generateGraph(graphOptions)
 		this.innerHTML = `
 			${graph
 				.map(

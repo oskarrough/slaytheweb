@@ -36,3 +36,16 @@ test('it respects the cols options', (t) => {
 		t.is(row.filter((n) => n.type).length, 5)
 	})
 })
+
+test('can customize the type of encounters', (t) => {
+	const encounters = 'abc'
+	const g = generateGraph({encounters})
+	g.forEach((row, index) => {
+		if (index === 0 || index === g.length - 1) return
+		row
+			.filter((n) => n.type)
+			.forEach((node) => {
+				t.true(encounters.includes(node.type))
+			})
+	})
+})

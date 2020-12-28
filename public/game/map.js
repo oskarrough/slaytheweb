@@ -21,12 +21,20 @@ export function generateGraph(opts) {
 		columns: 6,
 		minEncounters: 2,
 		maxEncounters: 5,
+		encounters: '💀💀💀💀💰❓👹',
 	}
 	const options = Object.assign(defaultOptions, opts)
 	// if (options.maxEncounters > options.columns) options.maxEncounters = options.columns
 
-	const Node = (type = false) => {
+	function Node(type = false) {
 		return {type, edges: new Set()}
+	}
+
+	// The type of each encounter on the map is decided by this function.
+	// This could be much more "intelligent" for example elite fights should first come later.
+	// 🕸️ // 🏔 // 🗻 // 🌋 // 👺
+	function randomEncounter() {
+		return shuffle(Array.from(options.encounters))[0]
 	}
 
 	const graph = []
@@ -165,13 +173,6 @@ export function drawPath(graph, path, graphEl, preferredIndex) {
 export function findAndDrawPath(graph, graphEl, index) {
 	const path = findPath(graph, index)
 	drawPath(graph, path, graphEl, index)
-}
-
-// The type of each encounter on the map is decided by this function.
-// This could be much more "intelligent" for example elite fights should first come later.
-// 🕸️ // 🏔 // 🗻 // 🌋 // 👺
-function randomEncounter() {
-	return shuffle(Array.from('💀💀💀💀💰❓👹'))[0]
 }
 
 // Look for a free node in the next row to the right of the "desired index".
