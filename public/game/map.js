@@ -15,20 +15,31 @@ import {shuffle, random as randomBetween} from './utils.js'
 
 // Returns a "graph" of the map we want to render,
 // using nested arrays for the rows and columns.
-export function generateGraph(rows, columns) {
+export function generateGraph(opts) {
+	const defaultOptions = {
+		rows: 10,
+		columns: 6,
+		minEncounters: 2,
+		maxEncounters: 5,
+	}
+	const options = Object.assign(defaultOptions, opts)
+	// if (options.maxEncounters > options.columns) options.maxEncounters = options.columns
+
 	const Node = (type = false) => {
 		return {type, edges: new Set()}
 	}
+
 	const graph = []
-	for (let r = 0; r < rows; r++) {
+	for (let r = 0; r < options.rows; r++) {
 		const row = []
-		// In each row we want from a to b encounters.
-		const encounters = randomBetween(2, 5)
+		// In each row we want from X encounters.
+		let encounters = randomBetween(options.minEncounters, options.maxEncounters)
+		if (encounters > options.columns) encounters = options.columns
 		for (let i = 0; i < encounters; i++) {
 			row.push(Node(randomEncounter()))
 		}
 		// Fill empty columns.
-		while (row.length < columns) {
+		while (row.length < options.columns) {
 			row.push(Node())
 		}
 		// Randomize the order.
@@ -148,6 +159,12 @@ export function drawPath(graph, path, graphEl, preferredIndex) {
 		console.log(`Move no. ${index} is from ${a} to ${b}`)
 	})
 	console.groupEnd()
+}
+
+// Shortcut
+export function findAndDrawPath(graph, graphEl, index) {
+	const path = findPath(graph, index)
+	drawPath(graph, path, graphEl, index)
 }
 
 // The type of each encounter on the map is decided by this function.

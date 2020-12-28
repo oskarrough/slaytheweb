@@ -1,5 +1,5 @@
 import {html} from '../../web_modules/htm/preact/standalone.module.js'
-import {generateGraph, findPath, drawPath} from '../game/map.js'
+import {generateGraph, findAndDrawPath} from '../game/map.js'
 import {random as randomBetween} from '../game/utils.js'
 
 export default function map({dungeon}) {
@@ -22,14 +22,16 @@ export default function map({dungeon}) {
 // This is an example of how you can render the graph as a map.
 export class SlayMap extends HTMLElement {
 	connectedCallback() {
-		this.state = {
-			rows: this.getAttribute('rows'),
-			columns: this.getAttribute('columns'),
-		}
 		this.render()
 	}
 	render() {
-		const graph = generateGraph(this.state.rows, this.state.columns)
+		const rows = Number(this.getAttribute('rows'))
+		const columns = Number(this.getAttribute('columns'))
+		const minEncounters = Number(this.getAttribute('minEncounters'))
+		const maxEncounters = Number(this.getAttribute('maxEncounters'))
+		this.style.setProperty('--rows', rows)
+		this.style.setProperty('--columns', columns)
+		const graph = generateGraph({rows, columns, minEncounters, maxEncounters})
 		this.innerHTML = `
 			${graph
 				.map(
@@ -54,6 +56,9 @@ export class SlayMap extends HTMLElement {
 				)
 				.join('')}
 		`
+		this.didRender(graph)
+	}
+	didRender(graph) {
 		if (!graph[0][0].el) this.addElementsToGraph(graph)
 		this.scatter()
 		this.drawPaths(graph)
@@ -84,16 +89,13 @@ export class SlayMap extends HTMLElement {
 		})
 	}
 	drawPaths(graph) {
+		// Draw a path for each col in row1, which connects to start.
 		console.time('mapRender')
-		// const paths = graph[1].map((row, index) => findPath(graph, index))
-		// paths.forEach((path, index) => {
-		// 	setTimeout(() => {
-		// 		drawPath(graph, path, this, index)
-		// 	}, index * 100)
-		// })
-		drawPath(graph, findPath(graph, 1), this, 1)
-		drawPath(graph, findPath(graph, 3), this, 3)
-		drawPath(graph, findPath(graph, 5), this, 5)
+		graph[1].forEach((column, index) => {
+			setTimeout(() => {
+				findAndDrawPath(graph, this, index)
+			}, index * 100)
+		})
 		console.timeEnd('mapRender')
 	}
 }

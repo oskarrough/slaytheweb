@@ -32,13 +32,15 @@ export function shuffle(array) {
 }
 
 // Returns a range of numbers. Example: range(3) === [1,2,3] or range(3, 6) === [6,7,8]
+// range(3, 2) = [2,3,4]
 export function range(size, startAt = 0) {
 	return [...Array(size).keys()].map((i) => i + startAt)
 }
 
 // Get a random number within a range
 export function random(from, to) {
-	const r = range(to - from, from)
+	const r = range(1 + to - from, from) // random(2,4) = range(3,2)
+	if (from === to) return from // e.g. 5-5 returns 5 instead of 0
 	return shuffle(r)[0]
 }
 
