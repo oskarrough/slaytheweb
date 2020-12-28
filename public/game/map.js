@@ -40,28 +40,23 @@ export function generateGraph(rows, columns) {
 	return graph
 }
 
-// The type of each encounter on the map is decided by this function.
-// This could be much more "intelligent" for example elite fights should first come later.
-// 🕸️ // 🏔 // 🗻 // 🌋 // 👺
-function randomEncounter() {
-	return shuffle(Array.from('💀💀💀💀💰❓👹'))[0]
-}
-
-// Look for a free node in the next row to the right of the "desired index".
-const isEncounter = (node) => node && Boolean(node.type)
-
-export function findPath(graph, graphEl, desiredIndex) {
+// Finds a path from start to finish in the graph.
+// Set the index to the column you'd like to follow, when possible.
+// It returns a nested array of the row/column indexes of the graph nodes.
+// [
+// 	[[0, 0], [1,4]], <-- first move.
+// 	[[1, 4], [2,1]] <-- second move
+// ]
+export function findPath(graph, preferredIndex) {
 	let path = []
-
-	console.groupCollapsed('drawing path', desiredIndex)
 	let lastVisited
-
+	console.groupCollapsed('finding path', preferredIndex)
 	// Walk through each row.
 	for (let [rowIndex, row] of graph.entries()) {
 		console.group(`row ${rowIndex}`)
 		const nextRow = graph[rowIndex + 1]
-		let aIndex = desiredIndex
-		let bIndex = desiredIndex
+		let aIndex = preferredIndex
+		let bIndex = preferredIndex
 
 		// If on last level, stop drawing.
 		if (!nextRow) {
@@ -120,28 +115,28 @@ export function findPath(graph, graphEl, desiredIndex) {
 		])
 		console.groupEnd()
 	}
-
 	console.groupEnd()
 	return path
 }
 
-export function drawPath(graph, path, graphEl) {
-	const svg = graphEl.querySelector('svg.paths')
-	console.group('drawPath')
+export function drawPath(graph, path, graphEl, preferredIndex) {
+	const nodeFromMove = ([row, col]) => graph[row][col]
+	// Create an empty <svg> to hold our path.
+	const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+	svg.id = `path${preferredIndex}`
+	svg.classList.add('paths')
+	graphEl.appendChild(svg)
+	// For each move, add a <line> element from a to b.
+	console.groupCollapsed('drawing path', preferredIndex)
 	path.forEach((move, index) => {
-		// console.log(move)
-		const source = move[0]
-		const destination = move[1]
-		const a = graph[source[0]][source[1]]
-		const b = graph[destination[0]][destination[1]]
+		const a = nodeFromMove(move[0])
+		const b = nodeFromMove(move[1])
 		a.edges.add(b)
 		b.edges.add(a)
-		// console.log(index, source, a, '\n', destination, b)
-		console.log(`Move ${index} is from ${source} to ${destination}`, a, b)
-
-		const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
+		// Create a line between each element.
 		const aPos = getPosWithin(a.el, graphEl)
 		const bPos = getPosWithin(b.el, graphEl)
+		const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
 		line.setAttribute('x1', aPos.left + aPos.width / 2)
 		line.setAttribute('y1', aPos.top + aPos.height / 2)
 		line.setAttribute('x2', bPos.left + bPos.width / 2)
@@ -150,13 +145,20 @@ export function drawPath(graph, path, graphEl) {
 		line.setAttribute('length', line.getTotalLength())
 		a.el.setAttribute('linked', true)
 		b.el.setAttribute('linked', true)
+		console.log(`Move no. ${index} is from ${a} to ${b}`)
 	})
 	console.groupEnd()
 }
-// const svg = document.createElement('svg')
-// svg.id = `path${desiredIndex}`
-// svg.className = 'paths'
-// parentEl.appendChild(svg)
+
+// The type of each encounter on the map is decided by this function.
+// This could be much more "intelligent" for example elite fights should first come later.
+// 🕸️ // 🏔 // 🗻 // 🌋 // 👺
+function randomEncounter() {
+	return shuffle(Array.from('💀💀💀💀💰❓👹'))[0]
+}
+
+// Look for a free node in the next row to the right of the "desired index".
+const isEncounter = (node) => node && Boolean(node.type)
 
 // Since el.offsetLeft doesn't respect CSS transforms,
 // and getBounding.. is relative to viewport, not parent, we need this utility.

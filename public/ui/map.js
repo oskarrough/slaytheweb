@@ -53,7 +53,6 @@ export class SlayMap extends HTMLElement {
 			`
 				)
 				.join('')}
-			<svg class="paths"></svg>
 		`
 		if (!graph[0][0].el) this.addElementsToGraph(graph)
 		this.scatter()
@@ -85,12 +84,16 @@ export class SlayMap extends HTMLElement {
 		})
 	}
 	drawPaths(graph) {
-		// around ~90-140ms
 		console.time('mapRender')
-		drawPath(graph, findPath(graph, this, 0), this)
-		drawPath(graph, findPath(graph, this, 2), this)
-		drawPath(graph, findPath(graph, this, 3), this)
-		drawPath(graph, findPath(graph, this, 5), this)
+		// const paths = graph[1].map((row, index) => findPath(graph, index))
+		// paths.forEach((path, index) => {
+		// 	setTimeout(() => {
+		// 		drawPath(graph, path, this, index)
+		// 	}, index * 100)
+		// })
+		drawPath(graph, findPath(graph, 1), this, 1)
+		drawPath(graph, findPath(graph, 3), this, 3)
+		drawPath(graph, findPath(graph, 5), this, 5)
 		console.timeEnd('mapRender')
 	}
 }
