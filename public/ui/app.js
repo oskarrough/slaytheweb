@@ -32,6 +32,7 @@ export default class App extends Component {
 		this.handlePlayerReward = this.handlePlayerReward.bind(this)
 		this.handleCampfireChoice = this.handleCampfireChoice.bind(this)
 		this.goToNextRoom = this.goToNextRoom.bind(this)
+		this.toggleOverlay = this.toggleOverlay.bind(this)
 	}
 	componentDidMount() {
 		// Set up a new game
@@ -127,25 +128,25 @@ stw.dealCards()
 		gsap.effects.dealCards('.Hand .Card')
 		enableDragDrop(this.base, this.playCard)
 	}
+	toggleOverlay(el) {
+		if (typeof el === 'string') el = this.base.querySelector(el)
+		el.toggleAttribute('open')
+		el.style.zIndex = this.overlayIndex
+		this.overlayIndex++
+	}
 	handleShortcuts(event) {
 		const {key} = event
 		if (key === 'e') this.endTurn()
 		if (key === 'u') this.undo()
-		// Overlays
-		const toggle = (el) => {
-			el.toggleAttribute('open')
-			el.style.zIndex = this.overlayIndex
-			this.overlayIndex++
-		}
 		if (key === 'Escape') {
-			let openOverlays = this.base.querySelectorAll('details[open]:not(.Menu)')
+			let openOverlays = this.base.querySelectorAll('.Overlay:not(#Menu)[open]')
 			openOverlays.forEach((el) => el.removeAttribute('open'))
-			toggle(this.base.querySelector('.Menu'))
+			this.toggleOverlay('#Menu')
 		}
-		if (key === 'd') toggle(this.base.querySelector('#Deck'))
-		if (key === 'a') toggle(this.base.querySelector('#DrawPile'))
-		if (key === 's') toggle(this.base.querySelector('#DiscardPile'))
-		if (key === 'm') toggle(this.base.querySelector('#Map'))
+		if (key === 'd') this.toggleOverlay('#Deck')
+		if (key === 'a') this.toggleOverlay('#DrawPile')
+		if (key === 's') this.toggleOverlay('#DiscardPile')
+		if (key === 'm') this.toggleOverlay('#Map')
 	}
 	handlePlayerReward(choice, card) {
 		this.game.enqueue({type: 'rewardPlayer', card})
@@ -265,46 +266,60 @@ stw.dealCards()
 				</div>
 
 				<${OverlayWithButton} id="Menu" topleft>
-					<summary><u>Esc</u>ape</summary>
-					<div class="Splash">
-						<h1 medium>Slay the Web</h1>
-						<ul class="Options">
-							<li><button onclick=${() =>
-								save(
-									state
-								)} title="After saving, your entire game is stored in the URL. Copy it">Save</button></li>
-							<li><button onclick=${() => (window.location = window.location.origin)}>Abandon Game</button></li>
-						</ul>
-						<${History} future=${this.game.future.list} past=${this.game.past.list} />
-						${
-							this.game.past.list.length
-								? html`
-										<p>
-											<button onclick=${() => this.undo()}><u>U</u>ndo</button><br />
-										</p>
-								  `
-								: ''
-						}
-						<p style="margin-top:auto"><a rel="noreferrer" target="_blank" href="https://github.com/oskarrough/slaytheweb">View source</a></p>
+					<button onClick=${() => this.toggleOverlay('#Menu')}><u>Esc</u>ape</button>
+					<div class="Overlay-content">
+						<div class="Splash">
+							<h1 medium>Slay the Web</h1>
+							<ul class="Options">
+								<li><button onclick=${() =>
+									save(
+										state
+									)} title="After saving, your entire game is stored in the URL. Copy it">Save</button></li>
+								<li><button onclick=${() => (window.location = window.location.origin)}>Abandon Game</button></li>
+							</ul>
+							<${History} future=${this.game.future.list} past=${this.game.past.list} />
+							${
+								this.game.past.list.length
+									? html`
+											<p>
+												<button onclick=${() => this.undo()}><u>U</u>ndo</button><br />
+											</p>
+									  `
+									: ''
+							}
+							<p style="margin-top:auto"><a rel="noreferrer" target="_blank" href="https://github.com/oskarrough/slaytheweb">View source</a></p>
+						</div>
 					</div>
 				<//>
-				<${OverlayWithButton} open id="Map" topright>
-					<summary align-right><u>M</u>ap</summary>
-					<div class="Splash">
-						<div class="Splash-details"><${Map} dungeon=${state.dungeon} /></div>
+				<${OverlayWithButton} id="Map" topright>
+					<button align-right onClick=${() => this.toggleOverlay('#Map')}><u>M</u>ap</button>
+					<div class="Overlay-content">
+						<div class="Splash">
+							<div class="Splash-details"><${Map} dungeon=${state.dungeon} /></div>
+						</div>
 					</div>
 				<//>
 				<${OverlayWithButton} id="Deck" topright topright2>
-					<summary><u>D</u>eck ${state.deck.length}</summary>
+					<button onClick=${() => this.toggleOverlay('#Deck')}><u>D</u>eck ${state.deck.length}</button>
+					<div class="Overlay-content">
 					<${Cards} gameState=${state} type="deck" />
+					</div>
 				<//>
 				<${OverlayWithButton} id="DrawPile" bottomleft>
-					<summary>Dr<u>a</u>w pile ${state.drawPile.length}</summary>
+					<button onClick=${() => this.toggleOverlay('#DrawPile')}>Dr<u>a</u>w pile ${
+			state.drawPile.length
+		}</button>
+					<div class="Overlay-content">
 					<${Cards} gameState=${state} type="drawPile" />
+					</div>
 				<//>
 				<${OverlayWithButton} id="DiscardPile" bottomright>
-					<summary align-right>Di<u>s</u>card pile ${state.discardPile.length}</summary>
+					<button onClick=${() => this.toggleOverlay('#DiscardPile')} align-right>Di<u>s</u>card pile ${
+			state.discardPile.length
+		}</button>
+					<div class="Overlay-content">
 					<${Cards} gameState=${state} type="discardPile" />
+					</div>
 				<//>
 			</div>
 		`

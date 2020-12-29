@@ -16,9 +16,9 @@ export function Overlay(props) {
 
 export function OverlayWithButton(props) {
 	return html`
-		<details class="Overlay" ...${props}>
+		<div class="Overlay" ...${props}>
 			${props.children}
 			<figure class="Overlay-bg"></figure>
-		</details>
+		</div>
 	`
 }

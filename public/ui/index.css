@@ -449,7 +449,7 @@ h2 {
 }
 
 .Splash {
-	min-height: 100vh;
+	min-height: 90vh;
 	display: flex;
 	margin: auto;
 	flex-flow: column;
@@ -519,43 +519,51 @@ h2 {
 }
 
 /* The button to toggle overlay */
-.Overlay summary {
+.Overlay > button {
+	font-size: 1rem;
 	position: absolute;
-	padding: 1rem;
+	/* padding: 1rem; */
 	user-select: none;
 	z-index: 3;
+	background: none;
+	border: 0;
+	color: var(--text);
+	box-shadow: none;
 }
-.Overlay[topleft] summary {
+.Overlay[topleft] > button {
 	top: 0;
 	left: 0;
 }
-.Overlay[topright] summary {
+.Overlay[topright] > button {
 	top: 0;
 	right: 0;
 }
-.Overlay[topright2] summary {
+.Overlay[topright2] > button {
 	right: 5rem;
 }
-.Overlay[bottomleft] summary {
+.Overlay[bottomleft] > button {
+	top: auto;
 	bottom: 0;
 	left: 0;
 }
-.Overlay[bottomright] summary {
+.Overlay[bottomright] > button {
+	top: auto;
 	bottom: 0;
 	right: 0;
 }
-/* Overlay content */
-.Overlay summary + *,
 .Overlay-content {
 	position: absolute;
-	top: 0;
+	top: 100%;
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	opacity: 0;
 	padding-top: 4rem;
 	overflow-y: auto;
 	transform: translate3d(0, 4rem, 0);
+	display: block;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
 }
 .Overlay-bg {
 	transition: background 400ms;
@@ -570,20 +578,13 @@ h2 {
 }
 
 /* Open overlays */
-.Overlay[open] {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 10;
-	width: 100%;
-	height: 100%;
-}
-.Overlay[open] summary {
-	position: absolute;
+.Overlay[open] > button {
 	background: linear-gradient(to right, brown 40%, transparent);
 }
-.Overlay[open] summary + *,
 .Overlay[open] .Overlay-content {
+	top: 0;
+	visibility: visible;
+	pointer-events: auto;
 	overflow-y: auto;
 	z-index: 2;
 	opacity: 1;
@@ -600,25 +601,6 @@ h2 {
 	flex-wrap: wrap;
 	gap: 1rem;
 	align-content: center;
-}
-
-/* Position of "buttons" inside open modals */
-.Overlay[open][topleft] summary,
-.Overlay[open][topright] summary {
-	top: 0;
-}
-.Overlay[open][bottomleft] summary,
-.Overlay[open][bottomright] summary {
-	bottom: 0;
-}
-.Overlay[open][topright] summary,
-.Overlay[open][bottomright] summary {
-	left: auto;
-	right: 0;
-	background: linear-gradient(to left, brown 40%, transparent);
-}
-.Overlay[open][topright2] summary {
-	right: 5rem;
 }
 
 .MapList {
@@ -756,6 +738,7 @@ slay-map {
 	position: relative;
 	background: hsl(120, 17.5%, 19%);
 	margin: 1rem auto;
+	overflow: hidden;
 }
 
 slay-map-row {

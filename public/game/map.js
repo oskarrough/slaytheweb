@@ -154,7 +154,9 @@ export function drawPath(graph, path, graphEl, preferredIndex) {
 		const aPos = getPosWithin(a.el, graphEl)
 		const bPos = getPosWithin(b.el, graphEl)
 		if (!aPos.top) {
-			throw Error('Could not render the svg path. Is the graph\'s container element rendered/visible?')
+			throw Error(
+				"Could not render the svg path. Is the graph's container element rendered/visible?"
+			)
 		}
 		const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
 		line.setAttribute('x1', aPos.left + aPos.width / 2)
