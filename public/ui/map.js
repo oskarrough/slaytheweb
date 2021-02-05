@@ -1,4 +1,4 @@
-import {html} from '../../web_modules/htm/preact/standalone.module.js'
+import {Component, html} from '../../web_modules/htm/preact/standalone.module.js'
 import {generateGraph, findAndDrawPath} from '../game/map.js'
 import {random as randomBetween} from '../game/utils.js'
 
@@ -25,14 +25,52 @@ export default function map({dungeon}) {
 					</li>`
 			)}
 		</ul>
-		<slay-map
-			encounters="💀💀💀💀🦚"
+		<${Mapo}
 			rows=${dungeon.rooms.length}
-			columns="1"
-			minEncounters="1"
-			maxEncounters="1"
-		></slay-map>
+			columns="6"
+			encounters="💀💀💀💀🦚"
+			minEncounters="2"
+			maxEncounters="4"
+		><//>
 	`
+}
+
+export class Mapo extends Component {
+	componentDidMount() {
+		console.log('did mount')
+	}
+	componentWillUpdate() {
+		console.log('will update')
+	}
+	componentDidUpdate(prevProps, prevState) {
+		console.log('did update', prevProps)
+	}
+	render(props) {
+		// this.base.el.style.setProperty('--rows', Number(props.rows))
+		// this.base.el.style.setProperty('--columns', Number(props.columns))
+		const graph = generateGraph({
+			encounters: props.encounters,
+			rows: Number(props.rows),
+			columns: Number(props.columns),
+			minEncounters: Number(props.minEncounters),
+			maxEncounters: Number(props.maxEncounters)
+		})
+		console.log(props)
+		return html`
+			<slay-map>
+				${graph.map((row) => html`
+					<slay-map-row>
+						${row.map((col) => {
+							if (col.type) {
+								return html`<slay-map-node encounter>${col.type}</slay-map-node>`
+							}
+							return html`<slay-map-node></slay-map-node>`
+						})}
+					</slay-map-row>
+				`)}
+			</slay-map>
+		`
+	}
 }
 
 // This is an example of how you can render the graph as a map.
@@ -127,4 +165,4 @@ export class SlayMap extends HTMLElement {
 		}
 	}
 }
-customElements.define('slay-map', SlayMap)
+customElements.define('sslay-map', SlayMap)

@@ -759,44 +759,42 @@ slay-map-row:first-of-type,
 slay-map-row:last-of-type {
 	grid-template-columns: repeat(var(--rows), 1fr);
 }
-slay-map-row:first-of-type slay-map-encounter,
-slay-map-row:last-of-type slay-map-encounter {
+slay-map-row:first-of-type slay-map-node,
+slay-map-row:last-of-type slay-map-node {
 	grid-column-start: 6;
 	grid-column-end: 8;
 	transform: none !important;
 }
 
-slay-map-row[active] slay-map-encounter {
+slay-map-row[active] slay-map-node {
 	border: 1px solid;
 }
 
-slay-map-node,
-slay-map-encounter {
+slay-map-node {
 	/* border: 1px solid; */
 	margin: 0.25rem;
 	border-radius: 50%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	visibility: hidden;
-	opacity: 0;
+	/* visibility: hidden; */
+	opacity: 0.5;
 	transition: opacity 300ms;
 }
-slay-map-encounter {
+slay-map-node[encounter] {
 	color: gold;
 	position: relative;
 	z-index: 2;
 	font-size: 1.5em;
 }
-slay-map-encounter[linked] {
+slay-map-node[linked] {
 	visibility: visible;
 	opacity: 1;
 }
-slay-map-encounter:hover {
+slay-map-node[encounter]:hover {
 	cursor: pointer;
 	cursor: url(images/cursors/point.png) 10 0, auto;
 }
-
 slay-map svg.paths {
 	position: absolute;
 	top: 0;
