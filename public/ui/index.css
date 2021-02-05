@@ -777,15 +777,17 @@ slay-map-node {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	/* visibility: hidden; */
+	visibility: hidden;
 	opacity: 0.5;
 	transition: opacity 300ms;
+	pointer-events: none;
 }
 slay-map-node[encounter] {
 	color: gold;
 	position: relative;
 	z-index: 2;
 	font-size: 1.5em;
+	pointer-events: auto;
 }
 slay-map-node[linked] {
 	visibility: visible;

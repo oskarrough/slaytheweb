@@ -19,9 +19,8 @@ export default function map({dungeon}) {
 	// const graph = dungeonToGraph(dungeon)
 	// debugger
 
-	function handleMove(x, y, graph) {
-		const encounter = graph[y][x]
-		console.log(y, x, encounter)
+	function handleMove(x, y, node) {
+		console.log(y, x, node)
 		setLevel(y)
 	}
 
@@ -123,8 +122,8 @@ export class Mapo extends Component {
 	}
 
 	selectedNode(y, x) {
-		// this.setState({x, y})
-		this.props.onSelect(x, y, this.state.graph)
+		const node = this.state.graph[y][x]
+		this.props.onSelect(x, y, node)
 	}
 
 	render(props, state) {
