@@ -32,7 +32,7 @@ export default function map({dungeon}) {
 			encounters="💀💀💀💀🦚"
 			minEncounters=${2}
 			maxEncounters=${5}
-			paths="4"
+			paths="ab"
 			onSelect=${handleMove}
 		><//>
 		<ul class="MapList">
@@ -102,13 +102,13 @@ export class Mapo extends Component {
 	}
 
 	drawPaths(graph) {
-		const pathOption = this.props.paths
-		if (pathOption) {
-			Array.from(pathOption)
-				.map((string) => Number(string))
-				.forEach((pathIndex) => {
-					findAndDrawPath(graph, this.base, pathIndex)
-				})
+		const paths = this.props.paths
+		// Sneaky but to control how many paths are rendered, you can pass a string "abc",
+		// where the length of the string equals the amount of paths.
+		if (paths) {
+			Array.from(paths).forEach((value, pathIndex) => {
+				findAndDrawPath(graph, this.base, pathIndex)
+			})
 		} else {
 			// Draw a path for each col in row1, which connects to start.
 			console.time('mapRender')
