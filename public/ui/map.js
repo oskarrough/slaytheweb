@@ -1,11 +1,14 @@
-import {Component, html} from '../../web_modules/htm/preact/standalone.module.js'
+import {Component, html, useState} from '../../web_modules/htm/preact/standalone.module.js'
 import {generateGraph, findAndDrawPath} from '../game/map.js'
 import {random as randomBetween} from '../game/utils.js'
 
+function capitalize(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1)
+}
+
 export default function map({dungeon}) {
-	function capitalize(string) {
-		return string.charAt(0).toUpperCase() + string.slice(1)
-	}
+	const [level, setLevel] = useState(0)
+
 	// function dungeonToGraph(dungeon) {
 	// 	return generateGraph({
 	// 		rows: dungeon.rooms.length,
@@ -15,8 +18,24 @@ export default function map({dungeon}) {
 	// }
 	// const graph = dungeonToGraph(dungeon)
 	// debugger
+
+	function handleMove(x, y, graph) {
+		const encounter = graph[y][x]
+		console.log(y, x, encounter)
+		setLevel(y)
+	}
+
 	return html`
-		<h2>Map of the dungeon</h2>
+		<h2>Map of the dungeon. Level ${level}</h2>
+		<${Mapo}
+			rows=${dungeon.rooms.length}
+			columns=${6}
+			encounters="💀💀💀💀🦚"
+			minEncounters=${2}
+			maxEncounters=${5}
+			paths="4"
+			onSelect=${handleMove}
+		><//>
 		<ul class="MapList">
 			${dungeon.rooms.map(
 				(room, index) =>
@@ -25,144 +44,112 @@ export default function map({dungeon}) {
 					</li>`
 			)}
 		</ul>
-		<${Mapo}
-			rows=${dungeon.rooms.length}
-			columns="6"
-			encounters="💀💀💀💀🦚"
-			minEncounters="2"
-			maxEncounters="4"
-		><//>
 	`
 }
 
 export class Mapo extends Component {
 	componentDidMount() {
-		console.log('did mount')
-	}
-	componentWillUpdate() {
-		console.log('will update')
-	}
-	componentDidUpdate(prevProps, prevState) {
-		console.log('did update', prevProps)
-	}
-	render(props) {
-		// this.base.el.style.setProperty('--rows', Number(props.rows))
-		// this.base.el.style.setProperty('--columns', Number(props.columns))
+		console.log('Did mount')
+		const props = this.props
 		const graph = generateGraph({
 			encounters: props.encounters,
 			rows: Number(props.rows),
 			columns: Number(props.columns),
 			minEncounters: Number(props.minEncounters),
-			maxEncounters: Number(props.maxEncounters)
+			maxEncounters: Number(props.maxEncounters),
 		})
-		console.log(props)
-		return html`
-			<slay-map>
-				${graph.map((row) => html`
-					<slay-map-row>
-						${row.map((col) => {
-							if (col.type) {
-								return html`<slay-map-node encounter>${col.type}</slay-map-node>`
-							}
-							return html`<slay-map-node></slay-map-node>`
-						})}
-					</slay-map-row>
-				`)}
-			</slay-map>
-		`
+		this.setState({graph})
 	}
-}
+	componentWillUpdate() {
+		console.log('Will update')
+	}
+	componentDidUpdate(prevProps) {
+		console.log('Did update')
 
-// This is an example of how you can render the graph as a map.
-export class SlayMap extends HTMLElement {
-	connectedCallback() {
-		this.render()
+		// Let CSS know about the amount of rows and cols we have.
+		this.base.style.setProperty('--rows', Number(prevProps.rows))
+		this.base.style.setProperty('--columns', Number(prevProps.columns))
+
+		// Add references to our DOM elements on the graph. Why?
+		// no set state because we don't want to rerender
+		if (!this.didDrawPaths) {
+			this.scatter()
+			this.state.graph = this.addElementsToGraph(this.state.graph)
+			this.drawPaths(this.state.graph)
+			this.didDrawPaths = true
+		}
 	}
-	render() {
-		const rows = Number(this.getAttribute('rows'))
-		const columns = Number(this.getAttribute('columns'))
-		const encounters = this.getAttribute('encounters')
-		const minEncounters = Number(this.getAttribute('minEncounters'))
-		const maxEncounters = Number(this.getAttribute('maxEncounters'))
-		this.style.setProperty('--rows', rows)
-		this.style.setProperty('--columns', columns)
-		const graphOptions = {rows, columns, minEncounters, maxEncounters}
-		if (encounters) graphOptions.encounters = encounters
-		const graph = generateGraph(graphOptions)
-		this.innerHTML = `
-			${graph
-				.map(
-					(row) => `
-				<slay-map-row>
-					${row
-						.map((col) => {
-							if (col.type === 'start') {
-								return `<slay-map-encounter>start</slay-map-encounter>`
-							}
-							if (col.type === 'end') {
-								return `<slay-map-encounter>end</slay-map-encounter>`
-							}
-							if (col.type) {
-								return `<slay-map-encounter>${col.type}</slay-map-encounter>`
-							}
-							return `<slay-map-node></slay-map-node>`
-						})
-						.join('')}
-				</slay-map-row>
-			`
-				)
-				.join('')}
-		`
-		this.didRender(graph)
-	}
-	didRender(graph) {
-		if (!graph[0][0].el) this.addElementsToGraph(graph)
-		this.scatter()
-		this.drawPaths(graph)
-		console.log({graph})
-	}
+
 	addElementsToGraph(graph) {
 		graph.forEach((row, rowIndex) => {
-			row
-				.filter((n) => n.type)
-				.forEach((node, nodeIndex) => {
-					// nth-of starts at 1, not 0
-					node.el = this.querySelector(
-						`slay-map-row:nth-of-type(${rowIndex + 1})
-							 slay-map-encounter:nth-of-type(${nodeIndex + 1})`
-					)
-				})
+			row.forEach((node, nodeIndex) => {
+				if (!node.type) return
+				node.el = this.base.childNodes[rowIndex].childNodes[nodeIndex]
+			})
 		})
+		return graph
 	}
-	// Move the encounters around a bit.
-	scatter() {
-		const nodes = this.querySelectorAll('slay-map-encounter')
+
+	// Shake the positions up a bit.
+	scatter(distance = 35) {
+		const nodes = this.base.querySelectorAll('slay-map-node[encounter]')
 		nodes.forEach((node) => {
 			node.style.transform = `translate3d(
-				${randomBetween(-35, 35)}%,
-				${randomBetween(-35, 35)}%,
+				${randomBetween(-distance, distance)}%,
+				${randomBetween(-distance, distance)}%,
 				0)
 			`
 		})
 	}
+
 	drawPaths(graph) {
-		const pathOption = this.getAttribute('paths')
+		const pathOption = this.props.paths
 		if (pathOption) {
 			Array.from(pathOption)
 				.map((string) => Number(string))
 				.forEach((pathIndex) => {
-					findAndDrawPath(graph, this, pathIndex)
+					findAndDrawPath(graph, this.base, pathIndex)
 				})
 		} else {
 			// Draw a path for each col in row1, which connects to start.
 			console.time('mapRender')
 			graph[1].forEach((column, index) => {
 				setTimeout(() => {
-					findAndDrawPath(graph, this, index)
+					findAndDrawPath(graph, this.base, index)
 				}, index * 100)
 			})
 			console.timeEnd('mapRender')
 		}
 	}
+
+	selectedNode(y, x) {
+		// this.setState({x, y})
+		this.props.onSelect(x, y, this.state.graph)
+	}
+
+	render(props, state) {
+		const {graph} = state
+		if (!graph) return
+		console.log('Rendering graph', graph)
+		return html`
+			<slay-map data-x=${state.x} data-y=${state.y}>
+				${state.graph.map(
+					(row, rowIndex) => html`
+						<slay-map-row>
+							${row.map((col, colIndex) => {
+								if (col.type) {
+									return html`<slay-map-node
+										encounter
+										onClick=${() => this.selectedNode(rowIndex, colIndex)}
+										>${col.type}</slay-map-node
+									>`
+								}
+								return html`<slay-map-node></slay-map-node>`
+							})}
+						</slay-map-row>
+					`
+				)}
+			</slay-map>
+		`
+	}
 }
-customElements.define('sslay-map', SlayMap)

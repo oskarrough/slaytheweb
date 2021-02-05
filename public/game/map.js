@@ -25,6 +25,7 @@ export function generateGraph(opts) {
 	}
 	const options = Object.assign(defaultOptions, opts)
 	// if (options.maxEncounters > options.columns) options.maxEncounters = options.columns
+	console.log('Generating graph', options)
 
 	function Node(type = false) {
 		return {type, edges: new Set()}
@@ -184,6 +185,8 @@ const isEncounter = (node) => node && Boolean(node.type)
 // Since el.offsetLeft doesn't respect CSS transforms,
 // and getBounding.. is relative to viewport, not parent, we need this utility.
 function getPosWithin(el, container) {
+	if (!el) throw new Error('missing el')
+	if (!container) throw new Error('missing container')
 	const parent = container.getBoundingClientRect()
 	const rect = el.getBoundingClientRect()
 	return {

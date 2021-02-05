@@ -53,8 +53,7 @@ Welcome to the Slay The Web Console. Some examples:
 stw.game.state.player.maxHealth = 999; stw.update()
 stw.game.enqueue({type: 'drawCards', amount: 2})
 stw.update()
-stw.dealCards()
-		`)
+stw.dealCards()`)
 		window.stw = {
 			game: this.game,
 			update: this.update.bind(this),
