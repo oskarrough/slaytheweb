@@ -100,11 +100,10 @@ export class Mapo extends Component {
 						<slay-map-row current=${rowIndex === y}>
 							${row.map((col, colIndex) => {
 								const isCurrent = rowIndex === y && colIndex === x
-								const didVisit = pathTaken[rowIndex] && pathTaken[rowIndex].x === colIndex
 								return html`<slay-map-node
 									encounter=${Boolean(col.type)}
 									current=${isCurrent}
-									did-visit=${didVisit}
+									did-visit=${col.didVisit}
 									onClick=${() => props.onSelect({x: colIndex, y: rowIndex})}
 									><span>${col.type}</span></slay-map-node
 								>`

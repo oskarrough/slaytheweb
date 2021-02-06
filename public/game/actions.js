@@ -334,8 +334,8 @@ function move(state, {move}) {
 		draft.dungeon.x = move.x
 		draft.dungeon.y = move.y
 		// @todo these two lines produce max call stack error?!
-		// draft.dungeon.graph[move.y][move.x].isTaken = true
-		// draft.dungeon.pathTaken.push({x: move.x, y: move.y})
+		draft.dungeon.graph[move.y][move.x].didVisit = true
+		draft.dungeon.pathTaken.push({x: move.x, y: move.y})
 		// if (number === state.dungeon.rooms.length - 1) {
 		// 	throw new Error('You have reached the end of the dungeon. Congratulations.')
 		// }
