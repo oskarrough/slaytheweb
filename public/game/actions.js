@@ -272,9 +272,13 @@ function reshuffleAndDraw(state) {
 
 // Runs the "intent" for each monster in the current room
 function takeMonsterTurn(state) {
+	const room = getCurrRoom(state)
+	if (!room.monsters) {
+		console.log('empty room?', room)
+		return state
+	}
 	return produce(state, (draft) => {
-		// const room = getCurrRoom(draft)
-		state.dungeon.graph[draft.dungeon.y][draft.dungeon.x].room.monsters.forEach((monster) => {
+		room.monsters.forEach((monster) => {
 			// Reset block at start of turn.
 			monster.block = 0
 

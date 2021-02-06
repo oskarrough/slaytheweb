@@ -154,7 +154,6 @@ stw.dealCards()`)
 		this.game.enqueue({type: 'rewardPlayer', card})
 		this.setState({didPickCard: card})
 		this.update()
-		// this.goToNextRoom()
 	}
 	handleCampfireChoice(choice, reward) {
 		// step1
@@ -177,15 +176,18 @@ stw.dealCards()`)
 		// this.goToNextRoom()
 	}
 	goToNextRoom() {
-		console.log('goToNextRoom')
+		console.log('Go to next room, toggling map')
 		this.toggleOverlay('#Map')
 	}
 	handleMapMove(move) {
-		// if (getCurrRoom(this.state).type === 'monster') {}
-		this.game.enqueue({type: 'endTurn'})
+		if (getCurrRoom(this.state).type === 'monster') {
+			console.log('About to make a move, ending turn')
+			this.game.enqueue({type: 'endTurn'})
+		}
 		this.game.enqueue({type: 'move', move})
 		this.update(() => this.update(this.dealCards))
 		this.toggleOverlay('#Map')
+		console.log('Made a move')
 	}
 	render(props, state) {
 		if (!state.player) return
@@ -230,6 +232,8 @@ stw.dealCards()`)
 					<//> `
 				}
 
+				${room.type === 'start' && html`<${Overlay}><${StartRoom} onContinue=${this.goToNextRoom} /><//>`}
+
 				${
 					room.type === 'campfire' &&
 					html`<${Overlay}
@@ -239,8 +243,6 @@ stw.dealCards()`)
 							onContinue=${this.goToNextRoom}
 					/><//>`
 				}
-
-				${room.type === 'start' && html`<${Overlay}><${StartRoom} onContinue=${this.goToNextRoom} /><//>`}
 
 				<div class="Targets Split">
 					<div class="Targets-group">

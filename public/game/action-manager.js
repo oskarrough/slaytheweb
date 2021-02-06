@@ -22,6 +22,7 @@ export default function () {
 		try {
 			nextState = actions[action.type](state, action)
 		} catch (err) {
+			console.warn('Failed running action', action)
 			throw new Error(err)
 		}
 		past.enqueue({state, action})
