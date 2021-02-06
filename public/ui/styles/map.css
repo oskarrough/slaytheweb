@@ -40,41 +40,40 @@ slay-map-node {
 	position: relative;
 	z-index: 2;
 	border-radius: 50%;
-	transition: opacity 300ms;
+	transition: opacity 250ms, border-color 250ms;
 	/* All nodes are disabled by default */
 	pointer-events: none;
 	visibility: hidden;
-	opacity: 0.3;
-}
-slay-map-node[encounter] {
+	opacity: 0.333;
 }
 slay-map-node[linked] {
-	/* Enable the linked nodes */
 	visibility: visible;
 }
-/* The current encounter */
+slay-map-node[did-visit] {
+	border-color: hsla(0, 0%, 0%, 0.9);
+	opacity: 0.666;
+}
 slay-map-node[current] {
 	border-color: gold;
 	opacity: 1;
 }
 /* Nodes you can go to */
 slay-map-row[current] + slay-map-row slay-map-node[encounter] {
-	/* border-color: hsla(0, 0%, 0%, 0.9); */
 	pointer-events: auto;
 	opacity: 1;
 }
-
 slay-map-node[encounter]:hover {
+	border-color: hsla(50.6, 100%, 50%, 0.2);
 	cursor: pointer;
 	cursor: url(../images/cursors/point.png) 10 0, auto;
 }
-
 slay-map-node > span {
-	transition: transform 100ms ease-in;
+	transition: transform 300ms ease-in-out;
 	transform-origin: center;
 }
 slay-map-node[encounter]:hover > span {
-	transform: scale(1.1);
+	transform: scale(1.2);
+	transition-duration: 100ms;
 }
 
 slay-map svg.paths {
