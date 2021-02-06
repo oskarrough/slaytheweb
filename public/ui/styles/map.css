@@ -36,7 +36,7 @@ slay-map-node {
 	align-items: center;
 	margin: 0.25rem;
 	font-size: 1.5em;
-	border: 2px solid transparent;
+	border: 3px dashed transparent;
 	position: relative;
 	z-index: 2;
 	border-radius: 50%;
@@ -44,7 +44,7 @@ slay-map-node {
 	/* All nodes are disabled by default */
 	pointer-events: none;
 	visibility: hidden;
-	opacity: 0.333;
+	opacity: 0.5;
 }
 slay-map-node[linked] {
 	visibility: visible;
@@ -63,7 +63,7 @@ slay-map-row[current] + slay-map-row slay-map-node[encounter] {
 	opacity: 1;
 }
 slay-map-node[encounter]:hover {
-	border-color: hsla(50.6, 100%, 50%, 0.2);
+	border-color: hsla(0, 0%, 0%, 0.9);
 	cursor: pointer;
 	cursor: url(../images/cursors/point.png) 10 0, auto;
 }
@@ -72,7 +72,7 @@ slay-map-node > span {
 	transform-origin: center;
 }
 slay-map-node[encounter]:hover > span {
-	transform: scale(1.2);
+	transform: scale(1.3);
 	transition-duration: 100ms;
 }
 
