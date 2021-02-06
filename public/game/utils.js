@@ -44,9 +44,17 @@ export function random(from, to) {
 	return shuffle(r)[0]
 }
 
+// Returns the current map node
+export function getCurrMapNode(state) {
+	return state.dungeon.graph[state.dungeon.y][state.dungeon.x]
+}
+
 // Returns the current room in a dungeon.
 export function getCurrRoom(state) {
-	return state.dungeon.rooms[state.dungeon.index || 0]
+	const node = getCurrMapNode(state)
+	const room = node.room
+	if (!room) throw new Error('This node has no room')
+	return room
 }
 
 // Returns an array of targets (player or monsters) in the current room.
@@ -60,7 +68,7 @@ export function getTargets(state, target) {
 		const index = target.split('enemy')[1]
 		const monster = room.monsters[index]
 		if (!monster) {
-			throw new Error(`could not find "${target}" in room ${state.dungeon.index}`)
+			throw new Error(`could not find "${target}" in room ${state.dungeon.x},${state.dungeon.y}`)
 		}
 		return [monster]
 	}
@@ -97,10 +105,18 @@ export function isCurrentRoomCompleted(state) {
 
 // Checks if the whole dungeon (all rooms) has been cleared.
 export function isDungeonCompleted(state) {
-	const clearedRooms = state.dungeon.rooms.map(isRoomCompleted).filter(Boolean)
-	return clearedRooms.length === state.dungeon.rooms.length
+	const clearedRooms = state.dungeon.graph
+		.map((row) => {
+			return row.every(isRoomCompleted)
+		})
+		.filter(Boolean)
+	return clearedRooms.length === state.dungeon.graph.length
 }
 
 export function clamp(x, lower, upper) {
 	return Math.max(lower, Math.min(x, upper))
+}
+
+export function assert(condition, message) {
+	if (!condition) throw new Error(message)
 }

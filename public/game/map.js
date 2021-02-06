@@ -17,15 +17,28 @@ import {shuffle, random as randomBetween} from './utils.js'
 // using nested arrays for the rows and columns.
 export function generateGraph(opts) {
 	const defaultOptions = {
+		// map size
 		rows: 10,
 		columns: 6,
+		// min/max per row
 		minEncounters: 2,
 		maxEncounters: 5,
-		encounters: '💀💀💀💀💰❓👹',
+		// types of encounters. duplicate them to increase chance
+		/*
+			M Monster
+			$ Shop
+			? Question mark
+			T Treasure
+			E Elite
+			BOSS Boss
+		*/
+		//encounters: '💀💀💀💀💰❓👹',
+		encounters: '💀💀💀💀💰👹',
+		//encounters: 'MMMMMER$',
 	}
 	const options = Object.assign(defaultOptions, opts)
 	// if (options.maxEncounters > options.columns) options.maxEncounters = options.columns
-	console.log('Generating graph', options)
+	// console.log('Generating graph', options)
 
 	function Node(type = false) {
 		return {type, edges: new Set()}
@@ -34,8 +47,10 @@ export function generateGraph(opts) {
 	// The type of each encounter on the map is decided by this function.
 	// This could be much more "intelligent" for example elite fights should first come later.
 	// 🕸️ // 🏔 // 🗻 // 🌋 // 👺
-	function randomEncounter() {
-		return shuffle(Array.from(options.encounters))[0]
+	function randomEncounter(y) {
+		const pick = (types) => shuffle(Array.from(types))[0]
+		if (y < 3) return pick('💀')
+		return pick(options.encounters)
 	}
 
 	const graph = []
@@ -45,7 +60,7 @@ export function generateGraph(opts) {
 		let encounters = randomBetween(options.minEncounters, options.maxEncounters)
 		if (encounters > options.columns) encounters = options.columns
 		for (let i = 0; i < encounters; i++) {
-			row.push(Node(randomEncounter()))
+			row.push(Node(randomEncounter(r)))
 		}
 		// Fill empty columns.
 		while (row.length < options.columns) {

@@ -11,6 +11,7 @@ const a = actions
 test.beforeEach((t) => {
 	let state = a.createNewGame()
 	state = a.setDungeon(state, createTestDungeon())
+	state.dungeon.y = 1
 	t.context = {state}
 })
 

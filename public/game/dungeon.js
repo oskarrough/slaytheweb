@@ -1,13 +1,52 @@
+import {generateGraph} from './map.js'
 import {uuid} from './utils.js'
 import {shuffle, range} from './utils.js'
 
 // A dungeon is where the adventure starts.
 export default function Dungeon(props) {
-	if (!props.rooms) throw new Error('You must pass in rooms to create a dungeon')
+	const graph = (props && props.graph) || generateGraph()
+	// Add "rooms" to every node in the graph.
+	// Connects the type of each map node with a dungeon room.
+	graph.forEach((row, level) => {
+		row
+			.filter((n) => n.type)
+			.forEach((node) => {
+				const type = node.type
+				if (level === 0) {
+					node.room = StarterRoom()
+				} else if (level === graph.length - 1) {
+					node.room = BossRoom()
+				} else if (type === '💀') {
+					node.room = MonsterRoom(Monster({intents: [{block: 5}], hp: 10}))
+				} else if (type === '👹') {
+					node.room = MonsterRoom(Monster({intents: [{damage: 10}, {block: 5}], hp: 30}))
+				} else if (type === '💰') {
+					node.room = CampfireRoom()
+				} else {
+					throw new Error(`Could not match node type ${type} with a dungeon room`)
+				}
+			})
+	})
 	return {
 		id: uuid(),
-		rooms: props.rooms,
-		index: 0,
+		graph,
+		y: 0,
+		x: 0,
+		pathTaken: [{x: 0, y: 0}],
+	}
+}
+
+export function StarterRoom() {
+	return {
+		id: uuid(),
+		type: 'start',
+	}
+}
+
+export function BossRoom() {
+	return {
+		id: uuid(),
+		type: 'boss',
 	}
 }
 

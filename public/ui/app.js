@@ -34,6 +34,7 @@ export default class App extends Component {
 		this.handleCampfireChoice = this.handleCampfireChoice.bind(this)
 		this.goToNextRoom = this.goToNextRoom.bind(this)
 		this.toggleOverlay = this.toggleOverlay.bind(this)
+		this.handleMapMove = this.handleMapMove.bind(this)
 	}
 	componentDidMount() {
 		// Set up a new game
@@ -60,12 +61,14 @@ stw.dealCards()`)
 			createCard,
 			dealCards: this.dealCards.bind(this),
 			iddqd() {
-				this.game.state.dungeon.rooms.forEach((room) => {
-					if (!room.monsters) return
-					room.monsters.forEach((monster) => {
-						monster.currentHealth = 1
+				this.game.state.dungeon.graph.forEach((row) => {
+					row.forEach((node) => {
+						if (!node.room || !node.room.monsters) return
+						node.room.monsters.forEach((monster) => {
+							monster.currentHealth = 1
+						})
+						this.update()
 					})
-					this.update()
 				})
 			},
 		}
@@ -149,8 +152,9 @@ stw.dealCards()`)
 	}
 	handlePlayerReward(choice, card) {
 		this.game.enqueue({type: 'rewardPlayer', card})
+		this.setState({didPickCard: card})
 		this.update()
-		this.goToNextRoom()
+		// this.goToNextRoom()
 	}
 	handleCampfireChoice(choice, reward) {
 		// step1
@@ -170,17 +174,18 @@ stw.dealCards()`)
 		room.choice = choice
 		room.reward = reward
 		this.update()
-		this.goToNextRoom()
+		// this.goToNextRoom()
 	}
 	goToNextRoom() {
-		if (getCurrRoom(this.state).type === 'monster') {
-			this.game.enqueue({type: 'endTurn'})
-			this.game.enqueue({type: 'goToNextRoom'})
-			this.update(() => this.update(this.dealCards))
-		} else {
-			this.game.enqueue({type: 'goToNextRoom'})
-			this.update(this.dealCards)
-		}
+		console.log('goToNextRoom')
+		this.toggleOverlay('#Map')
+	}
+	handleMapMove(move) {
+		// if (getCurrRoom(this.state).type === 'monster') {}
+		this.game.enqueue({type: 'endTurn'})
+		this.game.enqueue({type: 'move', move})
+		this.update(() => this.update(this.dealCards))
+		this.toggleOverlay('#Map')
 	}
 	render(props, state) {
 		if (!state.player) return
@@ -192,7 +197,7 @@ stw.dealCards()`)
 		// There's a lot here because I did not want to split into too many files.
 		return html`
 			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
-				<figure class="App-background" data-room-index=${state.dungeon.index}></div>
+				<figure class="App-background" data-room-index=${state.dungeon.y}></div>
 				${
 					isDead &&
 					html`<${Overlay}>
@@ -292,11 +297,13 @@ stw.dealCards()`)
 						</div>
 					</div>
 				<//>
-				<${OverlayWithButton} open id="Map" topright>
+				<${OverlayWithButton} id="Map" topright>
 					<button align-right onClick=${() => this.toggleOverlay('#Map')}><u>M</u>ap</button>
 					<div class="Overlay-content">
 						<div class="Splash">
-							<div class="Splash-details"><${Map} dungeon=${state.dungeon} /></div>
+							<div class="Splash-details">
+								<${Map} dungeon=${state.dungeon} onMove=${this.handleMapMove} />
+							</div>
 						</div>
 					</div>
 				<//>

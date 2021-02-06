@@ -2,7 +2,7 @@ import produce, {setAutoFreeze} from '../web_modules/immer.js'
 import {createCard} from './cards.js'
 import {shuffle, getTargets, getCurrRoom, clamp} from './utils.js'
 import powers from './powers.js'
-import {createSimpleDungeon} from '../content/dungeon-encounters.js'
+import {dungeonWithMap} from '../content/dungeon-encounters.js'
 
 // Without this, immer.js will throw an error if our `state` is modified outside of an action.
 // While in theory a good idea, we're not there yet. It is a useful way to spot modifications
@@ -35,7 +35,7 @@ function createNewGame() {
 
 // By default a new game doesn't come with a dungeon. You have to set one explicitly. Look in dungeon-encounters.js for inspiration.
 function setDungeon(state, dungeon) {
-	if (!dungeon) dungeon = createSimpleDungeon()
+	if (!dungeon) dungeon = dungeonWithMap()
 	return produce(state, (draft) => {
 		if (!dungeon) throw new Error('Missing a dungeon?')
 		draft.dungeon = dungeon
@@ -188,7 +188,7 @@ function applyCardPowers(state, {card, target}) {
 				draft.player.powers[name] = newStacks
 			} else if (card.target === 'all enemies') {
 				// Add powers that target all enemies.
-				draft.dungeon.rooms[draft.dungeon.index].monsters.forEach((monster) => {
+				draft.dungeon.graph[draft.dungeon.y][draft.dungeon.x].room.monsters.forEach((monster) => {
 					if (monster.currentHealth < 1) return
 					const newStacks = (monster.powers[name] || 0) + stacks
 					monster.powers[name] = newStacks
@@ -196,7 +196,7 @@ function applyCardPowers(state, {card, target}) {
 			} else if (target) {
 				// const t = getTargets(draft, target)
 				const index = target.split('enemy')[1]
-				const monster = draft.dungeon.rooms[state.dungeon.index].monsters[index]
+				const monster = draft.dungeon.graph[draft.dungeon.y][draft.dungeon.x].room.monsters[index]
 				if (monster.currentHealth < 1) return
 				const newStacks = (monster.powers[name] || 0) + stacks
 				monster.powers[name] = newStacks
@@ -273,7 +273,8 @@ function reshuffleAndDraw(state) {
 // Runs the "intent" for each monster in the current room
 function takeMonsterTurn(state) {
 	return produce(state, (draft) => {
-		draft.dungeon.rooms[draft.dungeon.index].monsters.forEach((monster) => {
+		// const room = getCurrRoom(draft)
+		state.dungeon.graph[draft.dungeon.y][draft.dungeon.x].room.monsters.forEach((monster) => {
 			// Reset block at start of turn.
 			monster.block = 0
 
@@ -321,15 +322,20 @@ function rewardPlayer(state, {card}) {
 	})
 }
 
-function goToNextRoom(state) {
+// Records a move on the map.
+function move(state, {move}) {
 	let nextState = reshuffleAndDraw(state)
 	return produce(nextState, (draft) => {
 		draft.player.powers = {} // Clear temporary powers.
-		const number = state.dungeon.index
-		if (number === state.dungeon.rooms.length - 1) {
-			throw new Error('You have reached the end of the dungeon. Congratulations.')
-		}
-		draft.dungeon.index = number + 1
+		draft.dungeon.x = move.x
+		draft.dungeon.y = move.y
+		// @todo these two lines produce max call stack error?!
+		// draft.dungeon.graph[move.y][move.x].isTaken = true
+		// draft.dungeon.pathTaken.push({x: move.x, y: move.y})
+		// if (number === state.dungeon.rooms.length - 1) {
+		// 	throw new Error('You have reached the end of the dungeon. Congratulations.')
+		// }
+		console.log('we moved')
 	})
 }
 
@@ -349,7 +355,7 @@ export default {
 	discardHand,
 	drawCards,
 	endTurn,
-	goToNextRoom,
+	move,
 	playCard,
 	removeHealth,
 	reshuffleAndDraw,
