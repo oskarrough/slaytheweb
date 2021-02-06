@@ -59,9 +59,11 @@ export class Mapo extends Component {
 		})
 		this.setState({graph})
 	}
+
 	componentWillUpdate() {
 		console.log('Will update')
 	}
+
 	componentDidUpdate(prevProps) {
 		console.log('Did update')
 
@@ -103,11 +105,11 @@ export class Mapo extends Component {
 
 	drawPaths(graph) {
 		const paths = this.props.paths
-		// Sneaky but to control how many paths are rendered, you can pass a string "abc",
-		// where the length of the string equals the amount of paths.
+		// Sneaky but to control how many paths are rendered, you can pass a string "1" or "123",
+		// and it'll draw paths on those columns only.
 		if (paths) {
-			Array.from(paths).forEach((value, pathIndex) => {
-				findAndDrawPath(graph, this.base, pathIndex)
+			Array.from(paths).forEach((value) => {
+				findAndDrawPath(graph, this.base, Number(value))
 			})
 		} else {
 			// Draw a path for each col in row1, which connects to start.
