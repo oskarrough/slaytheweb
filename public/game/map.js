@@ -197,6 +197,21 @@ function getPosWithin(el, container) {
 	}
 }
 
+// Prints a text representation of the map to the conosle.
+export function graphToString(graph) {
+	graph.forEach((row, level) => {
+		let str = `${String(level).padStart(2, '0')}   `
+		row.forEach((node) => {
+			if (!node.type) {
+				str = str + ' '
+			} else {
+				str = str + node.type
+			}
+		})
+		console.log(str)
+	})
+}
+
 // https://github.com/oskarrough/slaytheweb/issues/28
 // https://i.imgur.com/oAofMa0.jpg
 // https://github.com/yurkth/stsmapgen
