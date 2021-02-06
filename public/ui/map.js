@@ -7,7 +7,8 @@ function capitalize(string) {
 }
 
 export default function map({dungeon}) {
-	const [level, setLevel] = useState(0)
+	const [level, setLevel] = useState(dungeon.index)
+	const [x, setX] = useState(0)
 
 	// function dungeonToGraph(dungeon) {
 	// 	return generateGraph({
@@ -20,20 +21,23 @@ export default function map({dungeon}) {
 	// debugger
 
 	function handleMove(x, y, node) {
-		console.log(y, x, node)
+		console.log('Selected', y, x, node)
+		setX(x)
 		setLevel(y)
 	}
 
 	return html`
-		<h2>Map of the dungeon. Level ${level}</h2>
+		<h2>Map of the dungeon. Level ${level}. Node ${x}</h2>
 		<${Mapo}
 			rows=${dungeon.rooms.length}
 			columns=${6}
 			encounters="💀💀💀💀🦚"
 			minEncounters=${2}
 			maxEncounters=${5}
-			paths="ab"
+			paths="16"
 			onSelect=${handleMove}
+			currentRow=${level}
+			currentCol=${x}
 		><//>
 		<ul class="MapList">
 			${dungeon.rooms.map(
@@ -133,19 +137,18 @@ export class Mapo extends Component {
 		if (!graph) return
 		console.log('Rendering graph', graph)
 		return html`
-			<slay-map data-x=${state.x} data-y=${state.y}>
+			<slay-map>
 				${state.graph.map(
 					(row, rowIndex) => html`
-						<slay-map-row>
+						<slay-map-row current=${props.currentRow === rowIndex}>
 							${row.map((col, colIndex) => {
-								if (col.type) {
-									return html`<slay-map-node
-										encounter
-										onClick=${() => this.selectedNode(rowIndex, colIndex)}
-										>${col.type}</slay-map-node
-									>`
-								}
-								return html`<slay-map-node></slay-map-node>`
+								const isCurrent = props.currentRow === rowIndex && props.currentCol === colIndex
+								return html`<slay-map-node
+									encounter=${Boolean(col.type)}
+									current=${isCurrent}
+									onClick=${() => this.selectedNode(rowIndex, colIndex)}
+									><span>${col.type}</span></slay-map-node
+								>`
 							})}
 						</slay-map-row>
 					`

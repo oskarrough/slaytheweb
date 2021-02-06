@@ -1,0 +1,93 @@
+slay-map {
+	--rows: 12;
+	--columns: 6;
+	box-sizing: border-box;
+	display: grid;
+	max-width: 50rem;
+	min-height: 72rem;
+	border: 4px solid black;
+	padding: 1em;
+	position: relative;
+	background: hsl(120, 17.5%, 19%);
+	margin: 1rem auto;
+	overflow: hidden;
+}
+
+slay-map-row {
+	display: grid;
+	grid-template-columns: repeat(var(--columns), 1fr);
+	grid-gap: 0.5em;
+}
+
+slay-map-row:first-of-type,
+slay-map-row:last-of-type {
+	grid-template-columns: repeat(var(--rows), 1fr);
+}
+slay-map-row:first-of-type slay-map-node,
+slay-map-row:last-of-type slay-map-node {
+	grid-column-start: 6;
+	grid-column-end: 8;
+	transform: none !important;
+}
+
+slay-map-node {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0.25rem;
+	font-size: 1.5em;
+	border: 2px solid transparent;
+	position: relative;
+	z-index: 2;
+	border-radius: 50%;
+	transition: opacity 300ms;
+	/* All nodes are disabled by default */
+	pointer-events: none;
+	visibility: hidden;
+	opacity: 0.3;
+}
+slay-map-node[encounter] {
+}
+slay-map-node[linked] {
+	/* Enable the linked nodes */
+	visibility: visible;
+}
+/* The current encounter */
+slay-map-node[current] {
+	border-color: gold;
+	opacity: 1;
+}
+/* Nodes you can go to */
+slay-map-row[current] + slay-map-row slay-map-node[encounter] {
+	/* border-color: hsla(0, 0%, 0%, 0.9); */
+	pointer-events: auto;
+	opacity: 1;
+}
+
+slay-map-node[encounter]:hover {
+	cursor: pointer;
+	cursor: url(../images/cursors/point.png) 10 0, auto;
+}
+
+slay-map-node > span {
+	transition: transform 100ms ease-in;
+	transform-origin: center;
+}
+slay-map-node[encounter]:hover > span {
+	transform: scale(1.1);
+}
+
+slay-map svg.paths {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+	pointer-events: none;
+}
+slay-map svg.paths line {
+	stroke: hsla(0, 0%, 0%, 0.9);
+	stroke-width: 3px;
+	stroke-dasharray: 7px;
+}
