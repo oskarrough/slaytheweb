@@ -7,27 +7,17 @@ function capitalize(string) {
 }
 
 export default function map({dungeon}) {
-	const [level, setLevel] = useState(dungeon.index)
-	const [x, setX] = useState(0)
+	const [paths, setPaths] = useState([{x: 0, y: 0}])
 
-	// function dungeonToGraph(dungeon) {
-	// 	return generateGraph({
-	// 		rows: dungeon.rooms.length,
-	// 		columns: 1,
-	// 		encounters: 'mmmmc',
-	// 	})
-	// }
-	// const graph = dungeonToGraph(dungeon)
-	// debugger
-
-	function handleMove(x, y, node) {
-		console.log('Selected', y, x, node)
-		setX(x)
-		setLevel(y)
+	function handleMove(move) {
+		setPaths([...paths, move])
 	}
 
+	const position = paths[paths.length - 1]
+	console.log('Selected', position, paths)
+
 	return html`
-		<h2>Map of the dungeon. Level ${level}. Node ${x}</h2>
+		<h2>Map of the dungeon. Level ${position.y}. Node ${position.x}</h2>
 		<${Mapo}
 			rows=${dungeon.rooms.length}
 			columns=${6}
@@ -36,9 +26,17 @@ export default function map({dungeon}) {
 			maxEncounters=${5}
 			paths="16"
 			onSelect=${handleMove}
-			currentRow=${level}
-			currentCol=${x}
+			chosenPaths=${paths}
+			x=${position.x}
+			y=${position.y}
 		><//>
+		<h2>Log</h2>
+		<ul class="MapList">
+			${paths.map((path) => html`<li>${path.y}.${path.x}</li>`)}
+		</ul>
+		<h2>
+			@todo This is the actual dungeon from the game. Need to connect this with the above somehow.
+		</h2>
 		<ul class="MapList">
 			${dungeon.rooms.map(
 				(room, index) =>
@@ -127,26 +125,23 @@ export class Mapo extends Component {
 		}
 	}
 
-	selectedNode(y, x) {
-		const node = this.state.graph[y][x]
-		this.props.onSelect(x, y, node)
-	}
-
-	render(props, state) {
-		const {graph} = state
+	render(props, {graph}) {
+		const {x, y, chosenPaths} = props
 		if (!graph) return
 		console.log('Rendering graph', graph)
 		return html`
 			<slay-map>
-				${state.graph.map(
+				${graph.map(
 					(row, rowIndex) => html`
-						<slay-map-row current=${props.currentRow === rowIndex}>
+						<slay-map-row current=${rowIndex === y}>
 							${row.map((col, colIndex) => {
-								const isCurrent = props.currentRow === rowIndex && props.currentCol === colIndex
+								const isCurrent = rowIndex === y && colIndex === x
+								const didVisit = chosenPaths[rowIndex] && chosenPaths[rowIndex].x === colIndex
 								return html`<slay-map-node
 									encounter=${Boolean(col.type)}
 									current=${isCurrent}
-									onClick=${() => this.selectedNode(rowIndex, colIndex)}
+									did-visit=${didVisit}
+									onClick=${() => props.onSelect({x: colIndex, y: rowIndex})}
 									><span>${col.type}</span></slay-map-node
 								>`
 							})}
