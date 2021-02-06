@@ -16,6 +16,7 @@ import {Overlay, OverlayWithButton} from './overlays.js'
 import {Player, Monster} from './player.js'
 import CardChooser from './card-chooser.js'
 import CampfireRoom from './campfire.js'
+import StartRoom from './start-room.js'
 import enableDragDrop from './dragdrop.js'
 
 // Puts and gets the game state in the URL.
@@ -233,6 +234,8 @@ stw.dealCards()`)
 							onContinue=${this.goToNextRoom}
 					/><//>`
 				}
+
+				${room.type === 'start' && html`<${Overlay}><${StartRoom} onContinue=${this.goToNextRoom} /><//>`}
 
 				<div class="Targets Split">
 					<div class="Targets-group">
