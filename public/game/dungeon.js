@@ -3,8 +3,8 @@ import {uuid} from './utils.js'
 import {shuffle, range} from './utils.js'
 
 // A dungeon is where the adventure starts.
-export default function Dungeon(props) {
-	const graph = (props && props.graph) || generateGraph()
+export default function Dungeon(graphOptions = {}) {
+	const graph = generateGraph(graphOptions)
 	// Add "rooms" to every node in the graph.
 	// Connects the type of each map node with a dungeon room.
 	graph.forEach((row, level) => {
@@ -32,6 +32,7 @@ export default function Dungeon(props) {
 		graph,
 		y: 0,
 		x: 0,
+		paths: graphOptions.paths || undefined,
 		pathTaken: [{x: 0, y: 0}],
 	}
 }

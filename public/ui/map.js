@@ -1,15 +1,15 @@
-import {Component, html} from '../../web_modules/htm/preact/standalone.module.js'
+import {Component, html} from '../web_modules/htm/preact/standalone.module.js'
 import {findAndDrawPath} from '../game/map.js'
 import {random as randomBetween} from '../game/utils.js'
 
 export default function map(props) {
-	const {graph, x, y, pathTaken} = props.dungeon
+	const {graph, x, y, paths, pathTaken} = props.dungeon
 
 	return html`
 		<h2>Map of the dungeon. Level ${y}. Node ${x}</h2>
 		<${Mapo}
 			graph=${graph}
-			paths="16"
+			paths=${paths}
 			pathTaken=${pathTaken}
 			x=${x}
 			y=${y}
@@ -77,7 +77,7 @@ export class Mapo extends Component {
 				findAndDrawPath(graph, this.base, Number(value))
 			})
 		} else {
-			// Draw a path for each col in row1, which connects to start.
+			// If no specific paths are requested, we draw a path on each column.
 			graph[1].forEach((column, index) => {
 				setTimeout(() => {
 					findAndDrawPath(graph, this.base, index)

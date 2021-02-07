@@ -1,18 +1,21 @@
 import Dungeon, {MonsterRoom, Monster} from '../game/dungeon.js'
-import {generateGraph} from '../game/map.js'
 
 // Hello. With the imported functions above you can create a dungeon with different rooms and monsters.
 // This file contains the example dungeon used in Slay the Web.
 
 export const dungeonWithMap = () => {
-	const graph = generateGraph()
-	return Dungeon({graph})
+	return Dungeon({
+		rows: 7,
+		columns: 6,
+		minEncounters: 3,
+		maxEncounters: 4,
+		paths: '0235',
+	})
 }
 
 // This is the dungeon used in tests. Don't change it without running tests.
 export const createTestDungeon = () => {
-	const graph = generateGraph({rows: 3, columns: 1})
-	const dungeon = Dungeon({graph})
+	const dungeon = Dungeon({rows: 3, columns: 1})
 	// The tests rely on the first room having a single monster, second two monsters.
 	const intents = [{block: 7}, {damage: 10}, {damage: 8}, {}, {damage: 14}]
 	dungeon.graph[1][0].room = MonsterRoom(Monster({hp: 42, intents}))
