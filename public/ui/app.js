@@ -299,7 +299,7 @@ stw.dealCards()`)
 						</div>
 					</div>
 				<//>
-				<${OverlayWithButton} id="Map" topright>
+				<${OverlayWithButton} id="Map" topright key=${2}>
 					<button align-right onClick=${() => this.toggleOverlay('#Map')}><u>M</u>ap</button>
 					<div class="Overlay-content">
 						<div class="Splash">

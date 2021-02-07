@@ -6,19 +6,21 @@ export default function map(props) {
 	const {graph, x, y, paths, pathTaken} = props.dungeon
 
 	return html`
-		<h2>Map of the dungeon. Level ${y}. Node ${x}</h2>
-		<${Mapo}
-			graph=${graph}
-			paths=${paths}
-			pathTaken=${pathTaken}
-			x=${x}
-			y=${y}
-			onSelect=${props.onMove}
-		><//>
-		<h2>Log</h2>
-		<ul class="MapList">
-			${pathTaken.map((path) => html`<li>${path.y}.${path.x}</li>`)}
-		</ul>
+		<div class="MapContainer">
+			<h2>Map of the dungeon. Level ${y}. Node ${x}</h2>
+			<${Mapo}
+				graph=${graph}
+				paths=${paths}
+				pathTaken=${pathTaken}
+				x=${x}
+				y=${y}
+				onSelect=${props.onMove}
+			><//>
+			<h2>Log</h2>
+			<ul class="MapList">
+				${pathTaken.map((path) => html`<li>${path.y}.${path.x}</li>`)}
+			</ul>
+		</div>
 	`
 }
 
@@ -38,9 +40,12 @@ export class Mapo extends Component {
 		// Add references to our DOM elements on the graph. Why?
 		// no set state because we don't want to rerender
 		if (!this.didDrawPaths) {
-			console.log('Did update: doing heavy work')
+			const el = this.props.graph[0][0].el
+			console.log('Did update: doing heavy work', Boolean(el))
+			// if (!el) {
 			this.scatter()
 			this.props.graph = this.addElementsToGraph(this.props.graph)
+			// }
 			this.drawPaths(this.props.graph)
 			this.didDrawPaths = true
 		}
