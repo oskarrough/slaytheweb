@@ -7,7 +7,7 @@ import {dungeonWithMap} from '../content/dungeon-encounters.js'
 // Without this, immer.js will throw an error if our `state` is modified outside of an action.
 // While in theory a good idea, we're not there yet. It is a useful way to spot modifications
 // of the game state that should not be there.
-setAutoFreeze(false)
+// setAutoFreeze(false)
 
 // In Slay the Web, we have one big object with game state.
 // Whenever we want to change something, call an "action" from this file.
@@ -329,17 +329,16 @@ function rewardPlayer(state, {card}) {
 // Records a move on the map.
 function move(state, {move}) {
 	let nextState = reshuffleAndDraw(state)
+
 	return produce(nextState, (draft) => {
 		draft.player.powers = {} // Clear temporary powers.
 		draft.dungeon.x = move.x
 		draft.dungeon.y = move.y
-		// @todo these two lines produce max call stack error?!
 		draft.dungeon.graph[move.y][move.x].didVisit = true
 		draft.dungeon.pathTaken.push({x: move.x, y: move.y})
 		// if (number === state.dungeon.rooms.length - 1) {
 		// 	throw new Error('You have reached the end of the dungeon. Congratulations.')
 		// }
-		console.log('we moved')
 	})
 }
 

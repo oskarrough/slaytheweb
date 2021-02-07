@@ -49,7 +49,7 @@ export function generateGraph(opts) {
 	// 🕸️ // 🏔 // 🗻 // 🌋 // 👺
 	function randomEncounter(y) {
 		const pick = (types) => shuffle(Array.from(types))[0]
-		if (y < 3) return pick('💀')
+		if (y < 2) return pick('💀')
 		return pick(options.encounters)
 	}
 

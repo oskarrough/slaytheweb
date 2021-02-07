@@ -173,7 +173,7 @@ stw.dealCards()`)
 		room.choice = choice
 		room.reward = reward
 		this.update()
-		// this.goToNextRoom()
+		this.goToNextRoom()
 	}
 	goToNextRoom() {
 		console.log('Go to next room, toggling map')
