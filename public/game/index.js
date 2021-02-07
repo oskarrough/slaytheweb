@@ -19,7 +19,7 @@ import ActionManager from './action-manager.js'
 // ```
 
 export default function createNewGame() {
-	const actionManager = ActionManager()
+	const actionManager = ActionManager({debug: true})
 
 	// This exists because actions.createNewGame() doesn't set a dungeon and deck.
 	function createNewState() {
