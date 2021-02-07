@@ -45,7 +45,9 @@ test('can customize the type of encounters', (t) => {
 		row
 			.filter((n) => n.type)
 			.forEach((node) => {
-				t.true(encounters.includes(node.type))
+				if (index > 2) {
+					t.true(encounters.includes(node.type))
+				}
 			})
 	})
 })

@@ -56,17 +56,12 @@ test('we know when a monster room with many monsters is won', (t) => {
 test.todo('we know when a campfire has been used')
 
 test('we can navigate a dungeon', (t) => {
-	// Prepare a game with a dungeon.
-	// let state = a.createNewGame()
-	const dungeon = Dungeon()
-	t.is(dungeon.x, 0)
-	t.is(dungeon.y, 0)
-	// state = a.move(state, {move: {x: 1, y: 1}})
-	// state = a.setDungeon(state, dungeon)
-	// Go through the next rooms.
-	// state = a.goToNextRoom(state)
-	// t.is(getCurrRoom(state).id, dungeon.rooms[1].id)
-	// state = a.goToNextRoom(state)
-	// t.is(getCurrRoom(state).id, dungeon.rooms[2].id)
-	// t.throws(() => a.goToNextRoom(state), null, 'can not go further than last room')
+	let state = a.createNewGame()
+	state = a.setDungeon(state, Dungeon())
+	t.is(state.dungeon.x, 0)
+	t.is(state.dungeon.y, 0)
+	// Go through the next room.
+	const nextState = a.move(state, {move: {x: 1, y: 2}})
+	t.is(nextState.dungeon.x, 1)
+	t.is(nextState.dungeon.y, 2)
 })

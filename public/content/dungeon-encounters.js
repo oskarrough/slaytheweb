@@ -1,4 +1,4 @@
-import Dungeon from '../game/dungeon.js'
+import Dungeon, {MonsterRoom, Monster} from '../game/dungeon.js'
 import {generateGraph} from '../game/map.js'
 
 // Hello. With the imported functions above you can create a dungeon with different rooms and monsters.
@@ -11,8 +11,13 @@ export const dungeonWithMap = () => {
 
 // This is the dungeon used in tests. Don't change it without running tests.
 export const createTestDungeon = () => {
-	const graph = generateGraph({rows: 2, columns: 1, maxEncounters: 1})
-	return Dungeon({graph})
+	const graph = generateGraph({rows: 3, columns: 1})
+	const dungeon = Dungeon({graph})
+	// The tests rely on the first room having a single monster, second two monsters.
+	const intents = [{block: 7}, {damage: 10}, {damage: 8}, {}, {damage: 14}]
+	dungeon.graph[1][0].room = MonsterRoom(Monster({hp: 42, intents}))
+	dungeon.graph[2][0].room = MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents}))
+	return dungeon
 }
 
 /*
