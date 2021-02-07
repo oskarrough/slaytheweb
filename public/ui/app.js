@@ -141,7 +141,10 @@ stw.dealCards()`)
 		if (key === 'e') this.endTurn()
 		if (key === 'u') this.undo()
 		if (key === 'Escape') {
-			let openOverlays = this.base.querySelectorAll('.Overlay:not(#Menu)[open]')
+			// let openOverlays = this.base.querySelectorAll('.Overlay:not(#Menu)[open]')
+			let openOverlays = this.base.querySelectorAll(
+				'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open]'
+			)
 			openOverlays.forEach((el) => el.removeAttribute('open'))
 			this.toggleOverlay('#Menu')
 		}
@@ -180,13 +183,14 @@ stw.dealCards()`)
 		this.toggleOverlay('#Map')
 	}
 	handleMapMove(move) {
-		if (getCurrRoom(this.state).type === 'monster') {
-			console.log('About to make a move, ending turn')
-			this.game.enqueue({type: 'endTurn'})
-		}
-		this.game.enqueue({type: 'move', move})
-		this.update(() => this.update(this.dealCards))
 		this.toggleOverlay('#Map')
+		// if (getCurrRoom(this.state).type === 'monster') {
+		// console.log('About to make a move, ending turn'
+		// this.game.enqueue({type: 'endTurn'})
+		// this.update(() => this.update(this.dealCards))
+		// }
+		this.game.enqueue({type: 'move', move})
+		this.update(this.dealCards)
 		console.log('Made a move')
 	}
 	render(props, state) {
@@ -299,7 +303,7 @@ stw.dealCards()`)
 						</div>
 					</div>
 				<//>
-				<${OverlayWithButton} id="Map" topright key=${2}>
+				<${OverlayWithButton} id="Map" topright key=${1}>
 					<button align-right onClick=${() => this.toggleOverlay('#Map')}><u>M</u>ap</button>
 					<div class="Overlay-content">
 						<div class="Splash">
