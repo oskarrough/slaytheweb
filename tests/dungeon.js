@@ -13,14 +13,9 @@ test('can create rooms with many monsters', (t) => {
 
 test('can create a dungeon', (t) => {
 	const d = Dungeon({
-		graph: generateGraph({rows: 5}),
-		// rooms: [MonsterRoom(Monster()), CampfireRoom(), MonsterRoom(Monster())],
+		graph: generateGraph({rows: 5, columns: 1}),
 	})
 	t.is(d.graph.length, 5 + 2) // +2 because start+end
-	// t.is(d.rooms[0].type, 'monster')
-	// t.is(d.rooms[0].monsters.length, 1)
-	// t.is(d.rooms[1].type, 'campfire')
-	// t.is(d.rooms[2].type, 'monster')
 })
 
 test('can set a dungeon', (t) => {
@@ -30,34 +25,32 @@ test('can set a dungeon', (t) => {
 	t.deepEqual(state.dungeon, dungeon, 'setting dungeon works')
 })
 
-test.only('we know when a monster room is won', (t) => {
+test('we know when a monster room is won', (t) => {
 	let state = a.createNewGame()
-	state = a.setDungeon(state, Dungeon())
+	const graph = generateGraph({rows: 1, columns: 1})
+	state = a.setDungeon(state, Dungeon({graph}))
+	state.dungeon.y = 1
 	t.false(isCurrentRoomCompleted(state))
-	// room.monsters[0].currentHealth = 0
-	// t.true(isCurrentRoomCompleted(state))
-})
-
-test('we know when the entire dungeon has been cleared', (t) => {
-	const dungeon = Dungeon({
-		rooms: [MonsterRoom(Monster()), MonsterRoom(Monster())],
-	})
-	const state = {dungeon}
-	t.false(isDungeonCompleted(state))
-	state.dungeon.rooms[0].monsters[0].currentHealth = 0
-	t.false(isDungeonCompleted(state))
-	state.dungeon.rooms[1].monsters[0].currentHealth = 0
-	t.true(isDungeonCompleted(state))
+	getCurrRoom(state).monsters[0].currentHealth = 0
+	t.true(isCurrentRoomCompleted(state))
 })
 
 test('we know when a monster room with many monsters is won', (t) => {
-	const room = new MonsterRoom(new Monster(), new Monster())
-	const state = {dungeon: {rooms: [room]}}
+	let state = a.createNewGame()
+	const graph = generateGraph({rows: 1, columns: 1})
+	state = a.setDungeon(state, Dungeon({graph}))
+	state.dungeon.graph[1][0].room = new MonsterRoom(new Monster(), new Monster())
+	state.dungeon.y = 1
+
 	t.false(isCurrentRoomCompleted(state))
-	room.monsters[0].currentHealth = 0
-	t.false(isCurrentRoomCompleted(state))
-	room.monsters[1].currentHealth = 0
+	t.false(isDungeonCompleted(state))
+
+	getCurrRoom(state).monsters[0].currentHealth = 0
+	t.false(isCurrentRoomCompleted(state), 'one more to kill')
+
+	getCurrRoom(state).monsters[1].currentHealth = 0
 	t.true(isCurrentRoomCompleted(state))
+	t.true(isDungeonCompleted(state))
 })
 
 test.todo('we know when a campfire has been used')

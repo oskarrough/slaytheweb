@@ -90,11 +90,15 @@ export function isRoomCompleted(room) {
 	if (room.type === 'monster') {
 		const deadMonsters = room.monsters.filter((m) => m.currentHealth < 1)
 		return deadMonsters.length === room.monsters.length
-	}
-
-	if (room.type === 'campfire') {
+	} else if (room.type === 'campfire') {
 		return room.choice === 'rest' || Boolean(room.reward)
+	} else if (room.type === 'start') {
+		return true
+	} else if (room.type === 'boss') {
+		// @todo
+		return true
 	}
+	throw new Error(`could not check room type ${room.type}`)
 }
 
 // Check if the current room in a game has been cleared.
@@ -104,10 +108,13 @@ export function isCurrentRoomCompleted(state) {
 }
 
 // Checks if the whole dungeon (all rooms) has been cleared.
+// As long as there is one cleared node per row.
 export function isDungeonCompleted(state) {
 	const clearedRooms = state.dungeon.graph
 		.map((row) => {
-			return row.every(isRoomCompleted)
+			return row.some((node) => {
+				return node.room && isRoomCompleted(node.room)
+			})
 		})
 		.filter(Boolean)
 	return clearedRooms.length === state.dungeon.graph.length
