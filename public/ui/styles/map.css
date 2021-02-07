@@ -9,7 +9,7 @@ slay-map {
 	padding: 1em;
 	position: relative;
 	background: hsl(120, 17.5%, 19%);
-	/* background: hsl(120deg 3% 42%); */
+	background: hsl(120deg 3% 42%);
 	margin: 1rem auto;
 	overflow: hidden;
 }
