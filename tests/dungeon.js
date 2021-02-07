@@ -1,6 +1,6 @@
 import test from 'ava'
 import actions from '../public/game/actions'
-import Dungeon, {CampfireRoom, MonsterRoom, Monster} from '../public/game/dungeon'
+import Dungeon, {MonsterRoom, Monster} from '../public/game/dungeon'
 import {generateGraph} from '../public/game/map'
 import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../public/game/utils'
 
