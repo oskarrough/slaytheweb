@@ -1,4 +1,4 @@
-import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
+import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 
 export default class Cards extends Component {
 	// props = {gameState: {}, type ''}

@@ -1,5 +1,5 @@
 // Third party dependencies
-import {html, Component} from '../../web_modules/htm/preact/standalone.module.js'
+import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 import gsap from './animations.js'
 import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 

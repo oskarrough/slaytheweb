@@ -1,5 +1,5 @@
 import {html, render, Component} from '../web_modules/htm/preact/standalone.module.js'
-import gsap from './../web_modules/gsap.js'
+import gsap from '../web_modules/gsap.js'
 import App from './app.js'
 
 // This component decides what to render:

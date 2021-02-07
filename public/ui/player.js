@@ -1,4 +1,4 @@
-import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
+import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 import {weak as weakPower, vulnerable as vulnerablePower} from '../game/powers.js'
 
 export const Player = (props) => {
