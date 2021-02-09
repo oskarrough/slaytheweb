@@ -4,5 +4,16 @@ import * as Tone from '../web_modules/tone.js'
 const synth = new Tone.Synth().toDestination()
 
 export const playSoundFromCard = (card) => {
-	synth.triggerAttackRelease("C4", "8n")
+	synth.triggerAttackRelease('C4', '8n')
 }
+
+const sfx = {
+	selectCard: () => {
+		synth.triggerAttackRelease('C4', '8n')
+	},
+	endTurn: () => {
+		synth.triggerAttackRelease('C4', '8n')
+	},
+}
+
+export default sfx

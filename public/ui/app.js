@@ -17,6 +17,7 @@ import {Player, Monster} from './player.js'
 import CardChooser from './card-chooser.js'
 import CampfireRoom from './campfire.js'
 import enableDragDrop from './dragdrop.js'
+import sfx from './sounds.js'
 
 // Puts and gets the game state in the URL.
 const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state)))
@@ -114,6 +115,7 @@ stw.dealCards()
 		})
 	}
 	endTurn() {
+		sfx.endTurn()
 		gsap.effects.discardHand('.Hand .Card', {
 			onComplete: reallyEndTurn.bind(this),
 		})
