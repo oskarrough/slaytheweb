@@ -331,7 +331,10 @@ function move(state, {move}) {
 	let nextState = reshuffleAndDraw(state)
 
 	return produce(nextState, (draft) => {
-		draft.player.powers = {} // Clear temporary powers.
+		// Clear temporary powers, energy and block on player.
+		draft.player.powers = {}
+		draft.player.currentEnergy = 3
+		draft.player.block = 0
 		draft.dungeon.x = move.x
 		draft.dungeon.y = move.y
 		draft.dungeon.graph[move.y][move.x].didVisit = true
