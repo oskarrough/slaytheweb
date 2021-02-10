@@ -5,28 +5,27 @@ import {shuffle, range} from './utils.js'
 // A dungeon is where the adventure starts.
 export default function Dungeon(graphOptions = {}) {
 	const graph = generateGraph(graphOptions)
-	// Add "rooms" to every node in the graph.
-	// Connects the type of each map node with a dungeon room.
+
+	// Add "rooms" to all valid node in the graph.
 	graph.forEach((row, level) => {
 		row
 			.filter((n) => n.type)
-			.forEach((node) => {
-				const type = node.type
-				if (level === 0) {
-					node.room = StarterRoom()
-				} else if (level === graph.length - 1) {
-					node.room = BossRoom()
-				} else if (type === '💀') {
-					node.room = MonsterRoom(Monster({intents: [{block: 5}], hp: 10}))
-				} else if (type === '👹') {
-					node.room = MonsterRoom(Monster({intents: [{damage: 10}, {block: 5}], hp: 30}))
-				} else if (type === '💰') {
-					node.room = CampfireRoom()
-				} else {
-					throw new Error(`Could not match node type ${type} with a dungeon room`)
-				}
+			.map((node) => {
+				node.room = createRandomRoom(node.type, level)
 			})
 	})
+
+	// Pass it your desired room type as well as the level,
+	// and it'll return a (more or less) random room to use.
+	function createRandomRoom(type, level) {
+		if (level === 0) return StartRoom()
+		if (level === graph.length - 1) return BossRoom()
+		if (type === '💀') return MonsterRoom(Monster({intents: [{block: 5}], hp: 10}))
+		if (type === '👹') return MonsterRoom(Monster({intents: [{damage: 10}, {block: 5}], hp: 30}))
+		if (type === '💰') return CampfireRoom()
+		throw new Error(`Could not match node type ${type} with a dungeon room`)
+	}
+
 	return {
 		id: uuid(),
 		graph,
@@ -37,7 +36,7 @@ export default function Dungeon(graphOptions = {}) {
 	}
 }
 
-export function StarterRoom() {
+export function StartRoom() {
 	return {
 		id: uuid(),
 		type: 'start',
