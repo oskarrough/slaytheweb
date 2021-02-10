@@ -40,6 +40,8 @@ export default class App extends Component {
 		this.game = game
 		this.setState(game.state, this.dealCards)
 
+		sfx.startGame()
+
 		// If there is a saved game state, use it.
 		const savedGameState = window.location.hash && load()
 		if (savedGameState) {
