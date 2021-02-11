@@ -1,6 +1,6 @@
 import {Component, html} from '../web_modules/htm/preact/standalone.module.js'
 import {drawPath} from '../game/map.js'
-import {random as randomBetween} from '../game/utils.js'
+import {isRoomCompleted, random as randomBetween} from '../game/utils.js'
 
 export default function map(props) {
 	const {graph, x, y, pathTaken} = props.dungeon
@@ -75,7 +75,7 @@ export class Mapo extends Component {
 			console.log('No graph to render. This should not happen?', graph)
 			return
 		}
-		const edges = graph[y][x].edges
+		const edgesFromCurrentNode = graph[y][x].edges
 		return html`
 			<slay-map>
 				${graph.map(
@@ -83,7 +83,7 @@ export class Mapo extends Component {
 						<slay-map-row current=${rowIndex === y}>
 							${row.map((node, nodeIndex) => {
 								const isCurrent = rowIndex === y && nodeIndex === x
-								const canVisit = edges.has(node)
+								const canVisit = edgesFromCurrentNode.has(node) && isRoomCompleted(graph[y][x].room)
 								return html`<slay-map-node
 									encounter=${Boolean(node.type)}
 									current=${isCurrent}
