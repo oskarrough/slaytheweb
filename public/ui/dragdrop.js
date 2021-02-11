@@ -1,4 +1,4 @@
-import {Draggable} from './../web_modules/gsap/Draggable.js'
+import {Draggable} from '../web_modules/gsap/Draggable.js'
 import gsap from './animations.js'
 import {cardHasValidTarget} from '../game/utils.js'
 import sfx from './sounds.js'

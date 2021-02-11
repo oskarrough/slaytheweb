@@ -15,8 +15,20 @@
 		<link rel="stylesheet" href="ui/index.css" />
 	</head>
 	<body>
-		<div id="SlayTheWeb"></div>
 
+		<!-- <p><button onClick="stw.generate()">Generate new map</button></p>
+		<slay-map rows="12" columns="6" minEncounters="2" maxEncounters="5" paths="05"></slay-map>
+		<script async src="game/map.js" type="module"></script>
+		<script async src="ui/map.js" type="module"></script>
+		<script>
+			// Tool to regenerate the map for testing.
+			if (!window.stw) window.stw = {}
+			window.stw.generate = function generate() {
+				document.querySelector('slay-map').render()
+			}
+		</script> -->
+
+		<div id="SlayTheWeb"></div>
 		<script async src="ui/index.js" type="module"></script>
 		<script>
 			// Offline support

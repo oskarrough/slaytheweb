@@ -1,13 +1,78 @@
+import {generateGraph, findPath} from './map.js'
 import {uuid} from './utils.js'
 import {shuffle, range} from './utils.js'
 
 // A dungeon is where the adventure starts.
-export default function Dungeon(props) {
-	if (!props.rooms) throw new Error('You must pass in rooms to create a dungeon')
+export default function Dungeon(graphOptions = {}) {
+	const graph = generateGraph(graphOptions)
+
+	// Find the paths of the map.
+	const paths = []
+	if (graphOptions.paths) {
+		Array.from(graphOptions.paths).forEach((value) => {
+			const path = findPath(graph, Number(value))
+			paths.push(path)
+		})
+	} else {
+		// If no specific paths are requested, we draw a path on each column.
+		graph[1].forEach((column, index) => {
+			const path = findPath(graph, index)
+			paths.push(path)
+		})
+	}
+
+	// Add ".edges" to each node, so we know which connections it has.
+	const nodeFromMove = ([row, col]) => graph[row][col]
+	paths.forEach((path) => {
+		path.forEach((move) => {
+			const a = nodeFromMove(move[0])
+			const b = nodeFromMove(move[1])
+			a.edges.add(b)
+			// b.edges.add(a)
+		})
+	})
+
+	// Add "room" to all valid node in the graph.
+	graph.forEach((row, level) => {
+		row.map((node) => {
+			if (node.type) {
+				node.room = createRandomRoom(node.type, level)
+			}
+		})
+	})
+
+	// Pass it your desired room type as well as the level,
+	// and it'll return a (more or less) random room to use.
+	function createRandomRoom(type, level) {
+		if (level === 0) return StartRoom()
+		if (level === graph.length - 1) return BossRoom()
+		if (type === '💀') return MonsterRoom(Monster({intents: [{block: 5}], hp: 10}))
+		if (type === '👹') return MonsterRoom(Monster({intents: [{damage: 10}, {block: 5}], hp: 30}))
+		if (type === '💰') return CampfireRoom()
+		throw new Error(`Could not match node type ${type} with a dungeon room`)
+	}
+
 	return {
 		id: uuid(),
-		rooms: props.rooms,
-		index: 0,
+		graph,
+		x: 0,
+		y: 0,
+		paths,
+		pathTaken: [{x: 0, y: 0}],
+	}
+}
+
+export function StartRoom() {
+	return {
+		id: uuid(),
+		type: 'start',
+	}
+}
+
+export function BossRoom() {
+	return {
+		id: uuid(),
+		type: 'boss',
 	}
 }
 

@@ -32,19 +32,29 @@ export function shuffle(array) {
 }
 
 // Returns a range of numbers. Example: range(3) === [1,2,3] or range(3, 6) === [6,7,8]
+// range(3, 2) = [2,3,4]
 export function range(size, startAt = 0) {
 	return [...Array(size).keys()].map((i) => i + startAt)
 }
 
 // Get a random number within a range
 export function random(from, to) {
-	const r = range(to - from, from)
+	const r = range(1 + to - from, from) // random(2,4) = range(3,2)
+	if (from === to) return from // e.g. 5-5 returns 5 instead of 0
 	return shuffle(r)[0]
+}
+
+// Returns the current map node
+export function getCurrMapNode(state) {
+	return state.dungeon.graph[state.dungeon.y][state.dungeon.x]
 }
 
 // Returns the current room in a dungeon.
 export function getCurrRoom(state) {
-	return state.dungeon.rooms[state.dungeon.index || 0]
+	const node = getCurrMapNode(state)
+	const room = node.room
+	if (!room) throw new Error('This node has no room')
+	return room
 }
 
 // Returns an array of targets (player or monsters) in the current room.
@@ -58,7 +68,7 @@ export function getTargets(state, target) {
 		const index = target.split('enemy')[1]
 		const monster = room.monsters[index]
 		if (!monster) {
-			throw new Error(`could not find "${target}" in room ${state.dungeon.index}`)
+			throw new Error(`could not find "${target}" in room ${state.dungeon.x},${state.dungeon.y}`)
 		}
 		return [monster]
 	}
@@ -80,11 +90,15 @@ export function isRoomCompleted(room) {
 	if (room.type === 'monster') {
 		const deadMonsters = room.monsters.filter((m) => m.currentHealth < 1)
 		return deadMonsters.length === room.monsters.length
-	}
-
-	if (room.type === 'campfire') {
+	} else if (room.type === 'campfire') {
 		return room.choice === 'rest' || Boolean(room.reward)
+	} else if (room.type === 'start') {
+		return true
+	} else if (room.type === 'boss') {
+		// @todo
+		return true
 	}
+	throw new Error(`could not check room type ${room.type}`)
 }
 
 // Check if the current room in a game has been cleared.
@@ -94,11 +108,22 @@ export function isCurrentRoomCompleted(state) {
 }
 
 // Checks if the whole dungeon (all rooms) has been cleared.
+// As long as there is one cleared node per row.
 export function isDungeonCompleted(state) {
-	const clearedRooms = state.dungeon.rooms.map(isRoomCompleted).filter(Boolean)
-	return clearedRooms.length === state.dungeon.rooms.length
+	const clearedRooms = state.dungeon.graph
+		.map((row) => {
+			return row.some((node) => {
+				return node.room && isRoomCompleted(node.room)
+			})
+		})
+		.filter(Boolean)
+	return clearedRooms.length === state.dungeon.graph.length
 }
 
 export function clamp(x, lower, upper) {
 	return Math.max(lower, Math.min(x, upper))
+}
+
+export function assert(condition, message) {
+	if (!condition) throw new Error(message)
 }

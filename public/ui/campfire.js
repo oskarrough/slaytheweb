@@ -1,4 +1,4 @@
-import {html, Component} from '../../web_modules/htm/preact/standalone.module.js'
+import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 import CardChooser from './card-chooser.js'
 
 export default class CampfireRoom extends Component {

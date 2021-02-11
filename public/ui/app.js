@@ -1,5 +1,5 @@
 // Third party dependencies
-import {html, Component} from '../../web_modules/htm/preact/standalone.module.js'
+import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 import gsap from './animations.js'
 import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 
@@ -16,6 +16,7 @@ import {Overlay, OverlayWithButton} from './overlays.js'
 import {Player, Monster} from './player.js'
 import CardChooser from './card-chooser.js'
 import CampfireRoom from './campfire.js'
+import StartRoom from './start-room.js'
 import enableDragDrop from './dragdrop.js'
 import sfx from './sounds.js'
 
@@ -33,6 +34,8 @@ export default class App extends Component {
 		this.handlePlayerReward = this.handlePlayerReward.bind(this)
 		this.handleCampfireChoice = this.handleCampfireChoice.bind(this)
 		this.goToNextRoom = this.goToNextRoom.bind(this)
+		this.toggleOverlay = this.toggleOverlay.bind(this)
+		this.handleMapMove = this.handleMapMove.bind(this)
 	}
 	componentDidMount() {
 		// Set up a new game
@@ -50,25 +53,25 @@ export default class App extends Component {
 		}
 
 		// Enable a "console" in the browser.
-		console.log(`
-Welcome to the Slay The Web Console. Some examples:
+		console.log(`Welcome to the Slay The Web Console. Some examples:
 stw.game.state.player.maxHealth = 999; stw.update()
 stw.game.enqueue({type: 'drawCards', amount: 2})
 stw.update()
-stw.dealCards()
-		`)
+stw.dealCards()`)
 		window.stw = {
 			game: this.game,
 			update: this.update.bind(this),
 			createCard,
 			dealCards: this.dealCards.bind(this),
 			iddqd() {
-				this.game.state.dungeon.rooms.forEach((room) => {
-					if (!room.monsters) return
-					room.monsters.forEach((monster) => {
-						monster.currentHealth = 1
+				this.game.state.dungeon.graph.forEach((row) => {
+					row.forEach((node) => {
+						if (!node.room || !node.room.monsters) return
+						node.room.monsters.forEach((monster) => {
+							monster.currentHealth = 1
+						})
+						this.update()
 					})
-					this.update()
 				})
 			},
 		}
@@ -134,30 +137,33 @@ stw.dealCards()
 		sfx.startTurn()
 		enableDragDrop(this.base, this.playCard)
 	}
+	toggleOverlay(el) {
+		if (typeof el === 'string') el = this.base.querySelector(el)
+		el.toggleAttribute('open')
+		el.style.zIndex = this.overlayIndex
+		this.overlayIndex++
+	}
 	handleShortcuts(event) {
 		const {key} = event
 		if (key === 'e') this.endTurn()
 		if (key === 'u') this.undo()
-		// Overlays
-		const toggle = (el) => {
-			el.toggleAttribute('open')
-			el.style.zIndex = this.overlayIndex
-			this.overlayIndex++
-		}
 		if (key === 'Escape') {
-			let openOverlays = this.base.querySelectorAll('details[open]:not(.Menu)')
+			// let openOverlays = this.base.querySelectorAll('.Overlay:not(#Menu)[open]')
+			let openOverlays = this.base.querySelectorAll(
+				'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open]'
+			)
 			openOverlays.forEach((el) => el.removeAttribute('open'))
-			toggle(this.base.querySelector('.Menu'))
+			this.toggleOverlay('#Menu')
 		}
-		if (key === 'd') toggle(this.base.querySelector('#Deck'))
-		if (key === 'a') toggle(this.base.querySelector('#DrawPile'))
-		if (key === 's') toggle(this.base.querySelector('#DiscardPile'))
-		if (key === 'm') toggle(this.base.querySelector('#Map'))
+		if (key === 'd') this.toggleOverlay('#Deck')
+		if (key === 'a') this.toggleOverlay('#DrawPile')
+		if (key === 's') this.toggleOverlay('#DiscardPile')
+		if (key === 'm') this.toggleOverlay('#Map')
 	}
 	handlePlayerReward(choice, card) {
 		this.game.enqueue({type: 'rewardPlayer', card})
+		this.setState({didPickCard: card})
 		this.update()
-		this.goToNextRoom()
 	}
 	handleCampfireChoice(choice, reward) {
 		// step1
@@ -180,14 +186,19 @@ stw.dealCards()
 		this.goToNextRoom()
 	}
 	goToNextRoom() {
-		if (getCurrRoom(this.state).type === 'monster') {
-			this.game.enqueue({type: 'endTurn'})
-			this.game.enqueue({type: 'goToNextRoom'})
-			this.update(() => this.update(this.dealCards))
-		} else {
-			this.game.enqueue({type: 'goToNextRoom'})
-			this.update(this.dealCards)
-		}
+		console.log('Go to next room, toggling map')
+		this.toggleOverlay('#Map')
+	}
+	handleMapMove(move) {
+		this.toggleOverlay('#Map')
+		// if (getCurrRoom(this.state).type === 'monster') {
+		// console.log('About to make a move, ending turn'
+		// this.game.enqueue({type: 'endTurn'})
+		// this.update(() => this.update(this.dealCards))
+		// }
+		this.game.enqueue({type: 'move', move})
+		this.update(this.dealCards)
+		console.log('Made a move')
 	}
 	render(props, state) {
 		if (!state.player) return
@@ -199,7 +210,7 @@ stw.dealCards()
 		// There's a lot here because I did not want to split into too many files.
 		return html`
 			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
-				<figure class="App-background" data-room-index=${state.dungeon.index}></div>
+				<figure class="App-background" data-room-index=${state.dungeon.y}></div>
 				${
 					isDead &&
 					html`<${Overlay}>
@@ -231,6 +242,8 @@ stw.dealCards()
 						<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
 					<//> `
 				}
+
+				${room.type === 'start' && html`<${Overlay}><${StartRoom} onContinue=${this.goToNextRoom} /><//>`}
 
 				${
 					room.type === 'campfire' &&
@@ -272,46 +285,62 @@ stw.dealCards()
 				</div>
 
 				<${OverlayWithButton} id="Menu" topleft>
-					<summary><u>Esc</u>ape</summary>
-					<div class="Splash">
-						<h1 medium>Slay the Web</h1>
-						<ul class="Options">
-							<li><button onclick=${() =>
-								save(
-									state
-								)} title="After saving, your entire game is stored in the URL. Copy it">Save</button></li>
-							<li><button onclick=${() => (window.location = window.location.origin)}>Abandon Game</button></li>
-						</ul>
-						<${History} future=${this.game.future.list} past=${this.game.past.list} />
-						${
-							this.game.past.list.length
-								? html`
-										<p>
-											<button onclick=${() => this.undo()}><u>U</u>ndo</button><br />
-										</p>
-								  `
-								: ''
-						}
-						<p style="margin-top:auto"><a rel="noreferrer" target="_blank" href="https://github.com/oskarrough/slaytheweb">View source</a></p>
+					<button onClick=${() => this.toggleOverlay('#Menu')}><u>Esc</u>ape</button>
+					<div class="Overlay-content">
+						<div class="Splash">
+							<h1 medium>Slay the Web</h1>
+							<ul class="Options">
+								<li><button onclick=${() =>
+									save(
+										state
+									)} title="After saving, your entire game is stored in the URL. Copy it">Save</button></li>
+								<li><button onclick=${() => (window.location = window.location.origin)}>Abandon Game</button></li>
+							</ul>
+							<${History} future=${this.game.future.list} past=${this.game.past.list} />
+							${
+								this.game.past.list.length
+									? html`
+											<p>
+												<button onclick=${() => this.undo()}><u>U</u>ndo</button><br />
+											</p>
+									  `
+									: ''
+							}
+							<p style="margin-top:auto"><a rel="noreferrer" target="_blank" href="https://github.com/oskarrough/slaytheweb">View source</a></p>
+						</div>
 					</div>
 				<//>
-				<${OverlayWithButton} id="Map" topright>
-					<summary align-right><u>M</u>ap</summary>
-					<div class="Splash">
-						<div class="Splash-details"><${Map} dungeon=${state.dungeon} /></div>
+				<${OverlayWithButton} id="Map" topright key=${1}>
+					<button align-right onClick=${() => this.toggleOverlay('#Map')}><u>M</u>ap</button>
+					<div class="Overlay-content">
+						<div class="Splash">
+							<div class="Splash-details">
+								<${Map} dungeon=${state.dungeon} onMove=${this.handleMapMove} />
+							</div>
+						</div>
 					</div>
 				<//>
 				<${OverlayWithButton} id="Deck" topright topright2>
-					<summary><u>D</u>eck ${state.deck.length}</summary>
+					<button onClick=${() => this.toggleOverlay('#Deck')}><u>D</u>eck ${state.deck.length}</button>
+					<div class="Overlay-content">
 					<${Cards} gameState=${state} type="deck" />
+					</div>
 				<//>
 				<${OverlayWithButton} id="DrawPile" bottomleft>
-					<summary>Dr<u>a</u>w pile ${state.drawPile.length}</summary>
+					<button onClick=${() => this.toggleOverlay('#DrawPile')}>Dr<u>a</u>w pile ${
+			state.drawPile.length
+		}</button>
+					<div class="Overlay-content">
 					<${Cards} gameState=${state} type="drawPile" />
+					</div>
 				<//>
 				<${OverlayWithButton} id="DiscardPile" bottomright>
-					<summary align-right>Di<u>s</u>card pile ${state.discardPile.length}</summary>
+					<button onClick=${() => this.toggleOverlay('#DiscardPile')} align-right>Di<u>s</u>card pile ${
+			state.discardPile.length
+		}</button>
+					<div class="Overlay-content">
 					<${Cards} gameState=${state} type="discardPile" />
+					</div>
 				<//>
 			</div>
 		`
