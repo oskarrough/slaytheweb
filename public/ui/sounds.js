@@ -92,8 +92,6 @@ function startTurn() {
 }
 
 function cardToHand() {
-	/* synth.triggerAttackRelease('C4', '8n') */
-
 	// initialize the noise and start
 	const noise = new Tone.Noise({
 		type: 'pink',
@@ -115,10 +113,46 @@ function cardToHand() {
 	noise.stop("+0.1")
 }
 
+function playCard({
+	card, target
+}) {
+	let cardValue = card.damage || card.block || 0,
+			cardType = card.damage ? 'attack' : 'defense'
+
+	if (cardType === 'attack') {
+		playAttackCard({card, target})
+	}
+
+	if (cardType === 'defense') {
+		playDefenseCard({card, target})
+	}
+}
+
+const playAttackCard = ({card, target}) => {
+	const amSynth = new Tone.AMSynth().toDestination();
+	amSynth.volume.value = -10;
+	amSynth.triggerAttackRelease("G#3", 0.2);
+}
+
+const playDefenseCard = ({card, target}) => {
+	const amSynth = new Tone.AMSynth().toDestination();
+	amSynth.volume.value = -10;
+	amSynth.triggerAttackRelease("D#2", 0.4);
+
+	const plucky = new Tone.PluckSynth({
+		attackNoise: 0.3,
+		release: 0.08,
+		resonance: 0.5,
+		volume: -20
+	}).toDestination();
+	plucky.triggerAttack("C-1", "+0.1");
+}
+
 export default {
 	startGame,
 	startTurn,
 	endTurn,
 	selectCard,
 	cardToHand,
+	playCard,
 }

@@ -101,6 +101,9 @@ stw.dealCards()
 		this.update(() => {
 			enableDragDrop(this.base, this.playCard)
 
+
+			sfx.playCard({card, target})
+
 			// Animate cloned card away
 			gsap.effects.playCard(clone).then(() => {
 				clone.parentNode.removeChild(clone)
