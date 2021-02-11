@@ -6,6 +6,7 @@ import {shuffle, range} from './utils.js'
 export default function Dungeon(graphOptions = {}) {
 	const graph = generateGraph(graphOptions)
 
+	// Find the paths of the map.
 	const paths = []
 	if (graphOptions.paths) {
 		Array.from(graphOptions.paths).forEach((value) => {
@@ -27,7 +28,7 @@ export default function Dungeon(graphOptions = {}) {
 			const a = nodeFromMove(move[0])
 			const b = nodeFromMove(move[1])
 			a.edges.add(b)
-			b.edges.add(a)
+			// b.edges.add(a)
 		})
 	})
 
@@ -54,8 +55,8 @@ export default function Dungeon(graphOptions = {}) {
 	return {
 		id: uuid(),
 		graph,
-		y: 0,
 		x: 0,
+		y: 0,
 		paths,
 		pathTaken: [{x: 0, y: 0}],
 	}
