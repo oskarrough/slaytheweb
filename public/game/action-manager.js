@@ -10,7 +10,7 @@ export default function (props) {
 	// Enqueued items are added to the "future" list. An action looks like this:
 	// {type: 'dealDamage', amount: 7, ... }
 	function enqueue(action) {
-		if (props.debug)  console.log('enqueue', action)
+		if (props.debug) console.log('enqueue', action)
 		future.enqueue({action})
 	}
 
@@ -18,7 +18,7 @@ export default function (props) {
 	// The action is then moved to the "past". Returns the next state.
 	function dequeue(state) {
 		const {action} = future.dequeue() || {}
-		if (props.debug)  console.log('dequeue', action)
+		if (props.debug) console.log('dequeue', action)
 		let nextState
 		if (!action) return
 		try {

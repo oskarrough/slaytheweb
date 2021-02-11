@@ -83,21 +83,21 @@ export function generateGraph(opts) {
 // 	[[0, 0], [1,4]], <-- first move.
 // 	[[1, 4], [2,1]] <-- second move
 // ]
-export function findPath(graph, preferredIndex) {
+export function findPath(graph, preferredIndex, debug = false) {
 	let path = []
 	let lastVisited
-	console.groupCollapsed('finding path', preferredIndex)
+	if (debug) console.groupCollapsed('finding path', preferredIndex)
 	// Walk through each row.
 	for (let [rowIndex, row] of graph.entries()) {
-		console.group(`row ${rowIndex}`)
+		if (debug) console.group(`row ${rowIndex}`)
 		const nextRow = graph[rowIndex + 1]
 		let aIndex = preferredIndex
 		let bIndex = preferredIndex
 
 		// If on last level, stop drawing.
 		if (!nextRow) {
-			console.log('no next row, stopping')
-			console.groupEnd()
+			if (debug) console.log('no next row, stopping')
+			if (debug) console.groupEnd()
 			break
 		}
 
@@ -105,10 +105,10 @@ export function findPath(graph, preferredIndex) {
 		let a = lastVisited
 		const newAIndex = row.indexOf(a)
 		if (a) {
-			console.log('changing a index to', newAIndex)
+			if (debug) console.log('changing a index to', newAIndex)
 			aIndex = newAIndex
 		} else {
-			console.log('forcing "from" to first node in row')
+			if (debug) console.log('forcing "from" to first node in row')
 			a = row[0]
 			aIndex = 0
 		}
@@ -118,10 +118,10 @@ export function findPath(graph, preferredIndex) {
 		// Search to the right of our index.
 		let b
 		for (let i = bIndex; i < nextRow.length; i++) {
-			console.log('forwards', i)
+			if (debug) console.log('forwards', i)
 			let node = nextRow[i]
 			if (isEncounter(node)) {
-				console.log('choosing', i)
+				if (debug) console.log('choosing', i)
 				b = node
 				bIndex = i
 				break
@@ -130,10 +130,10 @@ export function findPath(graph, preferredIndex) {
 		// No result? Search to the left instead.
 		if (!b) {
 			for (let i = bIndex; i >= 0; i--) {
-				console.log('backwards', i)
+				if (debug) console.log('backwards', i)
 				let node = nextRow[i]
 				if (isEncounter(node)) {
-					console.log('choosing', i)
+					if (debug) console.log('choosing', i)
 					b = node
 					bIndex = i
 					break
@@ -147,13 +147,14 @@ export function findPath(graph, preferredIndex) {
 		const moveA = [rowIndex, aIndex]
 		const moveB = [rowIndex + 1, bIndex]
 		path.push([moveA, moveB])
-		console.groupEnd()
+		if (debug) console.groupEnd()
 	}
-	console.groupEnd()
+	if (debug) console.groupEnd()
 	return path
 }
 
 export function drawPath(graph, path, graphEl, preferredIndex) {
+	const debug = false
 	const nodeFromMove = ([row, col]) => graph[row][col]
 
 	if (!graphEl) throw new Error('Missing graph element')
@@ -163,13 +164,14 @@ export function drawPath(graph, path, graphEl, preferredIndex) {
 	svg.id = `path${preferredIndex}`
 	svg.classList.add('paths')
 	graphEl.appendChild(svg)
+
 	// For each move, add a <line> element from a to b.
-	console.groupCollapsed('drawing path', preferredIndex)
+	if (debug) console.groupCollapsed('drawing path', preferredIndex)
 	path.forEach((move, index) => {
 		const a = nodeFromMove(move[0])
 		const b = nodeFromMove(move[1])
-		a.edges.add(b)
-		b.edges.add(a)
+
+		if (debug) console.groupEnd()
 		// Create a line between each element.
 		const aPos = getPosWithin(a.el, graphEl)
 		const bPos = getPosWithin(b.el, graphEl)
@@ -187,9 +189,9 @@ export function drawPath(graph, path, graphEl, preferredIndex) {
 		line.setAttribute('length', line.getTotalLength())
 		a.el.setAttribute('linked', true)
 		b.el.setAttribute('linked', true)
-		console.log(`Move no. ${index} is from ${a} to ${b}`)
+		if (debug) console.log(`Move no. ${index} is from ${a} to ${b}`)
 	})
-	console.groupEnd()
+	if (debug) console.groupEnd()
 }
 
 // Shortcut

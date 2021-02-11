@@ -1,22 +1,14 @@
 import {Component, html} from '../web_modules/htm/preact/standalone.module.js'
-import {findPath, drawPath, findAndDrawPath} from '../game/map.js'
+import {drawPath} from '../game/map.js'
 import {random as randomBetween} from '../game/utils.js'
 
 export default function map(props) {
-	const {graph, x, y, paths, pathTaken} = props.dungeon
+	const {graph, x, y, pathTaken} = props.dungeon
 
 	return html`
 		<div class="MapContainer">
 			<h2>Map of the dungeon. Level ${y}. Node ${x}</h2>
-			<${Mapo}
-				dungeon=${props.dungeon}
-				graph=${graph}
-				paths=${paths}
-				pathTaken=${pathTaken}
-				x=${x}
-				y=${y}
-				onSelect=${props.onMove}
-			><//>
+			<${Mapo} dungeon=${props.dungeon} graph=${graph} x=${x} y=${y} onSelect=${props.onMove}><//>
 			<h2>Log</h2>
 			<ul class="MapList">
 				${pathTaken.map((path) => html`<li>${path.y}.${path.x}</li>`)}
@@ -78,14 +70,12 @@ export class Mapo extends Component {
 	}
 
 	render(props) {
-		const {graph, x, y, pathTaken} = props
+		const {graph, x, y} = props
 		if (!graph) {
 			console.log('No graph to render. This should not happen?', graph)
 			return
 		}
-		console.log('Rendering dungeon graph', pathTaken)
 		const edges = graph[y][x].edges
-
 		return html`
 			<slay-map>
 				${graph.map(

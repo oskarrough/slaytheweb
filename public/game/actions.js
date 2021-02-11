@@ -1,4 +1,4 @@
-import produce, {setAutoFreeze} from '../web_modules/immer.js'
+import produce from '../web_modules/immer.js'
 import {createCard} from './cards.js'
 import {shuffle, getTargets, getCurrRoom, clamp} from './utils.js'
 import powers from './powers.js'
