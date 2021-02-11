@@ -46,17 +46,15 @@ export function generateGraph(opts) {
 	// This could be much more "intelligent" for example elite fights should first come later.
 	function randomEncounter(y, graph) {
 		const pick = (types) => shuffle(Array.from(types))[0]
-		let picked
-		if (y < 2) return picked = pick('MMME')
-		if (y < 3) return picked = pick('MMMMEC')
-		if (y < 4) return picked = pick('MMCCMME')
-		if (y < 5) return picked = pick('MMCCMME')
-		if (y < 6) return picked = pick('MMCMMEE')
-		if (y < 7) return picked = pick('MCEE')
-		if (y < 8) return picked = pick('MMEEC')
-		if (y < 9) return picked = pick('MMEEC')
-		picked = pick(options.encounters)
-		return picked
+		if (y < 2) return pick('MMME')
+		if (y < 3) return pick('MMMMEC')
+		if (y < 4) return pick('MMCCMME')
+		if (y < 5) return pick('MMCCMME')
+		if (y < 6) return pick('MMCMMEE')
+		if (y < 7) return pick('MCEE')
+		if (y < 8) return pick('MMEEC')
+		if (y < 9) return pick('MMEEC')
+		return pick(options.encounters)
 	}
 
 	const graph = []

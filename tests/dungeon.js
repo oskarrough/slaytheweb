@@ -1,7 +1,7 @@
 import test from 'ava'
+import {createTestDungeon} from '../public/content/dungeon-encounters'
 import actions from '../public/game/actions'
 import Dungeon, {MonsterRoom, Monster} from '../public/game/dungeon'
-// import {generateGraph} from '../public/game/map'
 import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../public/game/utils'
 
 const a = actions
@@ -25,7 +25,7 @@ test('can set a dungeon', (t) => {
 
 test('we know when a monster room is won', (t) => {
 	let state = a.createNewGame()
-	state = a.setDungeon(state, Dungeon({rows: 1, columns: 1}))
+	state = a.setDungeon(state, createTestDungeon())
 	state.dungeon.y = 1
 	t.false(isCurrentRoomCompleted(state))
 	getCurrRoom(state).monsters[0].currentHealth = 0
