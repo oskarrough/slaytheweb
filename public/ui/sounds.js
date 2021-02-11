@@ -21,9 +21,26 @@ function startGame() {
 	// polySynth.triggerRelease(['D4', 'F4', 'A4', 'C5', 'E5'])
 }
 
-function selectCard() {
-	// const reverb = new Tone.Reverb(0.1).toDestination()
-	synth.triggerAttackRelease('A4', 0.4)
+const selectCard = async () => {
+	// initialize the noise and start
+	const noise = new Tone.Noise({
+		type: 'brown',
+		fadeOut: 0.07,
+		volume: -36
+	}).start();
+
+	// make an autofilter to shape the noise
+	const autoFilter = new Tone.AutoFilter({
+		frequency: "5n",
+		baseFrequency: 3000,
+		octaves: 2
+	}).toDestination().start()
+	autoFilter.stop("+0.1")
+
+	// connect the noise
+	noise.connect(autoFilter)
+	// start the autofilter LFO
+	noise.stop("+0.04")
 }
 
 function endTurn() {
