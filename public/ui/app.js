@@ -191,11 +191,7 @@ stw.dealCards()`)
 	}
 	handleMapMove(move) {
 		this.toggleOverlay('#Map')
-		// if (getCurrRoom(this.state).type === 'monster') {
-		// console.log('About to make a move, ending turn'
-		// this.game.enqueue({type: 'endTurn'})
-		// this.update(() => this.update(this.dealCards))
-		// }
+		this.setState({didPickCard: false})
 		this.game.enqueue({type: 'move', move})
 		this.update(this.dealCards)
 		console.log('Made a move')
