@@ -105,7 +105,7 @@ export class Mapo extends Component {
 function emojiFromNodeType(type) {
 	const map = {
 		M: '💀',
-		C: shuffle(Array.from('🏕️🐫🏜️'))[0],
+		C: '🏕',
 		// $: '💰',
 		Q: '❓',
 		E: '👹',

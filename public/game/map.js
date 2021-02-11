@@ -44,10 +44,19 @@ export function generateGraph(opts) {
 
 	// The type of each encounter on the map is decided by this function.
 	// This could be much more "intelligent" for example elite fights should first come later.
-	function randomEncounter(y) {
+	function randomEncounter(y, graph) {
 		const pick = (types) => shuffle(Array.from(types))[0]
-		if (y < 3) return pick('MMME')
-		return pick(options.encounters)
+		let picked
+		if (y < 2) return picked = pick('MMME')
+		if (y < 3) return picked = pick('MMMMEC')
+		if (y < 4) return picked = pick('MMCCMME')
+		if (y < 5) return picked = pick('MMCCMME')
+		if (y < 6) return picked = pick('MMCMMEE')
+		if (y < 7) return picked = pick('MCEE')
+		if (y < 8) return picked = pick('MMEEC')
+		if (y < 9) return picked = pick('MMEEC')
+		picked = pick(options.encounters)
+		return picked
 	}
 
 	const graph = []
@@ -57,7 +66,7 @@ export function generateGraph(opts) {
 		let encounters = randomBetween(options.minEncounters, options.maxEncounters)
 		if (encounters > options.columns) encounters = options.columns
 		for (let i = 0; i < encounters; i++) {
-			row.push(Node(randomEncounter(r)))
+			row.push(Node(randomEncounter(r, graph)))
 		}
 		// Fill empty columns.
 		while (row.length < options.columns) {
