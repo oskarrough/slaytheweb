@@ -129,6 +129,7 @@ stw.dealCards()
 	// Animate the cards in and make sure any new cards are draggable.
 	dealCards() {
 		gsap.effects.dealCards('.Hand .Card')
+		sfx.startTurn()
 		enableDragDrop(this.base, this.playCard)
 	}
 	handleShortcuts(event) {
