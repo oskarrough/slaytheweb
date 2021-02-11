@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Dungeon, {MonsterRoom, Monster} from '../game/dungeon.js'
 import {random} from '../game/utils.js'
 
@@ -10,7 +11,6 @@ export const dungeonWithMap = () => {
 		columns: 6,
 		minEncounters: 3,
 		maxEncounters: 4,
-		// encounters: 'ABC',
 		paths: '0235',
 	})
 }
@@ -25,33 +25,25 @@ export const createTestDungeon = () => {
 	return dungeon
 }
 
-const TrioMonsterA = () =>
-	Monster({
-		hp: random(39, 46),
-		intents: [{weak: 1}, {damage: 10}],
-	})
+export const monsters = {}
 
-const TrioMonsterB = () =>
-	Monster({
-		hp: random(39, 46),
-		intents: [{damage: 10}, {weak: 1}],
-	})
-
-const monster1 = MonsterRoom(
+monsters['Necromancer'] = MonsterRoom(
 	Monster({
 		hp: random(18, 20),
 		intents: [{damage: 7}, {damage: 11}, {damage: 7}, {block: 9}],
 		random: 2,
 	})
 )
-const monster2 = MonsterRoom(
+
+monsters['monster2'] = MonsterRoom(
 	Monster({
 		hp: random(43, 47),
 		intents: [{vulnerable: 1}, {damage: 10}, {damage: 6}, {}, {weak: 1}],
 		random: 2,
 	})
 )
-const monster3 = MonsterRoom(
+
+monsters['monster3'] = MonsterRoom(
 	Monster({
 		hp: random(13, 17),
 		intents: [{damage: 7}, {block: 4, damage: 8}, {damage: 6}, {}, {block: 6}],
@@ -63,8 +55,7 @@ const monster3 = MonsterRoom(
 		random: 2,
 	})
 )
-
-const monster4 = MonsterRoom(
+monsters['monster4'] = MonsterRoom(
 	Monster({
 		hp: random(34, 36),
 		intents: [{weak: 1}, {damage: 10}, {damage: 6}, {}, {weak: 1}],
@@ -77,29 +68,42 @@ const monster4 = MonsterRoom(
 	})
 )
 
-const monster5 = MonsterRoom(Monster({hp: 70, block: 12, intents: [{block: 5}, {damage: 16}]}))
-
-const monster6 = MonsterRoom(
+monsters['monster5'] = MonsterRoom(
+	Monster({hp: 70, block: 12, intents: [{block: 5}, {damage: 16}]})
+)
+monsters['monster6'] = MonsterRoom(
 	Monster({hp: random(12, 15), random: 1, intents: [{damage: 6}]}),
 	Monster({hp: random(12, 15), random: 1, intents: [{damage: 6}]}),
 	Monster({hp: random(10, 16), random: 3, intents: [{damage: 6}]})
 )
-
-const monster7 = MonsterRoom(
+monsters['monster7'] = MonsterRoom(
 	Monster({
 		hp: 46,
 		intents: [{damage: 12}, {block: 6, damage: 11}, {block: 5, damage: 16}, {}, {block: 6}],
 	})
 )
-const monster8 = MonsterRoom(TrioMonsterA(), TrioMonsterB(), TrioMonsterA())
-const monster9 = MonsterRoom(Monster({hp: 60, intents: [{damage: 12}], random: 5}))
-const monster10 = MonsterRoom(
+monsters['monster8'] = MonsterRoom(
+	Monster({
+		hp: random(39, 46),
+		intents: [{weak: 1}, {damage: 10}],
+	}),
+	Monster({
+		hp: random(39, 46),
+		intents: [{damage: 10}, {weak: 1}],
+	}),
+	Monster({
+		hp: random(39, 46),
+		intents: [{weak: 1}, {damage: 10}],
+	})
+)
+monsters['monster9'] = MonsterRoom(Monster({hp: 60, intents: [{damage: 12}], random: 5}))
+monsters['monster10'] = MonsterRoom(
 	Monster({
 		hp: 48,
 		intents: [{weak: 1}, {block: 10, damage: 10}, {damage: 21}],
 	})
 )
-const monster11 = MonsterRoom(
+monsters['monster11'] = MonsterRoom(
 	Monster({
 		hp: random(100, 140),
 		intents: [{damage: 12}, {block: 6}, {damage: 16}, {damage: 7}, {weak: 2}],

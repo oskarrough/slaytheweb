@@ -39,7 +39,7 @@ export function generateGraph(opts) {
 	// console.log('Generating graph', options)
 
 	function Node(type = false) {
-		return {type, edges: new Set()}
+		return {type, edges: new Set(), room: undefined}
 	}
 
 	// The type of each encounter on the map is decided by this function.

@@ -1,6 +1,7 @@
 import {generateGraph, findPath} from './map.js'
 import {uuid} from './utils.js'
 import {shuffle, range} from './utils.js'
+import {monsters} from '../content/dungeon-encounters.js'
 
 // A dungeon is where the adventure starts.
 export default function Dungeon(graphOptions = {}) {
@@ -47,7 +48,7 @@ export default function Dungeon(graphOptions = {}) {
 		if (level === 0) return StartRoom()
 		if (level === graph.length - 1) return BossRoom()
 		// if (type === 'M' && level < 5) return randomEasyMonster()
-		if (type === 'M') return MonsterRoom(Monster({intents: [{damage: 10}, {block: 5}], hp: 10}))
+		if (type === 'M') return monsters[shuffle(Object.keys(monsters))[0]]
 		if (type === 'E') return MonsterRoom(Monster({intents: [{damage: 10}, {block: 5}], hp: 30}))
 		if (type === 'C') return CampfireRoom()
 
@@ -84,7 +85,7 @@ export function CampfireRoom() {
 	return {
 		id: uuid(),
 		type: 'campfire',
-		choices: ['rest', 'remove', 'upgrade'],
+		// choices: ['rest', 'remove', 'upgrade'],
 	}
 }
 
@@ -129,8 +130,3 @@ export function Monster(props = {}) {
 		nextIntent: 0,
 	}
 }
-
-const hugo = new Monster({
-	maxHealth: 200,
-	intents: [{block: 20}, {regen: 5}],
-})
