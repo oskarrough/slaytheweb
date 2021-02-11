@@ -26,7 +26,7 @@ const selectCard = async () => {
 	const noise = new Tone.Noise({
 		type: 'brown',
 		fadeOut: 0.07,
-		volume: -36
+		volume: -33
 	}).start();
 
 	// make an autofilter to shape the noise
@@ -44,7 +44,27 @@ const selectCard = async () => {
 }
 
 function endTurn() {
-	synth.triggerAttackRelease('C4', '8n')
+	/* synth.triggerAttackRelease('C4', '8n') */
+
+	// initialize the noise and start
+	const noise = new Tone.Noise({
+		type: 'pink',
+		fadeOut: 0.2,
+		volume: -28
+	}).start();
+
+	// make an autofilter to shape the noise
+	const autoFilter = new Tone.AutoFilter({
+		frequency: "2n",
+		baseFrequency: 200,
+		octaves: 2
+	}).toDestination().start()
+	autoFilter.stop("+0.4")
+
+	// connect the noise
+	noise.connect(autoFilter)
+	// start the autofilter LFO
+	noise.stop("+0.2")
 }
 
 export default {
