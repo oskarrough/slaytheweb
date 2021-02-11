@@ -1,6 +1,6 @@
 import {Component, html} from '../web_modules/htm/preact/standalone.module.js'
 import {drawPath} from '../game/map.js'
-import {isRoomCompleted, random as randomBetween} from '../game/utils.js'
+import {shuffle, isRoomCompleted, random as randomBetween} from '../game/utils.js'
 
 export default function map(props) {
 	const {graph, x, y, pathTaken} = props.dungeon
@@ -90,7 +90,7 @@ export class Mapo extends Component {
 									can-visit=${canVisit}
 									did-visit=${node.didVisit}
 									onClick=${() => props.onSelect({x: nodeIndex, y: rowIndex})}
-									><span>${node.type}</span></slay-map-node
+									><span>${emojiFromNodeType(node.type)}</span></slay-map-node
 								>`
 							})}
 						</slay-map-row>
@@ -99,4 +99,16 @@ export class Mapo extends Component {
 			</slay-map>
 		`
 	}
+}
+
+// 🐫
+function emojiFromNodeType(type) {
+	const map = {
+		M: '💀',
+		C: shuffle(Array.from('🏕️🐫🏜️'))[0],
+		// $: '💰',
+		Q: '❓',
+		E: '👹',
+	}
+	return map[type]
 }

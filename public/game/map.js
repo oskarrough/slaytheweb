@@ -32,9 +32,7 @@ export function generateGraph(opts) {
 			E Elite
 			BOSS Boss
 		*/
-		//encounters: '💀💀💀💀💰❓👹',
-		encounters: '💀💀💀💀💰👹',
-		//encounters: 'MMMMMER$',
+		encounters: 'MMMCE',
 	}
 	const options = Object.assign(defaultOptions, opts)
 	// if (options.maxEncounters > options.columns) options.maxEncounters = options.columns
@@ -46,10 +44,9 @@ export function generateGraph(opts) {
 
 	// The type of each encounter on the map is decided by this function.
 	// This could be much more "intelligent" for example elite fights should first come later.
-	// 🕸️ // 🏔 // 🗻 // 🌋 // 👺
 	function randomEncounter(y) {
 		const pick = (types) => shuffle(Array.from(types))[0]
-		if (y < 2) return pick('💀')
+		if (y < 3) return pick('MMME')
 		return pick(options.encounters)
 	}
 

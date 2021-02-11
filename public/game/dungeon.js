@@ -46,10 +46,13 @@ export default function Dungeon(graphOptions = {}) {
 	function createRandomRoom(type, level) {
 		if (level === 0) return StartRoom()
 		if (level === graph.length - 1) return BossRoom()
-		if (type === '💀') return MonsterRoom(Monster({intents: [{block: 5}], hp: 10}))
-		if (type === '👹') return MonsterRoom(Monster({intents: [{damage: 10}, {block: 5}], hp: 30}))
-		if (type === '💰') return CampfireRoom()
-		throw new Error(`Could not match node type ${type} with a dungeon room`)
+		// if (type === 'M' && level < 5) return randomEasyMonster()
+		if (type === 'M') return MonsterRoom(Monster({intents: [{damage: 10}, {block: 5}], hp: 10}))
+		if (type === 'E') return MonsterRoom(Monster({intents: [{damage: 10}, {block: 5}], hp: 30}))
+		if (type === 'C') return CampfireRoom()
+
+		return MonsterRoom(Monster({intents: [{block: 5}], hp: 10}))
+		// throw new Error(`Could not match node type ${type} with a dungeon room`)
 	}
 
 	return {
@@ -119,10 +122,15 @@ export function Monster(props = {}) {
 		block: props.block || 0,
 		powers: props.powers || {},
 		// A list of "actions" the monster will take each turn.
-		// Example: {damage: 6}, {block: 2}, {}, {weak: 2}
+		// Example: [{damage: 6}, {block: 2}, {}, {weak: 2}]
 		// ... meaning turn 1, deal 6 damage, turn 2 gain 2 block, turn 3 do nothing, turn 4 apply 2 weak
 		intents: intents || [],
 		// A counter to keep track of which intent to run next.
 		nextIntent: 0,
 	}
 }
+
+const hugo = new Monster({
+	maxHealth: 200,
+	intents: [{block: 20}, {regen: 5}],
+})
