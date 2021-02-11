@@ -129,23 +129,25 @@ function playCard({
 }
 
 const playAttackCard = ({card, target}) => {
-	const amSynth = new Tone.AMSynth().toDestination();
-	amSynth.volume.value = -10;
-	amSynth.triggerAttackRelease("G#3", 0.2);
+	const amSynth = new Tone.AMSynth({
+		volume: -14
+	}).toDestination()
+	amSynth.triggerAttackRelease("G#3", 0.2)
 }
 
 const playDefenseCard = ({card, target}) => {
-	const amSynth = new Tone.AMSynth().toDestination();
-	amSynth.volume.value = -10;
-	amSynth.triggerAttackRelease("D#2", 0.4);
+	const amSynth = new Tone.AMSynth({
+		volume: -15
+	}).toDestination()
+	amSynth.triggerAttackRelease("D#2", 0.4)
 
 	const plucky = new Tone.PluckSynth({
 		attackNoise: 0.3,
 		release: 0.08,
 		resonance: 0.5,
-		volume: -20
+		volume: -27
 	}).toDestination();
-	plucky.triggerAttack("C-1", "+0.1");
+	plucky.triggerAttack("C-1", "+0.07")
 }
 
 export default {
