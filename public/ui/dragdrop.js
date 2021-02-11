@@ -68,6 +68,7 @@ export default function enableDragDrop(container, afterRelease) {
 					afterRelease(cardEl.dataset.id, targetString, cardEl)
 				} else {
 					animateCardToHand(this)
+					sfx.cardToHand()
 				}
 
 				// Remove active class from any other targets.

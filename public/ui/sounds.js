@@ -91,9 +91,34 @@ function startTurn() {
 	noise.stop("+0.3")
 }
 
+function cardToHand() {
+	/* synth.triggerAttackRelease('C4', '8n') */
+
+	// initialize the noise and start
+	const noise = new Tone.Noise({
+		type: 'pink',
+		fadeOut: 0.1,
+		volume: -35
+	}).start();
+
+	// make an autofilter to shape the noise
+	const autoFilter = new Tone.AutoFilter({
+		frequency: "2n",
+		baseFrequency: 1000,
+		octaves: 1
+	}).toDestination().start()
+	autoFilter.stop("+0.08")
+
+	// connect the noise
+	noise.connect(autoFilter)
+	// start the autofilter LFO
+	noise.stop("+0.1")
+}
+
 export default {
 	startGame,
-	selectCard,
-	endTurn,
 	startTurn,
+	endTurn,
+	selectCard,
+	cardToHand,
 }
