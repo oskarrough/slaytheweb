@@ -17,6 +17,7 @@ import {Player, Monster} from './player.js'
 import CardChooser from './card-chooser.js'
 import CampfireRoom from './campfire.js'
 import enableDragDrop from './dragdrop.js'
+import sfx from './sounds.js'
 
 // Puts and gets the game state in the URL.
 const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state)))
@@ -38,6 +39,8 @@ export default class App extends Component {
 		const game = createNewGame()
 		this.game = game
 		this.setState(game.state, this.dealCards)
+
+		sfx.startGame()
 
 		// If there is a saved game state, use it.
 		const savedGameState = window.location.hash && load()
@@ -98,6 +101,8 @@ stw.dealCards()
 		this.update(() => {
 			enableDragDrop(this.base, this.playCard)
 
+			sfx.playCard({card, target})
+
 			// Animate cloned card away
 			gsap.effects.playCard(clone).then(() => {
 				clone.parentNode.removeChild(clone)
@@ -114,6 +119,7 @@ stw.dealCards()
 		})
 	}
 	endTurn() {
+		sfx.endTurn()
 		gsap.effects.discardHand('.Hand .Card', {
 			onComplete: reallyEndTurn.bind(this),
 		})
@@ -125,6 +131,7 @@ stw.dealCards()
 	// Animate the cards in and make sure any new cards are draggable.
 	dealCards() {
 		gsap.effects.dealCards('.Hand .Card')
+		sfx.startTurn()
 		enableDragDrop(this.base, this.playCard)
 	}
 	handleShortcuts(event) {
