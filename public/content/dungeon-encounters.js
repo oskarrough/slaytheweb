@@ -9,6 +9,7 @@ export const dungeonWithMap = () => {
 		columns: 6,
 		minEncounters: 3,
 		maxEncounters: 4,
+		// encounters: 'ABC',
 		paths: '0235',
 	})
 }

@@ -72,6 +72,7 @@ export function generateGraph(opts) {
 	// Add start end end nodes, in this order.
 	graph.push([Node('🕸️')]) // end
 	graph.unshift([Node('🎴')]) // start
+
 	return graph
 }
 
@@ -141,11 +142,11 @@ export function findPath(graph, preferredIndex) {
 			if (!b) throw Error('missing to')
 		}
 		lastVisited = b
-		console.log(`connected row ${rowIndex}:${aIndex} to ${rowIndex + 1}:${bIndex}`)
-		path.push([
-			[rowIndex, aIndex], // from
-			[rowIndex + 1, bIndex], // to
-		])
+
+		if (debug) console.log(`connected row ${rowIndex}:${aIndex} to ${rowIndex + 1}:${bIndex}`)
+		const moveA = [rowIndex, aIndex]
+		const moveB = [rowIndex + 1, bIndex]
+		path.push([moveA, moveB])
 		console.groupEnd()
 	}
 	console.groupEnd()
@@ -154,6 +155,9 @@ export function findPath(graph, preferredIndex) {
 
 export function drawPath(graph, path, graphEl, preferredIndex) {
 	const nodeFromMove = ([row, col]) => graph[row][col]
+
+	if (!graphEl) throw new Error('Missing graph element')
+
 	// Create an empty <svg> to hold our path.
 	const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
 	svg.id = `path${preferredIndex}`

@@ -64,7 +64,8 @@ slay-map-node[current] {
 	opacity: 1;
 }
 /* Nodes you can go to */
-slay-map-row[current] + slay-map-row slay-map-node[encounter] {
+/* slay-map-row[current] + slay-map-row slay-map-node[encounter] { */
+slay-map-node[can-visit] {
 	pointer-events: auto;
 	opacity: 1;
 }

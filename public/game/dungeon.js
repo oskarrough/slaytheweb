@@ -1,4 +1,4 @@
-import {generateGraph} from './map.js'
+import {generateGraph, findPath} from './map.js'
 import {uuid} from './utils.js'
 import {shuffle, range} from './utils.js'
 
@@ -6,13 +6,38 @@ import {shuffle, range} from './utils.js'
 export default function Dungeon(graphOptions = {}) {
 	const graph = generateGraph(graphOptions)
 
-	// Add "rooms" to all valid node in the graph.
+	const paths = []
+	if (graphOptions.paths) {
+		Array.from(graphOptions.paths).forEach((value) => {
+			const path = findPath(graph, Number(value))
+			paths.push(path)
+		})
+	} else {
+		// If no specific paths are requested, we draw a path on each column.
+		graph[1].forEach((column, index) => {
+			const path = findPath(graph, index)
+			paths.push(path)
+		})
+	}
+
+	// Add ".edges" to each node, so we know which connections it has.
+	const nodeFromMove = ([row, col]) => graph[row][col]
+	paths.forEach((path) => {
+		path.forEach((move) => {
+			const a = nodeFromMove(move[0])
+			const b = nodeFromMove(move[1])
+			a.edges.add(b)
+			b.edges.add(a)
+		})
+	})
+
+	// Add "room" to all valid node in the graph.
 	graph.forEach((row, level) => {
-		row
-			.filter((n) => n.type)
-			.map((node) => {
+		row.map((node) => {
+			if (node.type) {
 				node.room = createRandomRoom(node.type, level)
-			})
+			}
+		})
 	})
 
 	// Pass it your desired room type as well as the level,
@@ -31,7 +56,7 @@ export default function Dungeon(graphOptions = {}) {
 		graph,
 		y: 0,
 		x: 0,
-		paths: graphOptions.paths || undefined,
+		paths,
 		pathTaken: [{x: 0, y: 0}],
 	}
 }
