@@ -59,7 +59,7 @@ test('we can navigate a dungeon', (t) => {
 	t.is(state.dungeon.x, 0)
 	t.is(state.dungeon.y, 0)
 	// Go through the next room.
-	const nextState = a.move(state, {move: {x: 1, y: 2}})
-	t.is(nextState.dungeon.x, 1)
-	t.is(nextState.dungeon.y, 2)
+	const nextState = a.move(state, {move: {x: 0, y: 1}})
+	t.is(nextState.dungeon.x, 0)
+	t.is(nextState.dungeon.y, 1)
 })

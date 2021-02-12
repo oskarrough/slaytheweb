@@ -335,10 +335,10 @@ function move(state, {move}) {
 		draft.player.powers = {}
 		draft.player.currentEnergy = 3
 		draft.player.block = 0
-		draft.dungeon.x = move.x
-		draft.dungeon.y = move.y
 		draft.dungeon.graph[move.y][move.x].didVisit = true
 		draft.dungeon.pathTaken.push({x: move.x, y: move.y})
+		draft.dungeon.x = move.x
+		draft.dungeon.y = move.y
 		// if (number === state.dungeon.rooms.length - 1) {
 		// 	throw new Error('You have reached the end of the dungeon. Congratulations.')
 		// }
