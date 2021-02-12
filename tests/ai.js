@@ -1,6 +1,7 @@
 import test from 'ava'
 import actions from '../public/game/actions'
-import Dungeon, {MonsterRoom, Monster} from '../public/game/dungeon.js'
+import Dungeon from '../public/game/dungeon.js'
+import {MonsterRoom, Monster} from '../public/game/dungeon-rooms.js'
 
 const a = actions
 

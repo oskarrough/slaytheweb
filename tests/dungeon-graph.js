@@ -1,5 +1,5 @@
 import test from 'ava'
-import {generateGraph} from '../public/game/map.js'
+import {generateGraph} from '../public/game/dungeon.js'
 
 test('can customize graph size with rows and columns', (t) => {
 	let g = generateGraph({rows: 3, columns: 10})

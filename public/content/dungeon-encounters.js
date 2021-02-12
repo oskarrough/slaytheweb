@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
-import Dungeon, {MonsterRoom, Monster} from '../game/dungeon.js'
+import Dungeon from '../game/dungeon.js'
+import {MonsterRoom, Monster} from '../game/dungeon-rooms.js'
 import {random} from '../game/utils.js'
 
 // Hello. With the imported functions above you can create a dungeon with different rooms and monsters.

@@ -1,98 +1,244 @@
-import {dungeonMap} from './map.js'
 import {uuid} from './utils.js'
-import {shuffle, range} from './utils.js'
+import {shuffle, random as randomBetween} from './utils.js'
 import {monsters} from '../content/dungeon-encounters.js'
+import {StartRoom, MonsterRoom, CampfireRoom, BossRoom, Monster} from './dungeon-rooms.js'
+
+/*
+ * A procedural generated map for Slay the Web.
+ * again, heavily inspired by Slay the Spire.
+ *
+ * What are the rules?
+ *
+ * 1. Starting node connects to all nodes on the first row
+ * 2. End node connects to all nodes on the last row
+ * 3. The graph can have a variable number of rows and columns
+ * 4. Each row has a random number of encounters from 2 to 5
+ * 5. Each row has six columns
+ * 6. Encounters are randomized in a row
+ * */
 
 // A dungeon is where the adventure starts.
 export default function Dungeon(options = {}) {
-	const dungeon = dungeonMap(options)
+	const graph = generateGraph(options)
+	const paths = generatePaths(graph, options.customPaths)
+
+	// Add ".edges" to each node from the paths, so we know which connections it has.
+	// Would be cool if this was part of "generatePaths".
+	const nodeFromMove = ([row, col]) => graph[row][col]
+	paths.forEach((path) => {
+		path.forEach((move) => {
+			const a = nodeFromMove(move[0])
+			const b = nodeFromMove(move[1])
+			a.edges.add(b)
+		})
+	})
 
 	// Add "room" to all valid node in the graph.
-	dungeon.graph.forEach((row, level) => {
+	graph.forEach((row, level) => {
 		row.map((node) => {
 			if (node.type) {
-				node.room = createRandomRoom(node.type, level)
+				node.room = createRandomRoom(node.type, level, graph)
 			}
 		})
 	})
 
-	// Pass it your desired room type as well as the level,
-	// and it'll return a (more or less) random room to use.
-	function createRandomRoom(type, level) {
-		if (level === 0) return StartRoom()
-		if (level === dungeon.graph.length - 1) return BossRoom()
-		// if (type === 'M' && level < 5) return randomEasyMonster()
-		if (type === 'M') return monsters[shuffle(Object.keys(monsters))[0]]
-		if (type === 'E') return MonsterRoom(Monster({intents: [{damage: 10}, {block: 5}], hp: 30}))
-		if (type === 'C') return CampfireRoom()
-		// return MonsterRoom(Monster({intents: [{block: 5}], hp: 10}))
-		throw new Error(`Could not match node type ${type} with a dungeon room`)
-	}
-
-	return dungeon
-}
-
-export function StartRoom() {
 	return {
 		id: uuid(),
-		type: 'start',
+		x: 0,
+		y: 0,
+		pathTaken: [{x: 0, y: 0}],
+		graph,
+		paths,
 	}
 }
 
-export function BossRoom() {
-	return {
-		id: uuid(),
-		type: 'boss',
-	}
+function Node(type = false) {
+	return {type, edges: new Set(), room: undefined}
 }
 
-// A campfire gives our hero the opportunity to rest, remove or upgrade a card.
-export function CampfireRoom() {
-	return {
-		id: uuid(),
-		type: 'campfire',
-		// choices: ['rest', 'remove', 'upgrade'],
-	}
+// Pass it your desired room type as well as the level,
+// and it'll return a (more or less) random room to use.
+function createRandomRoom(type, level, graph) {
+	if (level === 0) return StartRoom()
+	if (level === graph.length - 1) return BossRoom()
+	// if (type === 'M' && level < 5) return randomEasyMonster()
+	if (type === 'M') return monsters[shuffle(Object.keys(monsters))[0]]
+	if (type === 'E') return MonsterRoom(Monster({intents: [{damage: 10}, {block: 5}], hp: 30}))
+	if (type === 'C') return CampfireRoom()
+	throw new Error(`Could not match node type ${type} with a dungeon room`)
 }
 
-// A monster room has one or more monsters.
-export function MonsterRoom(...monsters) {
-	return {
-		id: uuid(),
-		type: 'monster',
-		monsters,
-	}
+// The type of each node on the map is decided by this function.
+// This could be much more "intelligent" for example elite fights should first come later.
+function randomEncounter(encounters, y /*, graph*/) {
+	const pick = (types) => shuffle(Array.from(types))[0]
+	if (y < 2) return pick('MMME')
+	if (y < 3) return pick('MMMMEC')
+	if (y < 4) return pick('MMCCMME')
+	if (y < 5) return pick('MMCCMME')
+	if (y < 6) return pick('MMCMMEE')
+	if (y < 7) return pick('MCEE')
+	if (y < 8) return pick('MMEEC')
+	if (y < 9) return pick('MMEEC')
+	return pick(encounters)
 }
 
-// A monster has health, probably some damage and a list of intents.
-// Use a list of intents to describe what the monster should do each turn.
-// Supported intents: block, damage, vulnerable and weak.
-// Intents are cycled through as the monster plays its turn.
-export function Monster(props = {}) {
-	let intents = props.intents
+// Returns a "graph" of the map we want to render,
+// using nested arrays for the rows and columns.
+export function generateGraph(props) {
+	const defaultOptions = {
+		// map size
+		rows: 10,
+		columns: 6,
+		// min/max per row
+		minEncounters: 2,
+		maxEncounters: 5,
+		/*
+			types of encounters. duplicate them to increase chance
+			M Monster
+			C Campfire
+			E Elite Monster
+		*/
+		encounters: 'MMMCE',
+		// customPaths: '123'
+	}
+	const options = Object.assign(defaultOptions, props)
+	const graph = []
+	for (let r = 0; r < options.rows; r++) {
+		const row = []
+		// In each row we want from X encounters.
+		let amountOfEncounters = randomBetween(options.minEncounters, options.maxEncounters)
+		if (amountOfEncounters > options.columns) amountOfEncounters = options.columns
+		for (let i = 0; i < amountOfEncounters; i++) {
+			row.push(Node(randomEncounter(options.encounters, r, graph)))
+		}
+		// Fill empty columns.
+		while (row.length < options.columns) {
+			row.push(Node())
+		}
+		// Randomize the order.
+		graph.push(shuffle(row))
+	}
+	// Add start end end nodes, in this order.
+	graph.push([Node('boss')]) // end
+	graph.unshift([Node('start')]) // start
 
-	// By setting props.random to a number, all damage intents will be randomized with this range.
-	if (typeof props.random === 'number') {
-		intents = props.intents.map((intent) => {
-			if (intent.damage) {
-				let newDamage = shuffle(range(5, intent.damage - props.random))[0]
-				intent.damage = newDamage
-			}
-			return intent
+	return graph
+}
+
+// Returns an array of possible paths from start to finish.
+export function generatePaths(graph, customPaths) {
+	const paths = []
+	// The "customPaths" argument should be a string of indexes from where to draw the paths,
+	// For example "530" would draw three paths. First at index 5, then 3 and finally 0.
+	if (customPaths) {
+		Array.from(customPaths).forEach((value) => {
+			const path = findPath(graph, Number(value))
+			paths.push(path)
+		})
+	} else {
+		// Otherwise draw a path for each column.
+		graph[1].forEach((column, index) => {
+			const path = findPath(graph, index)
+			paths.push(path)
 		})
 	}
+	return paths
+}
 
-	return {
-		id: uuid(),
-		currentHealth: props.currentHealth || props.hp || 42,
-		maxHealth: props.hp || 42,
-		block: props.block || 0,
-		powers: props.powers || {},
-		// A list of "actions" the monster will take each turn.
-		// Example: [{damage: 6}, {block: 2}, {}, {weak: 2}]
-		// ... meaning turn 1, deal 6 damage, turn 2 gain 2 block, turn 3 do nothing, turn 4 apply 2 weak
-		intents: intents || [],
-		// A counter to keep track of which intent to run next.
-		nextIntent: 0,
+// Finds a path from start to finish in the graph.
+// Set the index to the column you'd like to follow where possible.
+// Returns a nested array of the row/column indexes of the graph nodes.
+// [
+// 	[[0, 0], [1,4]], <-- first move.
+// 	[[1, 4], [2,1]] <-- second move
+// ]
+export function findPath(graph, preferredIndex, debug = false) {
+	let path = []
+	let lastVisited
+	if (debug) console.groupCollapsed('finding path', preferredIndex)
+
+	// Look for a free node in the next row to the right of the "desired index".
+	const isEncounter = (node) => node && Boolean(node.type)
+
+	// Walk through each row.
+	for (let [rowIndex, row] of graph.entries()) {
+		if (debug) console.group(`row ${rowIndex}`)
+		const nextRow = graph[rowIndex + 1]
+		let aIndex = preferredIndex
+		let bIndex = preferredIndex
+
+		// If on last level, stop drawing.
+		if (!nextRow) {
+			if (debug) console.log('no next row, stopping')
+			if (debug) console.groupEnd()
+			break
+		}
+
+		// Find the node we came from.
+		let a = lastVisited
+		const newAIndex = row.indexOf(a)
+		if (a) {
+			if (debug) console.log('changing a index to', newAIndex)
+			aIndex = newAIndex
+		} else {
+			if (debug) console.log('forcing "from" to first node in row')
+			a = row[0]
+			aIndex = 0
+		}
+		if (!a) throw Error('missing from')
+
+		// Find the node we are going to.
+		// Search to the right of our index.
+		let b
+		for (let i = bIndex; i < nextRow.length; i++) {
+			if (debug) console.log('forwards', i)
+			let node = nextRow[i]
+			if (isEncounter(node)) {
+				if (debug) console.log('choosing', i)
+				b = node
+				bIndex = i
+				break
+			}
+		}
+		// No result? Search to the left instead.
+		if (!b) {
+			for (let i = bIndex; i >= 0; i--) {
+				if (debug) console.log('backwards', i)
+				let node = nextRow[i]
+				if (isEncounter(node)) {
+					if (debug) console.log('choosing', i)
+					b = node
+					bIndex = i
+					break
+				}
+			}
+			if (!b) throw Error('missing to')
+		}
+		lastVisited = b
+
+		if (debug) console.log(`connected row ${rowIndex}:${aIndex} to ${rowIndex + 1}:${bIndex}`)
+		const moveA = [rowIndex, aIndex]
+		const moveB = [rowIndex + 1, bIndex]
+		path.push([moveA, moveB])
+		if (debug) console.groupEnd()
 	}
+
+	if (debug) console.groupEnd()
+	return path
+}
+
+// For debugging purposes, logs a text representation of the map.
+export function graphToString(graph) {
+	graph.forEach((row, level) => {
+		let str = `${String(level).padStart(2, '0')}   `
+		row.forEach((node) => {
+			if (!node.type) {
+				str = str + ' '
+			} else {
+				str = str + node.type
+			}
+		})
+		console.log(str)
+	})
 }
