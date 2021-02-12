@@ -31,7 +31,7 @@ const defaultOptions = {
 }
 
 // A dungeon is where the adventure starts.
-export default function Dungeon(options) {
+export default function Dungeon(options = {}) {
 	const graph = generateGraph(options)
 	const paths = generatePaths(graph, options.customPaths)
 
