@@ -11,7 +11,7 @@ export const dungeonWithMap = () => {
 		columns: 6,
 		minEncounters: 3,
 		maxEncounters: 4,
-		paths: '0235',
+		customPaths: '0235',
 	})
 }
 

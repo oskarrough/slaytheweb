@@ -1,6 +1,5 @@
 import {Component, html} from '../web_modules/htm/preact/standalone.module.js'
-import {drawPath} from '../game/map.js'
-import {shuffle, isRoomCompleted, random as randomBetween} from '../game/utils.js'
+import {isRoomCompleted, random as randomBetween} from '../game/utils.js'
 
 export default function map(props) {
 	const {graph, x, y, pathTaken} = props.dungeon
@@ -66,13 +65,54 @@ export class SlayMap extends Component {
 		})
 	}
 
+	// Takes dungeon.paths and draws the path using an SVG line.
 	drawPaths() {
-		const graph = this.state.graph
-		// Sneaky but to control how many paths are rendered, you can pass a string "1" or "123",
-		// and it'll draw paths on those columns only.
 		this.props.dungeon.paths.forEach((path, index) => {
-			drawPath(graph, path, this.base, index)
+			this.drawPath(path, index)
 		})
+	}
+
+	drawPath(path, preferredIndex) {
+		const containerElement = this.base
+		const graph = this.state.graph
+		const debug = false
+		const nodeFromMove = ([row, col]) => graph[row][col]
+
+		if (!containerElement) throw new Error('Missing container element')
+
+		// Create an empty <svg> to hold our path.
+		const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+		svg.id = `path${preferredIndex}`
+		svg.classList.add('paths')
+		containerElement.appendChild(svg)
+
+		// For each move, add a <line> element from a to b.
+		if (debug) console.groupCollapsed('drawing path', preferredIndex)
+		path.forEach((move, index) => {
+			const a = nodeFromMove(move[0])
+			const b = nodeFromMove(move[1])
+
+			if (debug) console.groupEnd()
+			// Create a line between each element.
+			const aPos = getPosWithin(a.el, containerElement)
+			const bPos = getPosWithin(b.el, containerElement)
+			if (!aPos.top) {
+				throw Error(
+					"Could not render the svg path. Is the graph's container element rendered/visible?"
+				)
+			}
+			const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
+			line.setAttribute('x1', aPos.left + aPos.width / 2)
+			line.setAttribute('y1', aPos.top + aPos.height / 2)
+			line.setAttribute('x2', bPos.left + bPos.width / 2)
+			line.setAttribute('y2', bPos.top + bPos.height / 2)
+			svg.appendChild(line)
+			line.setAttribute('length', line.getTotalLength())
+			a.el.setAttribute('linked', true)
+			b.el.setAttribute('linked', true)
+			if (debug) console.log(`Move no. ${index} is from ${a} to ${b}`)
+		})
+		if (debug) console.groupEnd()
 	}
 
 	render(props) {
@@ -117,4 +157,19 @@ function emojiFromNodeType(type) {
 		E: '👹',
 	}
 	return map[type]
+}
+
+// Since el.offsetLeft doesn't respect CSS transforms,
+// and getBounding.. is relative to viewport, not parent, we need this utility.
+function getPosWithin(el, container) {
+	if (!el) throw new Error('missing el')
+	if (!container) throw new Error('missing container')
+	const parent = container.getBoundingClientRect()
+	const rect = el.getBoundingClientRect()
+	return {
+		top: rect.top - parent.top,
+		left: rect.left - parent.left,
+		width: rect.width,
+		height: rect.height,
+	}
 }

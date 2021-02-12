@@ -1,4 +1,4 @@
-import {shuffle, random as randomBetween} from './utils.js'
+import {uuid, shuffle, random as randomBetween} from './utils.js'
 /*
  * A procedural generated map for Slay the Web.
  * again, heavily inspired by Slay the Spire.
@@ -13,9 +13,50 @@ import {shuffle, random as randomBetween} from './utils.js'
  * 6. Encounters are randomized in a row
  * */
 
+export function dungeonMap(props) {
+	const graph = generateGraph(props)
+	const paths = generatePaths(graph, props.customPaths)
+	// Add ".edges" to each node from the paths, so we know which connections it has.
+	const nodeFromMove = ([row, col]) => graph[row][col]
+	paths.forEach((path) => {
+		path.forEach((move) => {
+			const a = nodeFromMove(move[0])
+			const b = nodeFromMove(move[1])
+			a.edges.add(b)
+		})
+	})
+	return {
+		id: uuid(),
+		x: 0,
+		y: 0,
+		pathTaken: [{x: 0, y: 0}],
+		graph,
+		paths,
+	}
+}
+
+function Node(type = false) {
+	return {type, edges: new Set(), room: undefined}
+}
+
+// The type of each encounter on the map is decided by this function.
+// This could be much more "intelligent" for example elite fights should first come later.
+function randomEncounter(encounters, y /*, graph*/) {
+	const pick = (types) => shuffle(Array.from(types))[0]
+	if (y < 2) return pick('MMME')
+	if (y < 3) return pick('MMMMEC')
+	if (y < 4) return pick('MMCCMME')
+	if (y < 5) return pick('MMCCMME')
+	if (y < 6) return pick('MMCMMEE')
+	if (y < 7) return pick('MCEE')
+	if (y < 8) return pick('MMEEC')
+	if (y < 9) return pick('MMEEC')
+	return pick(encounters)
+}
+
 // Returns a "graph" of the map we want to render,
 // using nested arrays for the rows and columns.
-export function generateGraph(opts) {
+export function generateGraph(props) {
 	const defaultOptions = {
 		// map size
 		rows: 10,
@@ -23,48 +64,24 @@ export function generateGraph(opts) {
 		// min/max per row
 		minEncounters: 2,
 		maxEncounters: 5,
-		// types of encounters. duplicate them to increase chance
 		/*
+			types of encounters. duplicate them to increase chance
 			M Monster
-			$ Shop
-			? Question mark
-			T Treasure
-			E Elite
-			BOSS Boss
+			C Campfire
+			E Elite Monster
 		*/
 		encounters: 'MMMCE',
+		// customPaths: '123'
 	}
-	const options = Object.assign(defaultOptions, opts)
-	// if (options.maxEncounters > options.columns) options.maxEncounters = options.columns
-	// console.log('Generating graph', options)
-
-	function Node(type = false) {
-		return {type, edges: new Set(), room: undefined}
-	}
-
-	// The type of each encounter on the map is decided by this function.
-	// This could be much more "intelligent" for example elite fights should first come later.
-	function randomEncounter(y, graph) {
-		const pick = (types) => shuffle(Array.from(types))[0]
-		if (y < 2) return pick('MMME')
-		if (y < 3) return pick('MMMMEC')
-		if (y < 4) return pick('MMCCMME')
-		if (y < 5) return pick('MMCCMME')
-		if (y < 6) return pick('MMCMMEE')
-		if (y < 7) return pick('MCEE')
-		if (y < 8) return pick('MMEEC')
-		if (y < 9) return pick('MMEEC')
-		return pick(options.encounters)
-	}
-
+	const options = Object.assign(defaultOptions, props)
 	const graph = []
 	for (let r = 0; r < options.rows; r++) {
 		const row = []
 		// In each row we want from X encounters.
-		let encounters = randomBetween(options.minEncounters, options.maxEncounters)
-		if (encounters > options.columns) encounters = options.columns
-		for (let i = 0; i < encounters; i++) {
-			row.push(Node(randomEncounter(r, graph)))
+		let amountOfEncounters = randomBetween(options.minEncounters, options.maxEncounters)
+		if (amountOfEncounters > options.columns) amountOfEncounters = options.columns
+		for (let i = 0; i < amountOfEncounters; i++) {
+			row.push(Node(randomEncounter(options.encounters, r, graph)))
 		}
 		// Fill empty columns.
 		while (row.length < options.columns) {
@@ -80,17 +97,41 @@ export function generateGraph(opts) {
 	return graph
 }
 
+// Returns an array of possible paths from start to finish.
+function generatePaths(graph, customPaths) {
+	const paths = []
+	// The "customPaths" argument should be a string of indexes from where to draw the paths,
+	// For example "530" would draw three paths. First at index 5, then 3 and finally 0.
+	if (customPaths) {
+		Array.from(customPaths).forEach((value) => {
+			const path = findPath(graph, Number(value))
+			paths.push(path)
+		})
+	} else {
+		// Otherwise draw a path for each column.
+		graph[1].forEach((column, index) => {
+			const path = findPath(graph, index)
+			paths.push(path)
+		})
+	}
+	return paths
+}
+
 // Finds a path from start to finish in the graph.
-// Set the index to the column you'd like to follow, when possible.
-// It returns a nested array of the row/column indexes of the graph nodes.
+// Set the index to the column you'd like to follow where possible.
+// Returns a nested array of the row/column indexes of the graph nodes.
 // [
 // 	[[0, 0], [1,4]], <-- first move.
 // 	[[1, 4], [2,1]] <-- second move
 // ]
-export function findPath(graph, preferredIndex, debug = false) {
+function findPath(graph, preferredIndex, debug = false) {
 	let path = []
 	let lastVisited
 	if (debug) console.groupCollapsed('finding path', preferredIndex)
+
+	// Look for a free node in the next row to the right of the "desired index".
+	const isEncounter = (node) => node && Boolean(node.type)
+
 	// Walk through each row.
 	for (let [rowIndex, row] of graph.entries()) {
 		if (debug) console.group(`row ${rowIndex}`)
@@ -153,76 +194,12 @@ export function findPath(graph, preferredIndex, debug = false) {
 		path.push([moveA, moveB])
 		if (debug) console.groupEnd()
 	}
+
 	if (debug) console.groupEnd()
 	return path
 }
 
-export function drawPath(graph, path, graphEl, preferredIndex) {
-	const debug = false
-	const nodeFromMove = ([row, col]) => graph[row][col]
-
-	if (!graphEl) throw new Error('Missing graph element')
-
-	// Create an empty <svg> to hold our path.
-	const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-	svg.id = `path${preferredIndex}`
-	svg.classList.add('paths')
-	graphEl.appendChild(svg)
-
-	// For each move, add a <line> element from a to b.
-	if (debug) console.groupCollapsed('drawing path', preferredIndex)
-	path.forEach((move, index) => {
-		const a = nodeFromMove(move[0])
-		const b = nodeFromMove(move[1])
-
-		if (debug) console.groupEnd()
-		// Create a line between each element.
-		const aPos = getPosWithin(a.el, graphEl)
-		const bPos = getPosWithin(b.el, graphEl)
-		if (!aPos.top) {
-			throw Error(
-				"Could not render the svg path. Is the graph's container element rendered/visible?"
-			)
-		}
-		const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
-		line.setAttribute('x1', aPos.left + aPos.width / 2)
-		line.setAttribute('y1', aPos.top + aPos.height / 2)
-		line.setAttribute('x2', bPos.left + bPos.width / 2)
-		line.setAttribute('y2', bPos.top + bPos.height / 2)
-		svg.appendChild(line)
-		line.setAttribute('length', line.getTotalLength())
-		a.el.setAttribute('linked', true)
-		b.el.setAttribute('linked', true)
-		if (debug) console.log(`Move no. ${index} is from ${a} to ${b}`)
-	})
-	if (debug) console.groupEnd()
-}
-
-// Shortcut
-export function findAndDrawPath(graph, graphEl, index) {
-	const path = findPath(graph, index)
-	drawPath(graph, path, graphEl, index)
-}
-
-// Look for a free node in the next row to the right of the "desired index".
-const isEncounter = (node) => node && Boolean(node.type)
-
-// Since el.offsetLeft doesn't respect CSS transforms,
-// and getBounding.. is relative to viewport, not parent, we need this utility.
-function getPosWithin(el, container) {
-	if (!el) throw new Error('missing el')
-	if (!container) throw new Error('missing container')
-	const parent = container.getBoundingClientRect()
-	const rect = el.getBoundingClientRect()
-	return {
-		top: rect.top - parent.top,
-		left: rect.left - parent.left,
-		width: rect.width,
-		height: rect.height,
-	}
-}
-
-// Prints a text representation of the map to the conosle.
+// For debugging purposes, logs a text representation of the map.
 export function graphToString(graph) {
 	graph.forEach((row, level) => {
 		let str = `${String(level).padStart(2, '0')}   `
@@ -236,12 +213,3 @@ export function graphToString(graph) {
 		console.log(str)
 	})
 }
-
-// https://github.com/oskarrough/slaytheweb/issues/28
-// https://i.imgur.com/oAofMa0.jpg
-// https://github.com/yurkth/stsmapgen
-// https://github.com/SunnySunMoon/Slay-the-Spire-Map
-// https://mapbox.github.io/delaunator/
-// https://github.com/anvaka/ngraph.graph
-// https://github.com/anvaka/ngraph.path
-// https://css-tricks.com/a-trick-that-makes-drawing-svg-lines-way-easier/

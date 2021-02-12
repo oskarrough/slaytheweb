@@ -1,7 +1,6 @@
 import test from 'ava'
 import actions from '../public/game/actions'
 import Dungeon, {MonsterRoom, Monster} from '../public/game/dungeon.js'
-import {generateGraph} from '../public/game/map'
 
 const a = actions
 
@@ -9,12 +8,7 @@ const a = actions
 // Prepare a dungeon with a test monster and set starting floor to 1.
 test.beforeEach((t) => {
 	let state = a.createNewGame()
-	state = a.setDungeon(
-		state,
-		Dungeon({
-			graph: generateGraph({rows: 1, columns: 3}),
-		})
-	)
+	state = a.setDungeon(state, Dungeon({rows: 1, columns: 3}))
 	state.dungeon.y = 1
 	state.dungeon.graph[1][0].room = MonsterRoom(
 		Monster({intents: [{block: 7}, {damage: 10}, {damage: 10}]})

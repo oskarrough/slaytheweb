@@ -1,40 +1,14 @@
-import {generateGraph, findPath} from './map.js'
+import {dungeonMap} from './map.js'
 import {uuid} from './utils.js'
 import {shuffle, range} from './utils.js'
 import {monsters} from '../content/dungeon-encounters.js'
 
 // A dungeon is where the adventure starts.
-export default function Dungeon(graphOptions = {}) {
-	const graph = generateGraph(graphOptions)
-
-	// Find the paths of the map.
-	const paths = []
-	if (graphOptions.paths) {
-		Array.from(graphOptions.paths).forEach((value) => {
-			const path = findPath(graph, Number(value))
-			paths.push(path)
-		})
-	} else {
-		// If no specific paths are requested, we draw a path on each column.
-		graph[1].forEach((column, index) => {
-			const path = findPath(graph, index)
-			paths.push(path)
-		})
-	}
-
-	// Add ".edges" to each node, so we know which connections it has.
-	const nodeFromMove = ([row, col]) => graph[row][col]
-	paths.forEach((path) => {
-		path.forEach((move) => {
-			const a = nodeFromMove(move[0])
-			const b = nodeFromMove(move[1])
-			a.edges.add(b)
-			// b.edges.add(a)
-		})
-	})
+export default function Dungeon(options = {}) {
+	const dungeon = dungeonMap(options)
 
 	// Add "room" to all valid node in the graph.
-	graph.forEach((row, level) => {
+	dungeon.graph.forEach((row, level) => {
 		row.map((node) => {
 			if (node.type) {
 				node.room = createRandomRoom(node.type, level)
@@ -46,24 +20,16 @@ export default function Dungeon(graphOptions = {}) {
 	// and it'll return a (more or less) random room to use.
 	function createRandomRoom(type, level) {
 		if (level === 0) return StartRoom()
-		if (level === graph.length - 1) return BossRoom()
+		if (level === dungeon.graph.length - 1) return BossRoom()
 		// if (type === 'M' && level < 5) return randomEasyMonster()
 		if (type === 'M') return monsters[shuffle(Object.keys(monsters))[0]]
 		if (type === 'E') return MonsterRoom(Monster({intents: [{damage: 10}, {block: 5}], hp: 30}))
 		if (type === 'C') return CampfireRoom()
-
-		return MonsterRoom(Monster({intents: [{block: 5}], hp: 10}))
-		// throw new Error(`Could not match node type ${type} with a dungeon room`)
+		// return MonsterRoom(Monster({intents: [{block: 5}], hp: 10}))
+		throw new Error(`Could not match node type ${type} with a dungeon room`)
 	}
 
-	return {
-		id: uuid(),
-		graph,
-		x: 0,
-		y: 0,
-		paths,
-		pathTaken: [{x: 0, y: 0}],
-	}
+	return dungeon
 }
 
 export function StartRoom() {
