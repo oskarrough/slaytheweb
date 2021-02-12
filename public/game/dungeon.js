@@ -17,8 +17,21 @@ import {StartRoom, MonsterRoom, CampfireRoom, BossRoom, Monster} from './dungeon
  * 6. Encounters are randomized in a row
  * */
 
+const defaultOptions = {
+	// Map size
+	rows: 10,
+	columns: 6,
+	// How many encounters do you want per row?
+	minEncounters: 2,
+	maxEncounters: 5,
+	// types of encounters. duplicate them to increase chance
+	// M Monster, C Campfire, E Elite
+	encounters: 'MMMCE',
+	// customPaths: '123'
+}
+
 // A dungeon is where the adventure starts.
-export default function Dungeon(options = {}) {
+export default function Dungeon(options) {
 	const graph = generateGraph(options)
 	const paths = generatePaths(graph, options.customPaths)
 
@@ -52,25 +65,8 @@ export default function Dungeon(options = {}) {
 	}
 }
 
-function Node(type = false) {
-	return {type, edges: new Set(), room: undefined}
-}
-
-// Pass it your desired room type as well as the level,
-// and it'll return a (more or less) random room to use.
-function createRandomRoom(type, level, graph) {
-	if (level === 0) return StartRoom()
-	if (level === graph.length - 1) return BossRoom()
-	// if (type === 'M' && level < 5) return randomEasyMonster()
-	if (type === 'M') return monsters[shuffle(Object.keys(monsters))[0]]
-	if (type === 'E') return MonsterRoom(Monster({intents: [{damage: 10}, {block: 5}], hp: 30}))
-	if (type === 'C') return CampfireRoom()
-	throw new Error(`Could not match node type ${type} with a dungeon room`)
-}
-
-// The type of each node on the map is decided by this function.
-// This could be much more "intelligent" for example elite fights should first come later.
-function randomEncounter(encounters, y /*, graph*/) {
+// Decide which type the node should be.
+function decideEncounterType(encounters, y /*, graph*/) {
 	const pick = (types) => shuffle(Array.from(types))[0]
 	if (y < 2) return pick('MMME')
 	if (y < 3) return pick('MMMMEC')
@@ -83,42 +79,46 @@ function randomEncounter(encounters, y /*, graph*/) {
 	return pick(encounters)
 }
 
+// Decide which (random) room the node's type should be.
+function createRandomRoom(type, level, graph) {
+	if (level === 0) return StartRoom()
+	if (level === graph.length - 1) return BossRoom()
+	// if (type === 'M' && level < 5) return randomEasyMonster()
+	if (type === 'M') return monsters[shuffle(Object.keys(monsters))[0]]
+	if (type === 'E') return MonsterRoom(Monster({intents: [{damage: 10}, {block: 5}], hp: 30}))
+	if (type === 'C') return CampfireRoom()
+	throw new Error(`Could not match node type ${type} with a dungeon room`)
+}
+
+function Node(type = false) {
+	return {type, edges: new Set(), room: undefined}
+}
+
 // Returns a "graph" of the map we want to render,
 // using nested arrays for the rows and columns.
 export function generateGraph(props) {
-	const defaultOptions = {
-		// map size
-		rows: 10,
-		columns: 6,
-		// min/max per row
-		minEncounters: 2,
-		maxEncounters: 5,
-		/*
-			types of encounters. duplicate them to increase chance
-			M Monster
-			C Campfire
-			E Elite Monster
-		*/
-		encounters: 'MMMCE',
-		// customPaths: '123'
-	}
-	const options = Object.assign(defaultOptions, props)
 	const graph = []
+	const options = Object.assign(defaultOptions, props)
+
 	for (let r = 0; r < options.rows; r++) {
 		const row = []
+
 		// In each row we want from X encounters.
 		let amountOfEncounters = randomBetween(options.minEncounters, options.maxEncounters)
 		if (amountOfEncounters > options.columns) amountOfEncounters = options.columns
 		for (let i = 0; i < amountOfEncounters; i++) {
-			row.push(Node(randomEncounter(options.encounters, r, graph)))
+			row.push(Node(decideEncounterType(options.encounters, r, graph)))
 		}
+
 		// Fill empty columns.
 		while (row.length < options.columns) {
 			row.push(Node())
 		}
+
 		// Randomize the order.
 		graph.push(shuffle(row))
 	}
+
 	// Add start end end nodes, in this order.
 	graph.push([Node('boss')]) // end
 	graph.unshift([Node('start')]) // start

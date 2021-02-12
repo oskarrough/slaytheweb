@@ -65,7 +65,7 @@ export class SlayMap extends Component {
 		})
 	}
 
-	// Takes dungeon.paths and draws the path using an SVG line.
+	// Draws SVG lines between the DOM nodes from the dungeon's path.
 	drawPaths() {
 		this.props.dungeon.paths.forEach((path, index) => {
 			this.drawPath(path, index)
@@ -147,14 +147,15 @@ export class SlayMap extends Component {
 	}
 }
 
-// 🐫
 function emojiFromNodeType(type) {
 	const map = {
+		start: 'Start',
 		M: '💀',
 		C: '🏕',
 		// $: '💰',
 		Q: '❓',
 		E: '👹',
+		boss: 'Boss',
 	}
 	return map[type]
 }
