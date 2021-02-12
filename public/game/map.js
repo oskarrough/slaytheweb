@@ -91,8 +91,8 @@ export function generateGraph(props) {
 		graph.push(shuffle(row))
 	}
 	// Add start end end nodes, in this order.
-	graph.push([Node('🕸️')]) // end
-	graph.unshift([Node('🎴')]) // start
+	graph.push([Node('boss')]) // end
+	graph.unshift([Node('start')]) // start
 
 	return graph
 }

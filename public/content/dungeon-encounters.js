@@ -25,8 +25,8 @@ export const createTestDungeon = () => {
 	return dungeon
 }
 
+// Here are some different monsters we use in the game.
 export const monsters = {}
-
 monsters['Necromancer'] = MonsterRoom(
 	Monster({
 		hp: random(18, 20),
@@ -34,7 +34,6 @@ monsters['Necromancer'] = MonsterRoom(
 		random: 2,
 	})
 )
-
 monsters['monster2'] = MonsterRoom(
 	Monster({
 		hp: random(43, 47),
@@ -42,7 +41,6 @@ monsters['monster2'] = MonsterRoom(
 		random: 2,
 	})
 )
-
 monsters['monster3'] = MonsterRoom(
 	Monster({
 		hp: random(13, 17),
@@ -67,7 +65,6 @@ monsters['monster4'] = MonsterRoom(
 		random: 2,
 	})
 )
-
 monsters['monster5'] = MonsterRoom(
 	Monster({hp: 70, block: 12, intents: [{block: 5}, {damage: 16}]})
 )
