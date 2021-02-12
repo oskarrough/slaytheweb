@@ -8,7 +8,13 @@ export default function map(props) {
 	return html`
 		<div class="MapContainer">
 			<h2>Map of the dungeon. Level ${y}. Node ${x}</h2>
-			<${Mapo} dungeon=${props.dungeon} graph=${graph} x=${x} y=${y} onSelect=${props.onMove}><//>
+			<${SlayMap}
+				dungeon=${props.dungeon}
+				graph=${graph}
+				x=${x}
+				y=${y}
+				onSelect=${props.onMove}
+			><//>
 			<h2>Log</h2>
 			<ul class="MapList">
 				${pathTaken.map((path) => html`<li>${path.y}.${path.x}</li>`)}
@@ -17,7 +23,7 @@ export default function map(props) {
 	`
 }
 
-export class Mapo extends Component {
+export class SlayMap extends Component {
 	componentDidMount() {
 		this.setState({graph: this.addElementsToGraph(this.props.graph)})
 	}
