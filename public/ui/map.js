@@ -6,7 +6,7 @@ export default function map(props) {
 
 	return html`
 		<div class="MapContainer">
-			<h2>Map of the dungeon. Level ${y}. Node ${x}</h2>
+			<h2>Map of the dungeon. Floor ${y}. Node ${x}</h2>
 			<${SlayMap}
 				dungeon=${props.dungeon}
 				graph=${graph}
@@ -55,7 +55,7 @@ export class SlayMap extends Component {
 
 	// Shake the positions up a bit.
 	scatter(distance = 35) {
-		const nodes = this.base.querySelectorAll('slay-map-node[encounter]')
+		const nodes = this.base.querySelectorAll('slay-map-node[type]')
 		nodes.forEach((node) => {
 			node.style.transform = `translate3d(
 				${randomBetween(-distance, distance)}%,
@@ -131,7 +131,7 @@ export class SlayMap extends Component {
 								const isCurrent = rowIndex === y && nodeIndex === x
 								const canVisit = edgesFromCurrentNode.has(node) && isRoomCompleted(graph[y][x].room)
 								return html`<slay-map-node
-									encounter=${Boolean(node.type)}
+									type=${Boolean(node.type)}
 									current=${isCurrent}
 									can-visit=${canVisit}
 									did-visit=${node.didVisit}

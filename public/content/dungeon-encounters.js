@@ -10,8 +10,8 @@ export const dungeonWithMap = () => {
 	return Dungeon({
 		rows: 7,
 		columns: 6,
-		minEncounters: 3,
-		maxEncounters: 4,
+		minRooms: 3,
+		maxRooms: 4,
 		customPaths: '0235',
 	})
 }

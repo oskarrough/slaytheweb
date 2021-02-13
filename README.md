@@ -82,13 +82,13 @@ Cards can apply "powers". A power is a status effect or aura that usually lasts 
 
 As an example, setting `state.player.powers.weak = 5`, indicates that the player should be considered weak for five turns. Powers decrease by one stack per turn.
 
-### The player
+### Player
 
 On `state.player` we have you, the player. This object describes the health, powers and the cards you have.
 
 ### Dungeon
 
-Every game starts in a dungeon. You fight your way through one or more rooms to reach the end, where you win the game.
+Every game starts in a dungeon. You make your way through rooms to reach the end.
 
 There are different types of rooms. Like Monster and Campfire. One day there'll be more like Merchant and Treasure or a "random" room.
 
@@ -96,7 +96,7 @@ Later it'd be cool to have real maps like Slay The Spire, where there are multip
 
 ### Monsters
 
-Monsters exist inside the rooms in a dungeon. A monster has some health and a list of "intents" that it will take each turn. These intents are basically the AI. Monsters can do damage, block and apply powers. It's not super flexible, as we're not using actions and cards like the player does. But it is enough for now.
+Monsters exist inside the rooms in a dungeon. A monster has health and a list of "intents" that it will take each turn. These intents are basically the AI. Monsters can do damage, block and apply powers. It's not super flexible, as we're not using actions and cards like the player does. But it is enough for now.
 
 ## References
 
