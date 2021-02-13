@@ -44,10 +44,10 @@ export default function Dungeon(options = {}) {
 	})
 
 	// Add "room" to all valid node in the graph.
-	graph.forEach((row, floor) => {
-		row.map((node) => {
+	graph.forEach((floor, floorNumber) => {
+		floor.map((node) => {
 			if (node.type) {
-				node.room = createRandomRoom(node.type, floor, graph)
+				node.room = createRandomRoom(node.type, floorNumber, graph)
 			}
 		})
 	})
@@ -103,25 +103,25 @@ export function generateGraph(props) {
 	const {height, width, minRooms, maxRooms, roomTypes} = Object.assign(defaultOptions, props)
 
 	// Create a row of nodes on each floor.
-	for (let floor = 0; floor < height; floor++) {
-		const row = []
-		// Each row as X amount of rooms.
+	for (let floorNumber = 0; floorNumber < height; floorNumber++) {
+		const floor = []
+		// Each floor as X amount of rooms.
 		let numberOfRooms = randomBetween(minRooms, maxRooms)
 		if (numberOfRooms > width) numberOfRooms = width
 		for (let i = 0; i < numberOfRooms; i++) {
-			row.push(Node(decideRoomType(roomTypes, floor, graph)))
+			floor.push(Node(decideRoomType(roomTypes, floorNumber, graph)))
 		}
 		// And fill it up with empty nodes.
-		while (row.length < width) {
-			row.push(Node())
+		while (floor.length < width) {
+			floor.push(Node())
 		}
 		// Randomize the order.
-		graph.push(shuffle(row))
+		graph.push(shuffle(floor))
 	}
 
 	// Finally, add start end end nodes, in this order.
-	graph.push([Node('boss')])
 	graph.unshift([Node('start')])
+	graph.push([Node('boss')])
 
 	return graph
 }
@@ -147,8 +147,9 @@ export function generatePaths(graph, customPaths) {
 }
 
 // Finds a path from start to finish in the graph.
-// Set the index to the column you'd like to follow where possible.
-// Returns a nested array of the row/column indexes of the graph nodes.
+// Pass it an index of the column you'd like the path to follow where possible.
+// Returns an array of moves. Each move contains the Y/X coords of the graph.
+// Note, it is Y/X and not X/Y.
 // [
 // 	[[0, 0], [1,4]], <-- first move.
 // 	[[1, 4], [2,1]] <-- second move
@@ -158,32 +159,32 @@ export function findPath(graph, preferredIndex, debug = false) {
 	let lastVisited
 	if (debug) console.groupCollapsed('finding path', preferredIndex)
 
-	// Look for a free node in the next row to the right of the "desired index".
+	// Look for a free node in the next floor to the right of the "desired index".
 	const validNode = (node) => node && Boolean(node.type)
 
-	// Walk through each row.
-	for (let [rowIndex, row] of graph.entries()) {
-		if (debug) console.group(`row ${rowIndex}`)
-		const nextRow = graph[rowIndex + 1]
+	// Walk through each floor.
+	for (let [floorNumber, floor] of graph.entries()) {
+		if (debug) console.group(`floor ${floorNumber}`)
+		const nextFloor = graph[floorNumber + 1]
 		let aIndex = preferredIndex
 		let bIndex = preferredIndex
 
 		// If on last floor, stop drawing.
-		if (!nextRow) {
-			if (debug) console.log('no next row, stopping')
+		if (!nextFloor) {
+			if (debug) console.log('no next floor, stopping')
 			if (debug) console.groupEnd()
 			break
 		}
 
 		// Find the node we came from.
 		let a = lastVisited
-		const newAIndex = row.indexOf(a)
+		const newAIndex = floor.indexOf(a)
 		if (a) {
 			if (debug) console.log('changing a index to', newAIndex)
 			aIndex = newAIndex
 		} else {
-			if (debug) console.log('forcing "from" to first node in row')
-			a = row[0]
+			if (debug) console.log('forcing "from" to first node in floor')
+			a = floor[0]
 			aIndex = 0
 		}
 		if (!a) throw Error('missing from')
@@ -191,9 +192,9 @@ export function findPath(graph, preferredIndex, debug = false) {
 		// Find the node we are going to.
 		// Search to the right of our index.
 		let b
-		for (let i = bIndex; i < nextRow.length; i++) {
+		for (let i = bIndex; i < nextFloor.length; i++) {
 			if (debug) console.log('forwards', i)
-			let node = nextRow[i]
+			let node = nextFloor[i]
 			if (validNode(node)) {
 				if (debug) console.log('choosing', i)
 				b = node
@@ -205,7 +206,7 @@ export function findPath(graph, preferredIndex, debug = false) {
 		if (!b) {
 			for (let i = bIndex; i >= 0; i--) {
 				if (debug) console.log('backwards', i)
-				let node = nextRow[i]
+				let node = nextFloor[i]
 				if (validNode(node)) {
 					if (debug) console.log('choosing', i)
 					b = node
@@ -217,9 +218,9 @@ export function findPath(graph, preferredIndex, debug = false) {
 		}
 		lastVisited = b
 
-		if (debug) console.log(`connected row ${rowIndex}:${aIndex} to ${rowIndex + 1}:${bIndex}`)
-		const moveA = [rowIndex, aIndex]
-		const moveB = [rowIndex + 1, bIndex]
+		if (debug) console.log(`connected floor ${floorNumber}:${aIndex} to ${floorNumber + 1}:${bIndex}`)
+		const moveA = [floorNumber, aIndex]
+		const moveB = [floorNumber + 1, bIndex]
 		path.push([moveA, moveB])
 		if (debug) console.groupEnd()
 	}
@@ -230,9 +231,9 @@ export function findPath(graph, preferredIndex, debug = false) {
 
 // For debugging purposes, logs a text representation of the map.
 export function graphToString(graph) {
-	graph.forEach((row, floor) => {
-		let str = `${String(floor).padStart(2, '0')}   `
-		row.forEach((node) => {
+	graph.forEach((floor, floorNumber) => {
+		let str = `${String(floorNumber).padStart(2, '0')}   `
+		floor.forEach((node) => {
 			if (!node.type) {
 				str = str + ' '
 			} else {
