@@ -64,8 +64,8 @@ stw.dealCards()`)
 			createCard,
 			dealCards: this.dealCards.bind(this),
 			iddqd() {
-				this.game.state.dungeon.graph.forEach((row) => {
-					row.forEach((node) => {
+				this.game.state.dungeon.graph.forEach((floor) => {
+					floor.forEach((node) => {
 						if (!node.room || !node.room.monsters) return
 						node.room.monsters.forEach((monster) => {
 							monster.currentHealth = 1

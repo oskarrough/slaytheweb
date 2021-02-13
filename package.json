@@ -15,11 +15,11 @@
     "release": "release-it"
   },
   "devDependencies": {
-    "ava": "^3.14.0",
-    "docco": "^0.8.0",
-    "eslint": "^7.16.0",
-    "eslint-config-prettier": "^7.1.0",
-    "eslint-plugin-prettier": "^3.3.0",
+    "ava": "^3.15.0",
+    "docco": "^0.8.1",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
     "nyc": "^15.1.0",
     "prettier": "2.2.1",
     "servor": "^4.0.2",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "esm": "^3.2.25",
-    "gsap": "^3.5.1",
+    "gsap": "^3.6.0",
     "htm": "^3.0.3",
     "immer": "^6.0.0",
     "tone": "^14.8.9"

@@ -98,7 +98,7 @@ export function isRoomCompleted(room) {
 		// @todo
 		return true
 	}
-	throw new Error(`could not check room type ${room.type}`)
+	throw new Error(`could not check if room has been completed: "${room.type}"`)
 }
 
 // Check if the current room in a game has been cleared.
@@ -108,11 +108,11 @@ export function isCurrentRoomCompleted(state) {
 }
 
 // Checks if the whole dungeon (all rooms) has been cleared.
-// As long as there is one cleared node per row.
+// As long as there is one cleared node per floor.
 export function isDungeonCompleted(state) {
 	const clearedRooms = state.dungeon.graph
-		.map((row) => {
-			return row.some((node) => {
+		.map((floor) => {
+			return floor.some((node) => {
 				return node.room && isRoomCompleted(node.room)
 			})
 		})
