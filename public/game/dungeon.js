@@ -2,32 +2,22 @@ import {uuid, shuffle, random as randomBetween} from './utils.js'
 import {StartRoom, MonsterRoom, CampfireRoom, BossRoom, Monster} from './dungeon-rooms.js'
 import {monsters} from '../content/dungeon-encounters.js'
 
-/*
- * A procedural generated map for Slay the Web.
- * again, heavily inspired by Slay the Spire.
- *
- * What are the rules?
- *
- * 1. The dungeon has a height (floors) and width (nodes)
- * 2. Each floor has a random number of rooms from 2 to 5
- * 3. Each floor Y has X nodes
- * 4. The order of nodes on a floor is randomized
- * 5. Starting node connects to all nodes on the first floor
- * 6. End node connects to all nodes on the last floor
- * */
-
 const defaultOptions = {
+	// How many floors.
 	width: 10,
+	// How many nodes on each floor.
 	height: 6,
-	// Rooms per floor.
+	// Control how many of the nodes on each floor has a room.
 	minRooms: 2,
 	maxRooms: 5,
 	// Room types. Repeat a type to increase the chance.
+	// The type of node is randomly selected from `roomTypes`.
 	// M Monster, C Campfire, E Elite
 	roomTypes: 'MMMCE',
 	// customPaths: '123'
 }
 
+// A procedural generated map for Slay the Web. Again, heavily inspired by Slay the Spire.
 export default function Dungeon(options = {}) {
 	const graph = generateGraph(options)
 	const paths = generatePaths(graph, options.customPaths)
@@ -63,7 +53,7 @@ export default function Dungeon(options = {}) {
 }
 
 // Decide which type the node should be.
-function decideRoomType(nodeTypes, floor /*, graph*/) {
+function decideNodeType(nodeTypes, floor /*, graph*/) {
 	const pick = (types) => shuffle(Array.from(types))[0]
 	if (floor < 2) return pick('MMME')
 	if (floor < 3) return pick('MMMMEC')
@@ -86,11 +76,8 @@ function createRandomRoom(nodeType, floor, graph) {
 	throw new Error(`Could not match node type ${nodeType} with a dungeon room`)
 }
 
-function Node(type = false) {
-	return {type, edges: new Set(), room: undefined}
-}
-
-// Returns a "graph" of the map we want to render using nested arrays for the floors and nodes.
+// Returns a "graph" of the map we want to render. Each nested array represents a floor with nodes.
+// All nodes have a type. Nodes with type of `false` are filler nodes nededed for the layout.
 // graph = [
 // 	[startNode]
 // 	[node, node, node],
@@ -102,6 +89,10 @@ export function generateGraph(props) {
 	const graph = []
 	const {height, width, minRooms, maxRooms, roomTypes} = Object.assign(defaultOptions, props)
 
+	function Node(type = false) {
+		return {type, edges: new Set(), room: undefined}
+	}
+
 	// Create a row of nodes on each floor.
 	for (let floorNumber = 0; floorNumber < height; floorNumber++) {
 		const floor = []
@@ -109,11 +100,12 @@ export function generateGraph(props) {
 		let numberOfRooms = randomBetween(minRooms, maxRooms)
 		if (numberOfRooms > width) numberOfRooms = width
 		for (let i = 0; i < numberOfRooms; i++) {
-			floor.push(Node(decideRoomType(roomTypes, floorNumber, graph)))
+			const nodeType = decideNodeType(roomTypes, floorNumber, graph)
+			floor.push(Node(nodeType))
 		}
 		// And fill it up with empty nodes.
 		while (floor.length < width) {
-			floor.push(Node())
+			floor.push(Node(false))
 		}
 		// Randomize the order.
 		graph.push(shuffle(floor))
@@ -129,6 +121,7 @@ export function generateGraph(props) {
 // Returns an array of possible paths from start to finish.
 export function generatePaths(graph, customPaths) {
 	const paths = []
+
 	// The "customPaths" argument should be a string of indexes from where to draw the paths,
 	// For example "530" would draw three paths. First at index 5, then 3 and finally 0.
 	if (customPaths) {
@@ -149,6 +142,8 @@ export function generatePaths(graph, customPaths) {
 // Finds a path from start to finish in the graph.
 // Pass it an index of the column you'd like the path to follow where possible.
 // Returns an array of moves. Each move contains the Y/X coords of the graph.
+// Starting node connects to all nodes on the first floor
+// End node connects to all nodes on the last floor
 // Note, it is Y/X and not X/Y.
 // [
 // 	[[0, 0], [1,4]], <-- first move.
