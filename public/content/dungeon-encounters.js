@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
-import Dungeon, {MonsterRoom, Monster} from '../game/dungeon.js'
+import Dungeon from '../game/dungeon.js'
+import {MonsterRoom, Monster} from '../game/dungeon-rooms.js'
 import {random} from '../game/utils.js'
 
 // Hello. With the imported functions above you can create a dungeon with different rooms and monsters.
@@ -7,17 +8,17 @@ import {random} from '../game/utils.js'
 
 export const dungeonWithMap = () => {
 	return Dungeon({
-		rows: 7,
-		columns: 6,
-		minEncounters: 3,
-		maxEncounters: 4,
-		paths: '0235',
+		width: 6,
+		height: 7,
+		minRooms: 3,
+		maxRooms: 4,
+		customPaths: '0235',
 	})
 }
 
 // This is the dungeon used in tests. Don't change it without running tests.
 export const createTestDungeon = () => {
-	const dungeon = Dungeon({rows: 3, columns: 1})
+	const dungeon = Dungeon({width: 1, height: 3})
 	// The tests rely on the first room having a single monster, second two monsters.
 	const intents = [{block: 7}, {damage: 10}, {damage: 8}, {}, {damage: 14}]
 	dungeon.graph[1][0].room = MonsterRoom(Monster({hp: 42, intents}))
@@ -25,8 +26,8 @@ export const createTestDungeon = () => {
 	return dungeon
 }
 
+// Here are some different monsters we use in the game.
 export const monsters = {}
-
 monsters['Necromancer'] = MonsterRoom(
 	Monster({
 		hp: random(18, 20),
@@ -34,7 +35,6 @@ monsters['Necromancer'] = MonsterRoom(
 		random: 2,
 	})
 )
-
 monsters['monster2'] = MonsterRoom(
 	Monster({
 		hp: random(43, 47),
@@ -42,7 +42,6 @@ monsters['monster2'] = MonsterRoom(
 		random: 2,
 	})
 )
-
 monsters['monster3'] = MonsterRoom(
 	Monster({
 		hp: random(13, 17),
@@ -67,7 +66,6 @@ monsters['monster4'] = MonsterRoom(
 		random: 2,
 	})
 )
-
 monsters['monster5'] = MonsterRoom(
 	Monster({hp: 70, block: 12, intents: [{block: 5}, {damage: 16}]})
 )
