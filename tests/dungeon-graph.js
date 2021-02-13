@@ -1,17 +1,23 @@
 import test from 'ava'
 import {generateGraph} from '../public/game/dungeon.js'
 
-test('can customize graph size with rows and columns', (t) => {
-	let g = generateGraph({rows: 3, columns: 10})
-	t.is(g.length, 5)
+test('graph is created without options', (t) => {
+	let g = generateGraph()
+	t.is(g.length, 8)
 	t.is(g[1].length, 10)
-	g = generateGraph({rows: 2, columns: 6})
-	t.is(g.length, 4, 'rows match (incl. start+end)')
-	t.is(g[1].length, 6, 'columns match')
 })
 
-test('all rows except first+last have between 2-5 rooms', (t) => {
-	let g = generateGraph({rows: 10, columns: 6})
+test('can customize graph size with height and width', (t) => {
+	let g = generateGraph({height: 3, width: 10})
+	t.is(g.length, 5)
+	t.is(g[1].length, 10)
+	g = generateGraph({height: 2, width: 6})
+	t.is(g.length, 4, 'height match (incl. start+end)')
+	t.is(g[1].length, 6, 'width match')
+})
+
+test('all height except first+last have between 2-5 rooms', (t) => {
+	let g = generateGraph({height: 10, width: 6})
 	// t.plan(8)
 	g.forEach((row, index) => {
 		if (index === 0 || index === g.length - 1) return
@@ -22,7 +28,7 @@ test('all rows except first+last have between 2-5 rooms', (t) => {
 })
 
 test('can control room frequency', (t) => {
-	let g = generateGraph({columns: 10, minRooms: 10, maxRooms: 10})
+	let g = generateGraph({width: 10, minRooms: 10, maxRooms: 10})
 	g.forEach((row, index) => {
 		if (index === 0 || index === g.length - 1) return
 		t.is(row.filter((n) => n.type).length, 10)
@@ -30,7 +36,7 @@ test('can control room frequency', (t) => {
 })
 
 test('it respects the cols options', (t) => {
-	let g = generateGraph({columns: 5, minRooms: 6, maxRooms: 10})
+	let g = generateGraph({width: 5, minRooms: 6, maxRooms: 10})
 	g.forEach((row, index) => {
 		if (index === 0 || index === g.length - 1) return
 		t.is(row.filter((n) => n.type).length, 5)

@@ -8,19 +8,18 @@ import {monsters} from '../content/dungeon-encounters.js'
  *
  * What are the rules?
  *
- * 1. Starting node connects to all nodes on the first row
- * 2. End node connects to all nodes on the last row
- * 3. The graph has a variable number of rows (floors) and columns (rooms).
- * 4. Each row has a random number of rooms from 2 to 5
- * 5. Each row has six columns
- * 6. Rooms are randomized in a row
+ * 1. The dungeon has a height (floors) and width (nodes)
+ * 2. Each floor has a random number of rooms from 2 to 5
+ * 3. Each floor Y has X nodes
+ * 4. The order of nodes on a floor is randomized
+ * 5. Starting node connects to all nodes on the first floor
+ * 6. End node connects to all nodes on the last floor
  * */
 
 const defaultOptions = {
-	// The size of the map.
-	rows: 10,
-	columns: 6,
-	// How many rooms do you want per row?
+	width: 10,
+	height: 6,
+	// Rooms per floor.
 	minRooms: 2,
 	maxRooms: 5,
 	// Room types. Repeat a type to increase the chance.
@@ -91,7 +90,7 @@ function Node(type = false) {
 	return {type, edges: new Set(), room: undefined}
 }
 
-// Returns a "graph" of the map we want to render using nested arrays for the rows and columns.
+// Returns a "graph" of the map we want to render using nested arrays for the floors and nodes.
 // graph = [
 // 	[startNode]
 // 	[node, node, node],
@@ -101,19 +100,19 @@ function Node(type = false) {
 // ]
 export function generateGraph(props) {
 	const graph = []
-	const {rows, columns, minRooms, maxRooms, roomTypes} = Object.assign(defaultOptions, props)
+	const {height, width, minRooms, maxRooms, roomTypes} = Object.assign(defaultOptions, props)
 
 	// Create a row of nodes on each floor.
-	for (let floor = 0; floor < rows; floor++) {
+	for (let floor = 0; floor < height; floor++) {
 		const row = []
 		// Each row as X amount of rooms.
 		let numberOfRooms = randomBetween(minRooms, maxRooms)
-		if (numberOfRooms > columns) numberOfRooms = columns
+		if (numberOfRooms > width) numberOfRooms = width
 		for (let i = 0; i < numberOfRooms; i++) {
 			row.push(Node(decideRoomType(roomTypes, floor, graph)))
 		}
-		// And fill it up with empty columns.
-		while (row.length < columns) {
+		// And fill it up with empty nodes.
+		while (row.length < width) {
 			row.push(Node())
 		}
 		// Randomize the order.

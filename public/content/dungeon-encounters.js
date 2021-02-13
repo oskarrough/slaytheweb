@@ -8,8 +8,8 @@ import {random} from '../game/utils.js'
 
 export const dungeonWithMap = () => {
 	return Dungeon({
-		rows: 7,
-		columns: 6,
+		width: 6,
+		height: 7,
 		minRooms: 3,
 		maxRooms: 4,
 		customPaths: '0235',
@@ -18,7 +18,7 @@ export const dungeonWithMap = () => {
 
 // This is the dungeon used in tests. Don't change it without running tests.
 export const createTestDungeon = () => {
-	const dungeon = Dungeon({rows: 3, columns: 1})
+	const dungeon = Dungeon({width: 1, height: 3})
 	// The tests rely on the first room having a single monster, second two monsters.
 	const intents = [{block: 7}, {damage: 10}, {damage: 8}, {}, {damage: 14}]
 	dungeon.graph[1][0].room = MonsterRoom(Monster({hp: 42, intents}))
