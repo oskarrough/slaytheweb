@@ -1,6 +1,6 @@
 import {uuid, shuffle, random as randomBetween} from './utils.js'
 import {StartRoom, CampfireRoom} from './dungeon-rooms.js'
-import {monsters} from '../content/dungeon-encounters.js'
+import {monsters, elites, bosses} from '../content/dungeon-encounters.js'
 
 const defaultOptions = {
 	// How many floors.

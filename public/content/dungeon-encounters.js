@@ -23,26 +23,37 @@ export const createTestDungeon = () => {
 	const intents = [{block: 7}, {damage: 10}, {damage: 8}, {}, {damage: 14}]
 	dungeon.graph[1][0].room = MonsterRoom(Monster({hp: 42, intents}))
 	dungeon.graph[2][0].room = MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents}))
+	dungeon.graph[3][0].room = MonsterRoom(Monster({hp: 42, intents}))
 	return dungeon
 }
 
 // Here are some different monsters we use in the game.
 export const monsters = {}
-monsters['Necromancer'] = MonsterRoom(
+export const elites = {}
+export const bosses = {}
+
+monsters['Easy does it'] = MonsterRoom(
 	Monster({
-		hp: random(18, 20),
+		hp: random(8, 10),
 		intents: [{damage: 7}, {damage: 11}, {damage: 7}, {block: 9}],
 		random: 2,
 	})
 )
-monsters['monster2'] = MonsterRoom(
+monsters['RNG does it'] = MonsterRoom(
+	Monster({
+		hp: random(18, 20),
+		intents: [{damage: 7}, {damage: 11}, {damage: 7}, {block: 9}],
+		random: 4,
+	})
+)
+monsters['Easy one'] = MonsterRoom(
 	Monster({
 		hp: random(43, 47),
 		intents: [{vulnerable: 1}, {damage: 10}, {damage: 6}, {}, {weak: 1}],
 		random: 2,
 	})
 )
-monsters['monster3'] = MonsterRoom(
+monsters['First double trouble'] = MonsterRoom(
 	Monster({
 		hp: random(13, 17),
 		intents: [{damage: 7}, {block: 4, damage: 8}, {damage: 6}, {}, {block: 6}],
@@ -54,7 +65,7 @@ monsters['monster3'] = MonsterRoom(
 		random: 2,
 	})
 )
-monsters['monster4'] = MonsterRoom(
+monsters['Mid sized duo'] = MonsterRoom(
 	Monster({
 		hp: random(34, 36),
 		intents: [{weak: 1}, {damage: 10}, {damage: 6}, {}, {weak: 1}],
@@ -66,10 +77,7 @@ monsters['monster4'] = MonsterRoom(
 		random: 2,
 	})
 )
-monsters['monster5'] = MonsterRoom(
-	Monster({hp: 70, block: 12, intents: [{block: 5}, {damage: 16}]})
-)
-monsters['monster6'] = MonsterRoom(
+monsters['Tiny Trio'] = MonsterRoom(
 	Monster({hp: random(12, 15), random: 1, intents: [{damage: 6}]}),
 	Monster({hp: random(12, 15), random: 1, intents: [{damage: 6}]}),
 	Monster({hp: random(10, 16), random: 3, intents: [{damage: 6}]})
@@ -80,7 +88,22 @@ monsters['monster7'] = MonsterRoom(
 		intents: [{damage: 12}, {block: 6, damage: 11}, {block: 5, damage: 16}, {}, {block: 6}],
 	})
 )
-monsters['monster8'] = MonsterRoom(
+monsters['monster10'] = MonsterRoom(
+	Monster({
+		hp: 48,
+		intents: [{weak: 1}, {block: 10, damage: 10}, {damage: 21}],
+	})
+)
+
+elites['monster9'] = MonsterRoom(
+	Monster({
+		hp: 60,
+		intents: [{damage: 12}, {damage: 11, weak: 1}, {damage: 4, block: 6}],
+		random: 6,
+	})
+)
+elites['Tougher'] = MonsterRoom(Monster({hp: 70, block: 12, intents: [{block: 5}, {damage: 16}]}))
+elites['The Trio'] = MonsterRoom(
 	Monster({
 		hp: random(39, 46),
 		intents: [{weak: 1}, {damage: 10}],
@@ -94,17 +117,26 @@ monsters['monster8'] = MonsterRoom(
 		intents: [{weak: 1}, {damage: 10}],
 	})
 )
-monsters['monster9'] = MonsterRoom(Monster({hp: 60, intents: [{damage: 12}], random: 5}))
-monsters['monster10'] = MonsterRoom(
-	Monster({
-		hp: 48,
-		intents: [{weak: 1}, {block: 10, damage: 10}, {damage: 21}],
-	})
-)
-monsters['monster11'] = MonsterRoom(
+
+bosses['The Large One'] = MonsterRoom(
 	Monster({
 		hp: random(100, 140),
-		intents: [{damage: 12}, {block: 6}, {damage: 16}, {damage: 7}, {weak: 2}],
+		intents: [{damage: 16}, {block: 6}, {damage: 16}, {damage: 7}, {weak: 2}],
 		random: 5,
+	})
+)
+bosses['Scale much?'] = MonsterRoom(
+	Monster({
+		hp: 62,
+		intents: [
+			{damage: 5},
+			{damage: 8},
+			{damage: 12},
+			{damage: 17},
+			{damage: 23},
+			{damage: 30},
+			{damage: 38},
+			{damage: 45},
+		],
 	})
 )

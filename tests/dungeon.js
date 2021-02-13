@@ -34,20 +34,31 @@ test('we know when a monster room is won', (t) => {
 	t.true(isCurrentRoomCompleted(state))
 })
 
-test('we know when a monster room with many monsters is won', (t) => {
+test('we know when a monster room with many monsters is completed', (t) => {
 	let state = a.createNewGame()
 	state = a.setDungeon(state, Dungeon({height: 1, width: 1}))
 	state.dungeon.graph[1][0].room = new MonsterRoom(new Monster(), new Monster())
 	state.dungeon.y = 1
-
 	t.false(isCurrentRoomCompleted(state))
 	t.false(isDungeonCompleted(state))
-
 	getCurrRoom(state).monsters[0].currentHealth = 0
 	t.false(isCurrentRoomCompleted(state), 'one more to kill')
-
 	getCurrRoom(state).monsters[1].currentHealth = 0
 	t.true(isCurrentRoomCompleted(state))
+})
+
+test('we know when the entire dungeon is compelete', (t) => {
+	let state = a.createNewGame()
+	state = a.setDungeon(state, createTestDungeon())
+	state.dungeon.y = 1
+	getCurrRoom(state).monsters[0].currentHealth = 0
+	state.dungeon.y = 2
+	getCurrRoom(state).monsters[0].currentHealth = 0
+	getCurrRoom(state).monsters[1].currentHealth = 0
+	state.dungeon.y = 3
+	getCurrRoom(state).monsters[0].currentHealth = 0
+	state.dungeon.y = 4
+	getCurrRoom(state).monsters[0].currentHealth = 0
 	t.true(isDungeonCompleted(state))
 })
 
