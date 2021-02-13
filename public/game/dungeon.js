@@ -163,9 +163,9 @@ export function findPath(graph, preferredIndex, debug = false) {
 	const validNode = (node) => node && Boolean(node.type)
 
 	// Walk through each floor.
-	for (let [floorNumber, floor] of graph.entries()) {
-		if (debug) console.group(`floor ${floorNumber}`)
-		const nextFloor = graph[floorNumber + 1]
+	for (let [floorIndex, floor] of graph.entries()) {
+		if (debug) console.group(`floor ${floorIndex}`)
+		const nextFloor = graph[floorIndex + 1]
 		let aIndex = preferredIndex
 		let bIndex = preferredIndex
 
@@ -193,7 +193,7 @@ export function findPath(graph, preferredIndex, debug = false) {
 		// Search to the right of our index.
 		let b
 		for (let i = bIndex; i < nextFloor.length; i++) {
-			if (debug) console.log('forwards', i)
+			if (debug) console.log('searching forwards', i)
 			let node = nextFloor[i]
 			if (validNode(node)) {
 				if (debug) console.log('choosing', i)
@@ -205,7 +205,7 @@ export function findPath(graph, preferredIndex, debug = false) {
 		// No result? Search to the left instead.
 		if (!b) {
 			for (let i = bIndex; i >= 0; i--) {
-				if (debug) console.log('backwards', i)
+				if (debug) console.log('searching backwards', i)
 				let node = nextFloor[i]
 				if (validNode(node)) {
 					if (debug) console.log('choosing', i)
@@ -218,9 +218,9 @@ export function findPath(graph, preferredIndex, debug = false) {
 		}
 		lastVisited = b
 
-		if (debug) console.log(`connected floor ${floorNumber}:${aIndex} to ${floorNumber + 1}:${bIndex}`)
-		const moveA = [floorNumber, aIndex]
-		const moveB = [floorNumber + 1, bIndex]
+		if (debug) console.log(`connected floor ${floorIndex}:${aIndex} to ${floorIndex + 1}:${bIndex}`)
+		const moveA = [floorIndex, aIndex]
+		const moveB = [floorIndex + 1, bIndex]
 		path.push([moveA, moveB])
 		if (debug) console.groupEnd()
 	}
