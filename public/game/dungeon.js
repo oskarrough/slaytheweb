@@ -1,5 +1,5 @@
 import {uuid, shuffle, random as randomBetween} from './utils.js'
-import {StartRoom, MonsterRoom, CampfireRoom, BossRoom, Monster} from './dungeon-rooms.js'
+import {StartRoom, CampfireRoom} from './dungeon-rooms.js'
 import {monsters} from '../content/dungeon-encounters.js'
 
 const defaultOptions = {
@@ -67,13 +67,15 @@ function decideNodeType(nodeTypes, floor /*, graph*/) {
 }
 
 // Decide which (random) room the node's type should be.
-function createRandomRoom(nodeType, floor, graph) {
+
+function createRandomRoom(nodeType, floor /*, graph*/) {
+	const pickRandomFromObj = (obj) => obj[shuffle(Object.keys(obj))[0]]
 	if (floor === 0) return StartRoom()
-	if (floor === graph.length - 1) return BossRoom()
-	if (nodeType === 'M') return monsters[shuffle(Object.keys(monsters))[0]]
-	if (nodeType === 'E') return MonsterRoom(Monster({intents: [{damage: 10}, {block: 5}], hp: 30}))
 	if (nodeType === 'C') return CampfireRoom()
-	throw new Error(`Could not match node type ${nodeType} with a dungeon room`)
+	if (nodeType === 'M') return pickRandomFromObj(monsters)
+	if (nodeType === 'E') return pickRandomFromObj(elites)
+	if (nodeType === 'boss') return pickRandomFromObj(bosses)
+	throw new Error(`Could not match node type "${nodeType}" with a dungeon room`)
 }
 
 // Returns a "graph" of the map we want to render. Each nested array represents a floor with nodes.

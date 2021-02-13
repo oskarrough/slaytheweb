@@ -94,9 +94,6 @@ export function isRoomCompleted(room) {
 		return room.choice === 'rest' || Boolean(room.reward)
 	} else if (room.type === 'start') {
 		return true
-	} else if (room.type === 'boss') {
-		// @todo
-		return true
 	}
 	throw new Error(`could not check if room has been completed: "${room.type}"`)
 }

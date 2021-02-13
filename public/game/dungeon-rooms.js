@@ -8,13 +8,6 @@ export function StartRoom() {
 	}
 }
 
-export function BossRoom() {
-	return {
-		id: uuid(),
-		type: 'boss',
-	}
-}
-
 // A campfire gives our hero the opportunity to rest, remove or upgrade a card.
 export function CampfireRoom() {
 	return {
