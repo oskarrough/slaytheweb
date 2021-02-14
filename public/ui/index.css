@@ -2,6 +2,7 @@
 @import './styles/fonts.css';
 @import './styles/overlay.css';
 @import './styles/card.css';
+@import './styles/targets.css';
 @import './styles/map.css';
 
 :root {
