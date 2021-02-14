@@ -93,3 +93,16 @@ test('dead monsters dont play', (t) => {
 	state = a.endTurn(state)
 	t.is(state.player.currentHealth, 62, 'monster is dead so nothing happened')
 })
+
+test('when multiple monsters attack in same turn, player block is removed between each', (t) => {
+	let {state} = t.context
+	state.dungeon.graph[1][0].room.monsters = [
+		Monster({intents: [{damage: 8}]}),
+		Monster({intents: [{damage: 6}]}),
+		Monster({intents: [{damage: 4}]}),
+	]
+	t.is(state.player.currentHealth, 72)
+	state.player.block = 5
+	const next = a.endTurn(state)
+	t.is(next.player.currentHealth, 72 + 5 - (8 + 6 + 4))
+})

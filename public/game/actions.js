@@ -157,16 +157,9 @@ function addHealth(state, {target, amount}) {
 
 // See the note on `target` above.
 const removeHealth = (state, {target, amount}) => {
-	// console.warn('removeHealth', target)
 	return produce(state, (draft) => {
-		const targets = getTargets(draft, target)
-		// console.warn('removing health', targets, amount)
-		targets.forEach((t) => {
-			// Adjust damage if the target is vulnerable.
-			if (t.powers.vulnerable) {
-				amount = powers.vulnerable.use(amount)
-			}
-			// Take account for block.
+		getTargets(draft, target).forEach((t) => {
+			if (t.powers.vulnerable) amount = powers.vulnerable.use(amount)
 			let amountAfterBlock = t.block - amount
 			if (amountAfterBlock < 0) {
 				t.block = 0
@@ -243,7 +236,7 @@ function endTurn(state) {
 			draft.player.currentHealth = newHealth
 		})
 	}
-	newState = takeMonsterTurn(newState)
+	newState = playMonsterActions(newState)
 	newState = decreasePlayerPowerStacks(newState)
 	newState = decreaseMonsterPowerStacks(newState)
 	newState = newTurn(newState)
@@ -270,53 +263,60 @@ function reshuffleAndDraw(state) {
 	return drawCards(nextState)
 }
 
-// Runs the "intent" for each monster in the current room
-function takeMonsterTurn(state) {
+// Run all monster intents in current room.
+function playMonsterActions(state) {
 	const room = getCurrRoom(state)
-	if (!room.monsters) {
-		console.log('empty room?', room)
-		return state
-	}
+	if (!room.monsters) return state
+	// For each monster, take turn, get state, pass to next monster.
+	let nextState = state
+	room.monsters.forEach((monster, index) => {
+		nextState = takeMonsterTurn(nextState, index)
+	})
+	return nextState
+}
+
+// Runs the "intent" for a single monster (index) in the current room.
+function takeMonsterTurn(state, monsterIndex) {
 	return produce(state, (draft) => {
-		room.monsters.forEach((monster) => {
-			// Reset block at start of turn.
-			monster.block = 0
+		const room = getCurrRoom(draft)
+		const monster = room.monsters[monsterIndex]
+		// Reset block at start of turn.
+		monster.block = 0
 
-			// If dead don't do anything..
-			if (monster.currentHealth < 1) return
+		// If dead don't do anything..
+		if (monster.currentHealth < 1) return
 
-			// Get current intent.
-			const intent = monster.intents[monster.nextIntent || 0]
-			if (!intent) return
+		// Get current intent.
+		const intent = monster.intents[monster.nextIntent || 0]
+		if (!intent) return
 
-			// Increment for next turn..
-			if (monster.nextIntent === monster.intents.length - 1) {
-				monster.nextIntent = 0
-			} else {
-				monster.nextIntent++
-			}
+		// Increment for next turn..
+		if (monster.nextIntent === monster.intents.length - 1) {
+			monster.nextIntent = 0
+		} else {
+			monster.nextIntent++
+		}
 
-			// Run the intent..
-			if (intent.block) {
-				monster.block = monster.block + intent.block
-			}
+		// Run the intent..
+		if (intent.block) {
+			monster.block = monster.block + intent.block
+		}
 
-			if (intent.damage) {
-				let amount = intent.damage
-				if (monster.powers.weak) amount = powers.weak.use(amount)
-				const newHp = removeHealth(draft, {target: 'player', amount}).player.currentHealth
-				draft.player.currentHealth = newHp
-			}
+		if (intent.damage) {
+			let amount = intent.damage
+			if (monster.powers.weak) amount = powers.weak.use(amount)
+			const updatedPlayer = removeHealth(draft, {target: 'player', amount}).player
+			draft.player.block = updatedPlayer.block
+			draft.player.currentHealth = updatedPlayer.currentHealth
+		}
 
-			if (intent.vulnerable) {
-				draft.player.powers.vulnerable =
-					(draft.player.powers.vulnerable || 0) + intent.vulnerable + 1
-			}
+		if (intent.vulnerable) {
+			draft.player.powers.vulnerable = (draft.player.powers.vulnerable || 0) + intent.vulnerable + 1
+		}
 
-			if (intent.weak) {
-				draft.player.powers.weak = (draft.player.powers.weak || 0) + intent.weak + 1
-			}
-		})
+		if (intent.weak) {
+			draft.player.powers.weak = (draft.player.powers.weak || 0) + intent.weak + 1
+		}
 	})
 }
 

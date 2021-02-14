@@ -52,37 +52,38 @@ export function getCurrMapNode(state) {
 // Returns the current room in a dungeon.
 export function getCurrRoom(state) {
 	const node = getCurrMapNode(state)
-	const room = node.room
-	if (!room) throw new Error('This node has no room')
-	return room
+	if (!node.room) throw new Error('This node has no room')
+	return node.room
 }
 
 // Returns an array of targets (player or monsters) in the current room.
 // The "target" argument must be either "player", "enemyx" (where x is the index) or "all enemies"
-export function getTargets(state, target) {
-	if (target.startsWith('player')) {
+export function getTargets(state, targetString) {
+	if (targetString.startsWith('player')) {
 		return [state.player]
 	}
 	const room = getCurrRoom(state)
-	if (target.startsWith('enemy')) {
-		const index = target.split('enemy')[1]
+	if (targetString.startsWith('enemy')) {
+		const index = targetString.split('enemy')[1]
 		const monster = room.monsters[index]
 		if (!monster) {
-			throw new Error(`could not find "${target}" in room ${state.dungeon.x},${state.dungeon.y}`)
+			throw new Error(
+				`Could not find "${targetString}" on floor ${state.dungeon.y}, room ${state.dungeon.y}`
+			)
 		}
 		return [monster]
 	}
-	if (target === 'all enemies') {
+	if (targetString === 'all enemies') {
 		return room.monsters
 	}
-	throw new Error(`Can not find monster with target: "${target}"`)
+	throw new Error(`Can not find monster with target: "${targetString}"`)
 }
 
-export function cardHasValidTarget(cardTarget, target) {
+export function cardHasValidTarget(cardTarget, targetString) {
 	return (
-		(cardTarget === 'player' && target.includes('player')) ||
-		(cardTarget === 'enemy' && target.includes('enemy')) ||
-		(cardTarget === 'all enemies' && target.includes('enemy'))
+		(cardTarget === 'player' && targetString.includes('player')) ||
+		(cardTarget === 'enemy' && targetString.includes('enemy')) ||
+		(cardTarget === 'all enemies' && targetString.includes('enemy'))
 	)
 }
 
