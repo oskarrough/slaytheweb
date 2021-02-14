@@ -1,20 +1,13 @@
 import * as Tone from '../web_modules/tone.js'
 
 // Create synths and connect it to the main output (your speakers).
-const polySynth = new Tone.PolySynth(Tone.AMSynth).toDestination()
+const polySynth = new Tone.PolySynth(Tone.AMSynth, {volume: -36}).toDestination()
 const amSynth = new Tone.AMSynth({volume: -14}).toDestination()
 
 Tone.start()
 
 function startGame() {
-	const now = Tone.now()
-	// polySynth.triggerAttack('D4', now)
-	// polySynth.triggerAttack('F4', now + 0.5)
-	// polySynth.triggerAttack('A4', now + 1)
-	// polySynth.triggerAttack('C5', now + 1.5)
-	// polySynth.triggerAttack('E5', now + 2)
-	polySynth.triggerRelease(['D4', 'F4', 'A4', 'C5', 'E5'], now + 4)
-	// polySynth.triggerRelease(['D4', 'F4', 'A4', 'C5', 'E5'])
+	polySynth.triggerAttackRelease(['D4', 'F4', 'A4', 'C5', 'E5'], 0.7)
 }
 
 const selectCard = () => {
