@@ -29,7 +29,7 @@ function createNewGame() {
 			block: 0,
 			powers: {},
 		},
-		// dungeon : {}
+		// dungeon: {}
 	}
 }
 
@@ -82,37 +82,42 @@ function drawCards(state, options) {
 }
 
 // Adds a card (from nowhere) directly to your hand.
-const addCardToHand = (state, {card}) =>
-	produce(state, (draft) => {
+function addCardToHand(state, {card}) {
+	return produce(state, (draft) => {
 		draft.hand.push(card)
 	})
+}
 
 // Discard a single card from your hand.
-const discardCard = (state, {card}) =>
-	produce(state, (draft) => {
+function discardCard(state, {card}) {
+	return produce(state, (draft) => {
 		draft.hand = state.hand.filter((c) => c.id !== card.id)
 		draft.discardPile.push(card)
 	})
+}
 
 // Discard your entire hand.
-const discardHand = (state) =>
-	produce(state, (draft) => {
+function discardHand(state) {
+	return produce(state, (draft) => {
 		draft.hand.forEach((card) => {
 			draft.discardPile.push(card)
 		})
 		draft.hand = []
 	})
+}
 
 // Discard a single card from your hand.
-const removeCard = (state, {card}) =>
-	produce(state, (draft) => {
+function removeCard(state, {card}) {
+	return produce(state, (draft) => {
 		draft.deck = state.deck.filter((c) => c.id !== card.id)
 	})
+}
 
-const upgradeCard = (state, {card}) =>
-	produce(state, (draft) => {
+function upgradeCard(state, {card}) {
+	return produce(state, (draft) => {
 		draft.deck.find((c) => c.id === card.id).upgrade()
 	})
+}
 
 // The funky part of this action is the `target` argument. It needs to be a special type of string:
 // Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getTargets
