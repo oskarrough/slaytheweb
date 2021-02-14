@@ -255,10 +255,6 @@ h2 {
 	}
 }
 
-.no-energy button {
-	animation: pulse 1.5s infinite alternate;
-	animation-timing-function: ease-out;
-}
 .Actions {
 	text-align: right;
 	margin-right: 1rem;
@@ -266,41 +262,12 @@ h2 {
 	z-index: 1;
 }
 
-.Splash {
-	min-height: 90vh;
-	display: flex;
-	margin: auto;
-	flex-flow: column;
-	text-align: center;
-	padding: 0 1rem;
+.EndTurn:hover {
+	box-shadow: 0px 0px 15px 10px var(--yellow);
 }
-.Splash-details {
-	width: 100%;
-	max-width: 40em;
-	text-align: left;
-	margin: 0 auto;
-	position: relative;
-	z-index: 2;
-}
-.Splash-spoder {
-	width: 10%;
-	position: absolute;
-	left: -20%;
-	top: 1%;
-	transform: rotate(130deg);
-}
-
-/* Normal card layout in one row */
-.Cards {
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: center;
-	min-height: var(--card-height);
-}
-.Cards > * {
-	flex-basis: var(--card-width);
-	flex-shrink: 1;
-	min-height: var(--card-height);
+.no-energy .EndTurn {
+	animation: pulse 1.5s infinite alternate;
+	animation-timing-function: ease-out;
 }
 
 /* In your hand, the cards stack a bit */
@@ -354,9 +321,12 @@ h2 {
 	position: relative;
 	z-index: 2;
 }
-
-.EndTurn:hover {
-	box-shadow: 0px 0px 15px 10px var(--yellow);
+.Splash-spoder {
+	width: 10%;
+	position: absolute;
+	left: -20%;
+	top: 1%;
+	transform: rotate(130deg);
 }
 
 .Options {

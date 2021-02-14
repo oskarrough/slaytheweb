@@ -1,3 +1,16 @@
+/* Normal card layout in one row */
+.Cards {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	min-height: var(--card-height);
+}
+.Cards > * {
+	flex-basis: var(--card-width);
+	flex-shrink: 1;
+	min-height: var(--card-height);
+}
+
 .Card {
 	position: relative;
 	display: flex;
