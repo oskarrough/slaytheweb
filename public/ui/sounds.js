@@ -1,7 +1,8 @@
 import * as Tone from '../web_modules/tone.js'
 
-//create a synth and connect it to the main output (your speakers)
+// Create synths and connect it to the main output (your speakers).
 const polySynth = new Tone.PolySynth(Tone.AMSynth).toDestination()
+const amSynth = new Tone.AMSynth({volume: -14}).toDestination()
 
 Tone.start()
 
@@ -41,8 +42,6 @@ const selectCard = () => {
 }
 
 function endTurn() {
-	/* synth.triggerAttackRelease('C4', '8n') */
-
 	// initialize the noise and start
 	const noise = new Tone.Noise({
 		type: 'pink',
@@ -130,25 +129,11 @@ function playCard({card, target}) {
 }
 
 const playAttackCard = ({card, target}) => {
-	const amSynth = new Tone.AMSynth({
-		volume: -14,
-	}).toDestination()
 	amSynth.triggerAttackRelease('G#3', 0.2)
 }
 
 const playDefenseCard = ({card, target}) => {
-	const amSynth = new Tone.AMSynth({
-		volume: -15,
-	}).toDestination()
-	amSynth.triggerAttackRelease('D#2', 0.4)
-
-	const plucky = new Tone.PluckSynth({
-		attackNoise: 0.3,
-		release: 0.08,
-		resonance: 0.5,
-		volume: -27,
-	}).toDestination()
-	plucky.triggerAttack('C-1', '+0.07')
+	amSynth.triggerAttackRelease('G#2', 0.02)
 }
 
 export default {
