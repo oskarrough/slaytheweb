@@ -1,0 +1,66 @@
+/* Normal card layout in one row */
+.Cards {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	min-height: var(--card-height);
+}
+.Cards > * {
+	flex-basis: var(--card-width);
+	flex-shrink: 1;
+	min-height: var(--card-height);
+}
+
+.Card {
+	position: relative;
+	display: flex;
+	border: 0.5em ridge #53b5a8;
+	border-image-source: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAkCAYAAADhAJiYAAAA7ElEQVRYhe2YMQ6DMAxFcwBGRtaeoFUv0K2qOAa36NYDVmLjMmHB0VfqEJbG3xKRvkTiAE+OnYBD2FrfDdFSAVvfDfH7vpsqQQnMMk9xmad0jWOacJ4o79fGVSgEEsPnda1qbx7a8mdifxcIJ7aKm6qHBOZxuTURQsm7i0Djc/y7fAHhYEsgTCYqD6lZRrVk1h6iAZIYoglqOg/RAflZMtwLKDZGOg+dQe0OiO60t8oyutP+/B5yF9R0QH6yTEiplgxJW+jQv30urHagJ0v22n2lSkjyEF196EjRqlRK0cowaNfmaLYfGOuyHjKsYnCffLyABLkAAAAASUVORK5CYII=);
+	border-image-repeat: repeat;
+	border-image-slice: 6 6 6 6;
+	border-image-width: 0.75rem;
+	border-width: 0.75rem;
+	image-rendering: -moz-crisp-edges;
+	image-rendering: pixelated;
+}
+.Card-inner {
+	width: 100%;
+	flex: 1;
+	background: #2a3335;
+	text-align: center;
+}
+.Card-name {
+	margin: 0;
+	padding: 0.6em 1em 0;
+	background: linear-gradient(to bottom, hsla(0, 0%, 0%, 0.2), transparent);
+	user-select: none;
+}
+.Card-type {
+	display: inline-block;
+	padding: 2px 5px 4px;
+	border-radius: 0.4em;
+	font-family: 'concourse_c3';
+	font-size: 0.75rem;
+	margin-top: 0.25rem;
+	background: hsl(191.3, 33.3%, 18.8%);
+}
+.Card[data-card-type='Attack'] .Card-type {
+	background: hsl(0deg 33% 19%);
+}
+.Card-description {
+	font-size: 0.875rem;
+}
+.Card-energy {
+	position: absolute;
+	top: -1.3em;
+	left: -0.3em;
+	width: 1.3rem;
+	height: 1.3rem;
+	margin-left: 0;
+	box-shadow: none;
+	border-width: 0.15rem;
+	font-size: inherit;
+}
+.Hand .Card[disabled] .EnergyBadge {
+	color: red;
+}

@@ -1,0 +1,92 @@
+/* The button to toggle overlay */
+.Overlay[open] {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 5;
+}
+.Overlay > button {
+	font-size: 1rem;
+	position: absolute;
+	/* padding: 1rem; */
+	user-select: none;
+	z-index: 3;
+	background: none;
+	border: 0;
+	color: var(--text);
+	box-shadow: none;
+}
+.Overlay[topleft] > button {
+	top: 0;
+	left: 0;
+}
+.Overlay[topright] > button {
+	top: 0;
+	right: 0;
+}
+.Overlay[topright2] > button {
+	right: 5rem;
+}
+.Overlay[bottomleft] > button {
+	top: auto;
+	bottom: 0;
+	left: 0;
+}
+.Overlay[bottomright] > button {
+	top: auto;
+	bottom: 0;
+	right: 0;
+}
+.Overlay-content {
+	position: absolute;
+	top: 100%;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding-top: 4rem;
+	overflow-y: auto;
+	transform: translate3d(0, 4rem, 0);
+	display: block;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+}
+.Overlay-bg {
+	transition: background 400ms;
+	margin: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1;
+	transform: translateX(100%);
+}
+/* Open overlays */
+.Overlay[open] > button {
+	background: linear-gradient(to right, brown 40%, transparent);
+}
+.Overlay[open] .Overlay-content {
+	top: 0;
+	visibility: visible;
+	pointer-events: auto;
+	overflow-y: auto;
+	z-index: 2;
+	opacity: 1;
+	transform: translate3d(0, 0, 0);
+	transition: opacity 400ms 60ms cubic-bezier(0.23, 1, 0.32, 1),
+		transform 400ms 60ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.Overlay[open] .Overlay-bg {
+	transform: translateX(0);
+	background: hsla(0, 0%, 0%, 0.9);
+}
+
+/* Inside overlays cards are allowed to wrap */
+.Overlay[open] .Cards {
+	flex-wrap: wrap;
+	gap: 1rem;
+	align-content: center;
+}

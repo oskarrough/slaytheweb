@@ -15,7 +15,7 @@ export default function map(props) {
 				onSelect=${props.onMove}
 			><//>
 			<h2>Log</h2>
-			<ul class="MapList">
+			<ul>
 				${pathTaken.map((path) => html`<li>${path.y}.${path.x}</li>`)}
 			</ul>
 		</div>
