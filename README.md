@@ -1,6 +1,6 @@
 # Slay the Web
  
-This is a browser-based card game engine based on Slay The Spire, a fantastic video card game designed by [MegaCrit](https://www.megacrit.com/). They explain:
+This is a browser-based card game and engine based on Slay The Spire, a fantastic video game designed by [MegaCrit](https://www.megacrit.com/):
 
 > We fused card games and roguelikes together to make the best single player deckbuilder we could. Craft a unique deck, encounter bizarre creatures, discover relics of immense power, and Slay the Spire!
 
@@ -8,24 +8,25 @@ This is a browser-based card game engine based on Slay The Spire, a fantastic vi
 
 ![Screenshot of the game](https://i.imgur.com/m9CRCsa.png)
 
-Why what? After many runs in the Spire, I really got into the theory behind the game. Inspired by the modding community, I thought it'd be neat and a great learning experience to try and implement the core logic of the game in JavaScript for the web. And that is what _Slay the Web_ is. The idea is to provide a stable game logic to play the game with any kind of interface. Be it the browser, a command line or whatever. This repo also contains an example interface for the game.
+Why what? After many runs in the Spire, I really got into the theory behind the game. Inspired by the STS modding community, I thought it'd be neat and a great learning experience to try and implement the core logic of the game in JavaScript for the web. And that is what _Slay the Web_ is: a kind of stable, UI agnostic game engine and an example UI for the web.
 
-## How to work on the code
+## How to work on the code 
 
-You will need `yarn` or `npm` installed on your computer.
+Besides project config, everything is in the `public` folder. This is the web root, requires no compilation and can be opened or deployed to a web browser.
 
-1. Run `yarn start` to start a local file server 
+First, the game logic itself. Which, again, does not know about UI. It is only concerned with modifying the game state.
 
 - The `public/game` folder contains the game engine
-- The `public/content` folder contains example cards, dungeon and monsters using the game engine
+- The `public/content` folder uses the game engine to create example cards, dungeons and monsters 
 - The `public/index.html` and `public/ui` is an example interface/website
+- The `public/web_modules` folder contains 3rd party dependencies
 - The `tests` folder is filled with tests for the game
 
-The entire `public` folder can now be deployed to any static web server. It does not require any compilation, and dependencies are checked in to `public/web_modules`.
+You can open the `public` folder with a browser, or if you want livereload, run `npm start`.
 
 ### Testing
 
-All scripts are checked with eslint, formatted with prettier and tested with ava.
+Scripts are checked with eslint, formatted with prettier and tested with ava.
 
 Additionally the `./tests` folder contains the tests. Usually a test goes 1) create a game 2) modify the game state with one or more actions 3) assert that the final state is how it you expect.
 
