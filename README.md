@@ -12,9 +12,7 @@ Why what? After many runs in the Spire, I really got into the theory behind the 
 
 ## How the code is structured
 
-Throughout all files and folders I've attempted to document and leave lots of comments. So please, explore the folders and files in this repository. Welcome!
-
-In the root of this project you'll find configuration files as well as two folders:
+Throughout all folders and files I've attempted to document and leave comments. So please, go ahead and explore them in this repository. In the root of this project you'll find configuration files as well as two folders:
 
 - [public →](https://github.com/oskarrough/slaytheweb/tree/main/public/)
 
