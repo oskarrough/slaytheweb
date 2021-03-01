@@ -12,29 +12,9 @@ Why what? After many runs in the Spire, I really got into the theory behind the 
 
 ## How to work on the code 
 
-Besides project config, everything is in the `public` folder. This is the web root, requires no compilation and can be opened or deployed to a web browser.
-
-First, the game logic itself. Which, again, does not know about UI. It is only concerned with modifying the game state.
-
-- The `public/game` folder contains the game engine
-- The `public/content` folder uses the game engine to create example cards, dungeons and monsters 
-- The `public/index.html` and `public/ui` is an example interface/website
-- The `public/web_modules` folder contains 3rd party dependencies
-- The `tests` folder is filled with tests for the game
+Besides project config, everything is in the [public](https://github.com/oskarrough/slaytheweb/tree/main/public/game) folder. This is considered web root, requires no compilation and can be opened or deployed straight to a web browser.
 
 You can open the `public` folder with a browser, or if you want livereload, run `npm start`.
-
-### Testing
-
-Scripts are checked with eslint, formatted with prettier and tested with ava.
-
-Additionally the `./tests` folder contains the tests. Usually a test goes 1) create a game 2) modify the game state with one or more actions 3) assert that the final state is how it you expect.
-
-- `yarn test` tests everything once
-- `yarn test:watch` tests continously (good while developing)
-- `yarn test:coverage` check test code coverage
-
-Additionally you can run `yarn eslint public --fix` to automatically format all scripts according to the prettier standards.
 
 ### Deploying
 
