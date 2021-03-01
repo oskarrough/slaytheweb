@@ -23,9 +23,10 @@ You can open the folder locally with your browser, or if you want livereload, wi
 
 Contains all tests for the game engine. Nothing for the UI. Run `npm test`.
 
-### Deploying
+## How to deploy it
 
-The `main` branch automatically deploys to https://slaytheweb.cards via the Vercel service. If you open a PR, it'll give you a staging/test URL as well.
+The `main` branch automatically deploys to https://slaytheweb.cards, via the Vercel service, every time it is pushed to.  
+If you open a PR, it'll give you a staging/test URL as well.
 
 ## How the game works
 
