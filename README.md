@@ -12,7 +12,7 @@ Why what? After many runs in the Spire, I really got into the theory behind the 
 
 ## How to work on the code 
 
-Besides project config, everything is in the [public](https://github.com/oskarrough/slaytheweb/tree/main/public/game) folder. This is considered web root, requires no compilation and can be opened or deployed straight to a web browser.
+Besides project config, everything is in the [public](https://github.com/oskarrough/slaytheweb/tree/main/public/) folder. This is considered web root, requires no compilation and can be opened or deployed straight to a web browser.
 
 You can open the `public` folder with a browser, or if you want livereload, run `npm start`.
 
