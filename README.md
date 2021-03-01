@@ -4,8 +4,6 @@
 
 ### 🎴 [Play now on slaytheweb.cards](https://slaytheweb.cards/)
 
-## A bit of background..
-
 This is a browser-based card game and engine based on Slay The Spire, a fantastic video game designed by [MegaCrit](https://www.megacrit.com/):
 
 > We fused card games and roguelikes together to make the best single player deckbuilder we could. Craft a unique deck, encounter bizarre creatures, discover relics of immense power, and Slay the Spire!
