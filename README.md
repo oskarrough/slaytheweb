@@ -10,15 +10,22 @@ This is a browser-based card game and engine based on Slay The Spire, a fantasti
 
 Why what? After many runs in the Spire, I really got into the theory behind the game. Inspired by the STS modding community, I thought it'd be neat and a great learning experience to try and implement the core logic of the game in JavaScript for the web. And that is what _Slay the Web_ is: a kind of stable, UI agnostic game engine and an example UI for the web.
 
-## How to work on the code 
+## How the code is structured
 
-Besides project config, everything is in the [public](https://github.com/oskarrough/slaytheweb/tree/main/public/) folder. This is considered web root, requires no compilation and can be opened or deployed straight to a web browser.
+In the root of this project you'll find configuration files as well as two folders:
 
-You can open the `public` folder with a browser, or if you want livereload, run `npm start`.
+- [public →](https://github.com/oskarrough/slaytheweb/tree/main/public/) (learn more)
+
+The web root, ready to deploy to any static web server. No compilation required.
+You can open the folder locally with your browser, or if you want livereload, with `npm start`.
+
+- [tests →](https://github.com/oskarrough/slaytheweb/tree/main/tests/) (learn more)
+
+Contains all tests for the game engine. Nothing for the UI. Run `npm test`.
 
 ### Deploying
 
-The `main` branch automatically deploys to https://slaytheweb.cards via Zeit's now. If you open a PR, it'll give you a staging URL as well.
+The `main` branch automatically deploys to https://slaytheweb.cards via the Vercel service. If you open a PR, it'll give you a staging/test URL as well.
 
 ## How the game works
 
