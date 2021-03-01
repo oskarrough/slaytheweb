@@ -12,14 +12,16 @@ Why what? After many runs in the Spire, I really got into the theory behind the 
 
 ## How the code is structured
 
+Throughout all files and folders I've attempted to document and leave lots of comments. So please, explore the folders and files in this repository. Welcome!
+
 In the root of this project you'll find configuration files as well as two folders:
 
-- [public →](https://github.com/oskarrough/slaytheweb/tree/main/public/) (learn more)
+- [public →](https://github.com/oskarrough/slaytheweb/tree/main/public/)
 
 The web root, ready to deploy to any static web server. No compilation required.
 You can open the folder locally with your browser, or if you want livereload, with `npm start`.
 
-- [tests →](https://github.com/oskarrough/slaytheweb/tree/main/tests/) (learn more)
+- [tests →](https://github.com/oskarrough/slaytheweb/tree/main/tests/)
 
 Contains all tests for the game engine. Nothing for the UI. Run `npm test`.
 
@@ -27,6 +29,8 @@ Contains all tests for the game engine. Nothing for the UI. Run `npm test`.
 
 The `main` branch automatically deploys to https://slaytheweb.cards, via the Vercel service, every time it is pushed to.  
 If you open a PR, it'll give you a staging/test URL as well.
+
+---
 
 ## References
 
