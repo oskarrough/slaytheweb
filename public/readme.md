@@ -1,7 +1,8 @@
 # Public
 
-This is the source of the game and UI.
-The folder is meant to be deployed to any web server as is.
+This is the full source code of the game _and_ UI. The folder is meant to be deployed as-is to any static web server.
+
+>  Note: the game logic does not concern with the UI
 
 Here's an overview of the contents:
 
