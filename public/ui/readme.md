@@ -10,8 +10,8 @@ This one connects everything and manages the game state.
 
 ## Animations
 
-See https://github.com/oskarrough/slaytheweb/blob/main/public/ui/animations.js. Most are made with gsap.
+See [animations.js](animations.js). Most are made with gsap.
 
 ## Sounds
 
-See [sounds.js](https://github.com/oskarrough/slaytheweb/blob/main/public/ui/sounds.js) using Tone.js.
+See [sounds.js](sounds.js) using Tone.js.
