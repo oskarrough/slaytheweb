@@ -1,6 +1,6 @@
 # Tests
 
-Scripts are checked with eslint, formatted with prettier and tested with ava.
+Scripts are checked with [eslint](https://eslint.org/), formatted with [prettier](https://prettier.io/) and tested with [ava](https://github.com/avajs/ava).
 
 Additionally the ./tests folder contains the tests. Usually a test goes 1) create a game 2) modify the game state with one or more actions 3) assert that the final state is how it you expect.
 
