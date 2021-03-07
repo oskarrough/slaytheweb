@@ -6,7 +6,7 @@ This is the full source code of the game _and_ UI. The folder is meant to be dep
 
 Here's an overview of the contents:
 
-- [./game](https://github.com/oskarrough/slaytheweb/tree/main/public/game) contains the core game logic
-- [./content](https://github.com/oskarrough/slaytheweb/tree/main/public/content) uses methods from the game engine to build cards, dungeon and monsters
-- [./ui](https://github.com/oskarrough/slaytheweb/tree/main/public/ui) is the example web interface to actually play the game
-- [./web_modules](https://github.com/oskarrough/slaytheweb/tree/main/public/web_modules) contains our third party dependencies, loaded as es modules
+- [game](game) contains the core game logic
+- [content](content) uses methods from the game engine to build cards, dungeon and monsters
+- [ui](ui) is the example web interface to actually play the game
+- [web_modules](web_modules) contains our third party dependencies, loaded as es modules
