@@ -11,7 +11,7 @@ The full game state is always stored in a single, large "game state" object. It 
 
 An action is a function that takes a `state` object, modifies it, and returns a new one. There are actions for drawing a card, dealing damage, applying a debuff... everything you want to do, there's an action.
 
-See all actions in `./public/game/actions.js`. Most have comments and corresponding tests you can check.
+See all actions in [actions.js](actions.js). Most have comments and corresponding tests you can check.
 
 ## Action Manager
 
