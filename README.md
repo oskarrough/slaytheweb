@@ -14,14 +14,9 @@ After many runs in the Spire, I really got into the theory behind the game. Insp
 
 Throughout all folders and files I've attempted to document and leave comments. So please, go ahead and explore them in this repository. In the root of this project you'll find configuration files as well as two folders:
 
-- [public →](https://github.com/oskarrough/slaytheweb/tree/main/public/)
+- [public →](https://github.com/oskarrough/slaytheweb/tree/main/public/) The web root, ready to deploy to any static web server. No compilation required. You can open the folder locally with your browser, or if you want livereload, with `npm start`.
 
-The web root, ready to deploy to any static web server. No compilation required.
-You can open the folder locally with your browser, or if you want livereload, with `npm start`.
-
-- [tests →](https://github.com/oskarrough/slaytheweb/tree/main/tests/)
-
-Contains all tests for the game engine. Nothing for the UI. Run `npm test`.
+- [tests →](https://github.com/oskarrough/slaytheweb/tree/main/tests/) Contains all tests for the game engine. Nothing for the UI. Run `npm test`.
 
 ## How to deploy it
 
