@@ -22,7 +22,16 @@ First, the game logic itself. Which, again, does not know about UI. It is only c
 - The `public/web_modules` folder contains 3rd party dependencies
 - The `tests` folder is filled with tests for the game
 
-You can open the `public` folder with a browser, or if you want livereload, run `npm start`.
+You can open the `public` folder with a browser, or if you want livereload, run `npm start`. If [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) is installed, these commands should set up a development environment:
+
+```
+# install and use the latest stable node version
+nvm install --lts && nvm use --lts
+# install project dependencies
+npm install
+# get yarn (needed for testing and formating)
+npm install -g yarn
+```
 
 ### Testing
 

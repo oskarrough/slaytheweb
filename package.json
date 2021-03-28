@@ -23,7 +23,8 @@
     "nyc": "^15.1.0",
     "prettier": "2.2.1",
     "servor": "^4.0.2",
-    "snowpack": "^1.7.1"
+    "snowpack": "^1.7.1",
+    "yarn": "^1.22.10"
   },
   "dependencies": {
     "esm": "^3.2.25",
