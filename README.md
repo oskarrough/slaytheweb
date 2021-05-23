@@ -4,9 +4,9 @@ This is a browser-based card game and engine based on Slay The Spire, a fantasti
 
 > We fused card games and roguelikes together to make the best single player deckbuilder we could. Craft a unique deck, encounter bizarre creatures, discover relics of immense power, and Slay the Spire!
 
-<a href="https://slaytheweb.cards"><img src="https://i.imgur.com/m9CRCsa.png" alt="Screenshot of Slay the Web" width="640"></a>
-
 ### 🎴 [Play now on https://slaytheweb.cards](https://slaytheweb.cards/)
+
+<a href="https://slaytheweb.cards"><img src="https://i.imgur.com/m9CRCsa.png" alt="Screenshot of Slay the Web" width="640"></a>
 
 After many runs in the Spire, I really got into the theory behind the game. Inspired by the STS modding community, I thought it'd be neat and a great learning experience to try and implement the core logic of the game in JavaScript for the web. And that is what _Slay the Web_ is: a kind of stable, UI agnostic game engine and an example UI for the web.
 
@@ -21,7 +21,8 @@ If you open a PR, it'll give you a staging/test URL as well.
 
 ## References
 
-A collection of related links, inspiration and ideas.
+<details>
+	<summary>A collection of related links, inspiration and ideas.</summary>
 
 - FTL, Into The Breach, Darkest Dungeon, Dungeon of the Endless, Spelunky, Rogue Legacy,
 - [Pollywog Games: A history of roguelite deck building games](https://pollywog.games/rgdb/)
@@ -69,3 +70,5 @@ A collection of related links, inspiration and ideas.
 ### Open source artwork
 
 Credits to http://ronenness.github.io/RPGUI/ and https://github.com/game-icons/icons for providing great and free graphics.
+
+</details>
