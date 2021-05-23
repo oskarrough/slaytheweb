@@ -10,7 +10,7 @@ class Main extends Component {
 	constructor() {
 		super()
 		this.state = {
-			isPlaying: !false,
+			isPlaying: false,
 		}
 		this.handleWin = this.handleWin.bind(this)
 		this.handleNewGame = this.handleNewGame.bind(this)
