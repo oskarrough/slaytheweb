@@ -267,7 +267,9 @@ stw.dealCards()`)
 
 				<div class="Split ${noEnergy ? 'no-energy' : ''}">
 					<div class="EnergyBadge">
-							<span>${state.player.currentEnergy}/${state.player.maxEnergy}</span>
+							<span class="tooltipped tooltipped-e" aria-label="Cards costs energy. This is what you have. Every turn your energy is refilled.">${
+								state.player.currentEnergy
+							}/${state.player.maxEnergy}</span>
 					</div>
 					<p class="Actions">
 						<button class="EndTurn" onclick=${() => this.endTurn()}>
