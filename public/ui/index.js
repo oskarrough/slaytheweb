@@ -87,6 +87,11 @@ class SplashScreen extends Component {
 								Should you manage to kill the monsters in a room before they end you, you'll proceed
 								to the next room. Maybe there will be rewards. Can you reach the end?
 							</p>
+							<p>
+								You draw from the draw pile. After you play a card, it goes into the discard pile.
+								At the end of your turn you discard your hand to the discard pile. If your draw pile
+								is empty, your discard pile is shuffled back into your draw pile.
+							</p>
 						</div>
 					`
 				}
