@@ -35,11 +35,14 @@ export class SlayMap extends Component {
 		// Add references to our DOM elements on the graph. Why?
 		// no set state because we don't want to rerender
 		if (!this.didDrawPaths) {
-			const el = this.props.graph[0][0].el
-			console.log('Did update: doing heavy work', Boolean(el))
-			this.scatter()
-			this.drawPaths()
 			this.didDrawPaths = true
+			this.scatter()
+			// const el = this.props.graph[0][0].el
+			const resizeObserver = new ResizeObserver(() => {
+				console.log('Drawing map')
+				this.drawPaths()
+			})
+			resizeObserver.observe(this.base)
 		}
 	}
 
@@ -54,7 +57,7 @@ export class SlayMap extends Component {
 	}
 
 	// Shake the positions up a bit.
-	scatter(distance = 35) {
+	scatter(distance = 40) {
 		const nodes = this.base.querySelectorAll('slay-map-node[type]')
 		nodes.forEach((node) => {
 			node.style.transform = `translate3d(
@@ -80,9 +83,12 @@ export class SlayMap extends Component {
 
 		if (!containerElement) throw new Error('Missing container element')
 
-		// Create an empty <svg> to hold our path.
-		const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-		svg.id = `path${preferredIndex}`
+		// Create an empty <svg> to hold our path. And remove previous if we are drawing agian.
+		const id = `path${preferredIndex}`
+		let svg = containerElement.querySelector(`svg#${id}`)
+		if (svg) svg.remove()
+		svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+		svg.id = id
 		svg.classList.add('paths')
 		containerElement.appendChild(svg)
 
@@ -174,3 +180,5 @@ function getPosWithin(el, container) {
 		height: rect.height,
 	}
 }
+
+// resizeObserver.unobserve(element)
