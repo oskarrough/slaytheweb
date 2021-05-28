@@ -1,5 +1,9 @@
 import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
-import {weak as weakPower, vulnerable as vulnerablePower} from '../game/powers.js'
+import {
+	weak as weakPower,
+	vulnerable as vulnerablePower,
+	regen as regenPower,
+} from '../game/powers.js'
 
 export const Player = (props) => {
 	return html`<${Target} ...${props} type="player" />`
@@ -76,11 +80,18 @@ function Healthbar({value, max, block}) {
 const Powers = ({powers = {}}) => {
 	return html`
 		<div class="Target-powers">
-			<span>${powers.vulnerable > 0 ? `Vulnerable ${powers.vulnerable}` : ''}</span>
-			<span>${powers.regen > 0 ? `Regen ${powers.regen}` : ''}</span>
-			<span>${powers.weak > 0 ? `Weak ${powers.weak}` : ''}</span>
+			<${Power} amount=${powers.vulnerable} power=${vulnerablePower} />
+			<${Power} amount=${powers.regen} power=${regenPower} />
+			<${Power} amount=${powers.weak} power=${weakPower} />
 		</div>
 	`
+}
+
+const Power = ({power, amount}) => {
+	if (!amount) return null
+	return html`<span class="tooltipped tooltipped-s" aria-label=${power.description}>
+		${power.name} ${amount}
+	</span>`
 }
 
 // Floating Combat Text. Give it a number and it'll animate it.
