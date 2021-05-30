@@ -41,10 +41,12 @@
 }
 .Target-powers span {
 	background: var(--red);
+	margin-right: 0.2em;
 }
 .Target-combatText {
 	position: absolute;
 	width: 100%;
+	pointer-events: none;
 }
 .Target.is-dragOver .Healthbar {
 	transition-duration: 100ms;

@@ -4,6 +4,7 @@
 @import './styles/card.css';
 @import './styles/targets.css';
 @import './styles/map.css';
+@import './styles/tooltipped.css';
 
 :root {
 	--card-width: 9em;

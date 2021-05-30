@@ -267,7 +267,9 @@ stw.dealCards()`)
 
 				<div class="Split ${noEnergy ? 'no-energy' : ''}">
 					<div class="EnergyBadge">
-							<span>${state.player.currentEnergy}/${state.player.maxEnergy}</span>
+							<span class="tooltipped tooltipped-e tooltipped-multiline" aria-label="Cards costs energy and this badge shows how much you have left this turn. Next turn your energy is refilled.">${
+								state.player.currentEnergy
+							}/${state.player.maxEnergy}</span>
 					</div>
 					<p class="Actions">
 						<button class="EndTurn" onclick=${() => this.endTurn()}>
@@ -323,15 +325,17 @@ stw.dealCards()`)
 					</div>
 				<//>
 				<${OverlayWithButton} id="DrawPile" bottomleft>
-					<button onClick=${() => this.toggleOverlay('#DrawPile')}>Dr<u>a</u>w pile ${
-			state.drawPile.length
-		}</button>
+					<button class="tooltipped tooltipped-ne" aria-label="The cards you'll draw next in random order" onClick=${() =>
+						this.toggleOverlay('#DrawPile')}>Dr<u>a</u>w pile ${state.drawPile.length}</button>
 					<div class="Overlay-content">
 					<${Cards} gameState=${state} type="drawPile" />
 					</div>
 				<//>
 				<${OverlayWithButton} id="DiscardPile" bottomright>
-					<button onClick=${() => this.toggleOverlay('#DiscardPile')} align-right>Di<u>s</u>card pile ${
+					<button onClick=${() =>
+						this.toggleOverlay(
+							'#DiscardPile'
+						)} align-right class="tooltipped tooltipped-nw tooltipped-multiline" aria-label="Cards you've already played. Once the draw pile is empty, these cards are shuffled into your draw pile.">Di<u>s</u>card pile ${
 			state.discardPile.length
 		}</button>
 					<div class="Overlay-content">
