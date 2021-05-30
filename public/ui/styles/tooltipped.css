@@ -24,9 +24,7 @@
 	display: none;
 	padding: 0.5em 0.75em;
 	font-size: 13px;
-	/* font: normal normal 11px/1.5 -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial,
-		sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji'; */
-	-webkit-font-smoothing: subpixel-antialiased;
+	font-weight: normal;
 	color: var(--color-tooltip-text);
 	text-align: center;
 	text-decoration: none;

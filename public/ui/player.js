@@ -20,10 +20,20 @@ export const Monster = (props) => {
 		const vulnerable = state.player.powers.vulnerable
 		if (type === 'damage' && weakened) amount = weakPower.use(amount)
 		if (type === 'damage' && vulnerable) amount = vulnerablePower.use(amount)
+
+		let tooltip = false
+		if (type === 'damage') tooltip = `Will deal ${amount} damage`
+		if (type === 'block') tooltip = `Will block for ${amount}`
+		if (type === 'weak') tooltip = `Will apply ${amount} Weak`
+		if (type === 'vulnerable') tooltip = `Will apply ${amount} Vulnerable`
+
 		// Don't reveal how many stacks will be applied.
 		if (type === 'vulnerable' || type === 'weak') amount = undefined
+
 		return html`
-			<div class="Target-intent"><img alt=${type} src="ui/images/${type}.png" /> ${amount}</div>
+			<div class="Target-intent ${tooltip && 'tooltipped tooltipped-n'}" aria-label="${tooltip}">
+				<img alt=${type} src="ui/images/${type}.png" /> ${amount}
+			</div>
 		`
 	}
 
