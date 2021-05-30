@@ -78,8 +78,8 @@ monsters['Mid sized duo'] = MonsterRoom(
 	})
 )
 monsters['Tiny Trio'] = MonsterRoom(
-	Monster({hp: random(12, 15), random: 1, intents: [{damage: 6}]}),
-	Monster({hp: random(12, 15), random: 1, intents: [{damage: 6}]}),
+	Monster({hp: random(12, 15), random: 2, intents: [{damage: 6}]}),
+	Monster({hp: random(12, 15), random: 2, intents: [{damage: 6}]}),
 	Monster({hp: random(10, 16), random: 3, intents: [{damage: 6}]})
 )
 monsters['monster7'] = MonsterRoom(
