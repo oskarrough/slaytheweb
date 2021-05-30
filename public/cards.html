@@ -17,17 +17,16 @@
 </head>
 
 <body style="overflow: auto">
-
 	<div style="margin-bottom: 3rem" id="Cards"></div>
 	<script type="module">
 		import { html, render, Component } from '../web_modules/htm/preact/standalone.module.js'
 		import cards from '../content/cards.js'
-		import {Card} from './ui/cards.js'
+		import { Card } from './ui/cards.js'
 
 		const Cardss = (props) => html`
 			<article class="Splash">
-				<h1>${cards.length} Cards</h1>
-				<div class="CardGrid">
+				<h2>${cards.length} Cards</h2>
+				<div class="Cards Cards--grid">
 					${cards.map(card => Card(card))}
 				</div>
 			</article>

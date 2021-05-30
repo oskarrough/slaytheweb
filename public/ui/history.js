@@ -1,4 +1,4 @@
-import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
+import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 
 export default class Queue extends Component {
 	constructor(props) {
@@ -16,11 +16,11 @@ export default class Queue extends Component {
 	}
 	render(props, state) {
 		const time = new Date(state.time).toLocaleTimeString()
+		// <h2>Future ${time}</h2>
+		// <${List} items=${props.future} />
 		return html`
 			<div>
-				<h2>Future ${time}</h2>
-				<${List} items=${props.future} />
-				<h3>Past</h3>
+				<h3>Your past ${time}</h3>
 				<${List} items=${props.past} />
 			</div>
 		`
@@ -28,7 +28,7 @@ export default class Queue extends Component {
 }
 
 function List({items}) {
-	if (!items.length) return html` <p>The future is uncertain.</p> `
+	if (!items.length) return html` <p>...is uncertain.</p> `
 	return html`
 		<ol>
 			${items.map(Item)}

@@ -1,6 +1,6 @@
-import gsap from './../web_modules/gsap.js'
-import {Draggable} from './../web_modules/gsap/Draggable.js'
-// import {Flip} from './../web_modules/gsap/Flip.js'
+import gsap from '../web_modules/gsap.js'
+import {Draggable} from '../web_modules/gsap/Draggable.js'
+// import {Flip} from '../web_modules/gsap/Flip.js'
 import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 
 // This file contains some resuable animations/effects.

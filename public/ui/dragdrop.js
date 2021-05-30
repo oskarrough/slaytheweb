@@ -1,7 +1,7 @@
-import {Draggable} from './../web_modules/gsap/Draggable.js'
+import {Draggable} from '../web_modules/gsap/Draggable.js'
 import gsap from './animations.js'
-import cards from '../content/cards.js'
 import {cardHasValidTarget} from '../game/utils.js'
+import sfx from './sounds.js'
 
 // Class to add to the element we are dragging over.
 const overClass = 'is-dragOver'
@@ -11,34 +11,34 @@ function animateCardToHand(draggable) {
 	return gsap.to(draggable.target, {x: draggable.startX, y: draggable.startY})
 }
 
-// Nasty but returns the card object from a card DOM element.
-function getCardFromElement(el) {
-	const cardName = el.querySelector('.Card-name').textContent
-	return cards.find((c) => c.name === cardName)
-}
-
 function getTargetStringFromElement(el) {
 	const targetIndex = Array.from(el.parentNode.children).indexOf(el)
 	return el.dataset.type + targetIndex
 }
 
-export default function enableDragDrop(container, onAdd) {
+export default function enableDragDrop(container, afterRelease) {
 	const targets = container.querySelectorAll('.Target')
 	const cards = container.querySelectorAll('.Hand .Card')
+
 	cards.forEach((card) => {
 		Draggable.create(card, {
+			onDragStart() {
+				sfx.selectCard()
+			},
 			// While dragging, highlight any targets we are dragging over.
 			onDrag() {
 				if (this.target.attributes.disabled) {
 					this.endDrag()
 				}
-				const cardEl = this.target
 				let i = targets.length
 				while (--i > -1) {
 					// Highlight only if valid target.
-					if (this.hitTest(targets[i], '50%')) {
+					if (this.hitTest(targets[i], '40%')) {
 						if (
-							cardHasValidTarget(getCardFromElement(cardEl), getTargetStringFromElement(targets[i]))
+							cardHasValidTarget(
+								this.target.getAttribute('data-card-target'),
+								getTargetStringFromElement(targets[i])
+							)
 						) {
 							targets[i].classList.add(overClass)
 						}
@@ -54,7 +54,7 @@ export default function enableDragDrop(container, onAdd) {
 				let targetEl
 				let i = targets.length
 				while (--i > -1) {
-					if (this.hitTest(targets[i], '50%')) {
+					if (this.hitTest(targets[i], '40%')) {
 						targetEl = targets[i]
 						break
 					}
@@ -64,10 +64,11 @@ export default function enableDragDrop(container, onAdd) {
 
 				// If card is allowed here, trigger the callback with target, else animate back.
 				const targetString = getTargetStringFromElement(targetEl)
-				if (cardHasValidTarget(getCardFromElement(cardEl), targetString)) {
-					onAdd(cardEl.dataset.id, targetString, cardEl)
+				if (cardHasValidTarget(cardEl.getAttribute('data-card-target'), targetString)) {
+					afterRelease(cardEl.dataset.id, targetString, cardEl)
 				} else {
 					animateCardToHand(this)
+					sfx.cardToHand()
 				}
 
 				// Remove active class from any other targets.

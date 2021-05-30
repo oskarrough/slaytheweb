@@ -1,6 +1,9 @@
 import test from 'ava'
+
+import {createTestDungeon} from '../public/content/dungeon-encounters'
 import actions from '../public/game/actions'
-import Dungeon, {CampfireRoom, MonsterRoom, Monster} from '../public/game/dungeon'
+import Dungeon from '../public/game/dungeon'
+import {MonsterRoom, Monster} from '../public/game/dungeon-rooms'
 import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../public/game/utils'
 
 const a = actions
@@ -11,66 +14,63 @@ test('can create rooms with many monsters', (t) => {
 })
 
 test('can create a dungeon', (t) => {
-	const d = Dungeon({
-		rooms: [MonsterRoom(Monster()), CampfireRoom(), MonsterRoom(Monster())],
-	})
-	t.is(d.rooms.length, 3)
-	t.is(d.rooms[0].type, 'monster')
-	t.is(d.rooms[0].monsters.length, 1)
-	t.is(d.rooms[1].type, 'campfire')
-	t.is(d.rooms[2].type, 'monster')
+	const d = Dungeon({height: 5, width: 1})
+	t.is(d.graph.length, 5 + 2) // +2 because start+end
 })
 
 test('can set a dungeon', (t) => {
-	const dungeon = Dungeon({rooms: [MonsterRoom(Monster())]})
+	const dungeon = Dungeon()
 	let state = a.createNewGame()
 	state = a.setDungeon(state, dungeon)
-	t.deepEqual(state.dungeon, dungeon, 'setting dungeon works')
+	t.deepEqual(state.dungeon.id, dungeon.id, 'setting dungeon works')
 })
 
 test('we know when a monster room is won', (t) => {
-	const room = new MonsterRoom(new Monster())
-	const state = {dungeon: {rooms: [room]}}
+	let state = a.createNewGame()
+	state = a.setDungeon(state, createTestDungeon())
+	state.dungeon.y = 1
 	t.false(isCurrentRoomCompleted(state))
-	room.monsters[0].currentHealth = 0
+	getCurrRoom(state).monsters[0].currentHealth = 0
 	t.true(isCurrentRoomCompleted(state))
 })
 
-test('we know when the entire dungeon has been cleared', (t) => {
-	const dungeon = Dungeon({
-		rooms: [MonsterRoom(Monster()), MonsterRoom(Monster())],
-	})
-	const state = {dungeon}
+test('we know when a monster room with many monsters is completed', (t) => {
+	let state = a.createNewGame()
+	state = a.setDungeon(state, Dungeon({height: 1, width: 1}))
+	state.dungeon.graph[1][0].room = new MonsterRoom(new Monster(), new Monster())
+	state.dungeon.y = 1
+	t.false(isCurrentRoomCompleted(state))
 	t.false(isDungeonCompleted(state))
-	state.dungeon.rooms[0].monsters[0].currentHealth = 0
-	t.false(isDungeonCompleted(state))
-	state.dungeon.rooms[1].monsters[0].currentHealth = 0
+	getCurrRoom(state).monsters[0].currentHealth = 0
+	t.false(isCurrentRoomCompleted(state), 'one more to kill')
+	getCurrRoom(state).monsters[1].currentHealth = 0
+	t.true(isCurrentRoomCompleted(state))
+})
+
+test('we know when the entire dungeon is compelete', (t) => {
+	let state = a.createNewGame()
+	state = a.setDungeon(state, createTestDungeon())
+	state.dungeon.y = 1
+	getCurrRoom(state).monsters[0].currentHealth = 0
+	state.dungeon.y = 2
+	getCurrRoom(state).monsters[0].currentHealth = 0
+	getCurrRoom(state).monsters[1].currentHealth = 0
+	state.dungeon.y = 3
+	getCurrRoom(state).monsters[0].currentHealth = 0
+	state.dungeon.y = 4
+	getCurrRoom(state).monsters[0].currentHealth = 0
 	t.true(isDungeonCompleted(state))
-})
-
-test('we know when a monster room with many monsters is won', (t) => {
-	const room = new MonsterRoom(new Monster(), new Monster())
-	const state = {dungeon: {rooms: [room]}}
-	t.false(isCurrentRoomCompleted(state))
-	room.monsters[0].currentHealth = 0
-	t.false(isCurrentRoomCompleted(state))
-	room.monsters[1].currentHealth = 0
-	t.true(isCurrentRoomCompleted(state))
 })
 
 test.todo('we know when a campfire has been used')
 
 test('we can navigate a dungeon', (t) => {
-	// Prepare a game with a dungeon.
 	let state = a.createNewGame()
-	const dungeon = Dungeon({
-		rooms: [CampfireRoom(), CampfireRoom(), CampfireRoom()],
-	})
-	state = a.setDungeon(state, dungeon)
-	// Go through the next rooms.
-	state = a.goToNextRoom(state)
-	t.is(getCurrRoom(state).id, dungeon.rooms[1].id)
-	state = a.goToNextRoom(state)
-	t.is(getCurrRoom(state).id, dungeon.rooms[2].id)
-	t.throws(() => a.goToNextRoom(state), null, 'can not go further than last room')
+	state = a.setDungeon(state, Dungeon())
+	t.is(state.dungeon.x, 0)
+	t.is(state.dungeon.y, 0)
+	// Go through the next room.
+	const nextState = a.move(state, {move: {x: 0, y: 1}})
+	t.is(nextState.dungeon.x, 0)
+	t.is(nextState.dungeon.y, 1)
 })

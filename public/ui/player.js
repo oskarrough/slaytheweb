@@ -1,5 +1,9 @@
-import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
-import {weak as weakPower, vulnerable as vulnerablePower} from '../game/powers.js'
+import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
+import {
+	weak as weakPower,
+	vulnerable as vulnerablePower,
+	regen as regenPower,
+} from '../game/powers.js'
 
 export const Player = (props) => {
 	return html`<${Target} ...${props} type="player" />`
@@ -16,14 +20,27 @@ export const Monster = (props) => {
 		const vulnerable = state.player.powers.vulnerable
 		if (type === 'damage' && weakened) amount = weakPower.use(amount)
 		if (type === 'damage' && vulnerable) amount = vulnerablePower.use(amount)
+
+		let tooltip = false
+		if (type === 'damage') tooltip = `Will deal ${amount} damage`
+		if (type === 'block') tooltip = `Will block for ${amount}`
+		if (type === 'weak') tooltip = `Will apply ${amount} Weak`
+		if (type === 'vulnerable') tooltip = `Will apply ${amount} Vulnerable`
+
+		// Don't reveal how many stacks will be applied.
+		if (type === 'vulnerable' || type === 'weak') amount = undefined
+
 		return html`
-			<div class="Target-intent"><img alt=${type} src="ui/images/${type}.png" /> ${amount}</div>
+			<div class="Target-intent ${tooltip && 'tooltipped tooltipped-n'}" aria-label="${tooltip}">
+				<img alt=${type} src="ui/images/${type}.png" /> ${amount}
+			</div>
 		`
 	}
 
 	return html`
 		<${Target} ...${props} type="enemy">
-			${Object.entries(intent).map((intent) => MonsterIntent(intent, monster, props.gameState))}
+			${intent &&
+			Object.entries(intent).map((intent) => MonsterIntent(intent, monster, props.gameState))}
 		<//>
 	`
 }
@@ -70,14 +87,22 @@ function Healthbar({value, max, block}) {
 }
 
 // Shows currently active powers.
-const Powers = ({powers}) =>
-	html`
+const Powers = ({powers = {}}) => {
+	return html`
 		<div class="Target-powers">
-			<span>${powers.vulnerable > 0 ? `Vulnerable ${powers.vulnerable}` : ''}</span>
-			<span>${powers.regen > 0 ? `Regen ${powers.regen}` : ''}</span>
-			<span>${powers.weak > 0 ? `Weak ${powers.weak}` : ''}</span>
+			<${Power} amount=${powers.vulnerable} power=${vulnerablePower} />
+			<${Power} amount=${powers.regen} power=${regenPower} />
+			<${Power} amount=${powers.weak} power=${weakPower} />
 		</div>
 	`
+}
+
+const Power = ({power, amount}) => {
+	if (!amount) return null
+	return html`<span class="tooltipped tooltipped-s" aria-label=${power.description}>
+		${power.name} ${amount}
+	</span>`
+}
 
 // Floating Combat Text. Give it a number and it'll animate it.
 function FCT(props) {

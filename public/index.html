@@ -15,8 +15,8 @@
 		<link rel="stylesheet" href="ui/index.css" />
 	</head>
 	<body>
-		<div id="SlayTheWeb"></div>
 
+		<div id="SlayTheWeb"></div>
 		<script async src="ui/index.js" type="module"></script>
 		<script>
 			// Offline support
@@ -25,6 +25,7 @@
 					navigator.serviceWorker.register('/service-worker.js')
 				})
 			}
+			window.TONE_SILENCE_LOGGING = true
 		</script>
 		<noscript>
 			<p>

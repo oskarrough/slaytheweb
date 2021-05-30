@@ -1,34 +1,25 @@
-import {html, Component} from './../web_modules/htm/preact/standalone.module.js'
+import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 
 export default class Cards extends Component {
-	// props = {	cards: [], isHand: false, energy: 123 }
+	// props = {gameState: {}, type ''}
 	render(props) {
-		return html`
-			<div class="Cards">
-				${props.gameState[props.type].map((card) => Card(card, props.gameState))}
-			</div>
-		`
+		const cards = props.gameState[props.type]
+		return html` <div class="Cards">${cards.map((card) => Card(card, props.gameState))}</div> `
 	}
-}
-
-function isCardDisabled(card, gameState) {
-	let isDisabled = false
-	if (gameState.player.currentEnergy < card.energy) {
-		isDisabled = true
-	} else if (card.conditions) {
-		// We only need to check if the card is in hand.
-		let inHand = gameState.hand.find((c) => c.id === card.id)
-		isDisabled = inHand && card.checkConditions(gameState)
-	}
-
-	return isDisabled
 }
 
 export function Card(card, gameState) {
-	let isDisabled
-	if (gameState) {
-		isDisabled = isCardDisabled(card, gameState)
+	function canPlayCard(card, gameState) {
+		const notEnoughEnergy = gameState && gameState.player.currentEnergy < card.energy
+		const cardIsInHand = gameState && gameState.hand.find((c) => c.id === card.id)
+		if (!cardIsInHand) return false
+		if (notEnoughEnergy) return false
+		if (gameState && card.conditions) {
+			return card.canPlay(gameState)
+		}
+		return true
 	}
+	const isDisabled = !canPlayCard(card, gameState)
 
 	// 500x380
 	let image = ''
@@ -42,6 +33,7 @@ export function Card(card, gameState) {
 		<article
 			class="Card"
 			data-card-type=${card.type}
+			data-card-target=${card.target}
 			key=${card.id}
 			data-id=${card.id}
 			disabled=${isDisabled}

@@ -55,6 +55,7 @@ export class Card {
 		this.description = props.description
 		this.conditions = props.conditions
 		this.actions = props.actions
+		if (props.upgrade) this.upgrade = props.upgrade
 	}
 	// Runs through a list of actions and return the updated state.
 	// Called when the card is played. Use it for more advanced cards.
@@ -63,7 +64,7 @@ export class Card {
 		let newState = state
 		this.actions.forEach((action) => {
 			// Don't run action if it has an invalid condition.
-			if (action.conditions && !checkConditions(action.conditions, state)) {
+			if (action.conditions && !canPlay(action.conditions, state)) {
 				return newState
 			}
 			// Make sure the action is called with a target.
@@ -74,13 +75,18 @@ export class Card {
 		})
 		return newState
 	}
-	checkConditions(state) {
-		return checkConditions(this.conditions, state)
+	canPlay(state) {
+		return canPlay(this.conditions, state)
+	}
+	upgrade() {
+		if (this.upgraded) return
+		// this.name = 'Name+', this.damage = 666
+		// etc...
 	}
 }
 
 // Returns false if at least one condition fails
-function checkConditions(conditions, state) {
+function canPlay(conditions, state) {
 	let boolean = false
 	conditions.forEach((condition) => {
 		if (!boolean && conditionMethods[condition.type]) {
