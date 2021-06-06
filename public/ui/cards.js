@@ -56,8 +56,8 @@ export function Card(card, gameState) {
 				<figure class="Card-media">
 					<img src=${image} alt=${card.name} />
 				</figure>
-				<h3 class="Card-name">${card.name}</h3>
 				<p class="Card-type">${card.type}</p>
+				<h3 class="Card-name">${card.name}</h3>
 				<p class="Card-description">${card.description}</p>
 			</div>
 		</article>

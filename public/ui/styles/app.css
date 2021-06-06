@@ -273,6 +273,7 @@ h2 {
 /* In your hand, the cards stack a bit */
 .Hand {
 	margin-top: 1rem;
+	margin-bottom: -1rem;
 }
 .Hand .Cards {
 	padding-left: 4rem;
@@ -280,7 +281,7 @@ h2 {
 }
 .Hand .Card {
 	margin-left: -1.5rem;
-	margin-bottom: -2rem;
+	/* margin-bottom: -3rem; */
 	cursor: grab;
 	cursor: url(../images/cursors/grab-open.png) 10 0, auto;
 }
