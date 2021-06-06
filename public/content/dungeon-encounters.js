@@ -67,12 +67,12 @@ monsters['First double trouble'] = MonsterRoom(
 )
 monsters['Mid sized duo'] = MonsterRoom(
 	Monster({
-		hp: random(34, 36),
-		intents: [{weak: 1}, {damage: 10}, {damage: 6}, {}, {weak: 1}],
+		hp: random(28, 32),
+		intents: [{weak: 1}, {damage: 9}, {damage: 6}, {}, {weak: 1}],
 		random: 2,
 	}),
 	Monster({
-		hp: random(56, 58),
+		hp: random(50, 54),
 		intents: [{vulnerable: 1}, {damage: 6}, {damage: 9}, {block: 10}],
 		random: 2,
 	})
