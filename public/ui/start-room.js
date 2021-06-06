@@ -8,7 +8,7 @@ export default class StartRoom extends Component {
 				<li><button onclick=${() => this.props.onContinue()}>Proceed</button></li>
 			</ul>
 			<p center>
-				<button onclick=${() => (window.location = window.location.origin)}>Nevermind</button>
+				<button onclick=${() => (window.location = window.location.origin)}>Leave the Spire</button>
 			</p>
 		`
 	}
