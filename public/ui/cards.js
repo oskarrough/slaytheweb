@@ -20,25 +20,7 @@ export function Card(card, gameState) {
 		return true
 	}
 	const isDisabled = !canPlayCard(card, gameState)
-
-	// 500x380
-	let image = 'codices.jpg'
-	if (card.name === 'Strike') image = 'the-angel-of-death.jpg'
-	if (card.name === 'Defend') image = 'angel-messenger.jpg'
-	if (card.name === 'Bash') image = 'apteryx-mantelli.jpg'
-	if (card.name === 'Flourish') image = 'serpentine-dancer.jpg'
-	if (card.name === 'Summer of Sam') image = 'bare-feet-of-god.jpg'
-	if (card.name === '') image = 'codices.jpg'
-	if (card.name === 'Iron Wave') image = 'henry-stares-back.jpg'
-	if (card.name === 'Cleave') image = 'vernal-equinox.jpg'
-	if (card.name === '') image = 'alice-holds-the-white-king.jpg'
-	if (card.name === '') image = '3.jpg'
-	if (card.name === 'Thunderclap') image = 't.jpg'
-	if (card.name === '') image = 'poured-millions-of-bubbles.jpg'
-	if (card.name === '') image = 'railway-trains-in-space.jpg'
-	if (card.name === 'Sucker Punch') image = 'manicule.jpg'
-	if (card.name === 'Clash') image = 'h-sperling-horrified.jpg'
-	image = `/ui/images/cards/${image}`
+	const image = card.image ? `/ui/images/cards/${card.image}` : '/ui/images/cards/codices.jpg'
 
 	return html`
 		<article
