@@ -132,7 +132,7 @@ export default [
 			vulnerable: 1,
 		},
 		description: 'Deal 4 Damage. Apply 1 Vulnerable to all enemies.',
-		image: 't.jpg',
+		image: '4.jpg',
 		upgrade() {
 			this.name = 'Thunderclap+'
 			this.damage = 6
@@ -145,7 +145,7 @@ export default [
 		energy: 2,
 		target: 'player',
 		description: 'Gain 5 Regen. Can only be played if your health is below 50%.',
-		image: 'serpentine-dancer.jpg',
+		image: '5.jpg',
 		powers: {
 			regen: 5,
 		},
@@ -226,3 +226,9 @@ export default [
 // '3.jpg'
 // 'poured-millions-of-bubbles.jpg'
 // 'railway-trains-in-space.jpg'
+// 2.jpg
+// 4.jpg
+// 5.jpg
+// 6.jpg
+// 8.jpg
+// serpentine-dancer
