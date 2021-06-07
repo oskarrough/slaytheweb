@@ -168,8 +168,18 @@ h2 {
 	background-image: url('../images/scenes/nausicaa.jpg');
 }
 .App-background[data-room-index='8'] {
+	background-image: url('../images/scenes/1.jpg');
+}
+.App-background[data-room-index='9'] {
+	background-image: url('../images/scenes/landscape.jpg');
+}
+.App-background[data-room-index='10'] {
+	background-image: url('../images/scenes/flying-duo.jpg');
+}
+.App-background[data-room-index='11'] {
 	background-image: url('../images/scenes/ponyo.jpg');
 }
+
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
 .App-background::before,
 .App-background::after {
