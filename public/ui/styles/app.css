@@ -31,7 +31,7 @@ html {
 	);
 }
 
-@media (min-height: 800px) {
+@media (min-height: 700px) {
 	html {
 		font-size: 18px;
 	}
