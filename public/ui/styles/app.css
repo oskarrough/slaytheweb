@@ -5,8 +5,8 @@
 }
 
 html {
-	font-size: 14px;
-	line-height: 1.2;
+	font-size: 2.4vw;
+	line-height: 1.4;
 	color: var(--text);
 	cursor: url(../images/cursors/default.png), auto;
 	min-height: 100%;
@@ -31,17 +31,31 @@ html {
 	);
 }
 
-@media (min-height: 700px) {
+/* Minimum font size */
+@media (max-width: 600px) {
 	html {
-		font-size: 18px;
+		font-size: 14px;
 	}
 }
 
-@media (min-height: 1000px) {
+/* Maximum font size */
+@media (min-width: 1000px) {
 	html {
-		font-size: 22px;
+		font-size: 24px;
 	}
 }
+
+/* @media (min-height: 700px) { */
+/* 	html { */
+/* 		font-size: 18px; */
+/* 	} */
+/* } */
+
+/* @media (min-height: 1000px) { */
+/* 	html { */
+/* 		font-size: 22px; */
+/* 	} */
+/* } */
 
 html,
 button {
@@ -105,7 +119,6 @@ button:active {
 h1 {
 	transform: rotate3d(5, 15, 3, -20deg);
 	font-size: 4rem;
-	font-size: 10vw;
 	margin-bottom: 1rem;
 	background-image: linear-gradient(63deg, var(--yellow), #bd4516);
 	background-clip: text;
@@ -115,7 +128,7 @@ h1 {
 	letter-spacing: -1px;
 }
 h1[medium] {
-	font-size: 6vw;
+	font-size: 3rem;
 }
 h2,
 h3 {
