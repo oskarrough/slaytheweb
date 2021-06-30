@@ -69,6 +69,10 @@ If you open a PR, it'll give you a preview URL as well for testing.
 - https://www.twitch.tv/telnetthespire
 - [Slay the Spire Reference Spreadsheet](https://docs.google.com/spreadsheets/u/1/d/1ZsxNXebbELpcCi8N7FVOTNGdX_K9-BRC_LMgx4TORo4/edit#gid=1146624812)
 
+### Typeface
+
+Licenced from https://mbtype.com/
+
 ### Open source artwork
 
 - http://ronenness.github.io/RPGUI/

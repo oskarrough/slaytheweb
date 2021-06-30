@@ -5,8 +5,8 @@
 }
 
 html {
-	font-size: 14px;
-	line-height: 1.2;
+	font-size: 2.4vw;
+	line-height: 1.4;
 	color: var(--text);
 	cursor: url(../images/cursors/default.png), auto;
 	min-height: 100%;
@@ -31,22 +31,25 @@ html {
 	);
 }
 
-@media (min-height: 800px) {
+/* Minimum font size */
+@media (max-width: 600px) {
 	html {
-		font-size: 18px;
+		font-size: 14px;
 	}
 }
 
-@media (min-height: 1000px) {
+/* Maximum font size */
+@media (min-width: 1000px) {
 	html {
-		font-size: 22px;
+		font-size: 24px;
 	}
 }
 
 html,
 button {
-	font-family: 'concourse_t3', 'Port Lligat Slab', serif;
+	font-family: 'heliotrope_4', serif;
 	font-feature-settings: 'kern' 1;
+	font-feature-settings: 'liga' on;
 }
 
 body {
@@ -103,7 +106,6 @@ button:active {
 h1 {
 	transform: rotate3d(5, 15, 3, -20deg);
 	font-size: 4rem;
-	font-size: 10vw;
 	margin-bottom: 1rem;
 	background-image: linear-gradient(63deg, var(--yellow), #bd4516);
 	background-clip: text;
@@ -113,7 +115,7 @@ h1 {
 	letter-spacing: -1px;
 }
 h1[medium] {
-	font-size: 6vw;
+	font-size: 3rem;
 }
 h2,
 h3 {
@@ -250,6 +252,7 @@ h2 {
 }
 .EnergyBadge > span {
 	transform: rotate(-45deg);
+	font-feature-settings: 'onum' on;
 }
 .no-energy .EnergyBadge {
 	background: #272d2b;
@@ -326,11 +329,16 @@ h2 {
 }
 .Splash-details {
 	width: 100%;
-	max-width: 40em;
+	max-width: 35rem;
 	text-align: left;
 	margin: 0 auto;
 	position: relative;
 	z-index: 2;
+}
+.Article {
+	background: whitesmoke;
+	color: #222;
+	padding: 2em;
 }
 .Splash-spoder {
 	width: 10%;

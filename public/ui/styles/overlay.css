@@ -10,7 +10,7 @@
 .Overlay > button {
 	font-size: 1rem;
 	position: absolute;
-	/* padding: 1rem; */
+	padding: 0.8rem;
 	user-select: none;
 	z-index: 3;
 	background: none;

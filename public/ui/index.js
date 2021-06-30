@@ -67,12 +67,12 @@ class SplashScreen extends Component {
 				`
 							: html`<li><button autofocus onClick=${props.onNewGame}>Play</a></li>`
 					}
-					<li><button onClick=${() => this.setState({showTutorial: !state.showTutorial})}>Tutorial</a></li>
+					<li><button onClick=${() => this.setState({showTutorial: !state.showTutorial})}>Read the Manual</a></li>
 				</ul>
 				${
 					state.showTutorial &&
 					html`
-						<div class="Splash-details">
+						<div class="Splash-details Article">
 							<p>
 								Slay the Web is a single player card game where you fight monsters to reach the end
 								of the web. It's a game of planning and knowing when to play which card.
