@@ -46,7 +46,9 @@ html {
 html,
 button {
 	font-family: 'concourse_t3', 'Port Lligat Slab', serif;
+	font-family: 'heliotrope_4', serif;
 	font-feature-settings: 'kern' 1;
+	font-feature-settings: 'liga' on;
 }
 
 body {
@@ -250,6 +252,7 @@ h2 {
 }
 .EnergyBadge > span {
 	transform: rotate(-45deg);
+	font-feature-settings: 'onum' on;
 }
 .no-energy .EnergyBadge {
 	background: #272d2b;
