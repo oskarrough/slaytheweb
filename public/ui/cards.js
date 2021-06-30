@@ -19,8 +19,8 @@ export function Card(card, gameState) {
 		}
 		return true
 	}
-
 	const isDisabled = !canPlayCard(card, gameState)
+	const image = card.image ? `/ui/images/cards/${card.image}` : '/ui/images/cards/fallback.jpg'
 
 	return html`
 		<article
@@ -35,8 +35,11 @@ export function Card(card, gameState) {
 				<p class="Card-energy EnergyBadge">
 					<span>${card.energy}</span>
 				</p>
-				<h3 class="Card-name">${card.name}</h3>
+				<figure class="Card-media">
+					<img src=${image} alt=${card.name} />
+				</figure>
 				<p class="Card-type">${card.type}</p>
+				<h3 class="Card-name">${card.name}</h3>
 				<p class="Card-description">${card.description}</p>
 			</div>
 		</article>

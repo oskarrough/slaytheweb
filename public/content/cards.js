@@ -1,12 +1,28 @@
 // Here you'll find all the default cards used in the game.
-// See game/cards.js for the details on how they work. 
+// See game/cards.js for the details on how they work.
 export default [
+	{
+		name: 'Strike',
+		type: 'Attack',
+		energy: 1,
+		target: 'enemy',
+		damage: 6,
+		description: 'Deal 6 Damage.',
+		image: 'the-angel-of-death.jpg',
+		upgrade() {
+			this.damage = 9
+			this.upgraded = true
+			this.name = 'Strike+'
+			this.description = 'Deal 9 Damage.'
+		},
+	},
 	{
 		name: 'Defend',
 		type: 'Skill',
 		energy: 1,
 		block: 5,
 		target: 'player',
+		image: 'angel-messenger.jpg',
 		description: 'Gain 5 Block.',
 		upgrade() {
 			this.block = 8
@@ -16,25 +32,12 @@ export default [
 		},
 	},
 	{
-		name: 'Strike',
-		type: 'Attack',
-		energy: 1,
-		target: 'enemy',
-		damage: 6,
-		description: 'Deal 6 Damage.',
-		upgrade() {
-			this.damage = 9
-			this.upgraded = true
-			this.name = 'Strike+'
-			this.description = 'Deal 9 Damage.'
-		},
-	},
-	{
 		name: 'Bash',
 		type: 'Attack',
 		energy: 2,
 		damage: 8,
 		target: 'enemy',
+		image: 'apteryx-mantelli.jpg',
 		powers: {
 			vulnerable: 2,
 		},
@@ -60,6 +63,7 @@ export default [
 			},
 		],
 		description: 'Can only be played if every card in your hand is an Attack. Deal 14 damage.',
+		image: 'h-sperling-horrified.jpg',
 		upgrade() {
 			this.name = 'Clash+'
 			this.damage = 17
@@ -74,6 +78,7 @@ export default [
 		damage: 8,
 		target: 'all enemies',
 		description: 'Deal 8 damage to all enemies.',
+		image: 'vernal-equinox.jpg',
 		upgrade() {
 			this.damage = 11
 			this.upgraded = true
@@ -89,6 +94,7 @@ export default [
 		block: 5,
 		target: 'enemy',
 		description: 'Deal 5 damage. Gain 5 Block.',
+		image: 'henry-stares-back.jpg',
 		upgrade() {
 			this.damage = 7
 			this.block = 7
@@ -107,6 +113,7 @@ export default [
 			weak: 1,
 		},
 		description: 'Deal 7 Damage. Apply 1 Weak.',
+		image: 'manicule.jpg',
 		upgrade() {
 			this.damage = 8
 			this.upgraded = true
@@ -125,6 +132,7 @@ export default [
 			vulnerable: 1,
 		},
 		description: 'Deal 4 Damage. Apply 1 Vulnerable to all enemies.',
+		image: '4.jpg',
 		upgrade() {
 			this.name = 'Thunderclap+'
 			this.damage = 6
@@ -137,6 +145,7 @@ export default [
 		energy: 2,
 		target: 'player',
 		description: 'Gain 5 Regen. Can only be played if your health is below 50%.',
+		image: '5.jpg',
 		powers: {
 			regen: 5,
 		},
@@ -165,6 +174,7 @@ export default [
 		energy: 1,
 		target: 'player',
 		description: 'Gain 1 Health. Draw 2 Cards if your health is below 50%.',
+		image: 'bare-feet-of-god.jpg',
 		actions: [
 			{
 				type: 'addHealth',
@@ -198,6 +208,7 @@ export default [
 		type: 'Attack',
 		target: 'enemy',
 		description: 'Deal Damage equal to your Block',
+		image: 'fallback.jpg',
 		actions: [
 			{
 				type: 'dealDamageEqualToBlock',
@@ -210,3 +221,15 @@ export default [
 	},
 	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
 ]
+
+// 'codices.jpg'
+// 'alice-holds-the-white-king.jpg'
+// '3.jpg'
+// 'poured-millions-of-bubbles.jpg'
+// 'railway-trains-in-space.jpg'
+// 2.jpg
+// 4.jpg
+// 5.jpg
+// 6.jpg
+// 8.jpg
+// serpentine-dancer

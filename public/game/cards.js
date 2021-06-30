@@ -55,6 +55,7 @@ export class Card {
 		this.description = props.description
 		this.conditions = props.conditions
 		this.actions = props.actions
+		this.image = props.image
 		if (props.upgrade) this.upgrade = props.upgrade
 	}
 	// Runs through a list of actions and return the updated state.

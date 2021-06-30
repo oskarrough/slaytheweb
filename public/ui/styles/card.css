@@ -6,11 +6,14 @@
 	min-height: var(--card-height);
 }
 .Cards > * {
-	flex-basis: var(--card-width);
+	width: var(--card-width);
+	height: var(--card-height);
 	flex-shrink: 1;
-	min-height: var(--card-height);
 }
-
+.Cards--grid {
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}
 .Card {
 	position: relative;
 	display: flex;
@@ -26,34 +29,55 @@
 .Card-inner {
 	width: 100%;
 	flex: 1;
+	display: flex;
+	flex-flow: column nowrap;
 	background: #2a3335;
 	text-align: center;
 }
-.Card-name {
+.Card-media {
 	margin: 0;
-	padding: 0.6em 1em 0;
-	background: linear-gradient(to bottom, hsla(0, 0%, 0%, 0.2), transparent);
+	border-bottom: 2px solid #2a3335;
+	background: #111;
+}
+.Card-media img {
+	display: block;
+	width: 100%;
+	height: 120px;
+	object-fit: cover;
+	object-position: center top;
+}
+.Card-name {
+	margin: 0.5rem 0;
+	padding: 0.5rem 0 0.4rem;
+	margin: 0;
+	/* background-color: #111;
+	background-image: linear-gradient(to bottom, hsla(0, 0%, 0%, 0.2), transparent); */
 	user-select: none;
 }
 .Card-type {
-	display: inline-block;
+	margin: -0.75rem  auto 0;
 	padding: 2px 5px 4px;
-	border-radius: 0.4em;
 	font-family: 'concourse_c3';
 	font-size: 0.75rem;
-	margin-top: 0.25rem;
 	background: hsl(191.3, 33.3%, 18.8%);
+	border: 1px solid hsla(0, 0%, 0%, 0.2);
+	border-bottom-width: 2px;
+	border-radius: 0.4em;
 }
 .Card[data-card-type='Attack'] .Card-type {
 	background: hsl(0deg 33% 19%);
 }
 .Card-description {
 	font-size: 0.875rem;
+	padding-left: 0.2em;
+	padding-right: 0.2em;
+	min-height: 2.5em;
+	margin: 0;
 }
 .Card-energy {
 	position: absolute;
-	top: -1.3em;
-	left: -0.3em;
+	top: -1.5em;
+	left: -0.5em;
 	width: 1.3rem;
 	height: 1.3rem;
 	margin-left: 0;

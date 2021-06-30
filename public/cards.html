@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="description" content="A video card game for the web" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+	<title>Cards in Slay the Web</title>
+	<link rel="manifest" href="manifest.webmanifest" />
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="theme-color" content="#116f54" />
+	<meta name="msapplication-TileColor" content="#116f54">
+	<link rel="icon" type="image/png" href="/ui/images/favicons/favicon-512.png" sizes="512x512" />
+	<link rel="shortcut icon" href="/ui/images/favicons/favicon.ico">
+	<link rel="apple-touch-icon" href="/ui/images/favicon-512.png" />
+	<link rel="stylesheet" href="ui/index.css" />
+</head>
+
+<body style="overflow: auto">
+	<div style="margin-bottom: 3rem" id="Cards"></div>
+	<script type="module">
+		import { html, render, Component } from '../web_modules/htm/preact/standalone.module.js'
+		import cards from '../content/cards.js'
+		import { Card } from './ui/cards.js'
+
+		const Cardss = (props) => html`
+			<article class="Splash">
+				<h2>${cards.length} Cards</h2>
+				<div class="Cards Cards--grid">
+					${cards.map(card => Card(card))}
+				</div>
+			</article>
+		`
+
+		render(html`<${Cardss} cards=${cards} />`, document.querySelector('#Cards'))
+	</script>
+
+</body>
+
+</html>

@@ -168,8 +168,18 @@ h2 {
 	background-image: url('../images/scenes/nausicaa.jpg');
 }
 .App-background[data-room-index='8'] {
+	background-image: url('../images/scenes/1.jpg');
+}
+.App-background[data-room-index='9'] {
+	background-image: url('../images/scenes/landscape.jpg');
+}
+.App-background[data-room-index='10'] {
+	background-image: url('../images/scenes/flying-duo.jpg');
+}
+.App-background[data-room-index='11'] {
 	background-image: url('../images/scenes/ponyo.jpg');
 }
+
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
 .App-background::before,
 .App-background::after {
@@ -273,6 +283,7 @@ h2 {
 /* In your hand, the cards stack a bit */
 .Hand {
 	margin-top: 1rem;
+	margin-bottom: -1rem;
 }
 .Hand .Cards {
 	padding-left: 4rem;
@@ -280,7 +291,7 @@ h2 {
 }
 .Hand .Card {
 	margin-left: -1.5rem;
-	margin-bottom: -2rem;
+	/* margin-bottom: -3rem; */
 	cursor: grab;
 	cursor: url(../images/cursors/grab-open.png) 10 0, auto;
 }
