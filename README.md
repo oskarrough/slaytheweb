@@ -71,6 +71,9 @@ If you open a PR, it'll give you a preview URL as well for testing.
 
 ### Open source artwork
 
-Credits to http://ronenness.github.io/RPGUI/ and https://github.com/game-icons/icons for providing great and free graphics.
+- http://ronenness.github.io/RPGUI/
+- https://github.com/game-icons/icons 
+- https://www.fromoldbooks.org/
+- https://www.oldbookart.com/
 
 </details>
