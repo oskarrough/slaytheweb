@@ -208,6 +208,7 @@ export default [
 		type: 'Attack',
 		target: 'enemy',
 		description: 'Deal Damage equal to your Block',
+		image: 'fallback.jpg',
 		actions: [
 			{
 				type: 'dealDamageEqualToBlock',

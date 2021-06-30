@@ -20,7 +20,7 @@ export function Card(card, gameState) {
 		return true
 	}
 	const isDisabled = !canPlayCard(card, gameState)
-	const image = card.image ? `/ui/images/cards/${card.image}` : '/ui/images/cards/codices.jpg'
+	const image = card.image ? `/ui/images/cards/${card.image}` : '/ui/images/cards/fallback.jpg'
 
 	return html`
 		<article
