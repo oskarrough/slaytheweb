@@ -45,21 +45,8 @@ html {
 	}
 }
 
-/* @media (min-height: 700px) { */
-/* 	html { */
-/* 		font-size: 18px; */
-/* 	} */
-/* } */
-
-/* @media (min-height: 1000px) { */
-/* 	html { */
-/* 		font-size: 22px; */
-/* 	} */
-/* } */
-
 html,
 button {
-	font-family: 'concourse_t3', 'Port Lligat Slab', serif;
 	font-family: 'heliotrope_4', serif;
 	font-feature-settings: 'kern' 1;
 	font-feature-settings: 'liga' on;
