@@ -342,11 +342,16 @@ h2 {
 }
 .Splash-details {
 	width: 100%;
-	max-width: 40em;
+	max-width: 35rem;
 	text-align: left;
 	margin: 0 auto;
 	position: relative;
 	z-index: 2;
+}
+.Article {
+	background: whitesmoke;
+	color: #222;
+	padding: 2em;
 }
 .Splash-spoder {
 	width: 10%;
