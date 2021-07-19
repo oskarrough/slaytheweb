@@ -207,6 +207,7 @@ stw.dealCards()`)
 		return html`
 			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
 				<figure class="App-background" data-room-index=${state.dungeon.y}></div>
+				${room.type === 'start' && html`<${Overlay}><${StartRoom} onContinue=${this.goToNextRoom} /><//>`}
 				${
 					isDead &&
 					html`<${Overlay}>
@@ -238,9 +239,6 @@ stw.dealCards()`)
 						<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
 					<//> `
 				}
-
-				${room.type === 'start' && html`<${Overlay}><${StartRoom} onContinue=${this.goToNextRoom} /><//>`}
-
 				${
 					room.type === 'campfire' &&
 					html`<${Overlay}
