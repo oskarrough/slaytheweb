@@ -47,6 +47,7 @@ If you open a PR, it'll give you a preview URL as well for testing.
 - https://forgottenarbiter.github.io/Is-Every-Seed-Winnable/
 - https://www.cloudfallstudios.com/blog/2020/11/2/game-design-tips-reverse-engineering-slay-the-spires-decisions
 - https://www.cloudfallstudios.com/blog/2018/5/7/guide-deckbuilder-tips-for-beginners-prompts-for-the-experienced-part-23
+- https://mitadmissions.org/blogs/entry/slay-the-spire-as-metaphor/
 
 ### Slay the Spire modding, tools and things
 
