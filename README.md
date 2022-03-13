@@ -55,9 +55,9 @@ If you open a PR, it'll give you a preview URL as well for testing.
 - https://slay-the-spire.fandom.com/wiki/Slay_the_Spire_Wiki
 - https://spirelogs.com/
 - https://maybelatergames.co.uk/tools/slaythespire/		
--	https://github.com/daviscook477/BaseMod
+- https://github.com/daviscook477/BaseMod
 - https://github.com/Gremious/StS-DefaultModBase
--	https://github.com/Gremious/StS-DefaultModBase/wiki
+- https://github.com/Gremious/StS-DefaultModBase/wiki
 - https://github.com/kiooeht/Hubris/
 - https://github.com/kiooeht/StSLib/wiki/Power-Hooks
 - https://www.gdcvault.com/play/1025731/-Slay-the-Spire-Metrics
@@ -69,6 +69,7 @@ If you open a PR, it'll give you a preview URL as well for testing.
 - https://forgottenarbiter.github.io/Is-Every-Seed-Winnable/ ([discussion](https://news.ycombinator.com/item?id=23910006))
 - https://www.twitch.tv/telnetthespire
 - [Slay the Spire Reference Spreadsheet](https://docs.google.com/spreadsheets/u/1/d/1ZsxNXebbELpcCi8N7FVOTNGdX_K9-BRC_LMgx4TORo4/edit#gid=1146624812)
+- https://alexdriedger.github.io/SlayTheSpireModding/
 
 ### Typeface
 
