@@ -4,7 +4,7 @@
 	font-weight: normal;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_3_regular.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_3_regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -13,7 +13,7 @@
 	font-weight: normal;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_3_italic.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_3_italic.woff2') format('woff2');
 }
 
 @font-face {
@@ -22,7 +22,7 @@
 	font-weight: bold;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_3_bold.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_3_bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -31,7 +31,7 @@
 	font-weight: bold;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_3_bold_italic.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_3_bold_italic.woff2') format('woff2');
 }
 @font-face {
 	font-family: heliotrope_3_caps;
@@ -39,7 +39,7 @@
 	font-weight: normal;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_3_caps_regular.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_3_caps_regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -48,7 +48,7 @@
 	font-weight: bold;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_3_caps_bold.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_3_caps_bold.woff2') format('woff2');
 }
 @font-face {
 	font-family: heliotrope_4;
@@ -56,7 +56,7 @@
 	font-weight: normal;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_4_regular.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -65,7 +65,7 @@
 	font-weight: normal;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_4_italic.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_italic.woff2') format('woff2');
 }
 
 @font-face {
@@ -74,7 +74,7 @@
 	font-weight: bold;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_4_bold.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_bold.woff2') format('woff2');
 }
 
 @font-face {
@@ -83,7 +83,7 @@
 	font-weight: bold;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_4_bold_italic.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_bold_italic.woff2') format('woff2');
 }
 @font-face {
 	font-family: heliotrope_4_caps;
@@ -91,7 +91,7 @@
 	font-weight: normal;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_4_caps_regular.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_caps_regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -100,7 +100,7 @@
 	font-weight: bold;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_4_caps_bold.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_caps_bold.woff2') format('woff2');
 }
 @font-face {
 	font-family: heliotrope_6;
@@ -108,7 +108,7 @@
 	font-weight: normal;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_6_regular.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_6_regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -117,7 +117,7 @@
 	font-weight: normal;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_6_italic.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_6_italic.woff2') format('woff2');
 }
 @font-face {
 	font-family: heliotrope_6_caps;
@@ -125,7 +125,7 @@
 	font-weight: normal;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_6_caps_regular.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_6_caps_regular.woff2') format('woff2');
 }
 @font-face {
 	font-family: heliotrope_8;
@@ -133,7 +133,7 @@
 	font-weight: normal;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_8_regular.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_8_regular.woff2') format('woff2');
 }
 
 @font-face {
@@ -142,7 +142,7 @@
 	font-weight: normal;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_8_italic.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_8_italic.woff2') format('woff2');
 }
 @font-face {
 	font-family: heliotrope_8_caps;
@@ -150,5 +150,5 @@
 	font-weight: normal;
 	font-stretch: normal;
 	font-display: auto;
-	src: url('../fonts/heliotrope/heliotrope_8_caps_regular.woff2') format('woff2');
+	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_8_caps_regular.woff2') format('woff2');
 }
