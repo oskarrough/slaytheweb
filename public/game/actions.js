@@ -113,6 +113,12 @@ function removeCard(state, {card}) {
 	})
 }
 
+/**
+ * Upgrades a card.
+ * @param {*} object state
+ * @param {card} object props {card}
+ * @returns state
+ */
 function upgradeCard(state, {card}) {
 	return produce(state, (draft) => {
 		draft.deck.find((c) => c.id === card.id).upgrade()
