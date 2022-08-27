@@ -197,9 +197,10 @@ export default [
 		],
 		upgrade() {
 			this.name = 'Summer of Sam+'
+			this.description = 'Gain 2 Health. Draw 2 Cards if your health is below 50%.'
+			// An example of how to upgrade a local action.
 			const a = this.actions.find((action) => action.type === 'addHealth')
 			a.parameter.amount = 2
-			this.description = 'Gain 2 Health. Draw 2 Cards if your health is below 50%.'
 		},
 	},
 	{
@@ -224,7 +225,7 @@ export default [
 		type: 'attack',
 		energy: 3,
 		target: 'all enemies',
-		description: 'Deals 2 damage to all enemies and sucks it into life',
+		description: 'Deal 2 Damage to all enemies and suck it into life',
 		image: 'succube.png',
 		damage: 2,
 		actions: [
@@ -234,11 +235,11 @@ export default [
 		],
 		upgrade() {
 			this.name = 'High Succube'
-			this.description = 'Deals 3 damage to all enemies and sucks it into life'
+			this.description = 'Deal 3 damage to all enemies and suck it into life'
 			this.damage = 3
 		},
 	}
-
+	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
 ]
 
 // 'codices.jpg'
