@@ -52,6 +52,9 @@ export default class App extends Component {
 			this.setState(savedGameState, this.dealCards)
 		}
 
+		this.enableConsole()
+	}
+	enableConsole() {
 		// Enable a "console" in the browser.
 		console.log(`Welcome to the Slay The Web Console. Some examples:
 stw.game.state.player.maxHealth = 999; stw.update()
@@ -190,11 +193,11 @@ stw.dealCards()`)
 		this.toggleOverlay('#Map')
 	}
 	handleMapMove(move) {
+		console.log('Made a move')
 		this.toggleOverlay('#Map')
 		this.setState({didPickCard: false})
 		this.game.enqueue({type: 'move', move})
 		this.update(this.dealCards)
-		console.log('Made a move')
 	}
 	render(props, state) {
 		if (!state.player) return
@@ -207,7 +210,10 @@ stw.dealCards()`)
 		return html`
 			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
 				<figure class="App-background" data-room-index=${state.dungeon.y}></div>
-				${room.type === 'start' && html`<${Overlay}><${StartRoom} onContinue=${this.goToNextRoom} /><//>`}
+				${
+					room.type === 'start DISABLED' &&
+					html`<${Overlay}><${StartRoom} onContinue=${this.goToNextRoom} /><//>`
+				}
 				${
 					isDead &&
 					html`<${Overlay}>
@@ -306,27 +312,23 @@ stw.dealCards()`)
 						</div>
 					</div>
 				<//>
-				<${OverlayWithButton} id="Map" topright key=${1}>
+				<${OverlayWithButton} id="Map" open topright key=${1}>
 					<button align-right onClick=${() => this.toggleOverlay('#Map')}><u>M</u>ap</button>
 					<div class="Overlay-content">
-						<div class="Splash">
-							<div class="Splash-details">
-								<${Map} dungeon=${state.dungeon} onMove=${this.handleMapMove} />
-							</div>
-						</div>
+						<${Map} dungeon=${state.dungeon} onMove=${this.handleMapMove} />
 					</div>
 				<//>
 				<${OverlayWithButton} id="Deck" topright topright2>
 					<button onClick=${() => this.toggleOverlay('#Deck')}><u>D</u>eck ${state.deck.length}</button>
 					<div class="Overlay-content">
-					<${Cards} gameState=${state} type="deck" />
+						<${Cards} gameState=${state} type="deck" />
 					</div>
 				<//>
 				<${OverlayWithButton} id="DrawPile" bottomleft>
 					<button class="tooltipped tooltipped-ne" aria-label="The cards you'll draw next in random order" onClick=${() =>
 						this.toggleOverlay('#DrawPile')}>Dr<u>a</u>w pile ${state.drawPile.length}</button>
 					<div class="Overlay-content">
-					<${Cards} gameState=${state} type="drawPile" />
+						<${Cards} gameState=${state} type="drawPile" />
 					</div>
 				<//>
 				<${OverlayWithButton} id="DiscardPile" bottomright>
@@ -337,7 +339,7 @@ stw.dealCards()`)
 			state.discardPile.length
 		}</button>
 					<div class="Overlay-content">
-					<${Cards} gameState=${state} type="discardPile" />
+						<${Cards} gameState=${state} type="discardPile" />
 					</div>
 				<//>
 			</div>
