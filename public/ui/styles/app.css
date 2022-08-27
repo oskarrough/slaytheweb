@@ -320,8 +320,9 @@ h2 {
 }
 
 .Splash {
-	min-height: 90vh;
+	min-height: 100vh;
 	display: flex;
+	justify-content: center;;
 	margin: auto;
 	flex-flow: column;
 	text-align: center;
