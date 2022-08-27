@@ -82,6 +82,7 @@
 .Overlay[open] .Overlay-bg {
 	transform: translateX(0);
 	background: hsla(0, 0%, 0%, 0.9);
+	background: hsla(0, 0%, 0%, 1);
 }
 
 /* Inside overlays cards are allowed to wrap */

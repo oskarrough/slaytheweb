@@ -32,8 +32,11 @@ class Main extends Component {
 		this.setState({isPlaying: true, didWin: false})
 	}
 	render(props, {didWin, isPlaying}) {
+		// Game play UI
 		if (isPlaying) return html` <${App} onWin=${this.handleWin} onLoose=${this.handleLoose} /> `
+		// Win screen
 		if (didWin) return html` <${WinScreen} onNewGame=${this.handleNewGame} /> `
+		// Splash screen
 		return html`
 			<${SplashScreen} onNewGame=${this.handleNewGame} onContinue=${this.handleLoadGame} />
 		`
@@ -55,46 +58,41 @@ class SplashScreen extends Component {
 	render(props, state) {
 		return html`
 			<article class="Splash Splash--fadein">
-				<h1>Slay the Web</h1>
-				<h2>A little card crawl adventure for you and your browser.</h2>
+				<h1 style="margin-top:20vh">Slay the Web</h1>
+				<h2>A card crawl adventure for you and your browser</h2>
 				<img class="Splash-spoder" src="ui/images/spoder.png" />
 				<ul class="Options">
-					${
-						location.hash
-							? html`
+					${location.hash
+						? html`
 							<li><button autofocus onClick=${props.onContinue}>Continue Game</button></li>
 							<li><button autofocus onClick=${props.onNewGame}>New Game</a></li>
 				`
-							: html`<li><button autofocus onClick=${props.onNewGame}>Play</a></li>`
-					}
-					<li><button onClick=${() => this.setState({showTutorial: !state.showTutorial})}>Read the Manual</a></li>
+						: html`<li><button autofocus onClick=${props.onNewGame}>Play</a></li>`}
 				</ul>
-				${
-					state.showTutorial &&
-					html`
-						<div class="Splash-details Article">
-							<p>
-								Slay the Web is a single player card game where you fight monsters to reach the end
-								of the web. It's a game of planning and knowing when to play which card.
-							</p>
-							<p>
-								Every turn you get 3 energy to play cards. Cards have different energy costs to
-								play. Cards deal damage to monsters, block enemy attacks or make enemies weak,
-								vulnerable, heal you and other things. You'll figure it out.
-							</p>
-							<p>Beware, whenever you end your turn, the monsters take turn.</p>
-							<p>
-								Should you manage to kill the monsters in a room before they end you, you'll proceed
-								to the next room. Maybe there will be rewards. Can you reach the end?
-							</p>
-							<p>
-								You draw from the draw pile. After you play a card, it goes into the discard pile.
-								At the end of your turn you discard your hand to the discard pile. If your draw pile
-								is empty, your discard pile is shuffled back into your draw pile.
-							</p>
-						</div>
-					`
-				}
+				${!state.hideTutorial &&
+				html`
+					<div class="Splash-details Article">
+						<p><strong>What's going on?</strong></p>
+						<p>
+							Slay the Web is a single player card game where you fight monsters to reach the end of
+							the web. It's a game of planning and knowing when to play which card.
+						</p>
+						<p>
+							Every turn you draw 5 cards from your draw pile. Cards cost energy to play, and you
+							get 3 energy every turn.
+						</p>
+						<p>
+							Cards can deal damage to monsters, block enemy attacks or make them weak or vulnerable.
+							They can heal you and other things. You'll figure it out.
+						</p>
+						<p>Beware, whenever you end your turn, the monsters take turn.</p>
+						<p>
+							Should you manage to kill the monsters in a room before they end you, you'll proceed
+							to the next room. Maybe there will be rewards. Can you reach the end?
+						</p>
+						<p>The game is <a href="https://github.com/oskarrough/slaytheweb" rel="noreferrer" target="_blank">open source</a>.</p>
+					</div>
+				`}
 			</article>
 		`
 	}

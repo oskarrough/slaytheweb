@@ -6,6 +6,8 @@
 slay-map {
 	--rows: 12;
 	--columns: 6;
+	--pathColor: white;
+	--highlight: gold;
 	box-sizing: border-box;
 	display: grid;
 	max-width: 50rem;
@@ -13,8 +15,8 @@ slay-map {
 	border: 4px solid black;
 	padding: 1em;
 	position: relative;
-	background: hsl(120, 17.5%, 19%);
-	background: hsl(120deg 3% 42%);
+	/* background: hsl(120, 17.5%, 19%); */
+	/* background: hsl(120deg 3% 42%); */
 	margin: 1rem auto;
 	overflow: hidden;
 }
@@ -60,7 +62,7 @@ slay-map-node[did-visit] {
 	opacity: 0.666;
 }
 slay-map-node[current] {
-	border-color: gold;
+	border-color: var(--highlight);
 	opacity: 1;
 }
 slay-map-node[can-visit] {
@@ -91,7 +93,7 @@ slay-map svg.paths {
 	pointer-events: none;
 }
 slay-map svg.paths line {
-	stroke: hsla(0, 0%, 0%, 0.9);
+	stroke: var(--pathColor);
 	stroke-width: 3px;
 	stroke-dasharray: 7px;
 }

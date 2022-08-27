@@ -23,6 +23,7 @@
 	border-image-slice: 6 6 6 6;
 	border-image-width: 0.75rem;
 	border-width: 0.75rem;
+	border-width: 0.5rem;
 	image-rendering: -moz-crisp-edges;
 	image-rendering: pixelated;
 }
