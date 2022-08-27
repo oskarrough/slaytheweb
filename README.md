@@ -18,8 +18,7 @@ TLDR; Clone the repository and open the `public` folder in a web browser. The co
 
 ## How to deploy it
 
-The `main` branch automatically deploys to https://slaytheweb.cards, via the Vercel service, every time it is pushed to.  
-If you open a PR, it'll give you a preview URL as well for testing.
+The `main` branch automatically deploys to https://slaytheweb.cards, via the Vercel service, every time it is pushed to. If you open a PR, it'll give you a preview URL as well for testing.
 
 ## References
 

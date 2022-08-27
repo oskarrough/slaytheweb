@@ -14,6 +14,8 @@ const defaultOptions = {
 	// The type of node is randomly selected from `roomTypes`.
 	// M Monster, C Campfire, E Elite
 	roomTypes: 'MMMCE',
+	// The "customPaths" argument should be a string of indexes from where to draw the paths,
+	// For example "530" would draw three paths. First at index 5, then 3 and finally 0.
 	// customPaths: '123'
 }
 
@@ -124,8 +126,6 @@ export function generateGraph(props) {
 export function generatePaths(graph, customPaths) {
 	const paths = []
 
-	// The "customPaths" argument should be a string of indexes from where to draw the paths,
-	// For example "530" would draw three paths. First at index 5, then 3 and finally 0.
 	if (customPaths) {
 		Array.from(customPaths).forEach((value) => {
 			const path = findPath(graph, Number(value))

@@ -67,6 +67,7 @@ a {
 	color: inherit;
 }
 
+.Button,
 button {
 	font-size: 1.25rem;
 	padding: 0.4em 1em 0.4em;
@@ -75,15 +76,19 @@ button {
 	background: var(--lightblue);
 	color: var(--text-inverse);
 	box-shadow: 0 0.2em var(--text-inverse);
+	text-decoration: none;
 }
 button + button {
 	margin-left: 0.2em;
 }
+.Button:hover,
+.Button:focus,
 button:hover,
 button:focus {
 	background: hsl(194.7, 53.3%, 83%);
 	box-shadow: 0 0.1em var(--text-inverse);
 }
+.Button:active,
 button:active {
 	position: relative;
 	top: 0.1em;
@@ -326,7 +331,7 @@ h2 {
 	z-index: 2;
 }
 .Article {
-	margin-top: 24vh;
+	/* margin-top: 24vh; */
 	background: whitesmoke;
 	color: #222;
 	padding: 1em 2em;

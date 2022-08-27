@@ -113,6 +113,12 @@ function removeCard(state, {card}) {
 	})
 }
 
+/**
+ * Upgrades a card.
+ * @param {*} object state
+ * @param {card} object props {card}
+ * @returns state
+ */
 function upgradeCard(state, {card}) {
 	return produce(state, (draft) => {
 		draft.deck.find((c) => c.id === card.id).upgrade()
@@ -157,6 +163,20 @@ function addHealth(state, {target, amount}) {
 		targets.forEach((t) => {
 			t.currentHealth = clamp(t.currentHealth + amount, 0, t.maxHealth)
 		})
+	})
+}
+
+function addRegenEqualToAllDamage(state, { card }) {
+	return produce(state, (draft) => {
+		const room = getCurrRoom(state)
+		const aliveMonsters = room.monsters.filter(monster => {
+			return monster.currentHealth > 0
+		})
+		const {
+			regen = 0
+		} = state.player.powers
+		const totalDamage = aliveMonsters.length * card.damage
+		draft.player.powers.regen = totalDamage + regen
 	})
 }
 
@@ -355,9 +375,12 @@ function dealDamageEqualToBlock(state, {target}) {
 	return removeHealth(state, {target, amount: block})
 }
 
+
+
 export default {
 	addCardToHand,
 	addHealth,
+	addRegenEqualToAllDamage,
 	addStarterDeck,
 	applyCardPowers,
 	createNewGame,
