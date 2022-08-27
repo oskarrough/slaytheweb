@@ -219,7 +219,26 @@ export default [
 			this.name = 'Body Slam+'
 		},
 	},
-	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
+	{
+		name: 'Succube',
+		type: 'attack',
+		energy: 3,
+		target: 'all enemies',
+		description: 'Deals 2 damage to all enemies and sucks it into life',
+		image: 'succube.png',
+		damage: 2,
+		actions: [
+			{
+				type: 'addRegenEqualToAllDamage',
+			},
+		],
+		upgrade() {
+			this.name = 'High Succube'
+			this.description = 'Deals 3 damage to all enemies and sucks it into life'
+			this.damage = 3
+		},
+	}
+
 ]
 
 // 'codices.jpg'
