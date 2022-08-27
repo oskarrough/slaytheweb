@@ -1,4 +1,5 @@
-import {html, render, Component} from '../web_modules/htm/preact/standalone.module.js'
+import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
+import gsap from '../web_modules/gsap.js'
 
 export default class SplashScreen extends Component {
 	componentDidMount() {
