@@ -4,7 +4,8 @@ import {createCard} from '../public/game/cards'
 test('can create an attack card', (t) => {
 	const card = createCard('Strike')
 	t.is(card.name, 'Strike')
-	t.is(card.type, 'Attack')
+	t.is(card.type, 'attack')
+	t.is(card.target, 'enemy')
 	t.is(typeof card.damage, 'number')
 	t.is(typeof card.energy, 'number')
 	t.truthy(card.description)
@@ -12,7 +13,8 @@ test('can create an attack card', (t) => {
 
 test('can create a skill card', (t) => {
 	const card = createCard('Defend')
-	t.is(card.type, 'Skill')
+	t.is(card.type, 'skill')
+	t.is(card.target, 'player')
 	t.is(typeof card.block, 'number')
 })
 

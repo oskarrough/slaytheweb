@@ -3,7 +3,7 @@
 export default [
 	{
 		name: 'Strike',
-		type: 'Attack',
+		type: 'attack',
 		energy: 1,
 		target: 'enemy',
 		damage: 6,
@@ -18,7 +18,7 @@ export default [
 	},
 	{
 		name: 'Defend',
-		type: 'Skill',
+		type: 'skill',
 		energy: 1,
 		block: 5,
 		target: 'player',
@@ -33,7 +33,7 @@ export default [
 	},
 	{
 		name: 'Bash',
-		type: 'Attack',
+		type: 'attack',
 		energy: 2,
 		damage: 8,
 		target: 'enemy',
@@ -52,14 +52,14 @@ export default [
 	},
 	{
 		name: 'Clash',
-		type: 'Attack',
+		type: 'attack',
 		energy: 0,
 		damage: 14,
 		target: 'enemy',
 		conditions: [
 			{
 				type: 'onlyType',
-				cardType: 'Attack',
+				cardType: 'attack',
 			},
 		],
 		description: 'Can only be played if every card in your hand is an Attack. Deal 14 damage.',
@@ -73,7 +73,7 @@ export default [
 	},
 	{
 		name: 'Cleave',
-		type: 'Attack',
+		type: 'attack',
 		energy: 1,
 		damage: 8,
 		target: 'all enemies',
@@ -88,7 +88,7 @@ export default [
 	},
 	{
 		name: 'Iron Wave',
-		type: 'Attack',
+		type: 'attack',
 		energy: 1,
 		damage: 5,
 		block: 5,
@@ -105,7 +105,7 @@ export default [
 	},
 	{
 		name: 'Sucker Punch',
-		type: 'Attack',
+		type: 'attack',
 		energy: 1,
 		damage: 7,
 		target: 'enemy',
@@ -124,7 +124,7 @@ export default [
 	},
 	{
 		name: 'Thunderclap',
-		type: 'Attack',
+		type: 'attack',
 		energy: 1,
 		damage: 4,
 		target: 'all enemies',
@@ -141,7 +141,7 @@ export default [
 	},
 	{
 		name: 'Flourish',
-		type: 'Skill',
+		type: 'skill',
 		energy: 2,
 		target: 'player',
 		description: 'Gain 5 Regen. Can only be played if your health is below 50%.',
@@ -170,7 +170,7 @@ export default [
 	},
 	{
 		name: 'Summer of Sam',
-		type: 'Skill',
+		type: 'skill',
 		energy: 1,
 		target: 'player',
 		description: 'Gain 1 Health. Draw 2 Cards if your health is below 50%.',
@@ -205,7 +205,7 @@ export default [
 	{
 		name: 'Body Slam',
 		energy: 1,
-		type: 'Attack',
+		type: 'attack',
 		target: 'enemy',
 		description: 'Deal Damage equal to your Block',
 		image: 'fallback.jpg',
@@ -219,7 +219,7 @@ export default [
 			this.name = 'Body Slam+'
 		},
 	},
-	// {name: 'Flex', energy: 0, type: 'Skill', description: 'Gain 2 Strength.'},
+	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
 ]
 
 // 'codices.jpg'

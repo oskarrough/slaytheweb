@@ -3,6 +3,17 @@ import actionMethods from './actions.js'
 import * as conditionMethods from './conditions.js'
 import cards from '../content/cards.js'
 
+export const types = {
+	attack: 'attack',
+	skill: 'skill',
+	power: 'power',
+	status: 'status',
+	curse: 'curse',
+}
+
+// @todo? [NONE, SELF_AND_ENEMY, ALL]
+export const targets = {player: 'player', enemy: 'enemy', 'all enemies': 'all enemies'}
+
 /*
 	This file contains the logic to create cards.
 	While cards are described in an object form, they are always converted to a class equivalent.
@@ -46,9 +57,9 @@ export class Card {
 	constructor(props) {
 		this.id = uuid()
 		this.name = props.name
-		this.type = props.type
+		this.type = types[props.type]
 		this.energy = props.energy
-		this.target = props.target
+		this.target = targets[props.target]
 		this.damage = props.damage
 		this.block = props.block
 		this.powers = props.powers
