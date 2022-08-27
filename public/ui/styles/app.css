@@ -326,7 +326,7 @@ h2 {
 	z-index: 2;
 }
 .Article {
-	margin-top: 24vh;
+	/* margin-top: 24vh; */
 	background: whitesmoke;
 	color: #222;
 	padding: 1em 2em;

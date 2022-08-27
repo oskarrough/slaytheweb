@@ -25,7 +25,8 @@
 
 		const Cardss = (props) => html`
 			<article class="Splash">
-				<h2>${cards.length} Cards</h2>
+				<h2>${cards.length} Card Collection</h2>
+				<p><button><a href="/">Back</a></button></p>
 				<div class="Cards Cards--grid">
 					${cards.map(card => Card(card))}
 				</div>

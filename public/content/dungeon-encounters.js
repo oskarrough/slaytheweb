@@ -4,12 +4,12 @@ import {MonsterRoom, Monster} from '../game/dungeon-rooms.js'
 import {random} from '../game/utils.js'
 
 // Hello. With the imported functions above you can create a dungeon with different rooms and monsters.
-// This file contains the example dungeon used in Slay the Web.
 
+// This is the dungeon currently used.
 export const dungeonWithMap = () => {
 	return Dungeon({
 		width: 6,
-		height: 7,
+		height: 10,
 		minRooms: 3,
 		maxRooms: 4,
 		customPaths: '0235',
