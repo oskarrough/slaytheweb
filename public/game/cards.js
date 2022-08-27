@@ -78,7 +78,7 @@ export class Card {
 	// Runs through a list of actions and return the updated state.
 	// Called when the card is played.
 	// You CAN overwrite it, just make sure to return a new state.
-	use(state, {target, card }) {
+	use(state, {target, card}) {
 		if (!this.actions) return state
 		let newState = state
 		this.actions.forEach((action) => {

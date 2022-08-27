@@ -1,7 +1,8 @@
-/* .MapContainer {
+.MapContainer {
 	position: relative;
 	z-index: 500;
-} */
+	margin: 0 1em;
+}
 
 slay-map {
 	--rows: 12;

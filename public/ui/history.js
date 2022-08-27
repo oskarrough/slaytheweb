@@ -19,7 +19,7 @@ export default class Queue extends Component {
 		// <h2>Future ${time}</h2>
 		// <${List} items=${props.future} />
 		return html`
-			<div>
+			<div class="History">
 				<h3>Your past ${time}</h3>
 				<${List} items=${props.past} />
 			</div>

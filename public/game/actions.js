@@ -166,15 +166,13 @@ function addHealth(state, {target, amount}) {
 	})
 }
 
-function addRegenEqualToAllDamage(state, { card }) {
+function addRegenEqualToAllDamage(state, {card}) {
 	return produce(state, (draft) => {
 		const room = getCurrRoom(state)
-		const aliveMonsters = room.monsters.filter(monster => {
+		const aliveMonsters = room.monsters.filter((monster) => {
 			return monster.currentHealth > 0
 		})
-		const {
-			regen = 0
-		} = state.player.powers
+		const {regen = 0} = state.player.powers
 		const totalDamage = aliveMonsters.length * card.damage
 		draft.player.powers.regen = totalDamage + regen
 	})
@@ -374,8 +372,6 @@ function dealDamageEqualToBlock(state, {target}) {
 	const block = state.player.block
 	return removeHealth(state, {target, amount: block})
 }
-
-
 
 export default {
 	addCardToHand,
