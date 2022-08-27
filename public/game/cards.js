@@ -76,7 +76,7 @@ export class Card {
 		let newState = state
 		this.actions.forEach((action) => {
 			// Don't run action if it has an invalid condition.
-			if (action.conditions && !canPlay(action.conditions, state)) {
+			if (action.conditions && !checkConditions(action.conditions, state)) {
 				return newState
 			}
 			// Make sure the action is called with a target.
@@ -88,7 +88,7 @@ export class Card {
 		return newState
 	}
 	canPlay(state) {
-		return canPlay(this.conditions, state)
+		return checkConditions(this.conditions, state)
 	}
 	upgrade() {
 		if (this.upgraded) return
@@ -98,7 +98,7 @@ export class Card {
 }
 
 // Returns false if at least one condition fails
-function canPlay(conditions, state) {
+function checkConditions(conditions, state) {
 	let boolean = false
 	conditions.forEach((condition) => {
 		if (!boolean && conditionMethods[condition.type]) {
