@@ -178,9 +178,7 @@ stw.dealCards()`)
 		this.update()
 	}
 	handleCampfireChoice(choice, reward) {
-		// step1
-		const room = getCurrRoom(this.state)
-		// step2
+		// Depending on the choice, run an action.
 		if (choice === 'rest') {
 			reward = Math.floor(this.game.state.player.maxHealth * 0.3)
 			this.game.enqueue({type: 'addHealth', target: 'player', amount: reward})
@@ -191,10 +189,10 @@ stw.dealCards()`)
 		if (choice === 'removeCard') {
 			this.game.enqueue({type: 'removeCard', card: reward})
 		}
-		// step3
-		room.choice = choice
-		room.reward = reward
-		this.update()
+		// Store the result.
+		this.game.enqueue({type: 'makeCampfireChoice', choice, reward})
+		// Update twice (because two actions were enqueued)
+		this.update(this.update)
 		this.goToNextRoom()
 	}
 	goToNextRoom() {

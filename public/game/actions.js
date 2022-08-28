@@ -1,4 +1,4 @@
-import produce from '../web_modules/immer.js'
+import produce, {current} from '../web_modules/immer.js'
 import {createCard} from './cards.js'
 import {shuffle, getTargets, getCurrRoom, clamp} from './utils.js'
 import powers from './powers.js'
@@ -411,6 +411,23 @@ function setPower(state, {target, power, amount}) {
 	})
 }
 
+/**
+ * Stores a campfire choice (useful for stats and whatnot)
+ * @param {object} state
+ * @param {object} props
+ * @param {object} props.room what
+ * @param {} props.choice what?
+ * @param {} props.reward card?
+ * @returns
+ */
+function makeCampfireChoice(state, {choice, reward}) {
+	return produce(state, (draft) => {
+		const room = getCurrRoom(draft)
+		room.choice = choice
+		room.reward = reward
+	})
+}
+
 export default {
 	addCardToHand,
 	addHealth,
@@ -423,6 +440,7 @@ export default {
 	discardHand,
 	drawCards,
 	endTurn,
+	makeCampfireChoice,
 	move,
 	playCard,
 	removeCard,

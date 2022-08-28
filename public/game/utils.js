@@ -49,7 +49,7 @@ export function getCurrMapNode(state) {
 	return state.dungeon.graph[state.dungeon.y][state.dungeon.x]
 }
 
-// Returns the current room in a dungeon.
+// Returns the current dungeon room from the the y/x props
 export function getCurrRoom(state) {
 	const node = getCurrMapNode(state)
 	if (!node.room) throw new Error('This node has no room')
