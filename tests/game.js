@@ -29,7 +29,8 @@ test('it all', (t) => {
 
 test('game also contains actions', (t) => {
 	const game = createNewGame()
-	game.state.hand = []
+	game.enqueue({type: 'discardHand'})
+	game.dequeue()
 	game.state = game.actions.drawCards(game.state)
 	t.is(game.state.hand.length, 5)
 })

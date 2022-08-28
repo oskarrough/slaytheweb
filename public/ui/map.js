@@ -19,7 +19,7 @@ export default function map(props) {
 
 			<h2>Log</h2>
 			<ul>
-				 ${pathTaken.map((path) => html`<li>${path.y}.${path.x}</li>`)}
+				${pathTaken.map((path) => html`<li>${path.y}.${path.x}</li>`)}
 			</ul>
 		</div>
 	`
@@ -56,7 +56,7 @@ export class SlayMap extends Component {
 			draft.forEach((row, rowIndex) => {
 				row.forEach((node, nodeIndex) => {
 					if (!node.type) return
-					console.log(Object.isExtensible(node))
+					// console.log(Object.isExtensible(node))
 					node.el = this.base.childNodes[rowIndex].childNodes[nodeIndex]
 				})
 			})
@@ -136,13 +136,11 @@ export class SlayMap extends Component {
 		}
 		const edgesFromCurrentNode = graph[y][x].edges
 		return html`
-
 			<slay-map>
-				 ${graph.map(
+				${graph.map(
 					(row, rowIndex) => html`
-
 						<slay-map-row current=${rowIndex === y}>
-							 ${row.map((node, nodeIndex) => {
+							${row.map((node, nodeIndex) => {
 								const isCurrent = rowIndex === y && nodeIndex === x
 								const canVisit = edgesFromCurrentNode.has(node) && isRoomCompleted(graph[y][x].room)
 								return html`<slay-map-node
@@ -152,17 +150,13 @@ export class SlayMap extends Component {
 									did-visit=${node.didVisit}
 									onClick=${() => props.onSelect({x: nodeIndex, y: rowIndex})}
 								>
-
 									<span>${emojiFromNodeType(node.type)}</span>
-
 								</slay-map-node>`
 							})}
 						</slay-map-row>
-
 					`
 				)}
 			</slay-map>
-
 		`
 	}
 }

@@ -29,17 +29,18 @@ function createNewGame() {
 			block: 0,
 			powers: {},
 		},
-		// dungeon: {}
+		dungeon: false,
 	}
 }
 
 // By default a new game doesn't come with a dungeon. You have to set one explicitly. Look in dungeon-encounters.js for inspiration.
 function setDungeon(state, dungeon) {
 	if (!dungeon) dungeon = dungeonWithMap()
-	return produce(state, (draft) => {
-		if (!dungeon) throw new Error('Missing a dungeon?')
-		draft.dungeon = dungeon
-	})
+	state.dungeon = dungeon
+	return state
+	// return produce(state, (draft) => {
+	// 	draft.dungeon = dungeon
+	// })
 }
 
 // Draws a "starter" deck to your discard pile. Normally you'd run this as you start the game.
@@ -194,6 +195,20 @@ const removeHealth = (state, {target, amount}) => {
 	})
 }
 
+/**
+ * Sets the health of a target
+ * @param {Object} state
+ * @param {target: string, amount: number} props
+ * @returns state
+ */
+const setHealth = (state, {target, amount}) => {
+	return produce(state, (draft) => {
+		getTargets(draft, target).forEach((t) => {
+			t.currentHealth = amount
+		})
+	})
+}
+
 // Used by playCard. Applies each power on the card to?
 function applyCardPowers(state, {card, target}) {
 	return produce(state, (draft) => {
@@ -221,8 +236,8 @@ function applyCardPowers(state, {card, target}) {
 	})
 }
 
-// Decrease all power stacks by one.
-function decreasePowers(powers) {
+// Helper to decrease all power stacks by one.
+function _decreasePowers(powers) {
 	Object.entries(powers).forEach(([name, stacks]) => {
 		if (stacks > 0) powers[name] = stacks - 1
 	})
@@ -231,15 +246,15 @@ function decreasePowers(powers) {
 // Decrease player's power stacks.
 function decreasePlayerPowerStacks(state) {
 	return produce(state, (draft) => {
-		decreasePowers(draft.player.powers)
+		_decreasePowers(draft.player.powers)
 	})
 }
 
 // Decrease monster's power stacks.
 function decreaseMonsterPowerStacks(state) {
-	return produce(state, () => {
-		getCurrRoom(state).monsters.forEach((monster) => {
-			decreasePowers(monster.powers)
+	return produce(state, (draft) => {
+		getCurrRoom(draft).monsters.forEach((monster) => {
+			_decreasePowers(monster.powers)
 		})
 	})
 }
@@ -368,9 +383,32 @@ function move(state, {move}) {
 	})
 }
 
+/**
+ * Deals damage to a target equal to the current player's block.
+ * @param {obj} state
+ * @param {target: string} props
+ * @returns state
+ */
 function dealDamageEqualToBlock(state, {target}) {
 	const block = state.player.block
 	return removeHealth(state, {target, amount: block})
+}
+
+/**
+ * Sets a single power on a specific target
+ * @param {obj} state
+ * @param {Object} props
+ * @param {string} props.target
+ * @param {string} props.power
+ * @param {number} props.amount
+ * @returns state
+ */
+function setPower(state, {target, power, amount}) {
+	return produce(state, (draft) => {
+		getTargets(draft, target).forEach((target) => {
+			target.powers[power] = amount
+		})
+	})
 }
 
 export default {
@@ -387,11 +425,13 @@ export default {
 	endTurn,
 	move,
 	playCard,
+	removeCard,
 	removeHealth,
 	reshuffleAndDraw,
 	rewardPlayer,
 	setDungeon,
+	setHealth,
+	setPower,
 	takeMonsterTurn,
-	removeCard,
 	upgradeCard,
 }
