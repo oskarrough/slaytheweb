@@ -16,20 +16,20 @@
   },
   "devDependencies": {
     "ava": "^3.15.0",
-    "docco": "^0.8.1",
+    "docco": "^0.9.1",
     "eslint": "^7.20.0",
     "eslint-config-prettier": "^7.2.0",
-    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-prettier": "^4.2.1",
     "nyc": "^15.1.0",
-    "prettier": "2.2.1",
+    "prettier": "2.7.1",
     "servor": "^4.0.2",
     "snowpack": "^1.7.1"
   },
   "dependencies": {
     "esm": "^3.2.25",
     "gsap": "^3.6.0",
-    "htm": "^3.0.3",
-    "immer": "^6.0.0",
+    "htm": "^3.1.1",
+    "immer": "^9.0.15",
     "tone": "^14.8.9"
   },
   "ava": {

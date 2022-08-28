@@ -3,49 +3,47 @@ import App from './app.js'
 import SplashScreen from './splash-screen.js'
 import WinScreen from './win-screen.js'
 
-// This component decides what to render:
-// A splash screen, a "win" screen or the game/app itself.
-// It also detects if there's a saved game in the URL and allows the player to continue.
+const GAMEMODE = {
+	SPLASH: 'splash',
+	GAMEPLAY: 'gameplay',
+	WIN: 'win',
+}
 
-class Main extends Component {
+/**
+ * Our root component for the game.
+ * Controls what to render.
+ */
+class SlayTheWeb extends Component {
 	constructor() {
 		super()
 		this.state = {
-			isPlaying: false,
+			gameMode: GAMEMODE.GAMEPLAY,
 		}
 		this.handleWin = this.handleWin.bind(this)
 		this.handleNewGame = this.handleNewGame.bind(this)
 		this.handleLoose = this.handleLoose.bind(this)
-		this.handleLoadGame = this.handleLoadGame.bind(this)
 	}
 	handleNewGame() {
+		this.setState({gameMode: GAMEMODE.GAMEPLAY})
 		// Clear any previous saved game.
 		window.history.pushState('', document.title, window.location.pathname)
-		this.setState({isPlaying: true, didWin: false})
 	}
 	handleWin() {
-		this.setState({isPlaying: false, didWin: true})
+		this.setState({gameMode: GAMEMODE.WIN})
 	}
 	handleLoose() {
-		this.setState({isPlaying: false, didWin: false})
+		this.setState({gameMode: GAMEMODE.SPLASH})
 	}
-	handleLoadGame() {
-		this.setState({isPlaying: true, didWin: false})
-	}
-	render(props, {didWin, isPlaying}) {
-		// Game play UI
-		if (isPlaying) return html` <${App} onWin=${this.handleWin} onLoose=${this.handleLoose} /> `
-		// Win screen
-		if (didWin) return html` <${WinScreen} onNewGame=${this.handleNewGame} /> `
-		// Splash screen
-		return html`
-			<${SplashScreen} onNewGame=${this.handleNewGame} onContinue=${this.handleLoadGame} />
-		`
+	render(props, {gameMode}) {
+		if (gameMode === GAMEMODE.SPLASH)
+			return html`<${SplashScreen}
+				onNewGame=${this.handleNewGame}
+				onContinue=${this.handleNewGame}
+			/>`
+		if (gameMode === GAMEMODE.GAMEPLAY)
+			return html` <${App} onWin=${this.handleWin} onLoose=${this.handleLoose} /> `
+		if (gameMode === GAMEMODE.WIN) return html` <${WinScreen} onNewGame=${this.handleNewGame} /> `
 	}
 }
 
-render(html` <${Main} /> `, document.querySelector('#SlayTheWeb'))
-
-// enum GameMode {
-//  	CHAR_SELECT, GAMEPLAY, DUNGEON_TRANSITION, SPLASH;
-// }
+render(html` <${SlayTheWeb} /> `, document.querySelector('#SlayTheWeb'))

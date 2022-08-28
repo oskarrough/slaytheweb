@@ -1,5 +1,6 @@
 import {Component, html} from '../web_modules/htm/preact/standalone.module.js'
 import {isRoomCompleted, random as randomBetween} from '../game/utils.js'
+import produce from '../web_modules/immer.js'
 
 export default function map(props) {
 	const {graph, x, y, pathTaken} = props.dungeon
@@ -7,6 +8,7 @@ export default function map(props) {
 	return html`
 		<div class="MapContainer">
 			<h2>Map of the dungeon. Floor ${y}. Node ${x}</h2>
+
 			<${SlayMap}
 				dungeon=${props.dungeon}
 				graph=${graph}
@@ -14,6 +16,7 @@ export default function map(props) {
 				y=${y}
 				onSelect=${props.onMove}
 			><//>
+
 			<h2>Log</h2>
 			<ul>
 				${pathTaken.map((path) => html`<li>${path.y}.${path.x}</li>`)}
@@ -24,7 +27,8 @@ export default function map(props) {
 
 export class SlayMap extends Component {
 	componentDidMount() {
-		this.setState({graph: this.addElementsToGraph(this.props.graph)})
+		const graphWithDOM = this.addElementsToGraph(this.props.graph)
+		this.setState({graph: graphWithDOM})
 	}
 
 	componentDidUpdate(prevProps) {
@@ -46,14 +50,17 @@ export class SlayMap extends Component {
 		}
 	}
 
+	// Returns a new graph where each graph node has a new "el" property pointing to the DOM element
 	addElementsToGraph(graph) {
-		graph.forEach((row, rowIndex) => {
-			row.forEach((node, nodeIndex) => {
-				if (!node.type) return
-				node.el = this.base.childNodes[rowIndex].childNodes[nodeIndex]
+		return produce(graph, (draft) => {
+			draft.forEach((row, rowIndex) => {
+				row.forEach((node, nodeIndex) => {
+					if (!node.type) return
+					// console.log(Object.isExtensible(node))
+					node.el = this.base.childNodes[rowIndex].childNodes[nodeIndex]
+				})
 			})
 		})
-		return graph
 	}
 
 	// Shake the positions up a bit.
@@ -142,8 +149,9 @@ export class SlayMap extends Component {
 									can-visit=${canVisit}
 									did-visit=${node.didVisit}
 									onClick=${() => props.onSelect({x: nodeIndex, y: rowIndex})}
-									><span>${emojiFromNodeType(node.type)}</span></slay-map-node
-								>`
+								>
+									<span>${emojiFromNodeType(node.type)}</span>
+								</slay-map-node>`
 							})}
 						</slay-map-row>
 					`

@@ -238,7 +238,7 @@ export default [
 			this.description = 'Deal 3 damage to all enemies and suck it into life'
 			this.damage = 3
 		},
-	}
+	},
 	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
 ]
 
