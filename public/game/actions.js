@@ -29,17 +29,18 @@ function createNewGame() {
 			block: 0,
 			powers: {},
 		},
-		// dungeon: {}
+		dungeon: false,
 	}
 }
 
 // By default a new game doesn't come with a dungeon. You have to set one explicitly. Look in dungeon-encounters.js for inspiration.
 function setDungeon(state, dungeon) {
 	if (!dungeon) dungeon = dungeonWithMap()
-	return produce(state, (draft) => {
-		if (!dungeon) throw new Error('Missing a dungeon?')
-		draft.dungeon = dungeon
-	})
+	state.dungeon = dungeon
+	return state
+	// return produce(state, (draft) => {
+	// 	draft.dungeon = dungeon
+	// })
 }
 
 // Draws a "starter" deck to your discard pile. Normally you'd run this as you start the game.
@@ -194,6 +195,20 @@ const removeHealth = (state, {target, amount}) => {
 	})
 }
 
+/**
+ * Sets the health of a target
+ * @param {Object} state
+ * @param {target: string, amount: number} props
+ * @returns state
+ */
+const setHealth = (state, {target, amount}) => {
+	return produce(state, (draft) => {
+		getTargets(draft, target).forEach((t) => {
+			t.currentHealth = amount
+		})
+	})
+}
+
 // Used by playCard. Applies each power on the card to?
 function applyCardPowers(state, {card, target}) {
 	return produce(state, (draft) => {
@@ -237,8 +252,8 @@ function decreasePlayerPowerStacks(state) {
 
 // Decrease monster's power stacks.
 function decreaseMonsterPowerStacks(state) {
-	return produce(state, () => {
-		getCurrRoom(state).monsters.forEach((monster) => {
+	return produce(state, (draft) => {
+		getCurrRoom(draft).monsters.forEach((monster) => {
 			decreasePowers(monster.powers)
 		})
 	})
@@ -368,9 +383,32 @@ function move(state, {move}) {
 	})
 }
 
+/**
+ * Deals damage to a target equal to the current player's block.
+ * @param {obj} state
+ * @param {target: string} props
+ * @returns state
+ */
 function dealDamageEqualToBlock(state, {target}) {
 	const block = state.player.block
 	return removeHealth(state, {target, amount: block})
+}
+
+/**
+ * Sets a single power on a specific target
+ * @param {obj} state
+ * @param {Object} props
+ * @param {string} props.target
+ * @param {string} props.power
+ * @param {number} props.amount
+ * @returns state
+ */
+function setPower(state, {target, power, amount}) {
+	return produce(state, (draft) => {
+		getTargets(draft, target).forEach((target) => {
+			target.powers[power] = amount
+		})
+	})
 }
 
 export default {
@@ -391,6 +429,8 @@ export default {
 	reshuffleAndDraw,
 	rewardPlayer,
 	setDungeon,
+	setHealth,
+	setPower,
 	takeMonsterTurn,
 	removeCard,
 	upgradeCard,

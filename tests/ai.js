@@ -89,7 +89,7 @@ test('dead monsters dont play', (t) => {
 	t.is(monster(state).block, 7)
 	state = a.endTurn(state)
 	t.is(state.player.currentHealth, 62)
-	monster(state).currentHealth = 0
+	state = a.setHealth(state, {target: 'enemy0', amount: 0})
 	state = a.endTurn(state)
 	t.is(state.player.currentHealth, 62, 'monster is dead so nothing happened')
 })
