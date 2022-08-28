@@ -411,6 +411,42 @@ function setPower(state, {target, power, amount}) {
 	})
 }
 
+/**
+ * Stores a campfire choice on the room (useful for stats and whatnot)
+ * @param {object} state
+ * @param {object} props
+ * @param {object} props.room a dungeon room
+ * @param {string} props.choice enum of the campfire choices
+ * @param {object} props.reward card
+ * @returns
+ */
+function makeCampfireChoice(state, {choice, reward}) {
+	return produce(state, (draft) => {
+		const room = getCurrRoom(draft)
+		room.choice = choice
+		room.reward = reward
+	})
+}
+
+/**
+ * Sets the health of all monsters in the dungeon to 1.
+ * @param {object} state
+ * @returns state
+ */
+function iddqd(state) {
+	console.log('iddqd')
+	return produce(state, (draft) => {
+		draft.dungeon.graph.forEach((floor) => {
+			floor.forEach((node) => {
+				if (!node.room || !node.room.monsters) return
+				node.room.monsters.forEach((monster) => {
+					monster.currentHealth = 1
+				})
+			})
+		})
+	})
+}
+
 export default {
 	addCardToHand,
 	addHealth,
@@ -423,6 +459,8 @@ export default {
 	discardHand,
 	drawCards,
 	endTurn,
+	iddqd,
+	makeCampfireChoice,
 	move,
 	playCard,
 	removeCard,

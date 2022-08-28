@@ -1,9 +1,7 @@
-import {uuid} from './utils.js'
 import {shuffle, range} from './utils.js'
 
 export function StartRoom() {
 	return {
-		id: uuid(),
 		type: 'start',
 	}
 }
@@ -11,7 +9,6 @@ export function StartRoom() {
 // A campfire gives our hero the opportunity to rest, remove or upgrade a card.
 export function CampfireRoom() {
 	return {
-		id: uuid(),
 		type: 'campfire',
 		// choices: ['rest', 'remove', 'upgrade'],
 	}
@@ -20,7 +17,6 @@ export function CampfireRoom() {
 // A monster room has one or more monsters.
 export function MonsterRoom(...monsters) {
 	return {
-		id: uuid(),
 		type: 'monster',
 		monsters,
 	}
@@ -45,7 +41,6 @@ export function Monster(props = {}) {
 	}
 
 	return {
-		id: uuid(),
 		currentHealth: props.currentHealth || props.hp || 42,
 		maxHealth: props.hp || 42,
 		block: props.block || 0,

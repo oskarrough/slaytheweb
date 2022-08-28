@@ -317,7 +317,7 @@ h2 {
 .Splash {
 	min-height: 100vh;
 	display: flex;
-	justify-content: center;;
+	justify-content: center;
 	margin: auto;
 	flex-flow: column;
 	text-align: center;
@@ -389,8 +389,11 @@ h2 {
 	cursor: url(../images/cursors/grab-open.png) 10 0, auto;
 }
 
-
 .History {
 	max-width: 30rem;
 	margin: 0 auto;
+}
+
+table {
+	width: 100%;
 }
