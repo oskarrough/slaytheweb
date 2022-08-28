@@ -27,15 +27,29 @@ export const createTestDungeon = () => {
 }
 
 // Here are some different monsters we use in the game.
+
+export const easyMonsters = {}
 export const monsters = {}
 export const elites = {}
 export const bosses = {}
 
-monsters['Easy does it'] = MonsterRoom(
+easyMonsters['Easy does it'] = MonsterRoom(
 	Monster({
-		hp: random(8, 10),
+		hp: random(8, 13),
 		intents: [{damage: 7}, {damage: 11}, {damage: 7}, {block: 9}],
 		random: 2,
+	})
+)
+easyMonsters['Easy does it x2'] = MonsterRoom(
+	Monster({
+		hp: random(8, 13),
+		intents: [{damage: 7}, {damage: 11}, {damage: 7}, {block: 9}],
+		random: 2,
+	}),
+	Monster({
+		hp: random(8, 13),
+		intents: [{damage: 6}, {damage: 11}, {damage: 5}, {block: 5}],
+		random: 1,
 	})
 )
 monsters['RNG does it'] = MonsterRoom(
