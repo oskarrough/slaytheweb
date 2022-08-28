@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import Dungeon from '../game/dungeon.js'
 import {MonsterRoom, Monster} from '../game/dungeon-rooms.js'
 import {random} from '../game/utils.js'
@@ -48,7 +47,7 @@ monsters['RNG does it'] = MonsterRoom(
 )
 monsters['Easy one'] = MonsterRoom(
 	Monster({
-		hp: random(43, 47),
+		hp: random(33, 37),
 		intents: [{vulnerable: 1}, {damage: 10}, {damage: 6}, {}, {weak: 1}],
 		random: 2,
 	})
@@ -82,7 +81,7 @@ monsters['Tiny Trio'] = MonsterRoom(
 	Monster({hp: random(12, 15), random: 2, intents: [{damage: 6}]}),
 	Monster({hp: random(10, 16), random: 3, intents: [{damage: 6}]})
 )
-monsters['monster7'] = MonsterRoom(
+elites['monster7'] = MonsterRoom(
 	Monster({
 		hp: 46,
 		intents: [{damage: 12}, {block: 6, damage: 11}, {block: 5, damage: 16}, {}, {block: 6}],
@@ -90,7 +89,7 @@ monsters['monster7'] = MonsterRoom(
 )
 monsters['monster10'] = MonsterRoom(
 	Monster({
-		hp: 48,
+		hp: 28,
 		intents: [{weak: 1}, {block: 10, damage: 10}, {damage: 21}],
 	})
 )
