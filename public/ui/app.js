@@ -5,8 +5,9 @@ import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 
 // Game logic
 import createNewGame from '../game/index.js'
+import {createCard, getCardRewards} from '../game/cards.js'
 import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../game/utils.js'
-import {createCard, getCardRewards} from './../game/cards.js'
+import backend from '../game/backend.js'
 
 // UI Components
 import Cards from './cards.js'
@@ -19,9 +20,6 @@ import CampfireRoom from './campfire.js'
 import StartRoom from './start-room.js'
 import enableDragDrop from './dragdrop.js'
 import sfx from './sounds.js'
-
-// Highscores
-import backend from '../game/backend.js'
 
 // Puts and gets the game state in the URL.
 const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state)))
@@ -70,14 +68,10 @@ stw.dealCards()`)
 			createCard,
 			dealCards: this.dealCards.bind(this),
 			iddqd() {
-				this.game.state.dungeon.graph.forEach((floor) => {
-					floor.forEach((node) => {
-						if (!node.room || !node.room.monsters) return
-						node.room.monsters.forEach((monster) => {
-							monster.currentHealth = 1
-						})
-						this.update()
-					})
+				// console.log(this.game.state)
+				this.game.enqueue({type: 'iddqd'})
+				this.update(() => {
+					// console.log(this.game.state)
 				})
 			},
 			getRuns() {
