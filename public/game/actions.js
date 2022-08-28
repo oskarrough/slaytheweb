@@ -236,8 +236,8 @@ function applyCardPowers(state, {card, target}) {
 	})
 }
 
-// Decrease all power stacks by one.
-function decreasePowers(powers) {
+// Helper to decrease all power stacks by one.
+function _decreasePowers(powers) {
 	Object.entries(powers).forEach(([name, stacks]) => {
 		if (stacks > 0) powers[name] = stacks - 1
 	})
@@ -246,7 +246,7 @@ function decreasePowers(powers) {
 // Decrease player's power stacks.
 function decreasePlayerPowerStacks(state) {
 	return produce(state, (draft) => {
-		decreasePowers(draft.player.powers)
+		_decreasePowers(draft.player.powers)
 	})
 }
 
@@ -254,7 +254,7 @@ function decreasePlayerPowerStacks(state) {
 function decreaseMonsterPowerStacks(state) {
 	return produce(state, (draft) => {
 		getCurrRoom(draft).monsters.forEach((monster) => {
-			decreasePowers(monster.powers)
+			_decreasePowers(monster.powers)
 		})
 	})
 }
@@ -425,6 +425,7 @@ export default {
 	endTurn,
 	move,
 	playCard,
+	removeCard,
 	removeHealth,
 	reshuffleAndDraw,
 	rewardPlayer,
@@ -432,6 +433,5 @@ export default {
 	setHealth,
 	setPower,
 	takeMonsterTurn,
-	removeCard,
 	upgradeCard,
 }

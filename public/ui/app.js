@@ -217,61 +217,48 @@ stw.dealCards()`)
 				${
 					isDead &&
 					html`<${Overlay}>
+						<p center>You are dead.</p>
 
-							<p center>You are dead.</p>
-
-							<button onclick=${() => this.props.onLoose()}>Try again?</button>
-
-						<//>
-						  `
+						<button onclick=${() => this.props.onLoose()}>Try again?</button>
+					<//> `
 				}
 				${
 					didWinEntireGame &&
 					html`<${Overlay}>
-
-							<p center><button onclick=${() => this.props.onWin()}>You win!</button></p>
-
-						<//>
-						  `
+						<p center><button onclick=${() => this.props.onWin()}>You win!</button></p>
+					<//> `
 				}
 				${
 					!didWinEntireGame &&
 					didWin &&
 					room.type === 'monster' &&
 					html`<${Overlay}>
+						<h1 center medium>Victory. Onwards!</h1>
+						${!state.didPickCard
+							? html`
+									<p center>Here is your reward. Pick a card to add to your deck.</p>
 
-							<h1 center medium>Victory. Onwards!</h1>
-							 ${!state.didPickCard
-								? html`
-
-										<p center>Here is your reward. Pick a card to add to your deck.</p>
-
-										<${CardChooser}
-											cards=${getCardRewards(3)}
-											didSelectCard=${(card) => this.handlePlayerReward('addCard', card)}
-										/>
-
-								  `
-								: html`<p center>
-										 Added
-										<strong>${state.didPickCard.name}</strong>
-										 to your deck.
-								  </p>`}
-							<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
-
-						<//>
-						  `
+									<${CardChooser}
+										cards=${getCardRewards(3)}
+										didSelectCard=${(card) => this.handlePlayerReward('addCard', card)}
+									/>
+							  `
+							: html`<p center>
+									Added
+									<strong>${state.didPickCard.name}</strong>
+									to your deck.
+							  </p>`}
+						<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
+					<//> `
 				}
 				${
 					room.type === 'campfire' &&
 					html`<${Overlay}>
-
 						<${CampfireRoom}
 							gameState=${state}
 							onChoose=${this.handleCampfireChoice}
 							onContinue=${this.goToNextRoom}
 						/>
-
 					<//>`
 				}
 
@@ -322,15 +309,12 @@ stw.dealCards()`)
 							${
 								this.game.past.list.length &&
 								html`<p>
-
 									<button onclick=${() => this.undo()}>
-
 										<u>U</u>
 										ndo
 									</button>
 
 									<br />
-
 								</p>`
 							}
 							<p style="margin-top:auto"><a rel="noreferrer" target="_blank" href="https://github.com/oskarrough/slaytheweb">View source</a></p>
@@ -339,9 +323,8 @@ stw.dealCards()`)
 				<//>
 				<${OverlayWithButton} id="Map" open topright key=${1}>
 					${
-						room.type === 'start' &&
+						room.type !== 'start' &&
 						html`<button align-right onClick=${() => this.toggleOverlay('#Map')}>
-
 							<u>M</u>
 							ap
 						</button>`
