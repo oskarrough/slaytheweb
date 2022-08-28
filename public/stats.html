@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Stats for Slay the Web</title>
+		<meta name="description" content="A video card game for the web" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
+		/>
+		<link rel="manifest" href="manifest.webmanifest" />
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="theme-color" content="#116f54" />
+		<meta name="msapplication-TileColor" content="#116f54" />
+		<link rel="icon" type="image/png" href="/ui/images/favicons/favicon-512.png" sizes="512x512" />
+		<link rel="shortcut icon" href="/ui/images/favicons/favicon.ico" />
+		<link rel="apple-touch-icon" href="/ui/images/favicon-512.png" />
+		<link rel="stylesheet" href="ui/index.css" />
+	</head>
+
+	<body style="overflow: auto">
+		<div id="root"></div>
+		<script type="module">
+			import {html, render, Component} from '../web_modules/htm/preact/standalone.module.js'
+			import {getRuns} from './game/backend.js'
+
+			getRuns().then((runs) => {
+				console.log(runs)
+				render(html`<${List} runs=${runs} />`, document.querySelector('#root'))
+			})
+
+			const List = (props) => html`
+				<article class="Splash">
+					<p><a href="/" class="Button">Back</a></p>
+					<h1>Slay the Web</h1>
+					<h2>Highscores, statistics</h2>
+
+					<div class="Article">
+						<table>
+							<thead>
+							<tr>
+								<th>Date</th>
+								<th>Name</th>
+								<th>Status</th>
+								<th>Player health</th>
+								<th>Past moves</th>
+								</tr>
+								</thead>
+								<tbody>
+						${props.runs.map((run) => {
+							const game = JSON.parse(run.fields.state)
+							const date = new Intl.DateTimeFormat(new Date(run.createdTime)).format()
+							console.log(game)
+							return html`<tr>
+								<td>${date}</td>
+								<td>${run.fields.name}</td>
+								<td>${run.fields.status}</td>
+								<td>${game.state.player.currentHealth}</td>
+								<td>${game.past.list.length}</td>
+							</tr>`
+						})}
+						</tbody>
+						</table>
+					</div>
+				</article>
+			`
+		</script>
+	</body>
+</html>

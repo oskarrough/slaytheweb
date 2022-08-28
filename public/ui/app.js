@@ -19,7 +19,9 @@ import CampfireRoom from './campfire.js'
 import StartRoom from './start-room.js'
 import enableDragDrop from './dragdrop.js'
 import sfx from './sounds.js'
-import {getRuns, postRun} from './backend.js'
+
+// Highscores
+import backend from '../game/backend.js'
 
 // Puts and gets the game state in the URL.
 const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state)))
@@ -78,15 +80,12 @@ stw.dealCards()`)
 					})
 				})
 			},
-			async postRun() {
-				try {
-					const res = await postRun(this.game)
-					console.log(res)
-				} catch (err) {
-					throw err
-				}
+			getRuns() {
+				return backend.getRuns()
 			},
-			getRuns
+			postRun() {
+				return backend.postRun(this.game)
+			},
 		}
 	}
 	update(callback) {
