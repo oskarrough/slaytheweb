@@ -31,7 +31,8 @@ export default function Dungeon(options = {}) {
 		path.forEach((move) => {
 			const a = nodeFromMove(move[0])
 			const b = nodeFromMove(move[1])
-			a.edges.add(b)
+			// a.edges.add(b)
+			a.edges.add(b.id)
 		})
 	})
 
@@ -54,10 +55,10 @@ export default function Dungeon(options = {}) {
 	}
 }
 
-// Decide which type the node should be.
+// Decide which type the node should be #balance
 function decideNodeType(nodeTypes, floor /*, graph*/) {
 	const pick = (types) => shuffle(Array.from(types))[0]
-	if (floor < 2) return pick('MMME')
+	if (floor < 2) return pick('MMM')
 	if (floor < 3) return pick('MMMMEC')
 	if (floor < 4) return pick('MMCCMME')
 	if (floor < 5) return pick('MMCCMME')
@@ -69,7 +70,6 @@ function decideNodeType(nodeTypes, floor /*, graph*/) {
 }
 
 // Decide which (random) room the node's type should be.
-
 function createRandomRoom(nodeType, floor /*, graph*/) {
 	const pickRandomFromObj = (obj) => obj[shuffle(Object.keys(obj))[0]]
 	if (floor === 0) return StartRoom()
@@ -94,7 +94,7 @@ export function generateGraph(props) {
 	const {height, width, minRooms, maxRooms, roomTypes} = Object.assign(defaultOptions, props)
 
 	function Node(type = false) {
-		return {type, edges: new Set(), room: undefined}
+		return {id: uuid(), type, edges: new Set(), room: undefined}
 	}
 
 	// Create a row of nodes on each floor.

@@ -1,4 +1,4 @@
-import produce, {current} from '../web_modules/immer.js'
+import produce from '../web_modules/immer.js'
 import {createCard} from './cards.js'
 import {shuffle, getTargets, getCurrRoom, clamp} from './utils.js'
 import powers from './powers.js'
@@ -412,12 +412,12 @@ function setPower(state, {target, power, amount}) {
 }
 
 /**
- * Stores a campfire choice (useful for stats and whatnot)
+ * Stores a campfire choice on the room (useful for stats and whatnot)
  * @param {object} state
  * @param {object} props
- * @param {object} props.room what
- * @param {} props.choice what?
- * @param {} props.reward card?
+ * @param {object} props.room a dungeon room
+ * @param {string} props.choice enum of the campfire choices
+ * @param {object} props.reward card
  * @returns
  */
 function makeCampfireChoice(state, {choice, reward}) {
@@ -425,6 +425,25 @@ function makeCampfireChoice(state, {choice, reward}) {
 		const room = getCurrRoom(draft)
 		room.choice = choice
 		room.reward = reward
+	})
+}
+
+/**
+ * Sets the health of all monsters in the dungeon to 1.
+ * @param {object} state
+ * @returns state
+ */
+function iddqd(state) {
+	console.log('iddqd')
+	return produce(state, (draft) => {
+		draft.dungeon.graph.forEach((floor) => {
+			floor.forEach((node) => {
+				if (!node.room || !node.room.monsters) return
+				node.room.monsters.forEach((monster) => {
+					monster.currentHealth = 1
+				})
+			})
+		})
 	})
 }
 
@@ -440,6 +459,7 @@ export default {
 	discardHand,
 	drawCards,
 	endTurn,
+	iddqd,
 	makeCampfireChoice,
 	move,
 	playCard,

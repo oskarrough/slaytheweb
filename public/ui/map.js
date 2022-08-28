@@ -1,21 +1,14 @@
 import {Component, html} from '../web_modules/htm/preact/standalone.module.js'
 import {isRoomCompleted, random as randomBetween} from '../game/utils.js'
-import produce from '../web_modules/immer.js'
 
 export default function map(props) {
-	const {graph, x, y, pathTaken} = props.dungeon
+	const {x, y, pathTaken} = props.dungeon
 
 	return html`
 		<div class="MapContainer">
 			<h2>Map of the dungeon. Floor ${y}. Node ${x}</h2>
 
-			<${SlayMap}
-				dungeon=${props.dungeon}
-				graph=${graph}
-				x=${x}
-				y=${y}
-				onSelect=${props.onMove}
-			><//>
+			<${SlayMap} dungeon=${props.dungeon} x=${x} y=${y} onSelect=${props.onMove}><//>
 
 			<h2>Log</h2>
 			<ul>
@@ -27,40 +20,26 @@ export default function map(props) {
 
 export class SlayMap extends Component {
 	componentDidMount() {
-		const graphWithDOM = this.addElementsToGraph(this.props.graph)
-		this.setState({graph: graphWithDOM})
+		// trigger update..
+		this.setState({universe: 42})
 	}
 
 	componentDidUpdate(prevProps) {
 		// Let CSS know about the amount of rows and cols we have.
-		this.base.style.setProperty('--rows', Number(prevProps.graph.length))
-		this.base.style.setProperty('--columns', Number(prevProps.graph[1].length))
+		this.base.style.setProperty('--rows', Number(prevProps.dungeon.graph.length))
+		this.base.style.setProperty('--columns', Number(prevProps.dungeon.graph[1].length))
 
 		// Add references to our DOM elements on the graph. Why?
 		// no set state because we don't want to rerender
 		if (!this.didDrawPaths) {
 			this.didDrawPaths = true
 			this.scatter()
-			// const el = this.props.graph[0][0].el
 			const resizeObserver = new ResizeObserver(() => {
 				console.log('Drawing map')
 				this.drawPaths()
 			})
 			resizeObserver.observe(this.base)
 		}
-	}
-
-	// Returns a new graph where each graph node has a new "el" property pointing to the DOM element
-	addElementsToGraph(graph) {
-		return produce(graph, (draft) => {
-			draft.forEach((row, rowIndex) => {
-				row.forEach((node, nodeIndex) => {
-					if (!node.type) return
-					// console.log(Object.isExtensible(node))
-					node.el = this.base.childNodes[rowIndex].childNodes[nodeIndex]
-				})
-			})
-		})
 	}
 
 	// Shake the positions up a bit.
@@ -84,9 +63,11 @@ export class SlayMap extends Component {
 
 	drawPath(path, preferredIndex) {
 		const containerElement = this.base
-		const graph = this.state.graph
+		const graph = this.props.dungeon.graph
 		const debug = false
+
 		const nodeFromMove = ([row, col]) => graph[row][col]
+		const elFromNode = ([row, col]) => containerElement.childNodes[row].childNodes[col]
 
 		if (!containerElement) throw new Error('Missing container element')
 
@@ -104,11 +85,13 @@ export class SlayMap extends Component {
 		path.forEach((move, index) => {
 			const a = nodeFromMove(move[0])
 			const b = nodeFromMove(move[1])
+			const aEl = elFromNode(move[0])
+			const bEl = elFromNode(move[1])
 
 			if (debug) console.groupEnd()
 			// Create a line between each element.
-			const aPos = getPosWithin(a.el, containerElement)
-			const bPos = getPosWithin(b.el, containerElement)
+			const aPos = getPosWithin(aEl, containerElement)
+			const bPos = getPosWithin(bEl, containerElement)
 			if (!aPos.top) {
 				throw Error(
 					"Could not render the svg path. Is the graph's container element rendered/visible?"
@@ -121,32 +104,35 @@ export class SlayMap extends Component {
 			line.setAttribute('y2', bPos.top + bPos.height / 2)
 			svg.appendChild(line)
 			line.setAttribute('length', line.getTotalLength())
-			a.el.setAttribute('linked', true)
-			b.el.setAttribute('linked', true)
+			aEl.setAttribute('linked', true)
+			bEl.setAttribute('linked', true)
 			if (debug) console.log(`Move no. ${index} is from ${a} to ${b}`)
 		})
 		if (debug) console.groupEnd()
 	}
 
 	render(props) {
-		const {graph, x, y} = props
-		if (!graph) {
-			console.log('No graph to render. This should not happen?', graph)
-			return
-		}
-		const edgesFromCurrentNode = graph[y][x].edges
+		const {dungeon, x, y} = props
+
+		if (!dungeon.graph) throw new Error('No graph to render. This should not happen?', dungeon)
+
+		const edgesFromCurrentNode = dungeon.graph[y][x].edges
+
 		return html`
 			<slay-map>
-				${graph.map(
+				${dungeon.graph.map(
 					(row, rowIndex) => html`
 						<slay-map-row current=${rowIndex === y}>
 							${row.map((node, nodeIndex) => {
 								const isCurrent = rowIndex === y && nodeIndex === x
-								const canVisit = edgesFromCurrentNode.has(node) && isRoomCompleted(graph[y][x].room)
+								const isConnected = edgesFromCurrentNode.has(node.id)
+								const completedCurrentRoom = isRoomCompleted(dungeon.graph[y][x].room)
+								const canVisit = isConnected && completedCurrentRoom
 								return html`<slay-map-node
+									key=${`${rowIndex}${nodeIndex}`}
 									type=${Boolean(node.type)}
 									current=${isCurrent}
-									can-visit=${canVisit}
+									can-visit=${Boolean(canVisit)}
 									did-visit=${node.didVisit}
 									onClick=${() => props.onSelect({x: nodeIndex, y: rowIndex})}
 								>
@@ -177,7 +163,7 @@ function emojiFromNodeType(type) {
 // Since el.offsetLeft doesn't respect CSS transforms,
 // and getBounding.. is relative to viewport, not parent, we need this utility.
 function getPosWithin(el, container) {
-	if (!el) throw new Error('missing el')
+	if (!el) throw new Error('Could not find DOM node for graph row node')
 	if (!container) throw new Error('missing container')
 	const parent = container.getBoundingClientRect()
 	const rect = el.getBoundingClientRect()
