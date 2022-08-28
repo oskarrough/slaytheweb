@@ -1,4 +1,4 @@
-# Documentation for Slay the Web 
+# Documentation for Slay the Web
 
 Throughout the project I've attempted to document and leave comments. So please, go ahead and explore all folders and files. In the root of this project you'll find configuration files as well as two folders:
 
@@ -17,7 +17,7 @@ This is the full source code of the game _and_ UI. The folder is meant to be dep
 
 #### Game State
 
-The full game state is always stored in a single, large "game state" object. It is everything needed to reproduce a certain state of the game. Everything is synchronous. It does not care about your UI. The state is always modified using "actions". 
+The full game state is always stored in a single, large "game state" object. It is everything needed to reproduce a certain state of the game. Everything is synchronous. It does not care about your UI. The state is always modified using "actions".
 
 #### Actions
 
@@ -85,7 +85,7 @@ The UI is made with htm and preact. I've tried not to create too many components
 Everything starts with [index.html](https://github.com/oskarrough/slaytheweb/blob/main/public/ui/index.html). When loaded,
 we show a splash/welcome screen as defined in [index.js](https://github.com/oskarrough/slaytheweb/blob/main/public/ui/index.js).
 
-Next, when you tap "Start Game", we load [app.js](https://github.com/oskarrough/slaytheweb/blob/main/public/ui/app.js). 
+Next, when you tap "Start Game", we load [app.js](https://github.com/oskarrough/slaytheweb/blob/main/public/ui/app.js).
 This one connects everything and manages the game state.
 
 #### Animations
@@ -109,6 +109,12 @@ Additionally the ./tests folder contains the tests. Usually a test goes 1) creat
 Additionally you can run yarn eslint public --fix to automatically format all scripts according to the prettier standards.
 
 You can also just run ava directly and do as you please. Example: `npm test tests/actions.js --watch`
+
+## Backend
+
+With the integration of https://github.com/oskarrough/slaytheweb-backend in `game/backend.js`, you can choose to save your current run state in the Slay the Web database. Nothing but game state is stored. All runs are listed on `stats.html`.
+
+To save a run, open the browser console and run `stw.postRun()`.
 
 ## Footnotes
 
