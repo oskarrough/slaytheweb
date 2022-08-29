@@ -179,6 +179,13 @@ function addRegenEqualToAllDamage(state, {card}) {
 	})
 }
 
+const removePlayerDebuffs = (state, { target, amount }) => {
+	return produce(state, (draft) => {
+		draft.player.powers.weak = 0
+		draft.player.powers.vulnerable = 0
+  })
+}
+
 function addEnergyToPlayer(state) {
 	return produce(state, (draft) => {
 		/* draft.player.maxEnergy = draft.player.maxEnergy + 1 */
@@ -499,6 +506,7 @@ export default {
 	playCard,
 	removeCard,
 	removeHealth,
+	removePlayerDebuffs,
 	reshuffleAndDraw,
 	rewardPlayer,
 	setDungeon,
