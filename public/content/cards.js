@@ -249,7 +249,7 @@ export default [
 		damage: 0,
 		actions: [
 			{
-				type: 'removePlayerDebufs',
+				type: 'removePlayerDebuffs',
 			},
 		],
 		upgrade() {
