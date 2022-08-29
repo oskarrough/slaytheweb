@@ -179,6 +179,13 @@ function addRegenEqualToAllDamage(state, {card}) {
 	})
 }
 
+function addEnergyToPlayer(state) {
+	return produce(state, (draft) => {
+		/* draft.player.maxEnergy = draft.player.maxEnergy + 1 */
+		draft.player.currentEnergy = draft.player.currentEnergy + 1
+	})
+}
+
 // See the note on `target` above.
 const removeHealth = (state, {target, amount}) => {
 	return produce(state, (draft) => {
@@ -475,6 +482,7 @@ export default {
 	addCardToHand,
 	addHealth,
 	addRegenEqualToAllDamage,
+	addEnergyToPlayer,
 	addStarterDeck,
 	applyCardPowers,
 	createNewGame,

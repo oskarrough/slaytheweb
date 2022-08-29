@@ -1,32 +1,37 @@
 import {uuid, shuffle, random as randomBetween} from './utils.js'
 import {StartRoom, CampfireRoom} from './dungeon-rooms.js'
-import {monsters, elites, bosses} from '../content/dungeon-encounters.js'
+import {easyMonsters, monsters, elites, bosses} from '../content/dungeon-encounters.js'
+
+/**
+ * A procedural generated dungeon map for Slay the Web. Again, heavily inspired by Slay the Spire.
+ * @param {object} options
+ * @param {number} options.width how many nodes on each floor
+ * @param {number} options.height how many floors
+ * @param {number} options.minRoom minimum amount of rooms to generate per floor
+ * @param {number} options.maxRoom maximum amount of rooms to generate per floor
+ * @param {string} options.roomTypes a string like "MMCE". Repeat a letter to increase the chance of it appearing. M=Monster, C=Campfire, E=Elite. For example "MMMCE" gives 60% chance of a monster, 20% chance of a campfire and 20% chance of an elite.
+ * @param {string} options.customPaths The "customPaths" argument should be a string of indexes from where to draw the paths, for example "530" would draw three paths. First at index 5, then 3 and finally 0.
+ * @returns {object} dungeon {id, graph, paths, x, y, pathTaken}
+ */
 
 const defaultOptions = {
-	// How many floors.
 	width: 10,
-	// How many nodes on each floor.
 	height: 6,
-	// Control how many of the nodes on each floor has a room.
 	minRooms: 2,
 	maxRooms: 5,
-	// Room types. Repeat a type to increase the chance.
-	// The type of node is randomly selected from `roomTypes`.
-	// M Monster, C Campfire, E Elite
 	roomTypes: 'MMMCE',
-	// The "customPaths" argument should be a string of indexes from where to draw the paths,
-	// For example "530" would draw three paths. First at index 5, then 3 and finally 0.
 	// customPaths: '123'
 }
 
-// A procedural generated map for Slay the Web. Again, heavily inspired by Slay the Spire.
 export default function Dungeon(options = {}) {
+	options = Object.assign(defaultOptions, options)
+
 	const graph = generateGraph(options)
 	const paths = generatePaths(graph, options.customPaths)
-	const nodeFromMove = ([floor, node]) => graph[floor][node]
 
 	// Add ".edges" to each node from the paths, so we know which connections it has.
 	// Would be cool if this was part of "generatePaths".
+	const nodeFromMove = ([floor, node]) => graph[floor][node]
 	paths.forEach((path) => {
 		path.forEach((move) => {
 			const a = nodeFromMove(move[0])
@@ -40,7 +45,7 @@ export default function Dungeon(options = {}) {
 	graph.forEach((floor, floorNumber) => {
 		floor.map((node) => {
 			if (node.type) {
-				node.room = createRandomRoom(node.type, floorNumber, graph)
+				node.room = decideRoomType(node.type, floorNumber, graph)
 			}
 		})
 	})
@@ -55,62 +60,84 @@ export default function Dungeon(options = {}) {
 	}
 }
 
-// Decide which type the node should be #balance
-function decideNodeType(nodeTypes, floor /*, graph*/) {
-	const pick = (types) => shuffle(Array.from(types))[0]
-	if (floor < 2) return pick('MMM')
-	if (floor < 3) return pick('MMMMEC')
-	if (floor < 4) return pick('MMCCMME')
-	if (floor < 5) return pick('MMCCMME')
-	if (floor < 6) return pick('MMCMMEE')
-	if (floor < 7) return pick('MCEE')
-	if (floor < 8) return pick('MMEEC')
-	if (floor < 9) return pick('MMEEC')
-	return pick(nodeTypes)
+/**
+ * Decide which type the node should be #balance
+ * @param {string} a specially formatted string
+ * @param {number} the floor
+ * @returns {string} node type
+ */
+const pick = (types) => shuffle(Array.from(types))[0]
+function decideNodeType(nodeTypes, floor) {
+	let types = nodeTypes
+	if (floor < 2) return 'M'
+	if (floor < 3) return pick('MC')
+	if (floor > 6) return pick('MMEEC')
+	return pick(types)
 }
 
-// Decide which (random) room the node's type should be.
-function createRandomRoom(nodeType, floor /*, graph*/) {
+/**
+ * Decide which (random) room the node's type should be.
+ * @param {string} nodeType
+ * @param {number} floor
+ * @returns {object} room
+ */
+function decideRoomType(nodeType, floor /*, graph*/) {
 	const pickRandomFromObj = (obj) => obj[shuffle(Object.keys(obj))[0]]
 	if (floor === 0) return StartRoom()
 	if (nodeType === 'C') return CampfireRoom()
+	if (nodeType === 'M' && floor < 2) return pickRandomFromObj(easyMonsters)
 	if (nodeType === 'M') return pickRandomFromObj(monsters)
 	if (nodeType === 'E') return pickRandomFromObj(elites)
 	if (nodeType === 'boss') return pickRandomFromObj(bosses)
 	throw new Error(`Could not match node type "${nodeType}" with a dungeon room`)
 }
 
-// Returns a "graph" of the map we want to render. Each nested array represents a floor with nodes.
-// All nodes have a type. Nodes with type of `false` are filler nodes nededed for the layout.
-// graph = [
-// 	[startNode]
-// 	[node, node, node],
-// 	[node, node, node],
-// 	[node, node, node],
-// 	[bossNode]
-// ]
-export function generateGraph(props) {
-	const graph = []
-	const {height, width, minRooms, maxRooms, roomTypes} = Object.assign(defaultOptions, props)
+/**
+ * Returns a "graph" array representation of the map we want to render.
+ * Each nested array represents a floor with nodes.
+ * All nodes have a type.
+ * Nodes with type of `false` are filler nodes nededed for the layout.
+
+	graph = [
+		[startNode]
+		[node, node, node],
+		[node, node, node],
+		[node, node, node],
+		[bossNode]
+	]
+
+ * @param {*} options
+ * @returns {array} graph
+ */
+export function generateGraph(options = {}) {
+	options = Object.assign(defaultOptions, options)
+	const {height, width, minRooms, maxRooms, roomTypes} = options
 
 	function Node(type = false) {
 		return {id: uuid(), type, edges: new Set(), room: undefined}
 	}
 
-	// Create a row of nodes on each floor.
+	const graph = []
+
+	// Fill up each floor with nodes.
 	for (let floorNumber = 0; floorNumber < height; floorNumber++) {
 		const floor = []
-		// Each floor as X amount of rooms.
-		let numberOfRooms = randomBetween(minRooms, maxRooms)
-		if (numberOfRooms > width) numberOfRooms = width
-		for (let i = 0; i < numberOfRooms; i++) {
-			const nodeType = decideNodeType(roomTypes, floorNumber, graph)
+
+		// On each floor, X amount of nodes contain an actual room
+		let desiredAmountOfRooms = randomBetween(minRooms, maxRooms)
+		if (desiredAmountOfRooms > width) desiredAmountOfRooms = width
+
+		// Create the "room" nodes
+		for (let i = 0; i < desiredAmountOfRooms; i++) {
+			const nodeType = decideNodeType(roomTypes, floorNumber)
 			floor.push(Node(nodeType))
 		}
-		// And fill it up with empty nodes.
+
+		// And fill it up with "empty" nodes.
 		while (floor.length < width) {
 			floor.push(Node(false))
 		}
+
 		// Randomize the order.
 		graph.push(shuffle(floor))
 	}
@@ -122,7 +149,12 @@ export function generateGraph(props) {
 	return graph
 }
 
-// Returns an array of possible paths from start to finish.
+/**
+ * Returns an array of possible paths from start to finish.
+ * @param {object} dungeon graph
+ * @param {string} graph the "customPath" on the `Dungeon` function
+ * @returns {array} customPaths a list of paths
+ */
 export function generatePaths(graph, customPaths) {
 	const paths = []
 
@@ -138,6 +170,7 @@ export function generatePaths(graph, customPaths) {
 			paths.push(path)
 		})
 	}
+
 	return paths
 }
 

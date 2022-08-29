@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import Dungeon from '../game/dungeon.js'
 import {MonsterRoom, Monster} from '../game/dungeon-rooms.js'
 import {random} from '../game/utils.js'
@@ -28,15 +27,29 @@ export const createTestDungeon = () => {
 }
 
 // Here are some different monsters we use in the game.
+
+export const easyMonsters = {}
 export const monsters = {}
 export const elites = {}
 export const bosses = {}
 
-monsters['Easy does it'] = MonsterRoom(
+easyMonsters['Easy does it'] = MonsterRoom(
 	Monster({
-		hp: random(8, 10),
+		hp: random(8, 13),
 		intents: [{damage: 7}, {damage: 11}, {damage: 7}, {block: 9}],
 		random: 2,
+	})
+)
+easyMonsters['Easy does it x2'] = MonsterRoom(
+	Monster({
+		hp: random(8, 13),
+		intents: [{damage: 7}, {damage: 11}, {damage: 7}, {block: 9}],
+		random: 2,
+	}),
+	Monster({
+		hp: random(8, 13),
+		intents: [{damage: 6}, {damage: 11}, {damage: 5}, {block: 5}],
+		random: 1,
 	})
 )
 monsters['RNG does it'] = MonsterRoom(
@@ -48,7 +61,7 @@ monsters['RNG does it'] = MonsterRoom(
 )
 monsters['Easy one'] = MonsterRoom(
 	Monster({
-		hp: random(43, 47),
+		hp: random(33, 37),
 		intents: [{vulnerable: 1}, {damage: 10}, {damage: 6}, {}, {weak: 1}],
 		random: 2,
 	})
@@ -82,7 +95,7 @@ monsters['Tiny Trio'] = MonsterRoom(
 	Monster({hp: random(12, 15), random: 2, intents: [{damage: 6}]}),
 	Monster({hp: random(10, 16), random: 3, intents: [{damage: 6}]})
 )
-monsters['monster7'] = MonsterRoom(
+elites['monster7'] = MonsterRoom(
 	Monster({
 		hp: 46,
 		intents: [{damage: 12}, {block: 6, damage: 11}, {block: 5, damage: 16}, {}, {block: 6}],
@@ -90,7 +103,7 @@ monsters['monster7'] = MonsterRoom(
 )
 monsters['monster10'] = MonsterRoom(
 	Monster({
-		hp: 48,
+		hp: 28,
 		intents: [{weak: 1}, {block: 10, damage: 10}, {damage: 21}],
 	})
 )
