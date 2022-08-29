@@ -256,6 +256,25 @@ export default [
 			this.name = 'Eventual Rain',
 			this.description = 'Removes weaknesses and vulnerabilities; adds a protective shield'
 			this.block = 10
+    }
+  },
+  {
+		name: 'Mask of the Faceless',
+		type: 'skill',
+		energy: 0,
+		target: 'player',
+		description: 'Gain 1 energy point',
+		image: 'mask-of-the-faceless.png',
+		damage: 0,
+		actions: [
+			{
+				type: 'addEnergyToPlayer',
+			},
+		],
+		upgrade() {
+			this.description = 'Gain 1 energy point and 5 block'
+			this.name = 'Masks of the Faceless'
+			this.block = 5
 		},
 	},
 	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
