@@ -414,7 +414,7 @@ function dealDamageEqualToVulnerable(state, { target }) {
 	return produce(state, (draft) => {
 		getTargets(draft, target).forEach((t) => {
 			if (t.powers.vulnerable) {
-				t.currentHealth = t.currentHealth - t.powers.vulnerable
+				removeHealth(draft, {target: t, amount: t.currentHealth - t.powers.vulnerable})
 			}
 		})
 		return draft
