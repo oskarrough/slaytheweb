@@ -480,7 +480,7 @@ export default {
 	playCard,
 	removeCard,
 	removeHealth,
-	removePlayerDebufs,
+	removePlayerDebuffs,
 	reshuffleAndDraw,
 	rewardPlayer,
 	setDungeon,
