@@ -239,6 +239,25 @@ export default [
 			this.damage = 3
 		},
 	},
+	{
+		name: 'Ritual Rain',
+		type: 'skill',
+		energy: 2,
+		target: 'player',
+		description: 'Removes weaknesses and vulnerabilities',
+		image: 'ritual-rain.png',
+		damage: 0,
+		actions: [
+			{
+				type: 'removePlayerDebufs',
+			},
+		],
+		upgrade() {
+			this.name = 'Eventual Rain',
+			this.description = 'Removes weaknesses and vulnerabilities; adds a protective shield'
+			this.block = 10
+		},
+	},
 	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
 ]
 

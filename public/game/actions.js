@@ -179,6 +179,13 @@ function addRegenEqualToAllDamage(state, {card}) {
 	})
 }
 
+const removePlayerDebufs = (state, { target, amount }) => {
+	return produce(state, (draft) => {
+		draft.player.powers.weak = 0
+		draft.player.powers.vulnerable = 0
+	})
+}
+
 // See the note on `target` above.
 const removeHealth = (state, {target, amount}) => {
 	return produce(state, (draft) => {
@@ -465,6 +472,7 @@ export default {
 	playCard,
 	removeCard,
 	removeHealth,
+	removePlayerDebufs,
 	reshuffleAndDraw,
 	rewardPlayer,
 	setDungeon,
