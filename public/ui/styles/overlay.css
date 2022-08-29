@@ -45,7 +45,6 @@
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	padding-top: 4rem;
 	overflow-y: auto;
 	transform: translate3d(0, 4rem, 0);
 	display: block;

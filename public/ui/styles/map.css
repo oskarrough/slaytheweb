@@ -1,25 +1,34 @@
 .MapContainer {
 	position: relative;
 	z-index: 500;
-	margin: 0 1em;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.MapFooter {
+	align-self: flex-end;
+	text-align: right;
+	padding: 2rem;
 }
 
 slay-map {
 	--rows: 12;
 	--columns: 6;
-	--pathColor: white;
+	--pathColor: darkgray;
 	--highlight: gold;
 	box-sizing: border-box;
 	display: grid;
-	max-width: 50rem;
+	width: 100%;
 	min-height: 72rem;
 	border: 4px solid black;
 	padding: 1em;
 	position: relative;
 	/* background: hsl(120, 17.5%, 19%); */
 	/* background: hsl(120deg 3% 42%); */
-	margin: 1rem auto;
-	overflow: hidden;
+	overflow: scroll;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
 }
 
 slay-map-row {
@@ -43,7 +52,7 @@ slay-map-node {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin: 0.25rem;
+	margin: 2rem;
 	font-size: 1.5em;
 	border: 3px dashed transparent;
 	position: relative;
@@ -53,7 +62,6 @@ slay-map-node {
 	/* All nodes are disabled by default */
 	pointer-events: none;
 	visibility: hidden;
-	opacity: 0.5;
 }
 slay-map-node[linked] {
 	visibility: visible;
@@ -62,9 +70,14 @@ slay-map-node[did-visit] {
 	border-color: hsla(0, 0%, 0%, 0.9);
 	opacity: 0.666;
 }
-slay-map-node[current] {
+slay-map-node:not([did-visit]) {
+	opacity: 0.5;
+}
+slay-map-node[current][type] {
 	border-color: var(--highlight);
+	background-color: var(--bg);
 	opacity: 1;
+	z-index: 2;
 }
 slay-map-node[can-visit] {
 	pointer-events: auto;
@@ -83,6 +96,57 @@ slay-map-node[type]:hover > span {
 	transform: scale(1.3);
 	transition-duration: 100ms;
 }
+/* the map node-types (what happens in this node) */
+/* node-type "start" */
+slay-map-node[node-type] span {
+	user-select: none;
+	min-height: 3em;
+	min-width: 3em;
+	border-radius: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: var(--bg);
+}
+slay-map-node[node-type="start"] {
+	font-size: 3rem;
+	min-height: 20vh;
+}
+ /* footstep to the bottom */
+slay-map-node[node-type="start"][current] span {
+	transform: rotate(180deg);
+}
+/* "Camp" */
+slay-map-node[node-type="C"] {
+	font-size: 3rem;
+	border-style: dotted;
+}
+/* "Monster" of normal level */
+slay-map-node[node-type="M"][current] {
+	/* background-color: lightgray; */
+}
+/* "Elite" monster*/
+slay-map-node[node-type="E"][current] {
+	/* background-color: red; */
+}
+/* "boss", the end level */
+slay-map-node[node-type="boss"] {
+
+	min-height: 20vh;
+	font-size: 5rem;
+	border-color: gold;
+	animation-name: nodeTypeBoss;
+	animation-duration: 3000ms;
+	animation-direction: alternate;
+	animation-iteration-count: infinite;
+	border-width: 1rem;
+}
+
+/* node-types with "emojis" */
+slay-map-node[node-type="C"],
+slay-map-node[node-type="M"],
+slay-map-node[node-type="E"] {
+}
 
 slay-map svg.paths {
 	position: absolute;
@@ -96,5 +160,26 @@ slay-map svg.paths {
 slay-map svg.paths line {
 	stroke: var(--pathColor);
 	stroke-width: 3px;
-	stroke-dasharray: 7px;
+	stroke-dasharray: 0.7em;
+	opacity: 0.3;
+}
+
+/* map animations */
+
+@keyframes nodeTypeM {
+	0% {
+		background-color: red;
+	}
+	100% {
+		background-color: blue;
+	}
+}
+
+@keyframes nodeTypeBoss {
+	0% {
+		border-color: gold;
+	}
+	100% {
+		border-color: cyan;
+	}
 }
