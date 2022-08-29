@@ -13,15 +13,17 @@ import {easyMonsters, monsters, elites, bosses} from '../content/dungeon-encount
  * @param {string} options.customPaths The "customPaths" argument should be a string of indexes from where to draw the paths, for example "530" would draw three paths. First at index 5, then 3 and finally 0.
  * @returns {object} dungeon {id, graph, paths, x, y, pathTaken}
  */
+
+const defaultOptions = {
+	width: 10,
+	height: 6,
+	minRooms: 2,
+	maxRooms: 5,
+	roomTypes: 'MMMCE',
+	// customPaths: '123'
+}
+
 export default function Dungeon(options = {}) {
-	const defaultOptions = {
-		width: 11,
-		height: 6,
-		minRooms: 2,
-		maxRooms: 5,
-		roomTypes: 'MMMCE',
-		// customPaths: '123'
-	}
 	options = Object.assign(defaultOptions, options)
 
 	const graph = generateGraph(options)
@@ -107,13 +109,15 @@ function decideRoomType(nodeType, floor /*, graph*/) {
  * @param {*} options
  * @returns {array} graph
  */
-export function generateGraph(options) {
-	const graph = []
+export function generateGraph(options = {}) {
+	options = Object.assign(defaultOptions, options)
 	const {height, width, minRooms, maxRooms, roomTypes} = options
 
 	function Node(type = false) {
 		return {id: uuid(), type, edges: new Set(), room: undefined}
 	}
+
+	const graph = []
 
 	// Fill up each floor with nodes.
 	for (let floorNumber = 0; floorNumber < height; floorNumber++) {
