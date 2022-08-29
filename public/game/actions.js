@@ -411,8 +411,32 @@ function move(state, {move}) {
  * @returns state
  */
 function dealDamageEqualToBlock(state, {target}) {
-	const block = state.player.block
-	return removeHealth(state, {target, amount: block})
+	if (state.player.block) {
+		const block = state.player.block
+		return removeHealth(state, { target, amount: block })
+	}
+}
+
+function dealDamageEqualToVulnerable(state, { target }) {
+	return produce(state, (draft) => {
+		getTargets(draft, target).forEach((t) => {
+			if (t.powers.vulnerable) {
+				removeHealth(draft, {target: t, amount: t.currentHealth - t.powers.vulnerable})
+			}
+		})
+		return draft
+	})
+}
+function dealDamageEqualToWeak(state, { target }) {
+	return produce(state, (draft) => {
+		getTargets(draft, target).forEach((t) => {
+			if (t.powers.weak) {
+				const amount = t.powers.weak
+				removeHealth(draft, { target, amount })
+			}
+		})
+		return draft
+	})
 }
 
 /**
@@ -477,6 +501,8 @@ export default {
 	applyCardPowers,
 	createNewGame,
 	dealDamageEqualToBlock,
+	dealDamageEqualToWeak,
+	dealDamageEqualToVulnerable,
 	discardCard,
 	discardHand,
 	drawCards,

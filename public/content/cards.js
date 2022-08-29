@@ -276,6 +276,49 @@ export default [
 		}
   },
   {
+		name: 'Voodoo Education',
+		energy: 0,
+		type: 'attack',
+		target: 'enemy',
+		description: 'Deal Damage equal to vulnerable + weak',
+		image: 'voodoo-education.png',
+		actions: [
+			{
+				type: 'dealDamageEqualToWeak',
+			},
+			{
+				type: 'dealDamageEqualToVulnerable',
+			},
+			{
+				type: 'setPower',
+				paramter: {
+					power: 'weak',
+					amount: 0,
+				}
+			},
+			{
+				type: 'setPower',
+				parameter: {
+					power: 'vulnerable',
+					amount: 0,
+				}
+			},
+		],
+		upgrade() {
+			this.name = 'Voodoo Gift',
+			// remove the "reset of monster power"
+			this.description = this.description + '; without resets'
+			this.actions = [
+				{
+					type: 'dealDamageEqualToWeak',
+				},
+				{
+					type: 'dealDamageEqualToVulnerable',
+				}
+			]
+		}
+ },
+ {
 		name: 'Ritual Rain',
 		type: 'skill',
 		energy: 2,
