@@ -53,7 +53,7 @@ slay-map-node {
 	/* All nodes are disabled by default */
 	pointer-events: none;
 	visibility: hidden;
-	/* opacity: 0.5; */
+	opacity: 0.5;
 }
 slay-map-node[linked] {
 	visibility: visible;
@@ -78,11 +78,6 @@ slay-map-node[type]:hover {
 slay-map-node > span {
 	transition: transform 300ms ease-in-out;
 	transform-origin: center;
-	background: hsla(0, 0%, 100%, 0.5);
-	border-radius: 50%;
-}
-slay-map-node:not([can-visit]) > span {
-	background: hsla(0, 0%, 0%, 1);
 }
 slay-map-node[type]:hover > span {
 	transform: scale(1.3);
