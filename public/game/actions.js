@@ -179,7 +179,7 @@ function addRegenEqualToAllDamage(state, {card}) {
 	})
 }
 
-const removePlayerDebufs = (state, { target, amount }) => {
+const removePlayerDebuffs = (state, { target, amount }) => {
 	return produce(state, (draft) => {
 		draft.player.powers.weak = 0
 		draft.player.powers.vulnerable = 0
