@@ -4,6 +4,7 @@
   "license": "AGPL-3.0-or-later",
   "homepage": "https://slaytheweb.cards",
   "bugs": "https://github.com/oskarrough/slaytheweb/issues",
+  "type": "module",
   "scripts": {
     "start": "servor public --reload",
     "lint": "eslint public tests --fix",
@@ -15,7 +16,7 @@
     "release": "release-it"
   },
   "devDependencies": {
-    "ava": "^3.15.0",
+    "ava": "^4.3.3",
     "docco": "^0.9.1",
     "eslint": "^7.20.0",
     "eslint-config-prettier": "^7.2.0",
@@ -27,20 +28,10 @@
   },
   "dependencies": {
     "esm": "^3.2.25",
-    "gsap": "^3.6.0",
+    "gsap": "^3.11.0",
     "htm": "^3.1.1",
     "immer": "^9.0.15",
     "tone": "^14.8.9"
-  },
-  "ava": {
-    "require": [
-      "esm"
-    ]
-  },
-  "nyc": {
-    "require": [
-      "esm"
-    ]
   },
   "release-it": {
     "git": {

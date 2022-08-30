@@ -1,5 +1,5 @@
 import test from 'ava'
-import actions from '../public/game/actions'
+import actions from '../public/game/actions.js'
 import Dungeon from '../public/game/dungeon.js'
 import {MonsterRoom, Monster} from '../public/game/dungeon-rooms.js'
 
