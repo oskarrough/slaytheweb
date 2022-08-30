@@ -4,43 +4,34 @@
   "license": "AGPL-3.0-or-later",
   "homepage": "https://slaytheweb.cards",
   "bugs": "https://github.com/oskarrough/slaytheweb/issues",
+  "type": "module",
   "scripts": {
     "start": "servor public --reload",
     "lint": "eslint public tests --fix",
     "test": "ava",
     "test:watch": "ava --watch",
-    "test:coverage": "nyc ava --verbose",
+    "test:coverage": "c8 ava",
     "build": "snowpack --include 'public/**/*.js' --clean --dest 'public/web_modules' --stat --optimize",
     "docs": "rm -rf ./docs; cd public/game; docco *.js; mv docs ../../docs",
     "release": "release-it"
   },
   "devDependencies": {
-    "ava": "^3.15.0",
+    "ava": "^4.3.3",
+    "c8": "^7.12.0",
     "docco": "^0.9.1",
     "eslint": "^7.20.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "nyc": "^15.1.0",
     "prettier": "2.7.1",
     "servor": "^4.0.2",
     "snowpack": "^1.7.1"
   },
   "dependencies": {
     "esm": "^3.2.25",
-    "gsap": "^3.6.0",
+    "gsap": "^3.11.0",
     "htm": "^3.1.1",
     "immer": "^9.0.15",
     "tone": "^14.8.9"
-  },
-  "ava": {
-    "require": [
-      "esm"
-    ]
-  },
-  "nyc": {
-    "require": [
-      "esm"
-    ]
   },
   "release-it": {
     "git": {

@@ -1,5 +1,5 @@
 import test from 'ava'
-import {createCard} from '../public/game/cards'
+import {createCard} from '../public/game/cards.js'
 
 test('can create an attack card', (t) => {
 	const card = createCard('Strike')
