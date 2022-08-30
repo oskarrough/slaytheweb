@@ -28,6 +28,9 @@ class SlayTheWeb extends Component {
 		// Clear any previous saved game.
 		window.history.pushState('', document.title, window.location.pathname)
 	}
+	handleContinueGame() {
+		this.setState({gameMode: GAMEMODE.GAMEPLAY})
+	}
 	handleWin() {
 		this.setState({gameMode: GAMEMODE.WIN})
 	}
@@ -38,7 +41,7 @@ class SlayTheWeb extends Component {
 		if (gameMode === GAMEMODE.SPLASH)
 			return html`<${SplashScreen}
 				onNewGame=${this.handleNewGame}
-				onContinue=${this.handleNewGame}
+				onContinue=${() => this.handleContinueGame()}
 			/>`
 		if (gameMode === GAMEMODE.GAMEPLAY)
 			return html` <${App} onWin=${this.handleWin} onLoose=${this.handleLoose} /> `

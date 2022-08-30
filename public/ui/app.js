@@ -21,10 +21,7 @@ import StartRoom from './start-room.js'
 import DungeonStats from './dungeon-stats.js'
 import enableDragDrop from './dragdrop.js'
 import sfx from './sounds.js'
-
-// Puts and gets the game state in the URL.
-const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state)))
-const load = () => JSON.parse(decodeURIComponent(window.location.hash.split('#')[1]))
+import {saveGame, loadGame} from './save-load.js'
 
 export default class App extends Component {
 	constructor() {
@@ -48,24 +45,24 @@ export default class App extends Component {
 		sfx.startGame()
 
 		// If there is a saved game state, use it.
-		const savedGameState = window.location.hash && load()
-		if (savedGameState) {
-			this.game.state = savedGameState
-			this.setState(savedGameState, this.dealCards)
-		}
+		const savedGameState = window.location.hash && loadGame()
+		if (savedGameState) this.restoreGame(savedGameState)
 
 		this.enableConsole()
+	}
+	restoreGame(oldState) {
+		this.game.state = oldState
+		this.setState(oldState, this.dealCards)
 	}
 	enableConsole() {
 		// Enable a "console" in the browser.
 		console.log(`Welcome to the Slay The Web Console. Some examples:
-stw.game.state.player.maxHealth = 999; stw.update()
 stw.game.enqueue({type: 'drawCards', amount: 2})
-stw.update()
-stw.dealCards()`)
+stw.update()`)
 		window.stw = {
 			game: this.game,
 			update: this.update.bind(this),
+			saveGame: (state) => saveGame(state || this.state),
 			createCard,
 			dealCards: this.dealCards.bind(this),
 			iddqd() {
@@ -299,7 +296,7 @@ stw.dealCards()`)
 							<h1 medium>Slay the Web</h1>
 							<ul class="Options">
 								<li><button onclick=${() =>
-									save(
+									saveGame(
 										state
 									)} title="After saving, your entire game is stored in the URL. Copy it">Save</button></li>
 								<li><button onclick=${() => (window.location = window.location.origin)}>Abandon Game</button></li>
