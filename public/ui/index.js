@@ -17,7 +17,7 @@ class SlayTheWeb extends Component {
 	constructor() {
 		super()
 		this.state = {
-			gameMode: GAMEMODE.GAMEPLAY,
+			gameMode: GAMEMODE.SPLASH,
 		}
 		this.handleWin = this.handleWin.bind(this)
 		this.handleNewGame = this.handleNewGame.bind(this)

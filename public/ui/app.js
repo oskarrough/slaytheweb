@@ -18,6 +18,7 @@ import {Player, Monster} from './player.js'
 import CardChooser from './card-chooser.js'
 import CampfireRoom from './campfire.js'
 import StartRoom from './start-room.js'
+import DungeonStats from './dungeon-stats.js'
 import enableDragDrop from './dragdrop.js'
 import sfx from './sounds.js'
 
@@ -219,7 +220,7 @@ stw.dealCards()`)
 					isDead &&
 					html`<${Overlay}>
 						<p center>You are dead.</p>
-
+						<${DungeonStats} state=${state}><//>
 						<button onclick=${() => this.props.onLoose()}>Try again?</button>
 					<//> `
 				}
@@ -227,6 +228,7 @@ stw.dealCards()`)
 					didWinEntireGame &&
 					html`<${Overlay}>
 						<p center><button onclick=${() => this.props.onWin()}>You win!</button></p>
+						<${DungeonStats} state=${state}><//>
 					<//> `
 				}
 				${
