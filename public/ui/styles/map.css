@@ -19,16 +19,13 @@ slay-map {
 	--highlight: gold;
 	box-sizing: border-box;
 	display: grid;
-	width: 100%;
-	min-height: 72rem;
-	border: 4px solid black;
+	width: 90%;
+	margin: auto;
+	/* min-height: 300vh; */
+	min-height: 150rem;
 	padding: 1em;
 	position: relative;
 	/* background: hsl(120, 17.5%, 19%); */
-	/* background: hsl(120deg 3% 42%); */
-	overflow: scroll;
-	scrollbar-width: none;
-	-ms-overflow-style: none;
 }
 
 slay-map-row {
@@ -52,7 +49,6 @@ slay-map-node {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	margin: 2rem;
 	font-size: 1.5em;
 	border: 3px dashed transparent;
 	position: relative;
@@ -100,52 +96,53 @@ slay-map-node[type]:hover > span {
 /* node-type "start" */
 slay-map-node[node-type] span {
 	user-select: none;
-	min-height: 3em;
-	min-width: 3em;
+	/* min-height: 3em; */
+	/* min-width: 3em; */
 	border-radius: 50%;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	background-color: var(--bg);
 }
-slay-map-node[node-type="start"] {
-	font-size: 3rem;
-	min-height: 20vh;
-}
- /* footstep to the bottom */
-slay-map-node[node-type="start"][current] span {
+
+
+/* footstep to the bottom */
+slay-map-node[node-type='start'][current] span {
 	transform: rotate(180deg);
 }
+/* the start and end nodes */
+slay-map-node[node-type='start'],
+slay-map-node[node-type='boss'] {
+	font-size: 3rem;
+}
 /* "Camp" */
-slay-map-node[node-type="C"] {
+slay-map-node[node-type='C'] {
 	font-size: 3rem;
 	border-style: dotted;
 }
 /* "Monster" of normal level */
-slay-map-node[node-type="M"][current] {
+slay-map-node[node-type='M'][current] {
 	/* background-color: lightgray; */
 }
 /* "Elite" monster*/
-slay-map-node[node-type="E"][current] {
+slay-map-node[node-type='E'][current] {
 	/* background-color: red; */
 }
 /* "boss", the end level */
-slay-map-node[node-type="boss"] {
-
-	min-height: 20vh;
+slay-map-node[node-type='boss'] {
 	font-size: 5rem;
 	border-color: gold;
 	animation-name: nodeTypeBoss;
 	animation-duration: 3000ms;
 	animation-direction: alternate;
 	animation-iteration-count: infinite;
-	border-width: 1rem;
+	border-width: 0.5rem;
 }
 
 /* node-types with "emojis" */
-slay-map-node[node-type="C"],
-slay-map-node[node-type="M"],
-slay-map-node[node-type="E"] {
+slay-map-node[node-type='C'],
+slay-map-node[node-type='M'],
+slay-map-node[node-type='E'] {
 }
 
 slay-map svg.paths {
