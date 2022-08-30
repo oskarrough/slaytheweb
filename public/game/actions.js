@@ -208,6 +208,13 @@ const removeHealth = (state, {target, amount}) => {
 		})
 	})
 }
+const removePlayerHealth = (state, {
+	target,
+	amount,
+}) => {
+	target = 'player'
+	return removeHealth(state, {target, amount})
+}
 
 /**
  * Sets the health of a target
@@ -506,6 +513,7 @@ export default {
 	playCard,
 	removeCard,
 	removeHealth,
+	removePlayerHealth,
 	removePlayerDebuffs,
 	reshuffleAndDraw,
 	rewardPlayer,

@@ -240,6 +240,42 @@ export default [
 		},
 	},
 	{
+		name: 'Soul Drain',
+		type: 'attack',
+		energy: 1,
+		target: 'all enemies',
+		description: 'Converts the player life into enemies weeknesses',
+		image: 'soul-drain.png',
+		damage: 0,
+		powers: {
+			weak: 3,
+		},
+		actions: [
+			{
+				type: 'removePlayerHealth',
+				parameter: {
+					amount: 3,
+					target: 'player',
+				},
+			},
+		],
+		upgrade() {
+			this.name = 'Lower Soul Drain',
+			this.description = 'Converts the player life into enemies weeknesses and vulnerabilities'
+			this.powers.vulnerable = 4
+			this.powers.weak = 4
+			this.actions = [
+				{
+					type: 'removePlayerHealth',
+					parameter: {
+						amount: 4,
+						target: 'player',
+					},
+				},
+			]
+		}
+  },
+  {
 		name: 'Voodoo Education',
 		energy: 0,
 		type: 'attack',
