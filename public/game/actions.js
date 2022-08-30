@@ -1,4 +1,4 @@
-import produce from '../web_modules/immer.js'
+import produce, {current} from '../web_modules/immer.js'
 import {createCard} from './cards.js'
 import {shuffle, getTargets, getCurrRoom, clamp} from './utils.js'
 import powers from './powers.js'
@@ -144,7 +144,7 @@ function playCard(state, {card, target}) {
 			draft.player.block = newState.player.block + card.block
 		}
 	})
-	if (card.damage) {
+	if (card.type === 'attack' || card.damage) {
 		// This should be refactored, but when you play an attack card that targets all enemies,
 		// we prioritize this over the actual enemy where you dropped the card.
 		const newTarget = card.target === 'all enemies' ? card.target : target
@@ -179,11 +179,11 @@ function addRegenEqualToAllDamage(state, {card}) {
 	})
 }
 
-const removePlayerDebuffs = (state, { target, amount }) => {
+const removePlayerDebuffs = (state) => {
 	return produce(state, (draft) => {
 		draft.player.powers.weak = 0
 		draft.player.powers.vulnerable = 0
-  })
+	})
 }
 
 function addEnergyToPlayer(state) {
@@ -208,10 +208,7 @@ const removeHealth = (state, {target, amount}) => {
 		})
 	})
 }
-const removePlayerHealth = (state, {
-	target,
-	amount,
-}) => {
+const removePlayerHealth = (state, {target, amount}) => {
 	target = 'player'
 	return removeHealth(state, {target, amount})
 }
@@ -413,26 +410,27 @@ function move(state, {move}) {
 function dealDamageEqualToBlock(state, {target}) {
 	if (state.player.block) {
 		const block = state.player.block
-		return removeHealth(state, { target, amount: block })
+		return removeHealth(state, {target, amount: block})
 	}
 }
 
-function dealDamageEqualToVulnerable(state, { target }) {
+function dealDamageEqualToVulnerable(state, {target}) {
 	return produce(state, (draft) => {
 		getTargets(draft, target).forEach((t) => {
 			if (t.powers.vulnerable) {
-				removeHealth(draft, {target: t, amount: t.currentHealth - t.powers.vulnerable})
+				const amount = t.currentHealth - t.powers.vulnerable
+				t.currentHealth = amount
 			}
 		})
 		return draft
 	})
 }
-function dealDamageEqualToWeak(state, { target }) {
+function dealDamageEqualToWeak(state, {target}) {
 	return produce(state, (draft) => {
 		getTargets(draft, target).forEach((t) => {
 			if (t.powers.weak) {
-				const amount = t.powers.weak
-				removeHealth(draft, { target, amount })
+				const amount = t.currentHealth - t.powers.weak
+				t.currentHealth = amount
 			}
 		})
 		return draft

@@ -249,6 +249,7 @@ export default [
 		damage: 0,
 		powers: {
 			weak: 3,
+			vulnerable: 3,
 		},
 		actions: [
 			{

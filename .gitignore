@@ -1,7 +1,5 @@
 *.swp
 .DS_Store
-.now
-.nyc_output
 coverage/
 docs/
 node_modules/
