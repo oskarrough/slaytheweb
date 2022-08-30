@@ -1,4 +1,4 @@
-import produce from '../web_modules/immer.js'
+import produce, {current} from '../web_modules/immer.js'
 import {createCard} from './cards.js'
 import {shuffle, getTargets, getCurrRoom, clamp} from './utils.js'
 import powers from './powers.js'
@@ -144,7 +144,7 @@ function playCard(state, {card, target}) {
 			draft.player.block = newState.player.block + card.block
 		}
 	})
-	if (card.damage) {
+	if (card.type === 'attack' || card.damage) {
 		// This should be refactored, but when you play an attack card that targets all enemies,
 		// we prioritize this over the actual enemy where you dropped the card.
 		const newTarget = card.target === 'all enemies' ? card.target : target
@@ -179,6 +179,20 @@ function addRegenEqualToAllDamage(state, {card}) {
 	})
 }
 
+const removePlayerDebuffs = (state) => {
+	return produce(state, (draft) => {
+		draft.player.powers.weak = 0
+		draft.player.powers.vulnerable = 0
+	})
+}
+
+function addEnergyToPlayer(state) {
+	return produce(state, (draft) => {
+		/* draft.player.maxEnergy = draft.player.maxEnergy + 1 */
+		draft.player.currentEnergy = draft.player.currentEnergy + 1
+	})
+}
+
 // See the note on `target` above.
 const removeHealth = (state, {target, amount}) => {
 	return produce(state, (draft) => {
@@ -193,6 +207,10 @@ const removeHealth = (state, {target, amount}) => {
 			}
 		})
 	})
+}
+const removePlayerHealth = (state, {target, amount}) => {
+	target = 'player'
+	return removeHealth(state, {target, amount})
 }
 
 /**
@@ -390,8 +408,33 @@ function move(state, {move}) {
  * @returns state
  */
 function dealDamageEqualToBlock(state, {target}) {
-	const block = state.player.block
-	return removeHealth(state, {target, amount: block})
+	if (state.player.block) {
+		const block = state.player.block
+		return removeHealth(state, {target, amount: block})
+	}
+}
+
+function dealDamageEqualToVulnerable(state, {target}) {
+	return produce(state, (draft) => {
+		getTargets(draft, target).forEach((t) => {
+			if (t.powers.vulnerable) {
+				const amount = t.currentHealth - t.powers.vulnerable
+				t.currentHealth = amount
+			}
+		})
+		return draft
+	})
+}
+function dealDamageEqualToWeak(state, {target}) {
+	return produce(state, (draft) => {
+		getTargets(draft, target).forEach((t) => {
+			if (t.powers.weak) {
+				const amount = t.currentHealth - t.powers.weak
+				t.currentHealth = amount
+			}
+		})
+		return draft
+	})
 }
 
 /**
@@ -451,10 +494,13 @@ export default {
 	addCardToHand,
 	addHealth,
 	addRegenEqualToAllDamage,
+	addEnergyToPlayer,
 	addStarterDeck,
 	applyCardPowers,
 	createNewGame,
 	dealDamageEqualToBlock,
+	dealDamageEqualToWeak,
+	dealDamageEqualToVulnerable,
 	discardCard,
 	discardHand,
 	drawCards,
@@ -465,6 +511,8 @@ export default {
 	playCard,
 	removeCard,
 	removeHealth,
+	removePlayerHealth,
+	removePlayerDebuffs,
 	reshuffleAndDraw,
 	rewardPlayer,
 	setDungeon,

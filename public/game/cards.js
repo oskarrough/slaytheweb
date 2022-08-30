@@ -88,6 +88,7 @@ export class Card {
 			}
 			// Make sure the action is called with a target.
 			if (!action.parameter) action.parameter = {}
+			// Prefer the target you dropped the card on.
 			action.parameter.target = target
 			action.parameter.card = card
 			// Run the action

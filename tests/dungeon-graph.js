@@ -1,7 +1,7 @@
 import test from 'ava'
 import {generateGraph} from '../public/game/dungeon.js'
 
-test('graph is created without options', (t) => {
+test('graph is created with default options', (t) => {
 	let g = generateGraph()
 	t.is(g.length, 8)
 	t.is(g[1].length, 10)

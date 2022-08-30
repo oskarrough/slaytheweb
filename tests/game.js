@@ -1,6 +1,6 @@
 import test from 'ava'
 import createNewGame from '../public/game/index.js'
-import {createCard} from '../public/game/cards'
+import {createCard} from '../public/game/cards.js'
 
 // We don't want to test too much here,
 // since tests/actions.js has most of it.

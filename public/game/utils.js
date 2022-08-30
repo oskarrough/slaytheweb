@@ -59,10 +59,17 @@ export function getCurrRoom(state) {
 // Returns an array of targets (player or monsters) in the current room.
 // The "target" argument must be either "player", "enemyx" (where x is the index) or "all enemies"
 export function getTargets(state, targetString) {
-	if (targetString.startsWith('player')) {
-		return [state.player]
+	if (!targetString || typeof targetString != 'string') {
+		throw new Error('Missing targetString argument or not a string', targetString)
 	}
+	if (targetString.startsWith('player')) return [state.player]
+
 	const room = getCurrRoom(state)
+
+	if (targetString === 'all enemies') {
+		return room.monsters
+	}
+
 	if (targetString.startsWith('enemy')) {
 		const index = targetString.split('enemy')[1]
 		const monster = room.monsters[index]
@@ -73,9 +80,7 @@ export function getTargets(state, targetString) {
 		}
 		return [monster]
 	}
-	if (targetString === 'all enemies') {
-		return room.monsters
-	}
+
 	throw new Error(`Can not find monster with target: "${targetString}"`)
 }
 

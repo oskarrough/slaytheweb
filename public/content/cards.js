@@ -159,7 +159,7 @@ export default [
 			this.name = 'Flourish+'
 			const a = this.conditions.find((action) => action.type === 'healthPercentageBelow')
 			a.percentage = 75
-			this.description = 'Gain 5 Regen. Can only be played if your health is below 75%'
+			this.description = 'Gain 5 Regen. Can only be played if your health is below 75%.'
 		},
 		/*
 		// Not implemented. Playing around with syntax
@@ -208,7 +208,7 @@ export default [
 		energy: 1,
 		type: 'attack',
 		target: 'enemy',
-		description: 'Deal Damage equal to your Block',
+		description: 'Deal Damage equal to your Block.',
 		image: 'fallback.jpg',
 		actions: [
 			{
@@ -225,7 +225,7 @@ export default [
 		type: 'attack',
 		energy: 3,
 		target: 'all enemies',
-		description: 'Deal 2 Damage to all enemies and suck it into life',
+		description: 'Deal 2 Damage to all enemies and suck it into life.',
 		image: 'succube.png',
 		damage: 2,
 		actions: [
@@ -235,8 +235,126 @@ export default [
 		],
 		upgrade() {
 			this.name = 'High Succube'
-			this.description = 'Deal 3 damage to all enemies and suck it into life'
+			this.description = 'Deal 3 damage to all enemies and suck it into life.'
 			this.damage = 3
+		},
+	},
+	{
+		name: 'Soul Drain',
+		type: 'attack',
+		energy: 1,
+		target: 'all enemies',
+		description: 'Drain 3 Health into Weakness and Vulnerability.',
+		image: 'soul-drain.png',
+		damage: 0,
+		powers: {
+			weak: 3,
+			vulnerable: 3,
+		},
+		actions: [
+			{
+				type: 'removePlayerHealth',
+				parameter: {
+					amount: 3,
+					target: 'player',
+				},
+			},
+		],
+		upgrade() {
+			this.name = 'Lower Soul Drain'
+			this.description = 'Drain 4 Health into Weakness and Vulnerability.'
+			this.powers.vulnerable = 4
+			this.powers.weak = 4
+			this.actions = [
+				{
+					type: 'removePlayerHealth',
+					parameter: {
+						amount: 4,
+						target: 'player',
+					},
+				},
+			]
+		},
+	},
+	{
+		name: 'Voodoo Education',
+		energy: 0,
+		type: 'attack',
+		target: 'enemy',
+		description: "Deal Damage equal to target's Vulnerable and Weak and remove the debuffs.",
+		image: 'voodoo-education.png',
+		actions: [
+			{
+				type: 'dealDamageEqualToWeak',
+			},
+			{
+				type: 'dealDamageEqualToVulnerable',
+			},
+			{
+				type: 'setPower',
+				parameter: {
+					power: 'weak',
+					amount: 0,
+				},
+			},
+			{
+				type: 'setPower',
+				parameter: {
+					power: 'vulnerable',
+					amount: 0,
+				},
+			},
+		],
+		upgrade() {
+			this.name = 'Voodoo Gift'
+			// remove the "reset of monster power"
+			this.description = this.description + ' but without resets.'
+			this.actions = [
+				{
+					type: 'dealDamageEqualToWeak',
+				},
+				{
+					type: 'dealDamageEqualToVulnerable',
+				},
+			]
+		},
+	},
+	{
+		name: 'Ritual Rain',
+		type: 'skill',
+		energy: 2,
+		target: 'player',
+		description: 'Remove your Weaknesses and Vulnerabilities.',
+		image: 'ritual-rain.png',
+		damage: 0,
+		actions: [
+			{
+				type: 'removePlayerDebuffs',
+			},
+		],
+		upgrade() {
+			this.name = 'Eventual Rain'
+			this.description = 'Remove your weaknesses and vulnerabilities. Gain 10 Block.'
+			this.block = 10
+		},
+	},
+	{
+		name: 'Mask of the Faceless',
+		type: 'skill',
+		energy: 0,
+		target: 'player',
+		description: 'Gain 1 energy point',
+		image: 'mask-of-the-faceless.png',
+		damage: 0,
+		actions: [
+			{
+				type: 'addEnergyToPlayer',
+			},
+		],
+		upgrade() {
+			this.description = 'Gain 1 energy point and 5 block'
+			this.name = 'Masks of the Faceless'
+			this.block = 5
 		},
 	},
 	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},

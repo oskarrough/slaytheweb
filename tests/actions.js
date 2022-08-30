@@ -1,9 +1,9 @@
 import test from 'ava'
-import actions from '../public/game/actions'
-import {createCard} from '../public/game/cards'
-import {MonsterRoom, Monster} from '../public/game/dungeon-rooms'
-import {createTestDungeon} from '../public/content/dungeon-encounters'
-import {getTargets, getCurrRoom, isCurrentRoomCompleted} from '../public/game/utils'
+import actions from '../public/game/actions.js'
+import {createCard} from '../public/game/cards.js'
+import {MonsterRoom, Monster} from '../public/game/dungeon-rooms.js'
+import {createTestDungeon} from '../public/content/dungeon-encounters.js'
+import {getTargets, getCurrRoom, isCurrentRoomCompleted} from '../public/game/utils.js'
 
 const a = actions
 
