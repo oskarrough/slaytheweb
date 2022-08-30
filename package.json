@@ -1,6 +1,6 @@
 {
   "name": "slaytheweb",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "license": "AGPL-3.0-or-later",
   "homepage": "https://slaytheweb.cards",
   "bugs": "https://github.com/oskarrough/slaytheweb/issues",
@@ -23,6 +23,7 @@
     "eslint-config-prettier": "^7.2.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "2.7.1",
+    "release-it": "^15.4.0",
     "servor": "^4.0.2",
     "snowpack": "^1.7.1"
   },
