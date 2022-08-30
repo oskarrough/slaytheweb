@@ -103,8 +103,8 @@ h1 {
 	margin-bottom: -1rem;
 	/* background-image: linear-gradient(63deg, var(--yellow), hsl(17, 80%, 60%), hsl(0, 97.2%, 42.7%)); */
 	background-image: linear-gradient(68deg, #ffd75f, hsl(39.3, 100%, 60.8%), hsl(0, 28.1%, 17.5%));
-	background-clip: text;
 	-webkit-background-clip: text;
+	background-clip: text;
 	color: transparent;
 	text-shadow: 2px 3px hsla(240, 89%, 4%, 0.1);
 	letter-spacing: -2px;

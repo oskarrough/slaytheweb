@@ -18,7 +18,7 @@ export default class SplashScreen extends Component {
 			<article class="Splash Splash--fadein">
 				<h1 style="margin-top:8vh">Slay the Web</h1>
 				<h2>A card crawl adventure for you and your browser</h2>
-				<img class="Splash-spoder" src="ui/images/spoder.png" />
+				<img class="Splash-spoder" src="ui/images/spoder.png" title="Oh hello" />
 				<ul class="Options">
 					${
 						location.hash
