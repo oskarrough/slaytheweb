@@ -20,8 +20,8 @@ const getEnemiesStats = (dungeon) => {
 					stats.killed += 1
 				}
 				/* monsters total life */
-				stats.maxHealth += monster.maxHealth
 				stats.finalHealth += monster.currentHealth
+				stats.maxHealth += monster.maxHealth
 			})
 		}
 	})
@@ -33,7 +33,7 @@ export default class DungeonStats extends Component {
 		const {dungeon} = state
 		const stats = getEnemiesStats(dungeon)
 		return html`
-			<h2>Dongeon stats</h2>
+			<h2>Dungeon stats</h2>
 			<ul>
 				<li>Enemies encountered: ${stats.encountered}</li>
 				<li>Enemies killed: ${stats.killed}</li>
