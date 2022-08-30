@@ -6,14 +6,15 @@ export default function map(props) {
 
 	return html`
 		<div class="MapContainer">
-			<h2>Map of the dungeon. Floor ${y}. Node ${x}</h2>
-
 			<${SlayMap} dungeon=${props.dungeon} x=${x} y=${y} onSelect=${props.onMove}><//>
 
-			<h2>Log</h2>
-			<ul>
-				${pathTaken.map((path) => html`<li>${path.y}.${path.x}</li>`)}
-			</ul>
+			<footer class="MapFooter">
+				<h2>History</h2>
+				<p>Current:. Floor ${y}. Node ${x}</p>
+				<ul>
+					${pathTaken.map((path) => html`<li>${path.y}.${path.x}</li>`)}
+				</ul>
+			</footer>
 		</div>
 	`
 }
@@ -131,6 +132,7 @@ export class SlayMap extends Component {
 								return html`<slay-map-node
 									key=${`${rowIndex}${nodeIndex}`}
 									type=${Boolean(node.type)}
+									node-type=${node.type}
 									current=${isCurrent}
 									can-visit=${Boolean(canVisit)}
 									did-visit=${node.didVisit}
@@ -148,16 +150,18 @@ export class SlayMap extends Component {
 }
 
 function emojiFromNodeType(type) {
+	if (!type) return
 	const map = {
-		start: 'Start',
+		start: '👣',
 		M: '💀',
-		C: '🏕',
+		C: '🏕️,🏝️',
 		// $: '💰',
 		Q: '❓',
 		E: '👹',
-		boss: 'Boss',
+		boss: '🌋',
 	}
-	return map[type]
+	const list = map[type].split(',')
+	return list.length > 1 ? list[Math.floor(Math.random() * list.length)] : list[0]
 }
 
 // Since el.offsetLeft doesn't respect CSS transforms,
