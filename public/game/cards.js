@@ -11,44 +11,28 @@ import cards from '../content/cards.js'
 
 	Cards can deal DAMAGE with the `damage` property.
 	Cards can apply BLOCK with the `block` property.
-
 	Cards can apply POWERS with the `powers` object. Powers are hardcoded in the game actions, but feel free to add more.
-
 	Cards can _optionally_ define a list of `actions`. These actions will be run, in defined order, when the card is played.
 	In the same way, you can define a list of `conditions` that have to pass for the card to be playable.
 	You can even add conditions directly on your actions.
 */
 
-// All cards extend this class.
-/*
-this.card = {
-	name: enum,
-	type: enum, // [ATTACK, SKILL, POWER, STATUS, CURSE]
-	energy: number,
-	target: enum, // [player, enemy, all enemies] @todo? [NONE, SELF_AND_ENEMY, ALL]
-	description: string,
-	powers: {
-		regen: number,
-		vulnerable: number,
-		weak: number
-	},
-	actions: [
-		type: enum,
-		parameter: object,
-		condition: condition
-	]
-	conditions: [
-		{
-			type: enum
-			.. more optinal props
-		}
-	]
-}
-color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
-rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
-*/
+/**
+ * @typedef {Object} CardAction - allows the card to run all defined actions
+ * @prop {string} type - name of the action to call. See game/actions.js
+ * @prop {Object} [parameter] - props to pass to the action
+ * @prop {Array.<Condition>} [conditions] - list of conditions
+ */
 
-export const types = {
+/**
+ * @typedef {Object} Condition — all other props will be passed to the condition as well
+ * @prop {string} type
+ */
+
+/**
+ * @typedef {string} CardType
+ */
+export const CardTypes = {
 	attack: 'attack',
 	skill: 'skill',
 	power: 'power',
@@ -56,16 +40,54 @@ export const types = {
 	curse: 'curse',
 }
 
-// @todo? [NONE, SELF_AND_ENEMY, ALL]
-export const targets = {player: 'player', enemy: 'enemy', 'all enemies': 'all enemies'}
+/**
+ * @typedef CARDPOWERS
+ * @prop {number=} regen
+ * @prop {number=} vulnerable
+ * @prop {number=} weak
+ */
 
+/**
+ * @typedef CARD
+ * @prop {string} name
+ * @prop {string} description
+ * @prop {string} image
+ * @prop {number} energy
+ * @prop {number} [damage]
+ * @prop {number} [block]
+ * @prop {CardType} type
+ * @prop {string} target
+ * color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
+ * rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
+ *
+ * @prop {CARDPOWERS} [powers]
+ * @prop {Array.<CardAction>} [actions]
+ * @prop {Array.<Condition>} [conditions]
+ * @prop {Function} [use]
+ * @prop {*} upgrade
+ */
+
+/**
+ * @typedef CARD_CLASS
+ * @type CARD
+ */
+
+export const TargetTypes = {
+	player: 'player',
+	enemy: 'enemy',
+	'all enemies': 'all enemies',
+	// @todo? [NONE, SELF_AND_ENEMY, ALL]
+}
+
+// All cards extend this class.
 export class Card {
+	/** @param {CARD} props */
 	constructor(props) {
 		this.id = uuid()
 		this.name = props.name
-		this.type = types[props.type]
+		this.type = CardTypes[props.type]
 		this.energy = props.energy
-		this.target = targets[props.target]
+		this.target = TargetTypes[props.target]
 		this.damage = props.damage
 		this.block = props.block
 		this.powers = props.powers
@@ -82,8 +104,8 @@ export class Card {
 	 * You CAN overwrite it, just make sure to return a new state.
 	 * @param {object} state
 	 * @param {object} props
-	 * @param {string} props.target
-	 * @param {object} props.card
+	 * @prop {string} props.target
+	 * @prop {object} props.card
 	 * @returns
 	 */
 	use(state, {target, card}) {
@@ -114,7 +136,11 @@ export class Card {
 	}
 }
 
-// Returns false if at least one condition fails
+/**
+ * @param {Array.<Condition>} conditions
+ * @param {object} state
+ * @returns {boolean} true if at least one condition fails on the state
+ */
 function checkConditions(conditions, state) {
 	let boolean = false
 	conditions.forEach((condition) => {
@@ -125,15 +151,33 @@ function checkConditions(conditions, state) {
 	return boolean
 }
 
-// Turns a plain object card into a class-based one.
-// We do this so we can define the cards without using class syntax.
+/**
+ * Returns the POJO card definition. Not to be confused with createCard().
+ * @param {string} name
+ * @returns {CARD}
+ */
+function findCard(name) {
+	return cards.find((card) => card.name === name)
+}
+
+/**
+ * Creates a new card. Turns a plain object card into a class-based one.
+ * We do this so we can define the cards without using class syntax.
+ * @param {string} name - exact name of the Card
+ * @returns {CARD_CLASS}
+ */
 export function createCard(name) {
-	const baseCard = cards.find((card) => card.name === name)
+	const baseCard = findCard(name)
 	if (!baseCard) throw new Error(`Card not found: ${name}`)
 	return new Card(baseCard)
 }
 
-// Returns X amount of random cards.
+/**
+ * Returns {amount} of random cards from a {list}
+ * @param {array} list - collection of POJO cards
+ * @param {number} amount - how many
+ * @returns {array} results
+ */
 export function getRandomCards(list, amount) {
 	const cardNames = list.map((card) => card.name)
 	let results = []
@@ -146,7 +190,11 @@ export function getRandomCards(list, amount) {
 	return results
 }
 
-// Returns X random, nicer and unique cards.
+/**
+ * Returns X random, nicer and unique cards.
+ * @param {number} [amount]
+ * @returns {Array.<CARD>}
+ */
 export function getCardRewards(amount = 3) {
 	// Remove boring cards from rewards.
 	const niceCards = cards
