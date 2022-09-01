@@ -56,7 +56,7 @@ export const CardTypes = {
  * @prop {number} [damage]
  * @prop {number} [block]
  * @prop {CardType} type
- * @prop {string} target
+ * @prop {TargetTypes} target
  * color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
  * rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
  *
@@ -68,10 +68,9 @@ export const CardTypes = {
  */
 
 /**
- * @typedef CARD_CLASS
- * @type CARD
+ * @typedef {string} TargetTypes
+ * @param {string} player
  */
-
 export const TargetTypes = {
 	player: 'player',
 	enemy: 'enemy',
@@ -79,7 +78,11 @@ export const TargetTypes = {
 	// @todo? [NONE, SELF_AND_ENEMY, ALL]
 }
 
-// All cards extend this class.
+/**
+ * All cards extend this class.
+ * @typedef CARD_CLASS
+ * @type CARD
+ */
 export class Card {
 	/** @param {CARD} props */
 	constructor(props) {
@@ -106,7 +109,7 @@ export class Card {
 	 * @param {object} props
 	 * @prop {string} props.target
 	 * @prop {object} props.card
-	 * @returns
+	 * @returns {object} state
 	 */
 	use(state, {target, card}) {
 		if (!this.actions) return state

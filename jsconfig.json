@@ -2,7 +2,8 @@
 	"compilerOptions": {
 		// This is like adding // @ts-check on all files.
 		// ts check enables type checking in vs code and others without typescript.
-		"checkJs": true
+		"checkJs": true,
+		"target": "ES2022"
 	},
 	"include": [
 		"public/**/*"

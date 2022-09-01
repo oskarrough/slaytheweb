@@ -216,7 +216,7 @@ const removePlayerHealth = (state, {target, amount}) => {
 /**
  * Sets the health of a target
  * @param {Object} state
- * @param {target: string, amount: number} props
+ * @param {{target: string, amount: number}} props
  * @returns state
  */
 const setHealth = (state, {target, amount}) => {
@@ -404,7 +404,8 @@ function move(state, {move}) {
 /**
  * Deals damage to a target equal to the current player's block.
  * @param {object} state
- * @param {target: string} props
+ * @param {object} props
+ * @param {string} props.target
  * @returns state
  */
 function dealDamageEqualToBlock(state, {target}) {

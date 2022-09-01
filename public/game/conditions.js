@@ -15,6 +15,7 @@ export function healthPercentageBelow(state, condition) {
 }
 
 // Returns true if hp is above condition.percentage
+/** @returns boolean */
 export function healthPercentageAbove(state, condition) {
 	return healthPercentage(state) > condition.percentage
 }
