@@ -116,8 +116,8 @@ function removeCard(state, {card}) {
 
 /**
  * Upgrades a card.
- * @param {*} object state
- * @param {card} object props {card}
+ * @param {object} state
+ * @param {card} object
  * @returns state
  */
 function upgradeCard(state, {card}) {
@@ -403,7 +403,7 @@ function move(state, {move}) {
 
 /**
  * Deals damage to a target equal to the current player's block.
- * @param {obj} state
+ * @param {object} state
  * @param {target: string} props
  * @returns state
  */
@@ -439,7 +439,7 @@ function dealDamageEqualToWeak(state, {target}) {
 
 /**
  * Sets a single power on a specific target
- * @param {obj} state
+ * @param {object} state
  * @param {Object} props
  * @param {string} props.target
  * @param {string} props.power

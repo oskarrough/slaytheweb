@@ -73,11 +73,19 @@ export class Card {
 		this.conditions = props.conditions
 		this.actions = props.actions
 		this.image = props.image
+		this.upgraded = false
 		if (props.upgrade) this.upgrade = props.upgrade
 	}
-	// Runs through a list of actions and return the updated state.
-	// Called when the card is played.
-	// You CAN overwrite it, just make sure to return a new state.
+	/**
+	 * Runs through a list of actions and return the updated state.
+	 * Called when the card is played.
+	 * You CAN overwrite it, just make sure to return a new state.
+	 * @param {object} state
+	 * @param {object} props
+	 * @param {string} props.target
+	 * @param {object} props.card
+	 * @returns
+	 */
 	use(state, {target, card}) {
 		if (!this.actions) return state
 		let newState = state
