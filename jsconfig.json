@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		// This is like adding // @ts-check on all files.
+		// ts check enables type checking in vs code and others without typescript.
+		"checkJs": true
+	},
+	"include": [
+		"public/**/*"
+	],
+	"exclude": [
+		"public/web_modules/",
+		"node_modules",
+		"**/node_modules/*"
+	]
+}
