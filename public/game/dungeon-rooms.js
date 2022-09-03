@@ -46,6 +46,7 @@ export function MonsterRoom(...monsters) {
  * @prop {number} [block]
  * @prop {number} [random]
  * @prop {Array} [intents]
+ * @prop {number} [nextIntent]
  * @prop {Object} [powers]
  */
 
@@ -57,7 +58,7 @@ export function MonsterRoom(...monsters) {
 /**
  *
  * @param {MONSTER} props
- * @returns MONSTER
+ * @returns {MONSTER}
  */
 export function Monster(
 	props = {

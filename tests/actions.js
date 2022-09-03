@@ -358,7 +358,7 @@ test('Flourish card adds a healing "regen" buff', (t) => {
 	// Pacify the monster...
 	// produce(state2, (draft) => {
 	// getCurrRoom(draft).monsters[0].intents = []
-	getTargets(state, 'enemy0').intents = []
+	// getTargets(state, 'enemy0').intents = []
 	// })
 
 	t.is(state2.player.powers.regen, flourish.powers.regen, 'regen is applied to player')
@@ -384,7 +384,7 @@ test('Flourish card adds a healing "regen" buff', (t) => {
 	// t.is(state2.player.currentHealth, 20)
 })
 
-test('target "all enemies" works for damage as well as power', (t) => {
+test('target "allEnemies" works for damage as well as power', (t) => {
 	const {state} = t.context
 	state.dungeon.y++
 	const room = getCurrRoom(state)
@@ -396,6 +396,7 @@ test('target "all enemies" works for damage as well as power', (t) => {
 		'none are vulnerable'
 	)
 	const card = createCard('Thunderclap')
+	console.log(card)
 	const nextState = a.playCard(state, {card})
 	t.is(getTargets(nextState, 'enemy0')[0].currentHealth, 24 - card.damage)
 	t.is(getTargets(nextState, 'enemy1')[0].currentHealth, 13 - card.damage)

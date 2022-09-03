@@ -1,3 +1,5 @@
+// import {Targets} from '../game/cards.js'
+
 // Here you'll find all the default cards used in the game.
 // See game/cards.js for the details on how they work.
 export default [
@@ -127,7 +129,7 @@ export default [
 		type: 'attack',
 		energy: 1,
 		damage: 4,
-		target: 'all enemies',
+		target: 'allEnemies',
 		powers: {
 			vulnerable: 1,
 		},
@@ -224,7 +226,7 @@ export default [
 		name: 'Succube',
 		type: 'attack',
 		energy: 3,
-		target: 'all enemies',
+		target: 'allEnemies',
 		description: 'Deal 2 Damage to all enemies and suck it into life.',
 		image: 'succube.png',
 		damage: 2,
@@ -243,7 +245,7 @@ export default [
 		name: 'Soul Drain',
 		type: 'attack',
 		energy: 1,
-		target: 'all enemies',
+		target: 'allEnemies',
 		description: 'Drain 3 Health into Weakness and Vulnerability.',
 		image: 'soul-drain.png',
 		damage: 0,

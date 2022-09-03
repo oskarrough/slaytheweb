@@ -20,7 +20,13 @@ import CampfireRoom from './campfire.js'
 import StartRoom from './start-room.js'
 import DungeonStats from './dungeon-stats.js'
 import enableDragDrop from './dragdrop.js'
-import sfx from './sounds.js'
+
+// Temporary hack to disabled sounds without touching game code.
+import realSfx from './sounds.js'
+const sfx = {}
+Object.keys(realSfx).forEach((key) => {
+	sfx[key] = () => null
+})
 
 // Puts and gets the game state in the URL.
 const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state)))

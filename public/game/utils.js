@@ -1,3 +1,5 @@
+import {Targets} from './cards.js'
+
 // A collection of utility functions.
 // None are allowed to modify the game state!
 
@@ -60,18 +62,19 @@ export function getCurrRoom(state) {
 /**
  * Returns an array of targets (player or monsters) in the current room.
  * @param {import('./actions').State} state
- * @param {string} targetString - must be either "player", "enemyx" (where x is the index) or "all enemies"
+ * @param {Targets} targetString
  * @returns {Array<import('./dungeon-rooms').MONSTER>}
  */
 export function getTargets(state, targetString) {
 	if (!targetString || typeof targetString != 'string') {
 		throw new Error('Missing targetString argument or not a string')
 	}
+
 	if (targetString.startsWith('player')) return [state.player]
 
 	const room = getCurrRoom(state)
 
-	if (targetString === 'all enemies') {
+	if (targetString === Targets.allEnemies) {
 		return room.monsters
 	}
 
@@ -93,7 +96,7 @@ export function cardHasValidTarget(cardTarget, targetString) {
 	return (
 		(cardTarget === 'player' && targetString.includes('player')) ||
 		(cardTarget === 'enemy' && targetString.includes('enemy')) ||
-		(cardTarget === 'all enemies' && targetString.includes('enemy'))
+		(cardTarget === 'allEnemies' && targetString.includes('enemy'))
 	)
 }
 

@@ -1,5 +1,5 @@
 import produce /*, {current}*/ from '../web_modules/immer.js'
-import {createCard} from './cards.js'
+import {createCard, Targets} from './cards.js'
 import {shuffle, getTargets, getCurrRoom, clamp} from './utils.js'
 import powers from './powers.js'
 import {dungeonWithMap} from '../content/dungeon-encounters.js'
@@ -166,7 +166,7 @@ function playCard(state, {card, target}) {
 	if (!target) target = card.target
 	if (typeof target !== 'string')
 		throw new Error(`Wrong target to play card: ${target},${card.target}`)
-	if (target === 'enemy') throw new Error('Did you mean "enemy0" or "all enemies"?')
+	if (target === 'enemy') throw new Error('Did you mean "enemy0" or "allEnemies"?')
 	if (!card) throw new Error('No card to play')
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
 	let newState = discardCard(state, {card})
@@ -181,7 +181,7 @@ function playCard(state, {card, target}) {
 	if (card.type === 'attack' || card.damage) {
 		// This should be refactored, but when you play an attack card that targets all enemies,
 		// we prioritize this over the actual enemy where you dropped the card.
-		const newTarget = card.target === 'all enemies' ? card.target : target
+		const newTarget = card.target === Targets.allEnemies ? card.target : target
 		let amount = card.damage
 		if (newState.player.powers.weak) amount = powers.weak.use(amount)
 		newState = removeHealth(newState, {target: newTarget, amount})
@@ -300,11 +300,11 @@ const setHealth = (state, {target, amount}) => {
 function applyCardPowers(state, {card, target}) {
 	return produce(state, (draft) => {
 		Object.entries(card.powers).forEach(([name, stacks]) => {
-			if (card.target === 'player') {
+			if (card.target === Targets.player) {
 				// Add powers that target player.
 				const newStacks = (draft.player.powers[name] || 0) + stacks
 				draft.player.powers[name] = newStacks
-			} else if (card.target === 'all enemies') {
+			} else if (card.target === Targets.allEnemies) {
 				// Add powers that target all enemies.
 				draft.dungeon.graph[draft.dungeon.y][draft.dungeon.x].room.monsters.forEach((monster) => {
 					if (monster.currentHealth < 1) return

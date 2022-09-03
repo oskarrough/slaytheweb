@@ -44,7 +44,7 @@ You have a deck of cards. Cards have different energy cost and can trigge other 
 
 Once the draw pile is empty, and you attempt to draw, the discard pile is reshuffled into the draw pile.
 
-Cards also have a `target` property to suggest which targets the card should affect. Targets include `player`, `enemyX` (where x is the monster's index, starting from 0) and `all enemies`.
+Cards also have a `target` property to suggest which targets the card should affect. Targets include `player`, `enemyX` (where x is the monster's index, starting from 0) and `allEnemies`.
 
 For more advanced cards, you can define (custom) actions to run when the card is played. To limit when a a card can be played, use "conditions" (see the source code).
 
