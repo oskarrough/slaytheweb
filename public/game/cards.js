@@ -1,5 +1,4 @@
 import {uuid} from './utils.js'
-import {checkConditions} from './conditions.js'
 import cards from '../content/cards.js'
 
 // This file contains the logic to create cards.
@@ -79,9 +78,6 @@ export class Card {
 		this.upgraded = false
 		if (props.upgrade) this.upgrade = props.upgrade
 	}
-	canPlay(state) {
-		return checkConditions(this.conditions, state)
-	}
 	upgrade() {
 		if (this.upgraded) return
 		// this.name = 'Name+', this.damage = 666
@@ -104,6 +100,7 @@ function findCard(name) {
  * @param {string} name - exact name of the Card
  * @returns {CARD}
  */
+
 export function createCard(name) {
 	const baseCard = findCard(name)
 	if (!baseCard) throw new Error(`Card not found: ${name}`)
@@ -150,3 +147,5 @@ export function getCardRewards(amount = 3) {
 	}
 	return rewards
 }
+
+

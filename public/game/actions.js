@@ -3,7 +3,7 @@ import {createCard} from './cards.js'
 import {shuffle, getTargets, getCurrRoom, clamp} from './utils.js'
 import powers from './powers.js'
 import {dungeonWithMap} from '../content/dungeon-encounters.js'
-import {checkConditions} from './conditions.js'
+import {conditionsAreValid} from './conditions.js'
 
 // Without this, immer.js will throw an error if our `state` is modified outside of an action.
 // While in theory a good idea, we're not there yet. It is a useful way to spot modifications
@@ -174,7 +174,7 @@ export function useCardActions(state, {target, card}) {
 	let newState = state
 	card.actions.forEach((action) => {
 		// Don't run action if it has an invalid condition.
-		if (action.conditions && !checkConditions(action.conditions, state)) {
+		if (action.conditions && !conditionsAreValid(action.conditions, state)) {
 			return newState
 		}
 		// Make sure the action is called with a target.
