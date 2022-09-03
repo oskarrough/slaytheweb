@@ -407,7 +407,7 @@ function takeMonsterTurn(state, monsterIndex) {
 	})
 }
 
-function rewardPlayer(state, {card}) {
+function addCardToDeck(state, {card}) {
 	return produce(state, (draft) => {
 		draft.deck.push(card)
 	})
@@ -523,16 +523,17 @@ function iddqd(state) {
 }
 
 const allActions = {
+	addCardToDeck,
 	addCardToHand,
+	addEnergyToPlayer,
 	addHealth,
 	addRegenEqualToAllDamage,
-	addEnergyToPlayer,
 	addStarterDeck,
 	applyCardPowers,
 	createNewGame,
 	dealDamageEqualToBlock,
-	dealDamageEqualToWeak,
 	dealDamageEqualToVulnerable,
+	dealDamageEqualToWeak,
 	discardCard,
 	discardHand,
 	drawCards,
@@ -543,10 +544,9 @@ const allActions = {
 	playCard,
 	removeCard,
 	removeHealth,
-	removePlayerHealth,
 	removePlayerDebuffs,
+	removePlayerHealth,
 	reshuffleAndDraw,
-	rewardPlayer,
 	setDungeon,
 	setHealth,
 	setPower,

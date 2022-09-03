@@ -25,4 +25,3 @@ export async function getRuns() {
 	const {runs} = await res.json()
 	return runs.records
 }
-

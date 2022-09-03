@@ -10,7 +10,6 @@ export default class Cards extends Component {
 }
 
 export function Card(card, gameState) {
-	console.log(card, gameState)
 	const isDisabled = !canPlay(card, gameState)
 	const image = card.image ? `/ui/images/cards/${card.image}` : '/ui/images/cards/fallback.jpg'
 

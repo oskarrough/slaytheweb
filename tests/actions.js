@@ -412,7 +412,7 @@ test('add a reward card in the deck after winning a room', (t) => {
 	const card = createCard('Strike')
 	t.is(state.deck.length, 10)
 	// act
-	const newState = a.rewardPlayer(state, card)
+	const newState = a.addCardToDeck(state, card)
 	// assert
 	t.is(newState.deck.length, 11)
 })

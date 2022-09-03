@@ -168,7 +168,7 @@ stw.dealCards()`)
 		if (key === 'm') this.toggleOverlay('#Map')
 	}
 	handlePlayerReward(choice, card) {
-		this.game.enqueue({type: 'rewardPlayer', card})
+		this.game.enqueue({type: 'addCardToDeck', card})
 		this.setState({didPickCard: card})
 		this.update()
 	}
