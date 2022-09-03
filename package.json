@@ -3,6 +3,7 @@
   "version": "0.15.0",
   "license": "AGPL-3.0-or-later",
   "homepage": "https://slaytheweb.cards",
+  "repository": "https://github.com/oskarrough/slaytheweb",
   "bugs": "https://github.com/oskarrough/slaytheweb/issues",
   "type": "module",
   "scripts": {

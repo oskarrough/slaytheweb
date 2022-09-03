@@ -1,12 +1,23 @@
 import {shuffle, range} from './utils.js'
 
+/**
+ * @typedef ROOM
+ * @prop {string} type
+ */
+
+/**
+ * @returns ROOM
+ */
 export function StartRoom() {
 	return {
 		type: 'start',
 	}
 }
 
-// A campfire gives our hero the opportunity to rest, remove or upgrade a card.
+/**
+ * A campfire gives our hero the opportunity to rest, remove or upgrade a card.
+ * @returns ROOM
+ */
 export function CampfireRoom() {
 	return {
 		type: 'campfire',

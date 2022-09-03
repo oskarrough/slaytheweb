@@ -3,35 +3,11 @@ import actionMethods from './actions.js'
 import * as conditionMethods from './conditions.js'
 import cards from '../content/cards.js'
 
-/*
-	This file contains the logic to create cards.
-	While cards are described in an object form, they are always converted to a class equivalent.
+// This file contains the logic to create cards.
+// While cards are described in plain object form, they are always converted to a class equivalent.
+// The actual cards belong in content/cards.js.
 
-	You can find cards themselves in content/cards.js
-
-	Cards can deal DAMAGE with the `damage` property.
-	Cards can apply BLOCK with the `block` property.
-	Cards can apply POWERS with the `powers` object. Powers are hardcoded in the game actions, but feel free to add more.
-	Cards can _optionally_ define a list of `actions`. These actions will be run, in defined order, when the card is played.
-	In the same way, you can define a list of `conditions` that have to pass for the card to be playable.
-	You can even add conditions directly on your actions.
-*/
-
-/**
- * @typedef {Object} CardAction - allows the card to run all defined actions
- * @prop {string} type - name of the action to call. See game/actions.js
- * @prop {Object} [parameter] - props to pass to the action
- * @prop {Array.<Condition>} [conditions] - list of conditions
- */
-
-/**
- * @typedef {Object} Condition — all other props will be passed to the condition as well
- * @prop {string} type
- */
-
-/**
- * @typedef {string} CardType
- */
+/** @enum {string} */
 export const CardTypes = {
 	attack: 'attack',
 	skill: 'skill',
@@ -41,30 +17,10 @@ export const CardTypes = {
 }
 
 /**
- * @typedef CARDPOWERS
+ * @typedef {object} CARDPOWERS
  * @prop {number=} regen
  * @prop {number=} vulnerable
  * @prop {number=} weak
- */
-
-/**
- * @typedef CARD
- * @prop {string} name
- * @prop {string} description
- * @prop {string} image
- * @prop {number} energy
- * @prop {number} [damage]
- * @prop {number} [block]
- * @prop {CardType} type
- * @prop {TargetTypes} target
- * color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
- * rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
- *
- * @prop {CARDPOWERS} [powers]
- * @prop {Array.<CardAction>} [actions]
- * @prop {Array.<Condition>} [conditions]
- * @prop {Function} [use]
- * @prop {*} upgrade
  */
 
 /**
@@ -80,9 +36,32 @@ export const TargetTypes = {
 
 /**
  * All cards extend this class.
- * @typedef CARD_CLASS
- * @type CARD
+ * @typedef CARD
+ * @prop {string} name
+ * @prop {string} description
+ * @prop {string} image
+ * @prop {number} energy
+ * @prop {CardTypes} type - specifies the type of card
+ * @prop {number} [damage] - damages the target.
+ * @prop {number} [block] - applies block to the target.
+ * @prop {TargetTypes} target - a special "target" string to specify which targets the card affects.
+ * color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
+ * rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
+ *
+ * @prop {CARDPOWERS} [powers] - Cards can apply POWERS with the `powers` object. Powers are hardcoded in the game actions, but feel free to add more.
+ * @prop {Array<CardAction>} [actions] - Cards can _optionally_ define a list of `actions`. These actions will be run, in defined order, when the card is played.
+ * @prop {Array<{type: string}>} [conditions] - In the same way, you can define a list of `conditions` that have to pass for the card to be playable. You can even add conditions directly on your actions.
+ * @prop {Function} [use]
+ * @prop {*} upgrade
  */
+
+/**
+ * @typedef {Object} CardAction - allows the card to run all defined actions
+ * @prop {string} type - name of the action to call. See game/actions.js
+ * @prop {Object} [parameter] - props to pass to the action
+ * @prop {Array<{type: string}>} [conditions] - list of conditions
+ */
+
 export class Card {
 	/** @param {CARD} props */
 	constructor(props) {
@@ -140,21 +119,6 @@ export class Card {
 }
 
 /**
- * @param {Array.<Condition>} conditions
- * @param {object} state
- * @returns {boolean} true if at least one condition fails on the state
- */
-function checkConditions(conditions, state) {
-	let boolean = false
-	conditions.forEach((condition) => {
-		if (!boolean && conditionMethods[condition.type]) {
-			boolean = conditionMethods[condition.type](state, condition)
-		}
-	})
-	return boolean
-}
-
-/**
  * Returns the POJO card definition. Not to be confused with createCard().
  * @param {string} name
  * @returns {CARD}
@@ -167,7 +131,7 @@ function findCard(name) {
  * Creates a new card. Turns a plain object card into a class-based one.
  * We do this so we can define the cards without using class syntax.
  * @param {string} name - exact name of the Card
- * @returns {CARD_CLASS}
+ * @returns {CARD}
  */
 export function createCard(name) {
 	const baseCard = findCard(name)

@@ -23,6 +23,16 @@ const defaultOptions = {
 	// customPaths: '123'
 }
 
+/**
+ * @typedef {object} DUNGEON
+ * @param {string} id
+ */
+
+/**
+ * Creates a new dungeon, complete with graph and paths.
+ * @param {object} options
+ * @returns DUNGEON
+ */
 export default function Dungeon(options = {}) {
 	options = Object.assign(defaultOptions, options)
 
@@ -107,11 +117,11 @@ function decideRoomType(nodeType, floor /*, graph*/) {
 		[bossNode]
 	]
  * @param {object} options
- * @returns {array} graph
+ * @returns array - graph
  */
 export function generateGraph(options = {}) {
 	options = Object.assign(defaultOptions, options)
-	const {height, width, minRooms, maxRooms, roomTypes} = options
+	const {height, width, minRooms, maxRooms} = options
 
 	function Node(type) {
 		return {id: uuid(), type: type || false, edges: new Set(), room: undefined}
@@ -129,7 +139,7 @@ export function generateGraph(options = {}) {
 
 		// Create the "room" nodes
 		for (let i = 0; i < desiredAmountOfRooms; i++) {
-			const nodeType = decideNodeType(roomTypes, floorNumber)
+			const nodeType = decideNodeType(options.roomTypes, floorNumber)
 			floor.push(Node(nodeType))
 		}
 

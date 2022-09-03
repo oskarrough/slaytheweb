@@ -491,7 +491,7 @@ function iddqd(state) {
 	})
 }
 
-export default {
+const allActions = {
 	addCardToHand,
 	addHealth,
 	addRegenEqualToAllDamage,
@@ -522,3 +522,5 @@ export default {
 	takeMonsterTurn,
 	upgradeCard,
 }
+
+export default allActions

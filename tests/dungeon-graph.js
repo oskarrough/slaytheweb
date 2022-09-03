@@ -43,7 +43,7 @@ test('it respects the cols options', (t) => {
 	})
 })
 
-// You can't customize atm. because it's hardcoded in dungeon.js.
+// You can't customize atm. because it's hardcoded in decideNodeType()
 test.skip('can customize the type of rooms', (t) => {
 	const roomTypes = '!#$'
 	const g = generateGraph({roomTypes})

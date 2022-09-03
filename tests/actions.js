@@ -435,7 +435,7 @@ test('can not play card if target doesnt match', (t) => {
 test('summer of sam card gains 1 life', (t) => {
 	const {state} = t.context
 	const card = createCard('Summer of Sam')
-	t.is(typeof card.use, 'function')
+	t.is(card.actions.length, 2, 'card has "actions"')
 	state.player.currentHealth = 50
 	const newState = a.playCard(state, {target: 'player', card})
 	t.is(newState.player.currentHealth, 51, 'gain 1 life')
