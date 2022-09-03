@@ -3,7 +3,7 @@ const apiUrl = 'https://api.slaytheweb.cards/api/runs'
 /**
  * Saves a "game" object into a remote database.
  * @param {object} game
- * @returns Promise
+ * @returns {Promise}
  */
 export function postRun(game) {
 	return fetch(apiUrl, {
@@ -26,7 +26,3 @@ export async function getRuns() {
 	return runs.records
 }
 
-export default {
-	getRuns,
-	postRun,
-}

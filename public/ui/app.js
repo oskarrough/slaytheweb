@@ -7,7 +7,7 @@ import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 import createNewGame from '../game/index.js'
 import {createCard, getCardRewards} from '../game/cards.js'
 import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../game/utils.js'
-import backend from '../game/backend.js'
+import * as backend from '../game/backend.js'
 
 // UI Components
 import Cards from './cards.js'
