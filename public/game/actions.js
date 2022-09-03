@@ -90,8 +90,8 @@ function addStarterDeck(state) {
 }
 
 // Move X cards from deck to hand.
-function drawCards(state, {amount}) {
-	amount = amount ? amount : 5
+function drawCards(state, options) {
+	const amount = options?.amount ? options.amount : 5
 	return produce(state, (draft) => {
 		// When there aren't enough cards to draw, we recycle all cards from the discard pile to the draw pile. Should we shuffle?
 		if (state.drawPile.length < amount) {
