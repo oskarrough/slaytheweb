@@ -1,6 +1,5 @@
 import {uuid} from './utils.js'
-import actionMethods from './actions.js'
-import * as conditionMethods from './conditions.js'
+import {checkConditions} from './conditions.js'
 import cards from '../content/cards.js'
 
 // This file contains the logic to create cards.
@@ -79,34 +78,6 @@ export class Card {
 		this.image = props.image
 		this.upgraded = false
 		if (props.upgrade) this.upgrade = props.upgrade
-	}
-	/**
-	 * Runs through a list of actions and return the updated state.
-	 * Called when the card is played.
-	 * You CAN overwrite it, just make sure to return a new state.
-	 * @param {object} state
-	 * @param {object} props
-	 * @prop {string} props.target
-	 * @prop {object} props.card
-	 * @returns {object} state
-	 */
-	use(state, {target, card}) {
-		if (!this.actions) return state
-		let newState = state
-		this.actions.forEach((action) => {
-			// Don't run action if it has an invalid condition.
-			if (action.conditions && !checkConditions(action.conditions, state)) {
-				return newState
-			}
-			// Make sure the action is called with a target.
-			if (!action.parameter) action.parameter = {}
-			// Prefer the target you dropped the card on.
-			action.parameter.target = target
-			action.parameter.card = card
-			// Run the action
-			newState = actionMethods[action.type](newState, action.parameter)
-		})
-		return newState
 	}
 	canPlay(state) {
 		return checkConditions(this.conditions, state)

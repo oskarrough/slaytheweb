@@ -3,6 +3,7 @@ import {createCard} from './cards.js'
 import {shuffle, getTargets, getCurrRoom, clamp} from './utils.js'
 import powers from './powers.js'
 import {dungeonWithMap} from '../content/dungeon-encounters.js'
+import {checkConditions} from './conditions.js'
 
 // Without this, immer.js will throw an error if our `state` is modified outside of an action.
 // While in theory a good idea, we're not there yet. It is a useful way to spot modifications
@@ -153,7 +154,37 @@ function playCard(state, {card, target}) {
 		newState = removeHealth(newState, {target: newTarget, amount})
 	}
 	if (card.powers) newState = applyCardPowers(newState, {target, card})
-	if (card.use) newState = card.use(newState, {target, card})
+	// if (card.use) newState = card.use(newState, {target, card})
+	newState = useCardActions(newState, {target, card})
+	return newState
+}
+
+/**
+ * Runs through a list of actions and return the updated state.
+ * Called when the card is played.
+ * You CAN overwrite it, just make sure to return a new state.
+ * @param {object} state
+ * @param {object} props
+ * @prop {string} props.target
+ * @prop {object} props.card
+ * @returns {object} state
+ */
+export function useCardActions(state, {target, card}) {
+	if (!card.actions) return state
+	let newState = state
+	card.actions.forEach((action) => {
+		// Don't run action if it has an invalid condition.
+		if (action.conditions && !checkConditions(action.conditions, state)) {
+			return newState
+		}
+		// Make sure the action is called with a target.
+		if (!action.parameter) action.parameter = {}
+		// Prefer the target you dropped the card on.
+		action.parameter.target = target
+		action.parameter.card = card
+		// Run the action
+		newState = allActions[action.type](newState, action.parameter)
+	})
 	return newState
 }
 
