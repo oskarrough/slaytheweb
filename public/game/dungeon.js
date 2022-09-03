@@ -117,7 +117,7 @@ function decideRoomType(nodeType, floor /*, graph*/) {
 		[bossNode]
 	]
  * @param {object} options
- * @returns array - graph
+ * @returns {array} - graph
  */
 export function generateGraph(options = {}) {
 	options = Object.assign(defaultOptions, options)

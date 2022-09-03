@@ -130,3 +130,8 @@ export function clamp(x, lower, upper) {
 export function assert(condition, message) {
 	if (!condition) throw new Error(message)
 }
+
+/** returns number */
+export function getPlayerHealthPercentage(state) {
+	return (state.player.currentHealth / state.player.maxHealth) * 100
+}
