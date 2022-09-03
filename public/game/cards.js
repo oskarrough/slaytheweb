@@ -21,20 +21,6 @@ export const CardTargets = {
 	allEnemies: 'allEnemies',
 }
 
-/** @enum {string} - must be either "player", "enemyx" (where x is the index) or "allEnemies" */
-export const Targets = {
-	player: 'player',
-	enemy: 'enemy',
-	enemy0: 'enemy0',
-	enemy1: 'enemy1',
-	enemy2: 'enemy2',
-	enemy3: 'enemy3',
-	enemy4: 'enemy4',
-	enemy5: 'enemy5',
-	enemy6: 'enemy6',
-	allEnemies: 'allEnemies',
-}
-
 /**
  * @typedef {object} CARDPOWERS
  * @prop {number=} regen
@@ -53,7 +39,7 @@ export const Targets = {
  * @prop {CardTypes} type - specifies the type of card
  * @prop {number} [damage] - damages the target.
  * @prop {number} [block] - applies block to the target.
- * @prop {Targets} target - a special "target" string to specify which targets the card affects.
+ * @prop {CardTargets} target - a special "target" string to specify which targets the card affects.
  * color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
  * rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
  *
@@ -78,7 +64,7 @@ export class Card {
 		this.name = props.name
 		this.type = CardTypes[props.type]
 		this.energy = props.energy
-		this.target = Targets[props.target]
+		this.target = CardTargets[props.target]
 		this.damage = props.damage
 		this.block = props.block
 		this.powers = props.powers

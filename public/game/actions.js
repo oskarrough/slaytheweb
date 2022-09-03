@@ -1,6 +1,7 @@
 import produce /*, {current}*/ from '../web_modules/immer.js'
-import {createCard, Targets} from './cards.js'
-import {shuffle, getTargets, getCurrRoom, clamp} from './utils.js'
+import {createCard, CardTargets} from './cards.js'
+import {clamp, shuffle} from './utils.js'
+import {getTargets, getCurrRoom} from './utils-state.js'
 import powers from './powers.js'
 import {dungeonWithMap} from '../content/dungeon-encounters.js'
 import {conditionsAreValid} from './conditions.js'
@@ -181,7 +182,7 @@ function playCard(state, {card, target}) {
 	if (card.type === 'attack' || card.damage) {
 		// This should be refactored, but when you play an attack card that targets all enemies,
 		// we prioritize this over the actual enemy where you dropped the card.
-		const newTarget = card.target === Targets.allEnemies ? card.target : target
+		const newTarget = card.target === CardTargets.allEnemies ? card.target : target
 		let amount = card.damage
 		if (newState.player.powers.weak) amount = powers.weak.use(amount)
 		newState = removeHealth(newState, {target: newTarget, amount})
@@ -266,7 +267,7 @@ function addEnergyToPlayer(state) {
  * Removes health from a target, respecting vulnerable and block.
  * @param {Object} state
  * @param {Object} props
- * @param {Targets} props.target
+ * @param {CardTargets} props.target
  * @param {number} props.amount
  * @returns {Object} - new state
  */
@@ -288,7 +289,7 @@ const removeHealth = (state, {target, amount}) => {
 /**
  * Sets the health of a target
  * @param {Object} state
- * @param {{target: Targets, amount: number}} props
+ * @param {{target: CardTargets, amount: number}} props
  * @returns {State}
  */
 const setHealth = (state, {target, amount}) => {
@@ -303,11 +304,11 @@ const setHealth = (state, {target, amount}) => {
 function applyCardPowers(state, {card, target}) {
 	return produce(state, (draft) => {
 		Object.entries(card.powers).forEach(([name, stacks]) => {
-			if (card.target === Targets.player) {
+			if (card.target === CardTargets.player) {
 				// Add powers that target player.
 				const newStacks = (draft.player.powers[name] || 0) + stacks
 				draft.player.powers[name] = newStacks
-			} else if (card.target === Targets.allEnemies) {
+			} else if (card.target === CardTargets.allEnemies) {
 				// Add powers that target all enemies.
 				draft.dungeon.graph[draft.dungeon.y][draft.dungeon.x].room.monsters.forEach((monster) => {
 					if (monster.currentHealth < 1) return

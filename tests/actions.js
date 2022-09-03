@@ -4,7 +4,7 @@ import actions from '../public/game/actions.js'
 import {createCard} from '../public/game/cards.js'
 import {MonsterRoom, Monster} from '../public/game/dungeon-rooms.js'
 import {createTestDungeon} from '../public/content/dungeon-encounters.js'
-import {getTargets, getCurrRoom, isCurrentRoomCompleted} from '../public/game/utils.js'
+import {getTargets, getCurrRoom, isCurrRoomCompleted} from '../public/game/utils-state.js'
 
 const a = actions
 
@@ -220,9 +220,9 @@ test('can play a defend card from hand and see the effects on state', (t) => {
 
 test('when monster reaches 0 hp, you win!', (t) => {
 	const {state} = t.context
-	t.false(isCurrentRoomCompleted(state))
+	t.false(isCurrRoomCompleted(state))
 	const newState = a.removeHealth(state, {target: 'enemy0', amount: 42})
-	t.true(isCurrentRoomCompleted(newState))
+	t.true(isCurrRoomCompleted(newState))
 })
 
 test('can discard a single card from hand', (t) => {

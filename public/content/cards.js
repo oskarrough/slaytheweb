@@ -1,5 +1,3 @@
-// import {Targets} from '../game/cards.js'
-
 // Here you'll find all the default cards used in the game.
 // See game/cards.js for the details on how they work.
 export default [
