@@ -47,14 +47,14 @@ export function random(from, to) {
 	return shuffle(r)[0]
 }
 
-// Returns the current map node
-export function getCurrMapNode(state) {
-	return state.dungeon.graph[state.dungeon.y][state.dungeon.x]
+// Returns the current dungeon node
+export function getCurrentNode(dungeon) {
+	return dungeon.graph[dungeon.y][dungeon.x]
 }
 
 // Returns the current dungeon room from the the y/x props
 export function getCurrRoom(state) {
-	const node = getCurrMapNode(state)
+	const node = getCurrentNode(state.dungeon)
 	if (!node.room) throw new Error('This node has no room')
 	return node.room
 }
@@ -62,41 +62,29 @@ export function getCurrRoom(state) {
 /**
  * Returns an array of targets (player or monsters) in the current room.
  * @param {import('./actions').State} state
- * @param {Targets} targetString
+ * @param {Targets} targetQuery
  * @returns {Array<import('./dungeon-rooms').MONSTER>}
  */
-export function getTargets(state, targetString) {
-	if (!targetString || typeof targetString != 'string') {
-		throw new Error('Missing targetString argument or not a string')
+export function getTargets(state, targetQuery) {
+	if (!targetQuery || typeof targetQuery != 'string') {
+		throw new Error('Bad query string')
 	}
-
-	if (targetString.startsWith('player')) return [state.player]
-
+	if (targetQuery === Targets.player) return [state.player]
 	const room = getCurrRoom(state)
-
-	if (targetString === Targets.allEnemies) {
-		return room.monsters
-	}
-
-	if (targetString.startsWith('enemy')) {
-		const index = targetString.split('enemy')[1]
+	if (targetQuery === Targets.allEnemies) return room.monsters
+	if (targetQuery.startsWith(Targets.enemy)) {
+		const index = Number(targetQuery.split('enemy')[1])
 		const monster = room.monsters[index]
-		if (!monster) {
-			throw new Error(
-				`Could not find "${targetString}" on floor ${state.dungeon.y}, room ${state.dungeon.y}`
-			)
-		}
-		return [monster]
+		if (monster) return [monster]
 	}
-
-	throw new Error(`Can not find monster with target: "${targetString}"`)
+	throw new Error(`Could not find target "${targetQuery}" on ${state.dungeon.y}/${state.dungeon.x}`)
 }
 
-export function cardHasValidTarget(cardTarget, targetString) {
+export function cardHasValidTarget(cardTarget, targetQuery) {
 	return (
-		(cardTarget === 'player' && targetString.includes('player')) ||
-		(cardTarget === 'enemy' && targetString.includes('enemy')) ||
-		(cardTarget === 'allEnemies' && targetString.includes('enemy'))
+		(cardTarget === 'player' && targetQuery.includes('player')) ||
+		(cardTarget === 'enemy' && targetQuery.includes('enemy')) ||
+		(cardTarget === 'allEnemies' && targetQuery.includes('enemy'))
 	)
 }
 
