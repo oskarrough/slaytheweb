@@ -1,12 +1,13 @@
 import {shuffle, range} from './utils.js'
 
 /**
- * @typedef ROOM
+ * @typedef {object} ROOM
  * @prop {string} type
+ * @prop {Array=} monsters
  */
 
 /**
- * @returns ROOM
+ * @returns {ROOM}
  */
 export function StartRoom() {
 	return {
@@ -16,7 +17,7 @@ export function StartRoom() {
 
 /**
  * A campfire gives our hero the opportunity to rest, remove or upgrade a card.
- * @returns ROOM
+ * @returns {ROOM}
  */
 export function CampfireRoom() {
 	return {
@@ -27,7 +28,8 @@ export function CampfireRoom() {
 
 /**
  * A monster room has one or more monsters.
- * @returns {{type: string, monsters: Array}}
+ * @param {...Object} monsters
+ * @returns {ROOM}
  */
 export function MonsterRoom(...monsters) {
 	return {
@@ -39,12 +41,12 @@ export function MonsterRoom(...monsters) {
 /**
  * @typedef MONSTER
  * @prop {number} [hp]
- * @prop {number} currentHealth
- * @prop {number} maxHealth
- * @prop {Array} [intents]
- * @prop {Object} [powers]
+ * @prop {number} [currentHealth]
+ * @prop {number} [maxHealth]
  * @prop {number} [block]
  * @prop {number} [random]
+ * @prop {Array} [intents]
+ * @prop {Object} [powers]
  */
 
 // A monster has health, probably some damage and a list of intents.

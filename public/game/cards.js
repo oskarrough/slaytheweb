@@ -35,6 +35,7 @@ export const TargetTypes = {
 /**
  * All cards extend this class.
  * @typedef CARD
+ * @prop {string=} id
  * @prop {string} name
  * @prop {string} description
  * @prop {string} image
@@ -147,5 +148,3 @@ export function getCardRewards(amount = 3) {
 	}
 	return rewards
 }
-
-

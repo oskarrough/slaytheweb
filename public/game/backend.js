@@ -18,7 +18,7 @@ export function postRun(game) {
 
 /**
  * Fetches a list of maximum 100 runs from the remote database.
- * @returns [] list of game runs
+ * @returns {Promise<[]>} list of game runs
  */
 export async function getRuns() {
 	const res = await fetch(apiUrl)

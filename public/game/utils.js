@@ -5,7 +5,8 @@
 export function uuid(a) {
 	return a
 		? (a ^ ((Math.random() * 16) >> (a / 4))).toString(16)
-		: ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, uuid)
+		: // @ts-ignore
+		  ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, uuid)
 }
 
 // Returns a new, shuffled version of an array.
@@ -56,11 +57,15 @@ export function getCurrRoom(state) {
 	return node.room
 }
 
-// Returns an array of targets (player or monsters) in the current room.
-// The "target" argument must be either "player", "enemyx" (where x is the index) or "all enemies"
+/**
+ * Returns an array of targets (player or monsters) in the current room.
+ * @param {import('./actions').State} state
+ * @param {string} targetString - must be either "player", "enemyx" (where x is the index) or "all enemies"
+ * @returns {Array<import('./dungeon-rooms').MONSTER>}
+ */
 export function getTargets(state, targetString) {
 	if (!targetString || typeof targetString != 'string') {
-		throw new Error('Missing targetString argument or not a string', targetString)
+		throw new Error('Missing targetString argument or not a string')
 	}
 	if (targetString.startsWith('player')) return [state.player]
 

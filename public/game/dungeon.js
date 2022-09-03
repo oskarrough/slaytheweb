@@ -31,7 +31,7 @@ const defaultOptions = {
 /**
  * Creates a new dungeon, complete with graph and paths.
  * @param {object} options
- * @returns DUNGEON
+ * @returns {DUNGEON}
  */
 export default function Dungeon(options = {}) {
 	options = Object.assign(defaultOptions, options)

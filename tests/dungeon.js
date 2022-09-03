@@ -8,7 +8,7 @@ import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../public
 const a = actions
 
 test('can create rooms with many monsters', (t) => {
-	const room = new MonsterRoom(new Monster(), new Monster())
+	const room = MonsterRoom(Monster(), Monster())
 	t.is(room.monsters.length, 2)
 })
 
@@ -36,7 +36,7 @@ test('we know when a monster room is won', (t) => {
 test('we know when a monster room with many monsters is completed', (t) => {
 	let state = a.createNewGame()
 	state = a.setDungeon(state, Dungeon({height: 1, width: 1}))
-	state.dungeon.graph[1][0].room = new MonsterRoom(new Monster(), new Monster())
+	state.dungeon.graph[1][0].room = MonsterRoom(Monster(), Monster())
 	state.dungeon.y = 1
 	t.false(isCurrentRoomCompleted(state))
 	t.false(isDungeonCompleted(state))

@@ -1,3 +1,4 @@
+// @ts-ignore
 import test from 'ava'
 import actions from '../public/game/actions.js'
 import {createCard} from '../public/game/cards.js'
@@ -407,12 +408,12 @@ test('add a reward card in the deck after winning a room', (t) => {
 	let {state} = t.context
 	state = a.addStarterDeck(state)
 	state = a.drawCards(state)
-	const room = new MonsterRoom(new Monster(), new Monster({hp: 20}))
+	const room = MonsterRoom(Monster(), Monster({hp: 20}))
 	room.monsters.forEach((monster) => (monster.currentHealth = 0))
 	const card = createCard('Strike')
 	t.is(state.deck.length, 10)
 	// act
-	const newState = a.addCardToDeck(state, card)
+	const newState = a.addCardToDeck(state, {card})
 	// assert
 	t.is(newState.deck.length, 11)
 })
