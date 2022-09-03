@@ -1,5 +1,6 @@
+// @ts-ignore
 import test from 'ava'
-import createNewGame from '../public/game/index.js'
+import createNewGame from '../public/game/new-game.js'
 import {createCard} from '../public/game/cards.js'
 
 // We don't want to test too much here,
