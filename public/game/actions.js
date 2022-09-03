@@ -262,7 +262,14 @@ function addEnergyToPlayer(state) {
 	})
 }
 
-// See the note on `target` above.
+/**
+ * Removes health from a target, respecting vulnerable and block.
+ * @param {Object} state
+ * @param {Object} props
+ * @param {Targets} props.target
+ * @param {number} props.amount
+ * @returns {Object} - new state
+ */
 const removeHealth = (state, {target, amount}) => {
 	return produce(state, (draft) => {
 		getTargets(draft, target).forEach((t) => {
@@ -277,15 +284,11 @@ const removeHealth = (state, {target, amount}) => {
 		})
 	})
 }
-const removePlayerHealth = (state, {target, amount}) => {
-	target = 'player'
-	return removeHealth(state, {target, amount})
-}
 
 /**
  * Sets the health of a target
  * @param {Object} state
- * @param {{target: string, amount: number}} props
+ * @param {{target: Targets, amount: number}} props
  * @returns {State}
  */
 const setHealth = (state, {target, amount}) => {
@@ -588,7 +591,6 @@ const allActions = {
 	removeCard,
 	removeHealth,
 	removePlayerDebuffs,
-	removePlayerHealth,
 	reshuffleAndDraw,
 	setDungeon,
 	setHealth,

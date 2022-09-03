@@ -396,7 +396,6 @@ test('target "allEnemies" works for damage as well as power', (t) => {
 		'none are vulnerable'
 	)
 	const card = createCard('Thunderclap')
-	console.log(card)
 	const nextState = a.playCard(state, {card})
 	t.is(getTargets(nextState, 'enemy0')[0].currentHealth, 24 - card.damage)
 	t.is(getTargets(nextState, 'enemy1')[0].currentHealth, 13 - card.damage)

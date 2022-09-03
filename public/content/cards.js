@@ -255,7 +255,7 @@ export default [
 		},
 		actions: [
 			{
-				type: 'removePlayerHealth',
+				type: 'removeHealth',
 				parameter: {
 					amount: 3,
 					target: 'player',
@@ -269,7 +269,7 @@ export default [
 			this.powers.weak = 4
 			this.actions = [
 				{
-					type: 'removePlayerHealth',
+					type: 'removeHealth',
 					parameter: {
 						amount: 4,
 						target: 'player',
