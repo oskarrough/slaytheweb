@@ -1,6 +1,7 @@
 // Third party dependencies
 import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 import gsap from './animations.js'
+// @ts-ignore
 import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 
 // Game logic
@@ -35,6 +36,10 @@ const load = () => JSON.parse(decodeURIComponent(window.location.hash.split('#')
 export default class App extends Component {
 	constructor() {
 		super()
+		// Props
+		this.base = undefined
+		this.state = {}
+		this.game = {}
 		this.overlayIndex = 11
 
 		// Scope methods
@@ -158,20 +163,23 @@ stw.dealCards()`)
 	}
 	handleShortcuts(event) {
 		const {key} = event
-		if (key === 'e') this.endTurn()
-		if (key === 'u') this.undo()
-		if (key === 'Escape') {
+		const keymap = {
+			e: () => this.endTurn(),
+			u: () => this.undo(),
+			Escape: () => {
 			// let openOverlays = this.base.querySelectorAll('.Overlay:not(#Menu)[open]')
 			let openOverlays = this.base.querySelectorAll(
 				'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open]'
 			)
 			openOverlays.forEach((el) => el.removeAttribute('open'))
 			this.toggleOverlay('#Menu')
+			},
+			d: () => this.toggleOverlay('#Deck'),
+			a: () => this.toggleOverlay('#DrawPile'),
+			s: () => this.toggleOverlay('#DiscardPile'),
+			m: () => this.toggleOverlay('#Map'),
 		}
-		if (key === 'd') this.toggleOverlay('#Deck')
-		if (key === 'a') this.toggleOverlay('#DrawPile')
-		if (key === 's') this.toggleOverlay('#DiscardPile')
-		if (key === 'm') this.toggleOverlay('#Map')
+		keymap[key]()
 	}
 	handlePlayerReward(choice, card) {
 		this.game.enqueue({type: 'addCardToDeck', card})
