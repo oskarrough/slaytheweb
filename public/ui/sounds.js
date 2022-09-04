@@ -108,21 +108,21 @@ function cardToHand() {
 	noise.stop('+0.1')
 }
 
-function playCard({card, target}) {
+function playCard({card}) {
 	const cardType = card.damage ? 'attack' : 'defense'
 	if (cardType === 'attack') {
-		playAttackCard({card, target})
+		playAttackCard()
 	}
 	if (cardType === 'defense') {
-		playDefenseCard({card, target})
+		playDefenseCard()
 	}
 }
 
-const playAttackCard = ({card, target}) => {
+const playAttackCard = () => {
 	amSynth.triggerAttackRelease('G#3', 0.2)
 }
 
-const playDefenseCard = ({card, target}) => {
+const playDefenseCard = () => {
 	amSynth.triggerAttackRelease('G#2', 0.02)
 }
 
