@@ -1,4 +1,4 @@
-import produce /*, {current}*/ from '../web_modules/immer.js'
+import {produce} from '../web_modules/immer.js'
 import {createCard, CardTargets} from './cards.js'
 import {clamp, shuffle} from './utils.js'
 import {getTargets, getCurrRoom} from './utils-state.js'
@@ -304,24 +304,25 @@ const setHealth = (state, {target, amount}) => {
 function applyCardPowers(state, {card, target}) {
 	return produce(state, (draft) => {
 		Object.entries(card.powers).forEach(([name, stacks]) => {
+			// Add powers that target player.
 			if (card.target === CardTargets.player) {
-				// Add powers that target player.
-				const newStacks = (draft.player.powers[name] || 0) + stacks
-				draft.player.powers[name] = newStacks
-			} else if (card.target === CardTargets.allEnemies) {
-				// Add powers that target all enemies.
+				draft.player.powers[name] = (draft.player.powers[name] || 0) + stacks
+			}
+
+			// Add powers that target all enemies.
+			if (card.target === CardTargets.allEnemies) {
 				draft.dungeon.graph[draft.dungeon.y][draft.dungeon.x].room.monsters.forEach((monster) => {
 					if (monster.currentHealth < 1) return
-					const newStacks = (monster.powers[name] || 0) + stacks
-					monster.powers[name] = newStacks
+					monster.powers[name] = (monster.powers[name] || 0) + stacks
 				})
-			} else if (target) {
-				// const t = getTargets(draft, target)
+			}
+
+			// Add powers to a specific enemy.
+			if (target) {
 				const index = target.split('enemy')[1]
 				const monster = draft.dungeon.graph[draft.dungeon.y][draft.dungeon.x].room.monsters[index]
 				if (monster.currentHealth < 1) return
-				const newStacks = (monster.powers[name] || 0) + stacks
-				monster.powers[name] = newStacks
+				monster.powers[name] = (monster.powers[name] || 0) + stacks
 			}
 		})
 	})
