@@ -109,13 +109,10 @@ function cardToHand() {
 }
 
 function playCard({card, target}) {
-	let cardValue = card.damage || card.block || 0,
-		cardType = card.damage ? 'attack' : 'defense'
-
+	const cardType = card.damage ? 'attack' : 'defense'
 	if (cardType === 'attack') {
 		playAttackCard({card, target})
 	}
-
 	if (cardType === 'defense') {
 		playDefenseCard({card, target})
 	}

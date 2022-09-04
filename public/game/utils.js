@@ -14,9 +14,9 @@ export function uuid(a) {
 export function shuffle(array) {
 	// Make a copy
 	array = array.slice()
-	var m = array.length
-	var t
-	var i
+	let m = array.length
+	let t
+	let i
 
 	// While there remain elements to shuffle…
 	while (m) {
