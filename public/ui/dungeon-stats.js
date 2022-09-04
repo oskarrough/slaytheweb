@@ -8,13 +8,13 @@ const getEnemiesStats = (dungeon) => {
 		finalHealth: 0,
 	}
 	/* for each path taken (room) in the dungeon, get some stats */
-	dungeon.pathTaken.forEach(usedNode => {
+	dungeon.pathTaken.forEach((usedNode) => {
 		const nodeData = dungeon.graph[usedNode.y][usedNode.x]
 		/* find some stats about the enemies encountered */
 		if (nodeData.room && nodeData.room.monsters) {
 			/* how many encountered monsters */
 			stats.encountered += nodeData.room.monsters.length
-			nodeData.room.monsters.forEach(monster => {
+			nodeData.room.monsters.forEach((monster) => {
 				/* how many killed monsters? */
 				if (monster.currentHealth <= 0) {
 					stats.killed += 1

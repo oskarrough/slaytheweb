@@ -161,12 +161,6 @@ export default [
 			a.percentage = 75
 			this.description = 'Gain 5 Regen. Can only be played if your health is below 75%.'
 		},
-		/*
-		// Not implemented. Playing around with syntax
-		condition(state) {
-			const percentage = state.player.currentHealth / state.player.maxHealth * 100
-			return percentage < 50
-		},*/
 	},
 	{
 		name: 'Summer of Sam',

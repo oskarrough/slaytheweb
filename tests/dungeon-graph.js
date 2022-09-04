@@ -1,3 +1,4 @@
+// @ts-ignore
 import test from 'ava'
 import {generateGraph} from '../public/game/dungeon.js'
 

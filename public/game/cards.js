@@ -77,8 +77,7 @@ export class Card {
 	}
 	upgrade() {
 		if (this.upgraded) return
-		// this.name = 'Name+', this.damage = 666
-		// etc...
+		// Here you can upgrade the card. Like this.damage = this.damage * 2
 	}
 }
 

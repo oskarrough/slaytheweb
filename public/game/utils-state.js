@@ -28,7 +28,7 @@ export function getCurrRoom(state) {
  * @returns {Array<import('./dungeon-rooms').MONSTER>}
  */
 export function getTargets(state, targetQuery) {
-	if (!targetQuery || typeof targetQuery != 'string') {
+	if (!targetQuery || typeof targetQuery !== 'string') {
 		throw new Error('Bad query string')
 	}
 	if (targetQuery === CardTargets.player) return [state.player]
