@@ -8,7 +8,7 @@
 .Target {
 	position: relative;
 	margin-top: 1rem;
-	padding: 3em 1em 1.4em;
+	padding: 2em 1em 1.4em;
 	flex: 1;
 	display: flex;
 	flex-flow: column;
