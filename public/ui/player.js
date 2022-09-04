@@ -81,7 +81,7 @@ function Healthbar({value, max, block}) {
 			</p>
 			<div class="Healthbar-bar" style=${`width: ${(value / max) * 100}%`}></div>
 			<div class="Healthbar-bar Healthbar-blockBar" style=${`width: ${(block / max) * 100}%`}>
-				${block}
+				${block > 0 ? block : ''}
 			</div>
 		</div>
 	`
