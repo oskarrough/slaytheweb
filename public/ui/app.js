@@ -101,6 +101,12 @@ stw.dealCards()`)
 		this.game.undo()
 		this.setState(this.game.state, this.dealCards)
 	}
+	/**
+	 * Plays a card while juggling DOM animations and set state.
+	 * @param {string} cardId
+	 * @param {string} target
+	 * @param {HTMLElement} cardElement
+	 */
 	playCard(cardId, target, cardElement) {
 		// Play the card.
 		const card = this.state.hand.find((c) => c.id === cardId)
@@ -178,7 +184,7 @@ stw.dealCards()`)
 			s: () => this.toggleOverlay('#DiscardPile'),
 			m: () => this.toggleOverlay('#Map'),
 		}
-		keymap[key]()
+		keymap[key] && keymap[key]()
 	}
 	handlePlayerReward(choice, card) {
 		this.game.enqueue({type: 'addCardToDeck', card})
