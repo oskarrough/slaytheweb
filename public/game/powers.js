@@ -1,37 +1,48 @@
+/**
+ * The type of a power
+ * @typedef POWER
+ * @property {string} name
+ * @property {string} description
+ * @property {string} type
+ * @property {string=} target
+ * @property {Function=} use
+ */
+
+// Class representing a power.
 class Power {
-	constructor({type, target, use, name, description}) {
+	/**
+	 * @param {POWER} power - The base power to create a class from
+	 */
+	constructor(power) {
+		const {name, description, type, target, use} = power
+		this.name = name
+		this.description = description
 		this.type = type
 		this.target = target
 		this.use = use
-		this.name = name
-		this.description = description
-	}
-	// Each power usually does one thing. This method describes what. Needs to return a number.
-	use() {
-		return null
 	}
 }
 
 export const regen = new Power({
 	type: 'buff',
 	name: 'Regen',
+	description: 'Heals an amount of health points equal to Regen stacks',
 	target: 'player',
 	use: (stacks) => stacks,
-	description: 'Heals an amount of health points equal to Regen stacks',
 })
 
 export const vulnerable = new Power({
 	type: 'debuff',
 	name: 'Vulnerable',
-	use: (dmg) => Math.floor(dmg * 1.5),
 	description: 'Takes 50% more damage while Vulnerable',
+	use: (dmg) => Math.floor(dmg * 1.5),
 })
 
 export const weak = new Power({
 	type: 'debuff',
 	name: 'Weak',
-	use: (dmg) => Math.floor(dmg * 0.75),
 	description: 'Weakened targets deal 25% less damage',
+	use: (dmg) => Math.floor(dmg * 0.75),
 })
 
 export default {regen, vulnerable, weak}

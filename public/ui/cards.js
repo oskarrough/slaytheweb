@@ -1,4 +1,5 @@
 import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
+import {canPlay} from '../game/conditions.js'
 
 export default class Cards extends Component {
 	// props = {gameState: {}, type ''}
@@ -9,17 +10,7 @@ export default class Cards extends Component {
 }
 
 export function Card(card, gameState) {
-	function canPlayCard(card, gameState) {
-		const notEnoughEnergy = gameState && gameState.player.currentEnergy < card.energy
-		const cardIsInHand = gameState && gameState.hand.find((c) => c.id === card.id)
-		if (!cardIsInHand) return false
-		if (notEnoughEnergy) return false
-		if (gameState && card.conditions) {
-			return card.canPlay(gameState)
-		}
-		return true
-	}
-	const isDisabled = !canPlayCard(card, gameState)
+	const isDisabled = !canPlay(card, gameState)
 	const image = card.image ? `/ui/images/cards/${card.image}` : '/ui/images/cards/fallback.jpg'
 
 	return html`

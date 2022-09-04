@@ -1,14 +1,15 @@
+// @ts-ignore
 import test from 'ava'
 import {createTestDungeon} from '../public/content/dungeon-encounters.js'
 import actions from '../public/game/actions.js'
 import Dungeon from '../public/game/dungeon.js'
 import {MonsterRoom, Monster} from '../public/game/dungeon-rooms.js'
-import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../public/game/utils.js'
+import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../public/game/utils-state.js'
 
 const a = actions
 
 test('can create rooms with many monsters', (t) => {
-	const room = new MonsterRoom(new Monster(), new Monster())
+	const room = MonsterRoom(Monster(), Monster())
 	t.is(room.monsters.length, 2)
 })
 
@@ -28,22 +29,22 @@ test('we know when a monster room is won', (t) => {
 	let state = a.createNewGame()
 	state = a.setDungeon(state, createTestDungeon())
 	state.dungeon.y = 1
-	t.false(isCurrentRoomCompleted(state))
+	t.false(isCurrRoomCompleted(state))
 	getCurrRoom(state).monsters[0].currentHealth = 0
-	t.true(isCurrentRoomCompleted(state))
+	t.true(isCurrRoomCompleted(state))
 })
 
 test('we know when a monster room with many monsters is completed', (t) => {
 	let state = a.createNewGame()
 	state = a.setDungeon(state, Dungeon({height: 1, width: 1}))
-	state.dungeon.graph[1][0].room = new MonsterRoom(new Monster(), new Monster())
+	state.dungeon.graph[1][0].room = MonsterRoom(Monster(), Monster())
 	state.dungeon.y = 1
-	t.false(isCurrentRoomCompleted(state))
+	t.false(isCurrRoomCompleted(state))
 	t.false(isDungeonCompleted(state))
 	getCurrRoom(state).monsters[0].currentHealth = 0
-	t.false(isCurrentRoomCompleted(state), 'one more to kill')
+	t.false(isCurrRoomCompleted(state), 'one more to kill')
 	getCurrRoom(state).monsters[1].currentHealth = 0
-	t.true(isCurrentRoomCompleted(state))
+	t.true(isCurrRoomCompleted(state))
 })
 
 test('we know when the entire dungeon is compelete', (t) => {

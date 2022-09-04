@@ -1,9 +1,10 @@
+// @ts-ignore
 import test from 'ava'
 import actions from '../public/game/actions.js'
 import {createCard} from '../public/game/cards.js'
 import {MonsterRoom, Monster} from '../public/game/dungeon-rooms.js'
 import {createTestDungeon} from '../public/content/dungeon-encounters.js'
-import {getTargets, getCurrRoom, isCurrentRoomCompleted} from '../public/game/utils.js'
+import {getTargets, getCurrRoom, isCurrRoomCompleted} from '../public/game/utils-state.js'
 
 const a = actions
 
@@ -219,9 +220,9 @@ test('can play a defend card from hand and see the effects on state', (t) => {
 
 test('when monster reaches 0 hp, you win!', (t) => {
 	const {state} = t.context
-	t.false(isCurrentRoomCompleted(state))
+	t.false(isCurrRoomCompleted(state))
 	const newState = a.removeHealth(state, {target: 'enemy0', amount: 42})
-	t.true(isCurrentRoomCompleted(newState))
+	t.true(isCurrRoomCompleted(newState))
 })
 
 test('can discard a single card from hand', (t) => {
@@ -357,7 +358,7 @@ test('Flourish card adds a healing "regen" buff', (t) => {
 	// Pacify the monster...
 	// produce(state2, (draft) => {
 	// getCurrRoom(draft).monsters[0].intents = []
-	getTargets(state, 'enemy0').intents = []
+	// getTargets(state, 'enemy0').intents = []
 	// })
 
 	t.is(state2.player.powers.regen, flourish.powers.regen, 'regen is applied to player')
@@ -383,7 +384,7 @@ test('Flourish card adds a healing "regen" buff', (t) => {
 	// t.is(state2.player.currentHealth, 20)
 })
 
-test('target "all enemies" works for damage as well as power', (t) => {
+test('target "allEnemies" works for damage as well as power', (t) => {
 	const {state} = t.context
 	state.dungeon.y++
 	const room = getCurrRoom(state)
@@ -407,12 +408,12 @@ test('add a reward card in the deck after winning a room', (t) => {
 	let {state} = t.context
 	state = a.addStarterDeck(state)
 	state = a.drawCards(state)
-	const room = new MonsterRoom(new Monster(), new Monster({hp: 20}))
+	const room = MonsterRoom(Monster(), Monster({hp: 20}))
 	room.monsters.forEach((monster) => (monster.currentHealth = 0))
 	const card = createCard('Strike')
 	t.is(state.deck.length, 10)
 	// act
-	const newState = a.rewardPlayer(state, card)
+	const newState = a.addCardToDeck(state, {card})
 	// assert
 	t.is(newState.deck.length, 11)
 })
@@ -435,7 +436,7 @@ test('can not play card if target doesnt match', (t) => {
 test('summer of sam card gains 1 life', (t) => {
 	const {state} = t.context
 	const card = createCard('Summer of Sam')
-	t.is(typeof card.use, 'function')
+	t.is(card.actions.length, 2, 'card has "actions"')
 	state.player.currentHealth = 50
 	const newState = a.playCard(state, {target: 'player', card})
 	t.is(newState.player.currentHealth, 51, 'gain 1 life')

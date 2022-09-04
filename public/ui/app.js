@@ -4,10 +4,10 @@ import gsap from './animations.js'
 import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 
 // Game logic
-import createNewGame from '../game/index.js'
+import createNewGame from '../game/new-game.js'
 import {createCard, getCardRewards} from '../game/cards.js'
-import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../game/utils.js'
-import backend from '../game/backend.js'
+import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../game/utils-state.js'
+import * as backend from '../game/backend.js'
 
 // UI Components
 import Cards from './cards.js'
@@ -20,7 +20,13 @@ import CampfireRoom from './campfire.js'
 import StartRoom from './start-room.js'
 import DungeonStats from './dungeon-stats.js'
 import enableDragDrop from './dragdrop.js'
-import sfx from './sounds.js'
+
+// Temporary hack to disabled sounds without touching game code.
+import realSfx from './sounds.js'
+const sfx = {}
+Object.keys(realSfx).forEach((key) => {
+	sfx[key] = () => null
+})
 
 // Puts and gets the game state in the URL.
 const save = (state) => (location.hash = encodeURIComponent(JSON.stringify(state)))
@@ -168,7 +174,7 @@ stw.dealCards()`)
 		if (key === 'm') this.toggleOverlay('#Map')
 	}
 	handlePlayerReward(choice, card) {
-		this.game.enqueue({type: 'rewardPlayer', card})
+		this.game.enqueue({type: 'addCardToDeck', card})
 		this.setState({didPickCard: card})
 		this.update()
 	}
@@ -204,7 +210,7 @@ stw.dealCards()`)
 	render(props, state) {
 		if (!state.player) return
 		const isDead = state.player.currentHealth < 1
-		const didWin = isCurrentRoomCompleted(state)
+		const didWin = isCurrRoomCompleted(state)
 		const didWinEntireGame = isDungeonCompleted(state)
 		const room = getCurrRoom(state)
 		const noEnergy = !state.player.currentEnergy
