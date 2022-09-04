@@ -11,6 +11,6 @@ module.exports = {
 	},
 	ignorePatterns: ['public/web_modules/'],
 	rules: {
-		complexity: ['warn', 4],
+		complexity: ['warn', 14],
 	},
 }
