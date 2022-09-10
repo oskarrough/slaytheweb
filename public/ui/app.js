@@ -8,7 +8,7 @@ import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 import createNewGame from '../game/new-game.js'
 import {createCard, getCardRewards} from '../game/cards.js'
 import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../game/utils-state.js'
-import * as backend from '../game/backend.js'
+import {saveGame, loadGame} from './save-load.js'
 
 // UI Components
 import Cards from './cards.js'
@@ -21,8 +21,6 @@ import Menu from './menu.js'
 import StartRoom from './start-room.js'
 import DungeonStats from './dungeon-stats.js'
 import enableDragDrop from './dragdrop.js'
-import sfx from './sounds.js'
-import {saveGame, loadGame} from './save-load.js'
 
 // Temporary hack to disabled sounds without touching game code.
 import realSfx from './sounds.js'
@@ -70,7 +68,7 @@ export default class App extends Component {
 		// Enable a "console" in the browser.
 		console.log(`Welcome to the Slay The Web Console. Some examples:
 stw.game.enqueue({type: 'drawCards', amount: 2})
-stw.update()`)
+stw.update()
 stw.dealCards()`)
 		// @ts-ignore
 		window.stw = {

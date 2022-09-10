@@ -31,7 +31,7 @@ class SlayTheWeb extends Component {
 		window.history.pushState('', document.title, window.location.pathname)
 	}
 	handleContinueGame() {
-		this.setState({gameMode: GAMEMODE.GAMEPLAY})
+		this.setState({gameMode: GameModes.gameplay})
 	}
 	handleWin() {
 		this.setState({gameMode: GameModes.win})
