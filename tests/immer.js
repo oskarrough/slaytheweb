@@ -1,5 +1,5 @@
 import test from 'ava'
-import produce from '../public/web_modules/immer.js'
+import {produce} from '../public/web_modules/immer.js'
 
 const changeCount = produce((draft) => {
 	draft.count = 2

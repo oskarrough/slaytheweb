@@ -1,5 +1,6 @@
+// @ts-ignore
 import test from 'ava'
-import createNewGame from '../public/game/index.js'
+import createNewGame from '../public/game/new-game.js'
 import {createCard} from '../public/game/cards.js'
 
 // We don't want to test too much here,
@@ -17,7 +18,7 @@ test('it all', (t) => {
 	t.is(game.future.list.length, 0)
 	t.is(game.past.list.length, 1)
 	t.is(game.state.hand.length, 6)
-	t.is(game.state.hand[game.state.hand.length - 1].id, strike.id)
+	t.is(game.state.hand[game.state.hand.length - 1].name, strike.name)
 	// we can undo
 	game.undo()
 	t.is(game.state.hand.length, 5)

@@ -1,3 +1,4 @@
+// @ts-ignore
 import test from 'ava'
 import actions from '../public/game/actions.js'
 import Dungeon from '../public/game/dungeon.js'

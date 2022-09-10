@@ -47,9 +47,14 @@
 	object-fit: cover;
 	object-position: center top;
 }
+@media (max-height: 500px) {
+	.Card-media img {
+		height: 70px;
+	}
+}
 .Card-name {
 	margin: 0.5rem 0;
-	padding: 0.5rem 0 0.4rem;
+	padding: 0.5rem 0 0.1rem;
 	margin: 0;
 	/* background-color: #111;
 	background-image: linear-gradient(to bottom, hsla(0, 0%, 0%, 0.2), transparent); */

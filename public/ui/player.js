@@ -18,10 +18,11 @@ export const Monster = (props) => {
 	function MonsterIntent([type, amount]) {
 		const weakened = monster.powers.weak
 		const vulnerable = state.player.powers.vulnerable
+
 		if (type === 'damage' && weakened) amount = weakPower.use(amount)
 		if (type === 'damage' && vulnerable) amount = vulnerablePower.use(amount)
 
-		let tooltip = false
+		let tooltip = ''
 		if (type === 'damage') tooltip = `Will deal ${amount} damage`
 		if (type === 'block') tooltip = `Will block for ${amount}`
 		if (type === 'weak') tooltip = `Will apply ${amount} Weak`
@@ -39,8 +40,7 @@ export const Monster = (props) => {
 
 	return html`
 		<${Target} ...${props} type="enemy">
-			${intent &&
-			Object.entries(intent).map((intent) => MonsterIntent(intent, monster, props.gameState))}
+			${intent && Object.entries(intent).map((intent) => MonsterIntent(intent))}
 		<//>
 	`
 }
@@ -54,6 +54,7 @@ class Target extends Component {
 		// const gainedBlock = this.props.model.block - prevProps.model.block
 		// if (gainedBlock > 0) this.setState({gainedBlock})
 	}
+
 	render({model, type, name, children}, state) {
 		const isDead = model.currentHealth < 1
 		const hp = isDead ? 0 : model.currentHealth
@@ -80,19 +81,19 @@ function Healthbar({value, max, block}) {
 			</p>
 			<div class="Healthbar-bar" style=${`width: ${(value / max) * 100}%`}></div>
 			<div class="Healthbar-bar Healthbar-blockBar" style=${`width: ${(block / max) * 100}%`}>
-				${block ? block : ''}
+				${block > 0 ? block : ''}
 			</div>
 		</div>
 	`
 }
 
 // Shows currently active powers.
-const Powers = ({powers = {}}) => {
+const Powers = (props) => {
 	return html`
 		<div class="Target-powers">
-			<${Power} amount=${powers.vulnerable} power=${vulnerablePower} />
-			<${Power} amount=${powers.regen} power=${regenPower} />
-			<${Power} amount=${powers.weak} power=${weakPower} />
+			<${Power} amount=${props.powers.vulnerable} power=${vulnerablePower} />
+			<${Power} amount=${props.powers.regen} power=${regenPower} />
+			<${Power} amount=${props.powers.weak} power=${weakPower} />
 		</div>
 	`
 }

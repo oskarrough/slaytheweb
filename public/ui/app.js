@@ -1,31 +1,43 @@
 // Third party dependencies
 import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
 import gsap from './animations.js'
+// @ts-ignore
 import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 
 // Game logic
-import createNewGame from '../game/index.js'
+import createNewGame from '../game/new-game.js'
 import {createCard, getCardRewards} from '../game/cards.js'
-import {getCurrRoom, isCurrentRoomCompleted, isDungeonCompleted} from '../game/utils.js'
-import backend from '../game/backend.js'
+import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../game/utils-state.js'
+import * as backend from '../game/backend.js'
 
 // UI Components
 import Cards from './cards.js'
-import History from './history.js'
 import Map from './map.js'
 import {Overlay, OverlayWithButton} from './overlays.js'
 import {Player, Monster} from './player.js'
 import CardChooser from './card-chooser.js'
 import CampfireRoom from './campfire.js'
+import Menu from './menu.js'
 import StartRoom from './start-room.js'
 import DungeonStats from './dungeon-stats.js'
 import enableDragDrop from './dragdrop.js'
 import sfx from './sounds.js'
 import {saveGame, loadGame} from './save-load.js'
 
+// Temporary hack to disabled sounds without touching game code.
+import realSfx from './sounds.js'
+const sfx = {}
+Object.keys(realSfx).forEach((key) => {
+	sfx[key] = () => null
+})
+
 export default class App extends Component {
 	constructor() {
 		super()
+		// Props
+		this.base = undefined
+		this.state = {}
+		this.game = {}
 		this.overlayIndex = 11
 
 		// Scope methods
@@ -59,6 +71,8 @@ export default class App extends Component {
 		console.log(`Welcome to the Slay The Web Console. Some examples:
 stw.game.enqueue({type: 'drawCards', amount: 2})
 stw.update()`)
+stw.dealCards()`)
+		// @ts-ignore
 		window.stw = {
 			game: this.game,
 			update: this.update.bind(this),
@@ -88,6 +102,12 @@ stw.update()`)
 		this.game.undo()
 		this.setState(this.game.state, this.dealCards)
 	}
+	/**
+	 * Plays a card while juggling DOM animations and set state.
+	 * @param {string} cardId
+	 * @param {string} target
+	 * @param {HTMLElement} cardElement
+	 */
 	playCard(cardId, target, cardElement) {
 		// Play the card.
 		const card = this.state.hand.find((c) => c.id === cardId)
@@ -149,23 +169,26 @@ stw.update()`)
 	}
 	handleShortcuts(event) {
 		const {key} = event
-		if (key === 'e') this.endTurn()
-		if (key === 'u') this.undo()
-		if (key === 'Escape') {
-			// let openOverlays = this.base.querySelectorAll('.Overlay:not(#Menu)[open]')
-			let openOverlays = this.base.querySelectorAll(
-				'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open]'
-			)
-			openOverlays.forEach((el) => el.removeAttribute('open'))
-			this.toggleOverlay('#Menu')
+		const keymap = {
+			e: () => this.endTurn(),
+			u: () => this.undo(),
+			Escape: () => {
+				// let openOverlays = this.base.querySelectorAll('.Overlay:not(#Menu)[open]')
+				let openOverlays = this.base.querySelectorAll(
+					'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open]'
+				)
+				openOverlays.forEach((el) => el.removeAttribute('open'))
+				this.toggleOverlay('#Menu')
+			},
+			d: () => this.toggleOverlay('#Deck'),
+			a: () => this.toggleOverlay('#DrawPile'),
+			s: () => this.toggleOverlay('#DiscardPile'),
+			m: () => this.toggleOverlay('#Map'),
 		}
-		if (key === 'd') this.toggleOverlay('#Deck')
-		if (key === 'a') this.toggleOverlay('#DrawPile')
-		if (key === 's') this.toggleOverlay('#DiscardPile')
-		if (key === 'm') this.toggleOverlay('#Map')
+		keymap[key] && keymap[key]()
 	}
 	handlePlayerReward(choice, card) {
-		this.game.enqueue({type: 'rewardPlayer', card})
+		this.game.enqueue({type: 'addCardToDeck', card})
 		this.setState({didPickCard: card})
 		this.update()
 	}
@@ -201,18 +224,21 @@ stw.update()`)
 	render(props, state) {
 		if (!state.player) return
 		const isDead = state.player.currentHealth < 1
-		const didWin = isCurrentRoomCompleted(state)
+		const didWin = isCurrRoomCompleted(state)
 		const didWinEntireGame = isDungeonCompleted(state)
 		const room = getCurrRoom(state)
 		const noEnergy = !state.player.currentEnergy
+
 		// There's a lot here because I did not want to split into too many files.
 		return html`
 			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
 				<figure class="App-background" data-room-index=${state.dungeon.y}></div>
+
 				${
 					room.type === 'start DISABLED' &&
 					html`<${Overlay}><${StartRoom} onContinue=${this.goToNextRoom} /><//>`
 				}
+
 				${
 					isDead &&
 					html`<${Overlay}>
@@ -221,6 +247,7 @@ stw.update()`)
 						<button onclick=${() => this.props.onLoose()}>Try again?</button>
 					<//> `
 				}
+
 				${
 					didWinEntireGame &&
 					html`<${Overlay}>
@@ -228,6 +255,7 @@ stw.update()`)
 						<${DungeonStats} state=${state}><//>
 					<//> `
 				}
+
 				${
 					!didWinEntireGame &&
 					didWin &&
@@ -247,6 +275,7 @@ stw.update()`)
 						<p center><button onclick=${() => this.goToNextRoom()}>Go to next room</button></p>
 					<//> `
 				}
+
 				${
 					room.type === 'campfire' &&
 					html`<${Overlay}>
@@ -292,49 +321,29 @@ stw.update()`)
 				<${OverlayWithButton} id="Menu" topleft>
 					<button onClick=${() => this.toggleOverlay('#Menu')}><u>Esc</u>ape</button>
 					<div class="Overlay-content">
-						<div class="Splash">
-							<h1 medium>Slay the Web</h1>
-							<ul class="Options">
-								<li><button onclick=${() =>
-									saveGame(
-										state
-									)} title="After saving, your entire game is stored in the URL. Copy it">Save</button></li>
-								<li><button onclick=${() => (window.location = window.location.origin)}>Abandon Game</button></li>
-							</ul>
-							<${History} future=${this.game.future.list} past=${this.game.past.list} />
-							${
-								this.game.past.list.length &&
-								html`<p>
-									<button onclick=${() => this.undo()}>
-										<u>U</u>
-										ndo
-									</button>
-
-									<br />
-								</p>`
-							}
-							<p style="margin-top:auto"><a rel="noreferrer" target="_blank" href="https://github.com/oskarrough/slaytheweb">View source</a></p>
-						</div>
+							<${Menu} gameState=${state} game=${this.game} onUndo=${() => this.undo()} />
 					</div>
 				<//>
+
 				<${OverlayWithButton} id="Map" open topright key=${1}>
 					${
 						room.type !== 'start' &&
 						html`<button align-right onClick=${() => this.toggleOverlay('#Map')}>
-							<u>M</u>
-							ap
+							<u>M</u>ap
 						</button>`
 					}
 					<div class="Overlay-content">
 						<${Map} dungeon=${state.dungeon} onMove=${this.handleMapMove} />
 					</div>
 				<//>
+
 				<${OverlayWithButton} id="Deck" topright topright2>
 					<button onClick=${() => this.toggleOverlay('#Deck')}><u>D</u>eck ${state.deck.length}</button>
 					<div class="Overlay-content">
 						<${Cards} gameState=${state} type="deck" />
 					</div>
 				<//>
+
 				<${OverlayWithButton} id="DrawPile" bottomleft>
 					<button class="tooltipped tooltipped-ne" aria-label="The cards you'll draw next in random order" onClick=${() =>
 						this.toggleOverlay('#DrawPile')}>Dr<u>a</u>w pile ${state.drawPile.length}</button>
@@ -342,6 +351,7 @@ stw.update()`)
 						<${Cards} gameState=${state} type="drawPile" />
 					</div>
 				<//>
+
 				<${OverlayWithButton} id="DiscardPile" bottomright>
 					<button onClick=${() =>
 						this.toggleOverlay(
@@ -353,7 +363,7 @@ stw.update()`)
 						<${Cards} gameState=${state} type="discardPile" />
 					</div>
 				<//>
-			</div>
+		</div>
 		`
 	}
 }

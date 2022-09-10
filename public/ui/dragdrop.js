@@ -1,6 +1,6 @@
 import {Draggable} from '../web_modules/gsap/Draggable.js'
 import gsap from './animations.js'
-import {cardHasValidTarget} from '../game/utils.js'
+import {cardHasValidTarget} from '../game/utils-state.js'
 import sfx from './sounds.js'
 
 // Class to add to the element we are dragging over.
@@ -11,6 +11,11 @@ function animateCardToHand(draggable) {
 	return gsap.to(draggable.target, {x: draggable.startX, y: draggable.startY})
 }
 
+/**
+ *
+ * @param {HTMLElement} el
+ * @returns {string}
+ */
 function getTargetStringFromElement(el) {
 	const targetIndex = Array.from(el.parentNode.children).indexOf(el)
 	return el.dataset.type + targetIndex

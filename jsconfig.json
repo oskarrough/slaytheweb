@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"checkJs": true,
+		"target": "esnext",
+	},
+	"include": [
+		"public/**/*",
+		"tests/**/*"
+	],
+	"exclude": [
+		"public/web_modules/",
+		"node_modules",
+	]
+}

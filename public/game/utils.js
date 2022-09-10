@@ -1,11 +1,12 @@
 // A collection of utility functions.
-// None are allowed to modify the game state!
+// None are allowed to modify the game state.
 
 // Returns a random-looking string for ids.
 export function uuid(a) {
 	return a
 		? (a ^ ((Math.random() * 16) >> (a / 4))).toString(16)
-		: ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, uuid)
+		: // @ts-ignore
+		  ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, uuid)
 }
 
 // Returns a new, shuffled version of an array.
@@ -13,9 +14,9 @@ export function uuid(a) {
 export function shuffle(array) {
 	// Make a copy
 	array = array.slice()
-	var m = array.length
-	var t
-	var i
+	let m = array.length
+	let t
+	let i
 
 	// While there remain elements to shuffle…
 	while (m) {
@@ -44,89 +45,6 @@ export function random(from, to) {
 	return shuffle(r)[0]
 }
 
-// Returns the current map node
-export function getCurrMapNode(state) {
-	return state.dungeon.graph[state.dungeon.y][state.dungeon.x]
-}
-
-// Returns the current dungeon room from the the y/x props
-export function getCurrRoom(state) {
-	const node = getCurrMapNode(state)
-	if (!node.room) throw new Error('This node has no room')
-	return node.room
-}
-
-// Returns an array of targets (player or monsters) in the current room.
-// The "target" argument must be either "player", "enemyx" (where x is the index) or "all enemies"
-export function getTargets(state, targetString) {
-	if (!targetString || typeof targetString != 'string') {
-		throw new Error('Missing targetString argument or not a string', targetString)
-	}
-	if (targetString.startsWith('player')) return [state.player]
-
-	const room = getCurrRoom(state)
-
-	if (targetString === 'all enemies') {
-		return room.monsters
-	}
-
-	if (targetString.startsWith('enemy')) {
-		const index = targetString.split('enemy')[1]
-		const monster = room.monsters[index]
-		if (!monster) {
-			throw new Error(
-				`Could not find "${targetString}" on floor ${state.dungeon.y}, room ${state.dungeon.y}`
-			)
-		}
-		return [monster]
-	}
-
-	throw new Error(`Can not find monster with target: "${targetString}"`)
-}
-
-export function cardHasValidTarget(cardTarget, targetString) {
-	return (
-		(cardTarget === 'player' && targetString.includes('player')) ||
-		(cardTarget === 'enemy' && targetString.includes('enemy')) ||
-		(cardTarget === 'all enemies' && targetString.includes('enemy'))
-	)
-}
-
-export function isRoomCompleted(room) {
-	if (room.type === 'monster') {
-		const deadMonsters = room.monsters.filter((m) => m.currentHealth < 1)
-		return deadMonsters.length === room.monsters.length
-	} else if (room.type === 'campfire') {
-		return room.choice === 'rest' || Boolean(room.reward)
-	} else if (room.type === 'start') {
-		return true
-	}
-	throw new Error(`could not check if room has been completed: "${room.type}"`)
-}
-
-// Check if the current room in a game has been cleared.
-export function isCurrentRoomCompleted(state) {
-	const room = getCurrRoom(state)
-	return isRoomCompleted(room)
-}
-
-// Checks if the whole dungeon (all rooms) has been cleared.
-// As long as there is one cleared node per floor.
-export function isDungeonCompleted(state) {
-	const clearedRooms = state.dungeon.graph
-		.map((floor) => {
-			return floor.some((node) => {
-				return node.room && isRoomCompleted(node.room)
-			})
-		})
-		.filter(Boolean)
-	return clearedRooms.length === state.dungeon.graph.length
-}
-
 export function clamp(x, lower, upper) {
 	return Math.max(lower, Math.min(x, upper))
-}
-
-export function assert(condition, message) {
-	if (!condition) throw new Error(message)
 }

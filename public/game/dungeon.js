@@ -23,6 +23,16 @@ const defaultOptions = {
 	// customPaths: '123'
 }
 
+/**
+ * @typedef {object} DUNGEON
+ * @param {string} id
+ */
+
+/**
+ * Creates a new dungeon, complete with graph and paths.
+ * @param {object} options
+ * @returns {DUNGEON}
+ */
 export default function Dungeon(options = {}) {
 	options = Object.assign(defaultOptions, options)
 
@@ -45,7 +55,7 @@ export default function Dungeon(options = {}) {
 	graph.forEach((floor, floorNumber) => {
 		floor.map((node) => {
 			if (node.type) {
-				node.room = decideRoomType(node.type, floorNumber, graph)
+				node.room = decideRoomType(node.type, floorNumber)
 			}
 		})
 	})
@@ -60,13 +70,14 @@ export default function Dungeon(options = {}) {
 	}
 }
 
+const pick = (types) => shuffle(Array.from(types))[0]
+
 /**
  * Decide which type the node should be #balance
- * @param {string} a specially formatted string
- * @param {number} the floor
- * @returns {string} node type
+ * @param {string} nodeTypes - a specially formatted string
+ * @param {number} floor
+ * @returns {string} node type character
  */
-const pick = (types) => shuffle(Array.from(types))[0]
 function decideNodeType(nodeTypes, floor) {
 	let types = nodeTypes
 	if (floor < 2) return 'M'
@@ -105,16 +116,15 @@ function decideRoomType(nodeType, floor /*, graph*/) {
 		[node, node, node],
 		[bossNode]
 	]
-
- * @param {*} options
- * @returns {array} graph
+ * @param {object} options
+ * @returns {array} - graph
  */
 export function generateGraph(options = {}) {
 	options = Object.assign(defaultOptions, options)
-	const {height, width, minRooms, maxRooms, roomTypes} = options
+	const {height, width, minRooms, maxRooms} = options
 
-	function Node(type = false) {
-		return {id: uuid(), type, edges: new Set(), room: undefined}
+	function Node(type) {
+		return {id: uuid(), type: type || false, edges: new Set(), room: undefined}
 	}
 
 	const graph = []
@@ -129,7 +139,7 @@ export function generateGraph(options = {}) {
 
 		// Create the "room" nodes
 		for (let i = 0; i < desiredAmountOfRooms; i++) {
-			const nodeType = decideNodeType(roomTypes, floorNumber)
+			const nodeType = decideNodeType(options.roomTypes, floorNumber)
 			floor.push(Node(nodeType))
 		}
 
@@ -151,8 +161,8 @@ export function generateGraph(options = {}) {
 
 /**
  * Returns an array of possible paths from start to finish.
- * @param {object} dungeon graph
- * @param {string} graph the "customPath" on the `Dungeon` function
+ * @param {object} graph - dungeon graph
+ * @param {string} customPaths - the "customPath" on the `Dungeon` function
  * @returns {array} customPaths a list of paths
  */
 export function generatePaths(graph, customPaths) {

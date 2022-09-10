@@ -1,5 +1,6 @@
 import {Component, html} from '../web_modules/htm/preact/standalone.module.js'
-import {isRoomCompleted, random as randomBetween} from '../game/utils.js'
+import {random as randomBetween} from '../game/utils.js'
+import {isRoomCompleted} from '../game/utils-state.js'
 
 export default function map(props) {
 	const {x, y, pathTaken} = props.dungeon
@@ -99,12 +100,12 @@ export class SlayMap extends Component {
 				)
 			}
 			const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
-			line.setAttribute('x1', aPos.left + aPos.width / 2)
-			line.setAttribute('y1', aPos.top + aPos.height / 2)
-			line.setAttribute('x2', bPos.left + bPos.width / 2)
-			line.setAttribute('y2', bPos.top + bPos.height / 2)
+			line.setAttribute('x1', String(aPos.left + aPos.width / 2))
+			line.setAttribute('y1', String(aPos.top + aPos.height / 2))
+			line.setAttribute('x2', String(bPos.left + bPos.width / 2))
+			line.setAttribute('y2', String(bPos.top + bPos.height / 2))
 			svg.appendChild(line)
-			line.setAttribute('length', line.getTotalLength())
+			line.setAttribute('length', String(line.getTotalLength()))
 			aEl.setAttribute('linked', true)
 			bEl.setAttribute('linked', true)
 			if (debug) console.log(`Move no. ${index} is from ${a} to ${b}`)
@@ -166,6 +167,12 @@ function emojiFromNodeType(type) {
 
 // Since el.offsetLeft doesn't respect CSS transforms,
 // and getBounding.. is relative to viewport, not parent, we need this utility.
+/**
+ *
+ * @param {HTMLElement} el
+ * @param {HTMLElement} container
+ * @returns {{top: number, left: number, width: number, height: number}}
+ */
 function getPosWithin(el, container) {
 	if (!el) throw new Error('Could not find DOM node for graph row node')
 	if (!container) throw new Error('missing container')

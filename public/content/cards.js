@@ -127,7 +127,7 @@ export default [
 		type: 'attack',
 		energy: 1,
 		damage: 4,
-		target: 'all enemies',
+		target: 'allEnemies',
 		powers: {
 			vulnerable: 1,
 		},
@@ -161,12 +161,6 @@ export default [
 			a.percentage = 75
 			this.description = 'Gain 5 Regen. Can only be played if your health is below 75%.'
 		},
-		/*
-		// Not implemented. Playing around with syntax
-		condition(state) {
-			const percentage = state.player.currentHealth / state.player.maxHealth * 100
-			return percentage < 50
-		},*/
 	},
 	{
 		name: 'Summer of Sam',
@@ -224,7 +218,7 @@ export default [
 		name: 'Succube',
 		type: 'attack',
 		energy: 3,
-		target: 'all enemies',
+		target: 'allEnemies',
 		description: 'Deal 2 Damage to all enemies and suck it into life.',
 		image: 'succube.png',
 		damage: 2,
@@ -243,7 +237,7 @@ export default [
 		name: 'Soul Drain',
 		type: 'attack',
 		energy: 1,
-		target: 'all enemies',
+		target: 'allEnemies',
 		description: 'Drain 3 Health into Weakness and Vulnerability.',
 		image: 'soul-drain.png',
 		damage: 0,
@@ -253,7 +247,7 @@ export default [
 		},
 		actions: [
 			{
-				type: 'removePlayerHealth',
+				type: 'removeHealth',
 				parameter: {
 					amount: 3,
 					target: 'player',
@@ -267,7 +261,7 @@ export default [
 			this.powers.weak = 4
 			this.actions = [
 				{
-					type: 'removePlayerHealth',
+					type: 'removeHealth',
 					parameter: {
 						amount: 4,
 						target: 'player',

@@ -3,10 +3,11 @@ import App from './app.js'
 import SplashScreen from './splash-screen.js'
 import WinScreen from './win-screen.js'
 
-const GAMEMODE = {
-	SPLASH: 'splash',
-	GAMEPLAY: 'gameplay',
-	WIN: 'win',
+/** @enum {string} */
+const GameModes = {
+	splash: 'splash',
+	gameplay: 'gameplay',
+	win: 'win',
 }
 
 /**
@@ -17,14 +18,15 @@ class SlayTheWeb extends Component {
 	constructor() {
 		super()
 		this.state = {
-			gameMode: GAMEMODE.SPLASH,
+			// The game mode to start in.
+			gameMode: GameModes.splash,
 		}
 		this.handleWin = this.handleWin.bind(this)
 		this.handleNewGame = this.handleNewGame.bind(this)
 		this.handleLoose = this.handleLoose.bind(this)
 	}
 	handleNewGame() {
-		this.setState({gameMode: GAMEMODE.GAMEPLAY})
+		this.setState({gameMode: GameModes.gameplay})
 		// Clear any previous saved game.
 		window.history.pushState('', document.title, window.location.pathname)
 	}
@@ -32,20 +34,20 @@ class SlayTheWeb extends Component {
 		this.setState({gameMode: GAMEMODE.GAMEPLAY})
 	}
 	handleWin() {
-		this.setState({gameMode: GAMEMODE.WIN})
+		this.setState({gameMode: GameModes.win})
 	}
 	handleLoose() {
-		this.setState({gameMode: GAMEMODE.SPLASH})
+		this.setState({gameMode: GameModes.splash})
 	}
 	render(props, {gameMode}) {
-		if (gameMode === GAMEMODE.SPLASH)
+		if (gameMode === GameModes.splash)
 			return html`<${SplashScreen}
 				onNewGame=${this.handleNewGame}
 				onContinue=${() => this.handleContinueGame()}
 			/>`
-		if (gameMode === GAMEMODE.GAMEPLAY)
+		if (gameMode === GameModes.gameplay)
 			return html` <${App} onWin=${this.handleWin} onLoose=${this.handleLoose} /> `
-		if (gameMode === GAMEMODE.WIN) return html` <${WinScreen} onNewGame=${this.handleNewGame} /> `
+		if (gameMode === GameModes.win) return html` <${WinScreen} onNewGame=${this.handleNewGame} /> `
 	}
 }
 
