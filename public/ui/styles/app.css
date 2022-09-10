@@ -19,7 +19,7 @@ html {
 }
 
 /* Minimum font size */
-@media (max-width: 600px) {
+@media (max-width: 900px) {
 	html {
 		font-size: 14px;
 	}
@@ -108,6 +108,7 @@ h1 {
 	color: transparent;
 	text-shadow: 2px 3px hsla(240, 89%, 4%, 0.1);
 	letter-spacing: -2px;
+	line-height: 1;
 }
 h1[medium] {
 	font-size: 3rem;
@@ -265,7 +266,7 @@ h2 {
 
 .Actions {
 	text-align: right;
-	margin-right: 1rem;
+	margin: 0 1rem 0 0;
 	position: relative;
 	z-index: 1;
 }
