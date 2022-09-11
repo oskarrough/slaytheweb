@@ -8,9 +8,10 @@ import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 import createNewGame from '../game/new-game.js'
 import {createCard, getCardRewards} from '../game/cards.js'
 import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../game/utils-state.js'
-import {saveGame, loadGame} from './save-load.js'
 
 // UI Components
+import {saveGame, loadGame} from './save-load.js'
+import * as backend from '../game/backend.js'
 import Cards from './cards.js'
 import Map from './map.js'
 import {Overlay, OverlayWithButton} from './overlays.js'
