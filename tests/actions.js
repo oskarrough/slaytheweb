@@ -5,6 +5,7 @@ import {createCard} from '../public/game/cards.js'
 import {MonsterRoom, Monster} from '../public/game/dungeon-rooms.js'
 import {createTestDungeon} from '../public/content/dungeon-encounters.js'
 import {getTargets, getCurrRoom, isCurrRoomCompleted} from '../public/game/utils-state.js'
+import {canPlay} from '../public/game/conditions.js'
 
 const a = actions
 
@@ -453,4 +454,22 @@ test('vulnerable is working', (t) => {
 test.todo('playing defend on an enemy ?')
 test.todo('Cleave targets all monsters')
 test.todo('can apply a power to a specific monster')
-test.todo("Clash can only be played if it's the only attack")
+
+test('Clash can only be played if it is the only attack', (t) => {
+	const {state} = t.context
+	const clash = createCard('Clash')
+
+	// It has the righ condition.
+	t.is(clash.conditions[0].type, 'onlyType')
+	t.is(clash.conditions[0].cardType, 'attack')
+
+	t.is(canPlay(clash, state), false, 'can not play because not in hand')
+
+	state.hand.push(clash)
+	t.is(canPlay(clash, state), true, 'can play because in hand')
+
+	const defend = createCard('Defend')
+	state.hand.push(defend)
+	t.is(canPlay(clash, state), false, 'can not play because non-attack card in hand')
+})
+
