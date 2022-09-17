@@ -26,10 +26,14 @@ test('can decode game state', (t) => {
 	const decoded = decodeState(encoded)
 	// Verify that we have what we need
 	t.is(typeof decoded, 'object')
+
+	t.is(typeof state.deck[0].upgrade, 'function')
+	t.is(typeof decoded.deck[0].upgrade, 'function', 'cards have upgrade() method)')
+
 	const a = state.dungeon.graph[0][0]
 	const b = decoded.dungeon.graph[0][0]
 	// console.log(a)
 	// console.log(b)
 	t.truthy(a.edges.size > 0)
-	t.truthy(b.edges.size > 0, 'node has edges')
+	t.truthy(b.edges.size > 0, 'node has "edges"')
 })

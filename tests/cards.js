@@ -21,3 +21,10 @@ test('can create a skill card', (t) => {
 test('card name must be exact', (t) => {
 	t.throws(() => createCard('Naaaah doesnt exist'))
 })
+
+test('can upgrade a Strike', (t) => {
+	const card = createCard('Strike')
+	t.is(card.damage, 6)
+	card.upgrade()
+	t.is(card.damage, 9)
+})
