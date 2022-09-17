@@ -76,7 +76,7 @@ export default [
 		type: 'attack',
 		energy: 1,
 		damage: 8,
-		target: 'all enemies',
+		target: 'allEnemies',
 		description: 'Deal 8 damage to all enemies.',
 		image: 'vernal-equinox.jpg',
 		upgrade() {
