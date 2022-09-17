@@ -1,7 +1,7 @@
 // @ts-ignore
 import test from 'ava'
 import actions from '../public/game/actions.js'
-import {createCard} from '../public/game/cards.js'
+import {createCard, CardTargets} from '../public/game/cards.js'
 import {MonsterRoom, Monster} from '../public/game/dungeon-rooms.js'
 import {createTestDungeon} from '../public/content/dungeon-encounters.js'
 import {getTargets, getCurrRoom, isCurrRoomCompleted} from '../public/game/utils-state.js'
@@ -451,9 +451,10 @@ test('vulnerable is working', (t) => {
 	t.is(newState.player.currentHealth, 72 - 15)
 })
 
-test.todo('playing defend on an enemy ?')
-test.todo('Cleave targets all monsters')
-test.todo('can apply a power to a specific monster')
+test('Cleave targets all monsters', (t) => {
+	const cleave = createCard('Cleave')
+	t.is(cleave.target, CardTargets.allEnemies)
+})
 
 test('Clash can only be played if it is the only attack', (t) => {
 	const {state} = t.context
@@ -473,3 +474,5 @@ test('Clash can only be played if it is the only attack', (t) => {
 	t.is(canPlay(clash, state), false, 'can not play because non-attack card in hand')
 })
 
+test.todo('playing defend on an enemy ?')
+test.todo('can apply a power to a specific monster')

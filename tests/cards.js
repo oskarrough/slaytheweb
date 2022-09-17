@@ -1,3 +1,4 @@
+// @ts-ignore
 import test from 'ava'
 import {createCard} from '../public/game/cards.js'
 
@@ -21,3 +22,4 @@ test('can create a skill card', (t) => {
 test('card name must be exact', (t) => {
 	t.throws(() => createCard('Naaaah doesnt exist'))
 })
+
