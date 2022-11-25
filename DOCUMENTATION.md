@@ -23,7 +23,7 @@ The full game state is always stored in a single, large "game state" object. It 
 
 An action is a function that takes a `state` object, modifies it, and returns a new one. There are actions for drawing a card, dealing damage, applying a debuff... everything you want to do, there's an action.
 
-See all actions in [actions.js](actions.js). Most have comments and corresponding tests you can check.
+See all actions in [actions.js](public/game/actions.js). Most have comments and corresponding tests you can check.
 
 #### Action Manager
 
@@ -82,7 +82,7 @@ Contains different monsters, room and dungeons. All created with methods from th
 
 The UI is made with htm and preact. I've tried not to create too many components and abstractions, although this might come back to haunt us.
 
-Everything starts with [index.html](https://github.com/oskarrough/slaytheweb/blob/main/public/ui/index.html). When loaded,
+Everything starts with [index.html](https://github.com/oskarrough/slaytheweb/blob/main/public/index.html). When loaded,
 we show a splash/welcome screen as defined in [index.js](https://github.com/oskarrough/slaytheweb/blob/main/public/ui/index.js).
 
 Next, when you tap "Start Game", we load [app.js](https://github.com/oskarrough/slaytheweb/blob/main/public/ui/app.js).
@@ -90,11 +90,11 @@ This one connects everything and manages the game state.
 
 #### Animations
 
-See [animations.js](animations.js). Most are made with gsap.
+See [animations.js](public/ui/animations.js). Most are made with gsap.
 
 #### Sounds
 
-See [sounds.js](sounds.js) using Tone.js.
+See [sounds.js](public/ui/sounds.js) using Tone.js.
 
 ## Tests
 
