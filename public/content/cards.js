@@ -350,9 +350,26 @@ export default [
 			this.name = 'Masks of the Faceless'
 			this.block = 5
 		},
+	}, 
+	{
+		name: 'Bludgeon', //add rarity? make it a rare card?
+		type: 'attack',
+		energy: 3,
+		target: 'enemy',
+		damage: 32,
+		description: 'Deal 32 Damage.',
+		image: 'alice-holds-the-white-king.jpg',
+		upgrade() {
+			this.damage = 42
+			this.upgraded = true
+			this.name = 'Bludgeon+'
+			this.description = 'Deal 42 Damage.'
+		},
 	},
 	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
 ]
+
+//cards should be split into seperate card files to make editing a single card easier
 
 // 'codices.jpg'
 // 'alice-holds-the-white-king.jpg'

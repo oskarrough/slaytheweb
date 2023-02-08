@@ -45,4 +45,5 @@ export const weak = new Power({
 	use: (dmg) => Math.floor(dmg * 0.75),
 })
 
+/**tried to add strength, but can't figure out how to give the +1 dmg per stack and stack doesn't reduce*/
 export default {regen, vulnerable, weak}
