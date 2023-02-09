@@ -386,13 +386,14 @@ export default [
 			this.name = 'Pommel Strike+'
 			this.description = 'Deal 10 damage. Draw 2 cards.'
 			this.damage = 10
-			this.actions = [
+/*			this.actions = [
 			{
 				type: 'drawCards',
 				parameter: {
 					amount: 2,
 				},
-			},],
+			},
+		],*/
 		},
 	},
 	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
