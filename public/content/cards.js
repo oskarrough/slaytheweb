@@ -367,7 +367,7 @@ export default [
 		},
 	},
 	{
-		name: 'Pommel Strike,
+		name: 'Pommel Strike',
 		type: 'attack',
 		energy: 1,
 		target: 'enemy',
@@ -379,7 +379,7 @@ export default [
 				type: 'drawCards',
 				parameter: {
 					amount: 1,
-				},
+				}
 			},
 		],
 		upgrade() {
