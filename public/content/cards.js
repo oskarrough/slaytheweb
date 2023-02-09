@@ -373,7 +373,7 @@ export default [
 		target: 'enemy',
 		description: 'Deal 9 damage. Draw 1 card.',
 		image: '8.jpg',
-		damage: 9
+		damage: 9,
 		actions: [
 			{
 				type: 'drawCards',
