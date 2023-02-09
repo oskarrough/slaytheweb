@@ -27,7 +27,7 @@ export const createTestDungeon = () => {
 }
 
 // Here are some different monsters we use in the game.
-
+//should be changed to have monster files, to make adding/editing them easier
 export const easyMonsters = {}
 export const monsters = {}
 export const elites = {}

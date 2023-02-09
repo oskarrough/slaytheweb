@@ -366,6 +366,31 @@ export default [
 			this.description = 'Deal 42 Damage.'
 		},
 	},
+	{
+		name: 'Pommel Strike,
+		type: 'attack',
+		energy: 1,
+		target: 'enemy',
+		description: 'Deal 9 damage. Draw 1 card.',
+		image: '8.jpg',
+		damage: 9
+		actions: [
+			{
+				type: 'drawCards',
+				parameter: {
+					amount: 1,
+				},
+			},
+		],
+		upgrade() {
+			this.name = 'Pommel Strike+'
+			this.description = 'Deal 10 damage. Draw 2 cards.'
+			this.damage = 10
+			const a = this.actions.find((action) => action.type === 'drawCards')
+			a.parameter.amount = 2
+
+		},
+	},
 	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
 ]
 
