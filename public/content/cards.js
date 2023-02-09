@@ -394,7 +394,6 @@ export default [
 				},
 			},
 		],
-		},
 	},
 	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
 ]
