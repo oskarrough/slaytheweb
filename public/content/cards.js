@@ -404,7 +404,7 @@ export default [
 			poison: 5,
 		},
 		description: 'Apply 5 poison.',
-		image: 'manicule.jpg',
+		image: '6.jpg',
 		upgrade() {
 			this.upgraded = true
 			this.name = 'Deadly Poison+'
