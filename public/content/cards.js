@@ -2,14 +2,8 @@
 // See game/cards.js for the details on how they work.
 
 //put cards here, to make it easier to add more
-export default [
-import './allCards/clash.js',
-import './allCards/defend.js',
-import './allCards/bash.js',
-import './allCards/strike.js',
-	]
 
-/**export default [
+export default [
 	{
 		name: 'Strike',
 		type: 'attack',
@@ -401,8 +395,7 @@ import './allCards/strike.js',
 		},
 	},
 	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
-]*/
-
+]
 //cards should be split into seperate card files to make editing a single card easier
 
 // 'codices.jpg'
