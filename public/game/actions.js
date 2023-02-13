@@ -83,7 +83,7 @@ function addStarterDeck(state) {
 		createCard('Strike'),
 		createCard('Strike'),
 		createCard('Bash'),
-		createCard('Deadly Poison'),
+//		createCard('Deadly Poison'),
 	]
 	return produce(state, (draft) => {
 		draft.deck = deck
