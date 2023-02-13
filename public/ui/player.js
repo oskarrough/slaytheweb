@@ -95,7 +95,7 @@ const Powers = (props) => {
 			<${Power} amount=${props.powers.vulnerable} power=${vulnerablePower} />
 			<${Power} amount=${props.powers.regen} power=${regenPower} />
 			<${Power} amount=${props.powers.weak} power=${weakPower} />
-			<${Power} amount=${props.powers.poison} power=${weakPower} />
+			<${Power} amount=${props.powers.poison} power=${poisonPower} />
 		</div>
 	`
 }
