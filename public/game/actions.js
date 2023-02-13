@@ -83,7 +83,7 @@ function addStarterDeck(state) {
 		createCard('Strike'),
 		createCard('Strike'),
 		createCard('Bash'),
-		createCard('Poison_Test'),
+		createCard('Deadly Poison'),
 	]
 	return produce(state, (draft) => {
 		draft.deck = deck
@@ -415,7 +415,7 @@ function takeMonsterTurn(state, monsterIndex) {
 		monster.block = 0
 		if (monster.powers.poison)
 		{
-			monster.currentHealth -= powers.poison.use(state.monster.powers.poison)
+			monster.currentHealth -= powers.poison.use(monster.powers.poison)
 			
 		}
 		// If dead don't do anything..

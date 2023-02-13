@@ -395,22 +395,21 @@ export default [
 		},
 	},
 	{
-		name: 'Poison_Test',
+		name: 'Deadly Poison',
 		type: 'attack',
 		energy: 1,
-		damage: 7,
+		damage: 0,
 		target: 'enemy',
 		powers: {
-			poison: 1,
+			poison: 5,
 		},
-		description: 'Deal 7 Damage. Apply 1 poison.',
+		description: 'Apply 5 poison.',
 		image: 'manicule.jpg',
 		upgrade() {
-			this.damage = 8
 			this.upgraded = true
-			this.name = 'Poison_Test+'
-			this.powers.poison = 2
-			this.description = 'Deal 8 Damage. Apply 2 Weak'
+			this.name = 'Deadly Poison+'
+			this.powers.poison = 7
+			this.description = 'Apply 7 Poison'
 		},
 	},
 	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
