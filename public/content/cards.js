@@ -1,6 +1,15 @@
 // Here you'll find all the default cards used in the game.
 // See game/cards.js for the details on how they work.
+
+//put cards here, to make it easier to add more
 export default [
+import './allCards/clash.js',
+import './allCards/defend.js',
+import './allCards/bash.js',
+import './allCards/strike.js',
+	]
+
+/**export default [
 	{
 		name: 'Strike',
 		type: 'attack',
@@ -392,7 +401,7 @@ export default [
 		},
 	},
 	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
-]
+]*/
 
 //cards should be split into seperate card files to make editing a single card easier
 
