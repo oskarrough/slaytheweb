@@ -31,6 +31,13 @@ export const regen = new Power({
 	use: (stacks) => stacks,
 })
 
+export const poison = new Power({
+	type: 'debuff',
+	name: 'Poison',
+	description: 'Hurts equal to poison stacks (todo: make poison reduce at start of turn, not end)',
+	use: (stacks) => stacks,
+})
+
 export const vulnerable = new Power({
 	type: 'debuff',
 	name: 'Vulnerable',

@@ -394,6 +394,25 @@ export default [
 
 		},
 	},
+	{
+		name: 'Poison_Test',
+		type: 'attack',
+		energy: 1,
+		damage: 7,
+		target: 'enemy',
+		powers: {
+			poison: 1,
+		},
+		description: 'Deal 7 Damage. Apply 1 poison.',
+		image: 'manicule.jpg',
+		upgrade() {
+			this.damage = 8
+			this.upgraded = true
+			this.name = 'Poison_Test+'
+			this.powers.poison = 2
+			this.description = 'Deal 8 Damage. Apply 2 Weak'
+		},
+	},
 	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
 ]
 //cards should be split into seperate card files to make editing a single card easier

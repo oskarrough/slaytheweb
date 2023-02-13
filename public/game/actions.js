@@ -83,6 +83,7 @@ function addStarterDeck(state) {
 		createCard('Strike'),
 		createCard('Strike'),
 		createCard('Bash'),
+		createCard('Poison_Test'),
 	]
 	return produce(state, (draft) => {
 		draft.deck = deck
@@ -412,7 +413,11 @@ function takeMonsterTurn(state, monsterIndex) {
 		const monster = room.monsters[monsterIndex]
 		// Reset block at start of turn.
 		monster.block = 0
-
+		if (monster.powers.poison)
+		{
+			monster.currentHealth -= powers.poison.use(state.monster.powers.poison)
+			
+		}
 		// If dead don't do anything..
 		if (monster.currentHealth < 1) return
 
