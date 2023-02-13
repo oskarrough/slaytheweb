@@ -416,11 +416,11 @@ function takeMonsterTurn(state, monsterIndex) {
 		// If dead don't do anything..
 		if (monster.currentHealth < 1) return
 
-		if (monster.powers.poison)
+/**		if (monster.powers.poison)
 		{
-			state = removeHealth(state, {monster,powers.poison.use(monster.powers.poison)})
-			
-		}
+			state = removeHealth(state, {monster, powers.poison.use(monster.powers.poison)})
+			--hurt monster?!
+		}*/
 
 
 		// Get current intent.
