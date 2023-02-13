@@ -413,13 +413,15 @@ function takeMonsterTurn(state, monsterIndex) {
 		const monster = room.monsters[monsterIndex]
 		// Reset block at start of turn.
 		monster.block = 0
-		if (monster.powers.poison)
-		{
-			monster.currentHealth -= powers.poison.use(monster.powers.poison)
-			
-		}
 		// If dead don't do anything..
 		if (monster.currentHealth < 1) return
+
+		if (monster.powers.poison)
+		{
+			removeHealth(state, {monster,powers.poison.use(monster.powers.poison)})
+			
+		}
+
 
 		// Get current intent.
 		const intent = monster.intents[monster.nextIntent || 0]
