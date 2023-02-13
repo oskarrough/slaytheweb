@@ -418,7 +418,7 @@ function takeMonsterTurn(state, monsterIndex) {
 
 		if (monster.powers.poison)
 		{
-			removeHealth(state, {monster,powers.poison.use(monster.powers.poison)})
+			state = removeHealth(state, {monster,powers.poison.use(monster.powers.poison)})
 			
 		}
 
