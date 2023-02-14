@@ -405,7 +405,7 @@ export default [
 		},
 		description: 'Apply 1 Weak to ALL enemies. Exhaust.',
 		image: '4.jpg',
-		exhaust: true
+		exhaust: true,
 		upgrade() {
 			this.name = 'Intimidate+'
 			this.powers.weak = 2

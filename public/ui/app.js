@@ -174,7 +174,7 @@ stw.dealCards()`)
 			Escape: () => {
 				// let openOverlays = this.base.querySelectorAll('.Overlay:not(#Menu)[open]')
 				let openOverlays = this.base.querySelectorAll(
-					'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open]'
+					'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #ExhaustPile[open]'
 				)
 				openOverlays.forEach((el) => el.removeAttribute('open'))
 				this.toggleOverlay('#Menu')
@@ -183,6 +183,7 @@ stw.dealCards()`)
 			a: () => this.toggleOverlay('#DrawPile'),
 			s: () => this.toggleOverlay('#DiscardPile'),
 			m: () => this.toggleOverlay('#Map'),
+			e: () => this.toggleOverlay('#ExhaustPile'),
 		}
 		keymap[key] && keymap[key]()
 	}
@@ -348,6 +349,14 @@ stw.dealCards()`)
 						this.toggleOverlay('#DrawPile')}>Dr<u>a</u>w pile ${state.drawPile.length}</button>
 					<div class="Overlay-content">
 						<${Cards} gameState=${state} type="drawPile" />
+					</div>
+				<//>
+
+				<${OverlayWithButton} id="ExhaustPile" topleft topleft2>
+					<button class="tooltipped tooltipped-ne" aria-label="The cards you have exhausted" onClick=${() =>
+						this.toggleOverlay('#ExhaustPile')}><u>E</u>xhaust pile ${state.ExhaustPile.length}</button>
+					<div class="Overlay-content">
+						<${Cards} gameState=${state} type="ExhaustPile" />
 					</div>
 				<//>
 
