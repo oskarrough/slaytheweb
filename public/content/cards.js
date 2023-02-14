@@ -346,6 +346,9 @@ export default [
 		actions: [
 			{
 				type: 'addEnergyToPlayer',
+				parameter: {
+					amount: 1,
+				}
 			},
 		],
 		upgrade() {
@@ -404,11 +407,58 @@ export default [
 			weak: 1,
 		},
 		description: 'Apply 1 Weak to ALL enemies. Exhaust.',
-		image: '4.jpg',
+		image: 'poured-millions-of-bubbles.jpg',
 		upgrade() {
 			this.name = 'Intimidate+'
 			this.powers.weak = 2
 			this.description = 'Apply 2 Weak to ALL enemies. Exhaust.'
+		},
+		exhaust: true,
+	},
+	{
+		name: 'Terror',
+		type: 'skill',
+		energy: 0,
+		damage: 0,
+		target: 'enemy',
+		powers: {
+			vulnerable: 99,
+		},
+		description: 'Apply 99 vulnerable. Exhaust.',
+		image: 'poured-millions-of-bubbles.jpg',
+		upgrade() {
+			this.name = 'Terror+'
+			this.energy = 0
+		},
+		exhaust: true,
+	},
+	{
+		name: 'Adrenaline',
+		type: 'skill',
+		energy: 0,
+		damage: 0,
+		target: 'player',
+		actions: [
+			{
+				type: 'drawCards',
+				parameter: {
+					amount: 2,
+				},			
+			},
+			{
+				type: 'addEnergyToPlayer',
+				parameter: {
+					amount: 1,
+				}
+			},
+		],
+		description: 'Gain 1 Energy. Draw 2 cards. Exhaust.',
+		image: 'serpentine-dancer.jpg',
+		upgrade() {
+			this.name = 'Adrenaline+'
+			this.description = 'Gain 2 Energy. Draw 2 cards. Exhaust.'
+			const a = this.actions.find((action) => action.type === 'addEnergyToPlayer')
+			a.parameter.amount = 2
 		},
 		exhaust: true,
 	},

@@ -270,10 +270,11 @@ const removePlayerDebuffs = (state) => {
 	})
 }
 
-function addEnergyToPlayer(state) {
+function addEnergyToPlayer(state, options) {
+	const amount = options?.amount ? options.amount : 1
 	return produce(state, (draft) => {
 		/* draft.player.maxEnergy = draft.player.maxEnergy + 1 */
-		draft.player.currentEnergy = draft.player.currentEnergy + 1
+		draft.player.currentEnergy = draft.player.currentEnergy + amount
 	})
 }
 
