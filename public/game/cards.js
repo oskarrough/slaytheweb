@@ -73,7 +73,7 @@ export class Card {
 		this.actions = props.actions
 		this.image = props.image
 		this.upgraded = false
-		this.exhaust = false
+		this.exhaust = props.exhaust
 		if (props.upgrade) this.upgrade = props.upgrade
 	}
 	upgrade() {
