@@ -412,7 +412,6 @@ function endEncounter(state) {
 	const nextState = produce(state, (draft) => {
 		draft.hand = []
 		draft.discardPile = []
-		draft.deck = draft.deck.concat(draft.ExhaustPile)
 		draft.ExhaustPile = []
 		draft.drawPile = shuffle(draft.deck)
 	})
