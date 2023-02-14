@@ -180,7 +180,7 @@ function playCard(state, {card, target}) {
 	if (target === 'enemy') throw new Error('Wrong target, did you mean "enemy0" or "allEnemies"?')
 	if (!card) throw new Error('No card to play')
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
-	if (card.exhaust)
+	if (card.exhaust == true)
 	{
 		let newState = exhaustCard(state, {card})
 	}else{
