@@ -413,6 +413,7 @@ function endEncounter(state) {
 		draft.hand = []
 		draft.discardPile = []
 		draft.deck = draft.deck.concat(draft.ExhaustPile)
+		draft.ExhaustPile = []
 		draft.drawPile = shuffle(draft.deck)
 	})
 	return drawCards(nextState)
