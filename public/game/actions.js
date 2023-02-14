@@ -180,12 +180,15 @@ function playCard(state, {card, target}) {
 	if (target === 'enemy') throw new Error('Wrong target, did you mean "enemy0" or "allEnemies"?')
 	if (!card) throw new Error('No card to play')
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
-	let newState = discardCard(state, {card})
-	if (card.exhaust)
+	if (card.exhaust == true)
 	{
 		let newState = exhaustCard(state, {card})
+		throw new Error(`exhausting card`)
+
+	}else{
+		let newState = discardCard(state, {card})
+
 	}
-	throw new Error(`card exhaust ${card.exhaust}`)
 	newState = produce(newState, (draft) => {
 		// Use energy
 		draft.player.currentEnergy = newState.player.currentEnergy - card.energy
