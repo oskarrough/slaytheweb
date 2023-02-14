@@ -47,6 +47,7 @@ function createNewGame() {
 		drawPile: [],
 		hand: [],
 		discardPile: [],
+		ExhaustPile: [],
 		player: {
 			maxEnergy: 3,
 			currentEnergy: 3,
@@ -394,6 +395,16 @@ function reshuffleAndDraw(state) {
 	return drawCards(nextState)
 }
 
+function endEncounter(state) {
+	const nextState = produce(state, (draft) => {
+		draft.hand = []
+		draft.discardPile = []
+		draft.deck = draft.deck.concat(draft.ExhaustPile)
+		draft.drawPile = shuffle(draft.deck)
+	})
+	return drawCards(nextState)
+}
+
 // Run all monster intents in current room.
 function playMonsterActions(state) {
 	const room = getCurrRoom(state)
@@ -470,7 +481,7 @@ function addCardToDeck(state, {card}) {
 
 // Records a move on the map.
 function move(state, {move}) {
-	let nextState = reshuffleAndDraw(state)
+	let nextState = endEncounter(state)
 
 	return produce(nextState, (draft) => {
 		// Clear temporary powers, energy and block on player.
@@ -606,6 +617,7 @@ const allActions = {
 	setPower,
 	takeMonsterTurn,
 	upgradeCard,
+	endEncounter,
 }
 
 export default allActions

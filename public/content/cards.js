@@ -395,6 +395,24 @@ export default [
 		},
 	},
 	{
+		name: 'Intimidate',
+		type: 'skill',
+		energy: 0,
+		damage: 0,
+		target: 'allEnemies',
+		powers: {
+			weak: 1,
+		},
+		description: 'Apply 1 Weak to ALL enemies. Exhaust.',
+		image: '4.jpg',
+		exhaust: true
+		upgrade() {
+			this.name = 'Intimidate+'
+			this.powers.weak = 2
+			this.description = 'Apply 2 Weak to ALL enemies. Exhaust.'
+		},
+	},
+/**	{
 		name: 'Deadly Poison',
 		type: 'attack',
 		energy: 1,
@@ -411,7 +429,7 @@ export default [
 			this.powers.poison = 7
 			this.description = 'Apply 7 Poison'
 		},
-	},
+	},*/
 	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
 ]
 //cards should be split into seperate card files to make editing a single card easier
