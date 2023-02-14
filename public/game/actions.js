@@ -126,6 +126,14 @@ function discardCard(state, {card}) {
 	})
 }
 
+function exhaustCard(state, {card}) {
+	return produce(state, (draft) => {
+		draft.hand = state.hand.filter((c) => c.id !== card.id)
+		draft.ExhaustPile.push(card)
+	})
+}
+
+
 // Discard your entire hand.
 function discardHand(state) {
 	return produce(state, (draft) => {
@@ -172,7 +180,12 @@ function playCard(state, {card, target}) {
 	if (target === 'enemy') throw new Error('Wrong target, did you mean "enemy0" or "allEnemies"?')
 	if (!card) throw new Error('No card to play')
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
-	let newState = discardCard(state, {card})
+	if (card.exhaust)
+	{
+		let newState = exhaustCard(state, {card})
+	}else{
+		let newState = discardCard(state, {card})
+	}
 	newState = produce(newState, (draft) => {
 		// Use energy
 		draft.player.currentEnergy = newState.player.currentEnergy - card.energy
