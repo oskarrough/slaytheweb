@@ -185,6 +185,7 @@ function playCard(state, {card, target}) {
 	{
 		let newState = exhaustCard(state, {card})
 	}
+	throw new Error(`card exhaust ${card.exhaust}`)
 	newState = produce(newState, (draft) => {
 		// Use energy
 		draft.player.currentEnergy = newState.player.currentEnergy - card.energy
