@@ -425,7 +425,7 @@ export default [
 			vulnerable: 99,
 		},
 		description: 'Apply 99 vulnerable. Exhaust.',
-		image: 'poured-millions-of-bubbles.jpg',
+		image: '2.jpg',
 		upgrade() {
 			this.name = 'Terror+'
 			this.energy = 0
