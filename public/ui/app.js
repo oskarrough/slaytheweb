@@ -352,11 +352,11 @@ stw.dealCards()`)
 					</div>
 				<//>
 
-				<${OverlayWithButton} id="gfx.drawRect" topleft topleft2>
+				<${OverlayWithButton} id="strength" topleft topleft2>
 					<button class="tooltipped tooltipped-ne" aria-label="The cards you have exhausted" onClick=${() =>
-						this.toggleOverlay('#gfx.drawRect')}>E<u>x</u>haust pile ${state.gfx.drawRect.length}</button>
+						this.toggleOverlay('#strength')}>E<u>x</u>haust pile ${state.strength.length}</button>
 					<div class="Overlay-content">
-						<${Cards} gameState=${state} type="gfx.drawRect" />
+						<${Cards} gameState=${state} type="strength" />
 					</div>
 				<//>
 
