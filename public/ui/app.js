@@ -183,7 +183,7 @@ stw.dealCards()`)
 			a: () => this.toggleOverlay('#DrawPile'),
 			s: () => this.toggleOverlay('#DiscardPile'),
 			m: () => this.toggleOverlay('#Map'),
-			e: () => this.toggleOverlay('#ExhaustPile'),
+			x: () => this.toggleOverlay('#ExhaustPile'),
 		}
 		keymap[key] && keymap[key]()
 	}
@@ -354,7 +354,7 @@ stw.dealCards()`)
 
 				<${OverlayWithButton} id="ExhaustPile" topleft topleft2>
 					<button class="tooltipped tooltipped-ne" aria-label="The cards you have exhausted" onClick=${() =>
-						this.toggleOverlay('#ExhaustPile')}><u>E</u>xhaust pile ${state.ExhaustPile.length}</button>
+						this.toggleOverlay('#ExhaustPile')}>E<u>x</u>haust pile ${state.ExhaustPile.length}</button>
 					<div class="Overlay-content">
 						<${Cards} gameState=${state} type="ExhaustPile" />
 					</div>
