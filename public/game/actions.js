@@ -47,7 +47,7 @@ function createNewGame() {
 		drawPile: [],
 		hand: [],
 		discardPile: [],
-		gfx.drawRect: [],
+//		gfx.drawRect: [],
 		player: {
 			maxEnergy: 3,
 			currentEnergy: 3,
