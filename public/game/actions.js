@@ -122,7 +122,7 @@ function discardCard(state, {card}, exhaust) {
 	return produce(state, (draft) => {
 		draft.hand = state.hand.filter((c) => c.id !== card.id)
 		if (exhaust){
-					draft.gfx.drawRect.push(card)
+					draft.exhaustPile.push(card)
 
 		}else{
 				draft.discardPile.push(card)
@@ -413,7 +413,7 @@ function endEncounter(state) {
 	const nextState = produce(state, (draft) => {
 		draft.hand = []
 		draft.discardPile = []
-		draft.gfx.drawRect = []
+		draft.exhaustPile = []
 		draft.drawPile = shuffle(draft.deck)
 	})
 	return drawCards(nextState)
