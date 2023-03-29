@@ -47,7 +47,7 @@ function createNewGame() {
 		drawPile: [],
 		hand: [],
 		discardPile: [],
-		ExhaustPile: [],
+		gfx.drawRect: [],
 		player: {
 			maxEnergy: 3,
 			currentEnergy: 3,
@@ -122,7 +122,7 @@ function discardCard(state, {card}, exhaust) {
 	return produce(state, (draft) => {
 		draft.hand = state.hand.filter((c) => c.id !== card.id)
 		if (exhaust){
-					draft.ExhaustPile.push(card)
+					draft.gfx.drawRect.push(card)
 
 		}else{
 				draft.discardPile.push(card)
@@ -131,7 +131,7 @@ function discardCard(state, {card}, exhaust) {
 	})
 }
 
-function exhaustCard(state, {card}) {
+function exhaustCard(state, {card}) {															
 	return produce(state, (draft) => {
 		draft.hand = state.hand.filter((c) => c.id !== card.id)
 	})
@@ -198,6 +198,7 @@ function playCard(state, {card, target}) {
 		// we prioritize this over the actual enemy where you dropped the card.
 		const newTarget = card.target === CardTargets.allEnemies ? card.target : target
 		let amount = card.damage
+		if (newState.player.powers.strength) amount = amount+powers.strength.use(player.powers.strength)
 		if (newState.player.powers.weak) amount = powers.weak.use(amount)
 		newState = removeHealth(newState, {target: newTarget, amount})
 	}
@@ -412,7 +413,7 @@ function endEncounter(state) {
 	const nextState = produce(state, (draft) => {
 		draft.hand = []
 		draft.discardPile = []
-		draft.ExhaustPile = []
+		draft.gfx.drawRect = []
 		draft.drawPile = shuffle(draft.deck)
 	})
 	return drawCards(nextState)

@@ -52,5 +52,13 @@ export const weak = new Power({
 	use: (dmg) => Math.floor(dmg * 0.75),
 })
 
+
+export const strength = new Power({
+	type: 'buff',
+	name: 'strength',
+	description: 'Strengthened targets deal +x damage', //make x be current strength level
+	use: (stacks) => stacks,
+})
+
 /**tried to add strength, but can't figure out how to give the +1 dmg per stack and stack doesn't reduce*/
-export default {regen, vulnerable, weak}
+export default {regen, vulnerable, weak, strength}
