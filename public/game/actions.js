@@ -22,6 +22,7 @@ import {conditionsAreValid} from './conditions.js'
  * @prop {Array} drawPile
  * @prop {Array} hand
  * @prop {Array} discardPile
+ * @prop {Array} exhaustPile
  * @prop {Player} player
  * @prop {Object} dungeon
  */
@@ -118,25 +119,22 @@ function addCardToHand(state, {card}) {
 }
 
 // Discard a single card from your hand.
-function discardCard(state, {card}, exhaust) {
+function discardCard(state, {card}) {
 	return produce(state, (draft) => {
 		draft.hand = state.hand.filter((c) => c.id !== card.id)
-		if (exhaust){
-					draft.exhaustPile.push(card)
-
-		}else{
-				draft.discardPile.push(card)
-	
+		if (card.exhaust) {
+			draft.exhaustPile.push(card)
+		} else {
+			draft.discardPile.push(card)
 		}
 	})
 }
 
-function exhaustCard(state, {card}) {															
-	return produce(state, (draft) => {
-		draft.hand = state.hand.filter((c) => c.id !== card.id)
-	})
-}
-
+// function exhaustCard(state, {card}) {
+// 	return produce(state, (draft) => {
+// 		draft.hand = state.hand.filter((c) => c.id !== card.id)
+// 	})
+// }
 
 // Discard your entire hand.
 function discardHand(state) {
@@ -184,7 +182,7 @@ function playCard(state, {card, target}) {
 	if (target === 'enemy') throw new Error('Wrong target, did you mean "enemy0" or "allEnemies"?')
 	if (!card) throw new Error('No card to play')
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
-	let newState = discardCard(state, {card}, card.exhaust)
+	let newState = discardCard(state, {card})
 	newState = produce(newState, (draft) => {
 		// Use energy
 		draft.player.currentEnergy = newState.player.currentEnergy - card.energy
@@ -198,7 +196,8 @@ function playCard(state, {card, target}) {
 		// we prioritize this over the actual enemy where you dropped the card.
 		const newTarget = card.target === CardTargets.allEnemies ? card.target : target
 		let amount = card.damage
-		if (newState.player.powers.strength) amount = amount+powers.strength.use(player.powers.strength)
+		if (newState.player.powers.strength)
+			amount = amount + powers.strength.use(newState.player.powers.strength)
 		if (newState.player.powers.weak) amount = powers.weak.use(amount)
 		newState = removeHealth(newState, {target: newTarget, amount})
 	}
@@ -441,12 +440,11 @@ function takeMonsterTurn(state, monsterIndex) {
 		// If dead don't do anything..
 		if (monster.currentHealth < 1) return
 
-/**		if (monster.powers.poison)
+		/**		if (monster.powers.poison)
 		{
 			state = removeHealth(state, {monster, powers.poison.use(monster.powers.poison)})
 			--hurt monster?!
 		}*/
-
 
 		// Get current intent.
 		const intent = monster.intents[monster.nextIntent || 0]

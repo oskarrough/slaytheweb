@@ -351,7 +351,7 @@ export default [
 				type: 'addEnergyToPlayer',
 				parameter: {
 					amount: 1,
-				}
+				},
 			},
 		],
 		upgrade() {
@@ -359,7 +359,7 @@ export default [
 			this.name = 'Masks of the Faceless'
 			this.block = 5
 		},
-	}, 
+	},
 	{
 		name: 'Bludgeon', //add rarity? make it a rare card?
 		type: 'attack',
@@ -397,7 +397,6 @@ export default [
 			this.damage = 10
 			const a = this.actions.find((action) => action.type === 'drawCards')
 			a.parameter.amount = 2
-
 		},
 	},
 	{
@@ -446,13 +445,13 @@ export default [
 				type: 'drawCards',
 				parameter: {
 					amount: 2,
-				},			
+				},
 			},
 			{
 				type: 'addEnergyToPlayer',
 				parameter: {
 					amount: 1,
-				}
+				},
 			},
 		],
 		description: 'Gain 1 Energy. Draw 2 cards. Exhaust.',
@@ -465,7 +464,7 @@ export default [
 		},
 		exhaust: true,
 	},
-/**	{
+	/**	{
 		name: 'Deadly Poison',
 		type: 'attack',
 		energy: 1,
