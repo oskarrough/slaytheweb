@@ -3,6 +3,8 @@ import {
 	weak as weakPower,
 	vulnerable as vulnerablePower,
 	regen as regenPower,
+	poison as poisonPower,
+	strength as strengthPower,
 } from '../game/powers.js'
 
 export const Player = (props) => {
@@ -27,6 +29,7 @@ export const Monster = (props) => {
 		if (type === 'block') tooltip = `Will block for ${amount}`
 		if (type === 'weak') tooltip = `Will apply ${amount} Weak`
 		if (type === 'vulnerable') tooltip = `Will apply ${amount} Vulnerable`
+		if (type === 'poison') tooltip = `Will apply ${amount} Poison`
 
 		// Don't reveal how many stacks will be applied.
 		if (type === 'vulnerable' || type === 'weak') amount = undefined
@@ -94,6 +97,8 @@ const Powers = (props) => {
 			<${Power} amount=${props.powers.vulnerable} power=${vulnerablePower} />
 			<${Power} amount=${props.powers.regen} power=${regenPower} />
 			<${Power} amount=${props.powers.weak} power=${weakPower} />
+			<${Power} amount=${props.powers.strength} power=${strengthPower} />
+			<${Power} amount=${props.powers.poison} power=${poisonPower} />
 		</div>
 	`
 }

@@ -22,6 +22,7 @@ import {conditionsAreValid} from './conditions.js'
  * @prop {Array} drawPile
  * @prop {Array} hand
  * @prop {Array} discardPile
+ * @prop {Array} exhaustPile
  * @prop {Player} player
  * @prop {Object} dungeon
  */
@@ -47,6 +48,7 @@ function createNewGame() {
 		drawPile: [],
 		hand: [],
 		discardPile: [],
+		exhaustPile: [],
 		player: {
 			maxEnergy: 3,
 			currentEnergy: 3,
@@ -120,9 +122,19 @@ function addCardToHand(state, {card}) {
 function discardCard(state, {card}) {
 	return produce(state, (draft) => {
 		draft.hand = state.hand.filter((c) => c.id !== card.id)
-		draft.discardPile.push(card)
+		if (card.exhaust) {
+			draft.exhaustPile.push(card)
+		} else {
+			draft.discardPile.push(card)
+		}
 	})
 }
+
+// function exhaustCard(state, {card}) {
+// 	return produce(state, (draft) => {
+// 		draft.hand = state.hand.filter((c) => c.id !== card.id)
+// 	})
+// }
 
 // Discard your entire hand.
 function discardHand(state) {
@@ -184,7 +196,12 @@ function playCard(state, {card, target}) {
 		// we prioritize this over the actual enemy where you dropped the card.
 		const newTarget = card.target === CardTargets.allEnemies ? card.target : target
 		let amount = card.damage
-		if (newState.player.powers.weak) amount = powers.weak.use(amount)
+		if (newState.player.powers.strength) {
+			amount = amount + powers.strength.use(newState.player.powers.strength)
+		}
+		if (newState.player.powers.weak) {
+			amount = powers.weak.use(amount)
+		}
 		newState = removeHealth(newState, {target: newTarget, amount})
 	}
 	if (card.powers) newState = applyCardPowers(newState, {target, card})
@@ -256,10 +273,11 @@ const removePlayerDebuffs = (state) => {
 	})
 }
 
-function addEnergyToPlayer(state) {
+function addEnergyToPlayer(state, options) {
+	const amount = options?.amount ? options.amount : 1
 	return produce(state, (draft) => {
 		/* draft.player.maxEnergy = draft.player.maxEnergy + 1 */
-		draft.player.currentEnergy = draft.player.currentEnergy + 1
+		draft.player.currentEnergy = draft.player.currentEnergy + amount
 	})
 }
 
@@ -384,10 +402,11 @@ function newTurn(state) {
 	})
 }
 
-function reshuffleAndDraw(state) {
+function endEncounter(state) {
 	const nextState = produce(state, (draft) => {
 		draft.hand = []
 		draft.discardPile = []
+		draft.exhaustPile = []
 		draft.drawPile = shuffle(draft.deck)
 	})
 	return drawCards(nextState)
@@ -412,9 +431,14 @@ function takeMonsterTurn(state, monsterIndex) {
 		const monster = room.monsters[monsterIndex]
 		// Reset block at start of turn.
 		monster.block = 0
-
 		// If dead don't do anything..
 		if (monster.currentHealth < 1) return
+
+		/**		if (monster.powers.poison)
+		{
+			state = removeHealth(state, {monster, powers.poison.use(monster.powers.poison)})
+			--hurt monster?!
+		}*/
 
 		// Get current intent.
 		const intent = monster.intents[monster.nextIntent || 0]
@@ -463,7 +487,7 @@ function addCardToDeck(state, {card}) {
 
 // Records a move on the map.
 function move(state, {move}) {
-	let nextState = reshuffleAndDraw(state)
+	let nextState = endEncounter(state)
 
 	return produce(nextState, (draft) => {
 		// Clear temporary powers, energy and block on player.
@@ -593,12 +617,12 @@ const allActions = {
 	removeCard,
 	removeHealth,
 	removePlayerDebuffs,
-	reshuffleAndDraw,
 	setDungeon,
 	setHealth,
 	setPower,
 	takeMonsterTurn,
 	upgradeCard,
+	endEncounter,
 }
 
 export default allActions

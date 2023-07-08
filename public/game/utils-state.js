@@ -4,7 +4,6 @@ import {CardTargets} from './cards.js'
  * A bunch of utilities specific to the game state object.
  */
 
-/** returns number */
 export function getPlayerHealthPercentage(state) {
 	return (state.player.currentHealth / state.player.maxHealth) * 100
 }

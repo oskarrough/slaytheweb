@@ -29,6 +29,9 @@
 .Overlay[topright2] > button {
 	right: 5rem;
 }
+.Overlay[topleft2] > button {
+	left: 10rem;
+}
 .Overlay[bottomleft] > button {
 	top: auto;
 	bottom: 0;

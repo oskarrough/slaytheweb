@@ -74,6 +74,7 @@ export class Card {
 		this.image = props.image
 		this.upgraded = false
 		if (props.upgrade) this.upgrade = props.upgrade
+		this.exhaust = props.exhaust
 	}
 	upgrade() {
 		if (this.upgraded) return
