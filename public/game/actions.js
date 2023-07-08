@@ -196,9 +196,12 @@ function playCard(state, {card, target}) {
 		// we prioritize this over the actual enemy where you dropped the card.
 		const newTarget = card.target === CardTargets.allEnemies ? card.target : target
 		let amount = card.damage
-		if (newState.player.powers.strength)
+		if (newState.player.powers.strength) {
 			amount = amount + powers.strength.use(newState.player.powers.strength)
-		if (newState.player.powers.weak) amount = powers.weak.use(amount)
+		}
+		if (newState.player.powers.weak) {
+			amount = powers.weak.use(amount)
+		}
 		newState = removeHealth(newState, {target: newTarget, amount})
 	}
 	if (card.powers) newState = applyCardPowers(newState, {target, card})

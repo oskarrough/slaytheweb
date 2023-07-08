@@ -10,9 +10,6 @@ export default [
 		energy: 1,
 		target: 'enemy',
 		damage: 6,
-		powers: {
-			strength: 1,
-		},
 		description: 'Deal 6 Damage.',
 		image: 'the-angel-of-death.jpg',
 		upgrade() {

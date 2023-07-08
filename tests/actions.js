@@ -27,6 +27,7 @@ test('new game state is ok', (t) => {
 		drawPile: [],
 		hand: [],
 		discardPile: [],
+		exhaustPile: [],
 		player: {
 			maxEnergy: 3,
 			currentEnergy: 3,
