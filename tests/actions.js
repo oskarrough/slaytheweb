@@ -250,13 +250,13 @@ test('can discard the entire hand', (t) => {
 	t.is(state4.discardPile.length, 5)
 })
 
-test('we can reshuffle and draw', (t) => {
+test('we can end an encounter with reshuffle and draw', (t) => {
 	let {state} = t.context
 	const state2 = a.addStarterDeck(state)
 	const state3 = a.drawCards(state2)
 	const state4 = a.discardHand(state3)
 	t.is(state4.discardPile.length, 5)
-	const state5 = a.reshuffleAndDraw(state4)
+	const state5 = a.endEncounter(state4)
 	t.is(state5.hand.length, 5)
 	t.is(state5.discardPile.length, 0)
 })

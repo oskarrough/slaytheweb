@@ -402,15 +402,6 @@ function newTurn(state) {
 	})
 }
 
-function reshuffleAndDraw(state) {
-	const nextState = produce(state, (draft) => {
-		draft.hand = []
-		draft.discardPile = []
-		draft.drawPile = shuffle(draft.deck)
-	})
-	return drawCards(nextState)
-}
-
 function endEncounter(state) {
 	const nextState = produce(state, (draft) => {
 		draft.hand = []
@@ -626,7 +617,6 @@ const allActions = {
 	removeCard,
 	removeHealth,
 	removePlayerDebuffs,
-	reshuffleAndDraw,
 	setDungeon,
 	setHealth,
 	setPower,
