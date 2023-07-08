@@ -4,18 +4,10 @@ import {CardTargets} from './cards.js'
  * A bunch of utilities specific to the game state object.
  */
 
-/** returns number */
 export function getPlayerHealthPercentage(state) {
 	return (state.player.currentHealth / state.player.maxHealth) * 100
 }
-//** returns current hp */
-export function getPlayerCurrentHealth(state) {
-	return state.player.currentHealth
-}
-//** returns Max hp */
-export function getPlayerMaxHealth(state) {
-	return state.player.maxHealth
-}
+
 // Returns the current dungeon node
 export function getCurrentNode(dungeon) {
 	return dungeon.graph[dungeon.y][dungeon.x]
