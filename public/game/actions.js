@@ -57,7 +57,7 @@ function createNewGame() {
 			maxEnergy: 3,
 			currentEnergy: 3,
 			maxHealth: 72,
-			currentHealth: 2,
+			currentHealth: 72,
 			block: 0,
 			powers: {},
 		},
@@ -308,6 +308,9 @@ const removeHealth = (state, {target, amount}) => {
 				t.block = amountAfterBlock
 			}
 		})
+		// if (target === 'player' && t.currentHealth < 1) {
+		// 	draft.endedAt = new Date().getTime()
+		// }
 	})
 }
 
