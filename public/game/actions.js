@@ -5,6 +5,7 @@ import {getTargets, getCurrRoom} from './utils-state.js'
 import powers from './powers.js'
 import {dungeonWithMap} from '../content/dungeon-encounters.js'
 import {conditionsAreValid} from './conditions.js'
+import { isDungeonCompleted } from './utils-state.js'
 
 // Without this, immer.js will throw an error if our `state` is modified outside of an action.
 // While in theory a good idea, we're not there yet. It is a useful way to spot modifications
@@ -25,6 +26,9 @@ import {conditionsAreValid} from './conditions.js'
  * @prop {Array} exhaustPile
  * @prop {Player} player
  * @prop {Object} dungeon
+ * @prop {Number} createdAt
+ * @prop {Number} endedAt
+ * @prop {Boolean} won
  */
 
 /**
@@ -53,11 +57,14 @@ function createNewGame() {
 			maxEnergy: 3,
 			currentEnergy: 3,
 			maxHealth: 72,
-			currentHealth: 72,
+			currentHealth: 2,
 			block: 0,
 			powers: {},
 		},
 		dungeon: {},
+		createdAt: new Date().getTime(),
+		endedAt: undefined,
+		won: false
 	}
 }
 
@@ -387,7 +394,21 @@ function endTurn(state) {
 	newState = playMonsterActions(newState)
 	newState = decreasePlayerPowerStacks(newState)
 	newState = decreaseMonsterPowerStacks(newState)
-	newState = newTurn(newState)
+
+	newState = produce(newState, (draft) => {
+		const isDead = newState.player.currentHealth < 0
+		const didWin = isDungeonCompleted(newState)
+
+		if (didWin) draft.won = true
+
+		if (isDead || didWin) {
+			console.log('ENDED')
+			draft.endedAt = new Date().getTime()
+		} else {
+			draft = newTurn(newState)
+		}
+	})
+
 	return newState
 }
 
@@ -407,6 +428,9 @@ function endEncounter(state) {
 		draft.hand = []
 		draft.discardPile = []
 		draft.exhaustPile = []
+		// if (dead or completed) {
+		// 	endedAt = new Date().getTime()
+		// }
 		draft.drawPile = shuffle(draft.deck)
 	})
 	return drawCards(nextState)
@@ -462,6 +486,10 @@ function takeMonsterTurn(state, monsterIndex) {
 			const updatedPlayer = removeHealth(draft, {target: 'player', amount}).player
 			draft.player.block = updatedPlayer.block
 			draft.player.currentHealth = updatedPlayer.currentHealth
+			// if (draft.player.currentHealth < 1) {
+			// 	console.log('u ded')
+			// 	draft.endedAt = new Date().getTime()
+			// }
 		}
 
 		if (intent.vulnerable) {

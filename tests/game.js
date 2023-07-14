@@ -35,3 +35,13 @@ test('game also contains actions', (t) => {
 	game.state = game.actions.drawCards(game.state)
 	t.is(game.state.hand.length, 5)
 })
+
+test.only('game has a createdAt timestamp', (t) => {
+	const game = createNewGame()
+	t.is(typeof game.state.createdAt, 'number')
+	// t.falsy(game.endedAt)
+	// setTimeout(() => {
+	// 	const duration = new Date().getTime() - game.state.createdAt
+	// 	t.is(duration, 2000)
+	// }, 2000)
+})

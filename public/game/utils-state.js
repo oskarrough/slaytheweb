@@ -68,7 +68,7 @@ export function isCurrRoomCompleted(state) {
 }
 
 // Checks if the whole dungeon (all rooms) has been cleared.
-// As long as there is one cleared node per floor.
+// As long as there is one cleared node per floor, we are good.
 export function isDungeonCompleted(state) {
 	const clearedRooms = state.dungeon.graph
 		.map((floor) => {

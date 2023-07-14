@@ -32,11 +32,11 @@ Object.keys(realSfx).forEach((key) => {
 const load = () => JSON.parse(decodeURIComponent(window.location.hash.split('#')[1]))
 
 export default class App extends Component {
-	get isDead() {
-		return this.state.player.currentHealth < 1
-	}
 	get didWin() {
 		return isCurrRoomCompleted(this.state)
+	}
+	get isDead() {
+		return this.state.player.currentHealth < 1
 	}
 	get didWinEntireGame() {
 		return isDungeonCompleted(this.state)
@@ -253,7 +253,7 @@ stw.dealCards()`)
 				${
 					this.isDead &&
 					html`<${Overlay}>
-						<p center>You are dead.</p>
+						<p>You are dead.</p>
 						<${PublishRun} game=${this.game}><//>
 						<${DungeonStats} state=${state}><//>
 						<button onclick=${() => this.props.onLoose()}>Try again?</button>
@@ -261,9 +261,9 @@ stw.dealCards()`)
 				}
 
 				${
-					this.didWinEntireGame &&
+					state.won &&
 					html`<${Overlay}>
-						<p center><button onclick=${() => this.props.onWin()}>You win!</button></p>
+						<p><button onclick=${() => this.props.onWin()}>You won!</button></p>
 						<${PublishRun} game=${this.game}><//>
 						<${DungeonStats} state=${state}><//>
 					<//> `
@@ -403,12 +403,14 @@ function PublishRun({game}) {
 		setLoading(false)
 	}
 
+	const duration = (game.state.endedAt - game.state.createdAt) / 1000
+
 	return html`
-			<form onSubmit=${onSubmit}>
-					<label>What are you? <input type="text" name="playername" /></label>
-					<br/><button disabled=${loading} type="submit">Submit my run to the public, international network of Slay the Web run enthusiasts statistics Inc.</button>
-					<p>${loading ? 'submitting' : ''}</p>
-					<p>Thank you for playing.</p>
-			</form>
-			`
+		<form onSubmit=${onSubmit}>
+			<p>You reached floor ${game.state.turn} in ${duration} seconds.</p>
+			<label>What are you? <input type="text" name="playername" required placeholder="Know thyself" /></label>
+			<button disabled=${loading} type="submit">Submit my run</button>
+			<p>${loading ? 'submitting' : ''}</p>
+		</form>
+	`
 }
