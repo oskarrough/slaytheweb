@@ -38,29 +38,29 @@
 					<div class="Article">
 						<table>
 							<thead>
-							<tr>
-								<th>Date</th>
-								<th>Name</th>
-								<th>Win?</th>
-								<th>Player health</th>
-								<th>Turns</th>
+								<tr>
+									<th>Date</th>
+									<th>Name</th>
+									<th>Win?</th>
+									<th>Player health</th>
+									<th>Turns</th>
 								</tr>
-								</thead>
-								<tbody>
-						${props.runs.map((run) => {
-							const date = new Intl.DateTimeFormat('en', {
-								dateStyle: 'long',
-								timeStyle: 'short'
-							}).format(new Date(run.date))
-							return html`<tr>
-								<td>${date}</td>
-								<td>${run.name}</td>
-								<td>${run.win ? 'WIN' : 'LOSS'}</td>
-								<td>${run.state.player.currentHealth}</td>
-								<td>${run.state.turn}</td>
-							</tr>`
-						})}
-						</tbody>
+							</thead>
+							<tbody>
+								${props.runs.map((run) => {
+									const date = new Intl.DateTimeFormat('en', {
+										dateStyle: 'long',
+										timeStyle: 'short',
+									}).format(new Date(run.date))
+									return html`<tr>
+										<td>${date}</td>
+										<td>${run.name}</td>
+										<td>${run.win ? 'WIN' : 'LOSS'}</td>
+										<td>${run.state.player.currentHealth}</td>
+										<td>${run.state.turn}</td>
+									</tr>`
+								})}
+							</tbody>
 						</table>
 					</div>
 				</article>

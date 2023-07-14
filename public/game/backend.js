@@ -14,9 +14,8 @@ export function postRun(game, name) {
 		name: name || 'Unknown entity',
 		win: isDungeonCompleted(game.state),
 		state: game.state,
-		past: game.past.list
+		past: game.past.list,
 	}
-	console.log('Posting run',  run)
 	return fetch(apiUrl, {
 		method: 'POST',
 		headers: {
@@ -36,4 +35,3 @@ export async function getRuns() {
 	const {runs} = await res.json()
 	return runs
 }
-

@@ -101,15 +101,11 @@ stw.dealCards()`)
 		this.setState(this.game.state, callback)
 	}
 
-	componentDidUpdate() {
-		console.log('dead', this.isDead, 'win', this.didWinEntireGame)
-		if (this.isDead || this.didWinEntireGame) {}
-	}
-
 	undo() {
 		this.game.undo()
 		this.setState(this.game.state, this.dealCards)
 	}
+
 	/**
 	 * Plays a card while juggling DOM animations and set state.
 	 * @param {string} cardId
@@ -408,7 +404,9 @@ function PublishRun({game}) {
 	return html`
 		<form onSubmit=${onSubmit}>
 			<p>You reached floor ${game.state.turn} in ${duration} seconds.</p>
-			<label>What are you? <input type="text" name="playername" required placeholder="Know thyself" /></label>
+			<label
+				>What are you? <input type="text" name="playername" required placeholder="Know thyself"
+			/></label>
 			<button disabled=${loading} type="submit">Submit my run</button>
 			<p>${loading ? 'submitting' : ''}</p>
 		</form>

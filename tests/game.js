@@ -36,12 +36,16 @@ test('game also contains actions', (t) => {
 	t.is(game.state.hand.length, 5)
 })
 
-test.only('game has a createdAt timestamp', (t) => {
+test('game has a createdAt timestamp', (t) => {
 	let game = createNewGame()
 	t.is(typeof game.state.createdAt, 'number')
 	t.falsy(game.state.endedAt)
+})
+
+test('game has a endedAt timestamp', (t) => {
+	let game = createNewGame()
 	t.is(game.state.player.currentHealth, 72)
 	game.state = game.actions.removeHealth(game.state, {amount: 72, target: 'player'})
 	t.is(game.state.player.currentHealth, 0)
-	t.truthy(game.endedAt)
+	t.truthy(game.state.endedAt)
 })
