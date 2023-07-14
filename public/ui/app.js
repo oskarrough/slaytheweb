@@ -32,6 +32,16 @@ Object.keys(realSfx).forEach((key) => {
 const load = () => JSON.parse(decodeURIComponent(window.location.hash.split('#')[1]))
 
 export default class App extends Component {
+	get isDead() {
+		return this.state.player.currentHealth < 1
+	}
+	get didWin() {
+		return isCurrRoomCompleted(this.state)
+	}
+	get didWinEntireGame() {
+		return isDungeonCompleted(this.state)
+	}
+
 	constructor() {
 		super()
 		// Props
@@ -53,7 +63,6 @@ export default class App extends Component {
 		const game = createNewGame()
 		this.game = game
 		this.setState(game.state, this.dealCards)
-
 		sfx.startGame()
 
 		// If there is a saved game state, use it.
@@ -85,18 +94,23 @@ stw.dealCards()`)
 					// console.log(this.game.state)
 				})
 			},
-			getRuns() {
-				return backend.getRuns()
-			},
 			postRun() {
 				return backend.postRun(this.game)
-			},
+			}
 		}
 	}
 	update(callback) {
 		this.game.dequeue()
 		this.setState(this.game.state, callback)
 	}
+
+	componentDidUpdate() {
+		console.log('dead', this.isDead, 'win', this.didWinEntireGame)
+		if (this.isDead || this.didWinEntireGame) {
+			backend.postRun(this.game)
+		}
+	}
+
 	undo() {
 		this.game.undo()
 		this.setState(this.game.state, this.dealCards)
@@ -221,11 +235,9 @@ stw.dealCards()`)
 		this.game.enqueue({type: 'move', move})
 		this.update(this.dealCards)
 	}
+
 	render(props, state) {
 		if (!state.player) return
-		const isDead = state.player.currentHealth < 1
-		const didWin = isCurrRoomCompleted(state)
-		const didWinEntireGame = isDungeonCompleted(state)
 		const room = getCurrRoom(state)
 		const noEnergy = !state.player.currentEnergy
 
@@ -240,7 +252,7 @@ stw.dealCards()`)
 				}
 
 				${
-					isDead &&
+					this.isDead &&
 					html`<${Overlay}>
 						<p center>You are dead.</p>
 						<${DungeonStats} state=${state}><//>
@@ -249,7 +261,7 @@ stw.dealCards()`)
 				}
 
 				${
-					didWinEntireGame &&
+					this.didWinEntireGame &&
 					html`<${Overlay}>
 						<p center><button onclick=${() => this.props.onWin()}>You win!</button></p>
 						<${DungeonStats} state=${state}><//>
@@ -257,8 +269,8 @@ stw.dealCards()`)
 				}
 
 				${
-					!didWinEntireGame &&
-					didWin &&
+					!this.didWinEntireGame &&
+					this.didWin &&
 					room.type === 'monster' &&
 					html`<${Overlay}>
 						<h1 center medium>Victory. Onwards!</h1>
@@ -354,7 +366,9 @@ stw.dealCards()`)
 
 				<${OverlayWithButton} id="exhaustPile" topleft topleft2>
 					<button class="tooltipped tooltipped-ne" aria-label="The cards you have exhausted" onClick=${() =>
-						this.toggleOverlay('#exhaustPile')}>E<u>x</u>haust pile ${state.exhaustPile.length}</button>
+						this.toggleOverlay('#exhaustPile')}>E<u>x</u>haust pile ${
+			state.exhaustPile.length
+		}</button>
 					<div class="Overlay-content">
 						<${Cards} gameState=${state} type="exhaustPile" />
 					</div>

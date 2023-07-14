@@ -41,22 +41,23 @@
 							<tr>
 								<th>Date</th>
 								<th>Name</th>
-								<th>Status</th>
+								<th>Win?</th>
 								<th>Player health</th>
-								<th>Past moves</th>
+								<th>Turns</th>
 								</tr>
 								</thead>
 								<tbody>
 						${props.runs.map((run) => {
-							const game = JSON.parse(run.fields.state)
-							const date = new Intl.DateTimeFormat(new Date(run.createdTime)).format()
-							console.log(game)
+							const date = new Intl.DateTimeFormat('en', {
+								dateStyle: 'long',
+								timeStyle: 'short'
+							}).format(new Date(run.date))
 							return html`<tr>
 								<td>${date}</td>
-								<td>${run.fields.name}</td>
-								<td>${run.fields.status}</td>
-								<td>${game.state.player.currentHealth}</td>
-								<td>${game.past.list.length}</td>
+								<td>${run.name}</td>
+								<td>${run.win ? 'WIN' : 'LOSS'}</td>
+								<td>${run.state.player.currentHealth}</td>
+								<td>${run.past?.length}</td>
 							</tr>`
 						})}
 						</tbody>
