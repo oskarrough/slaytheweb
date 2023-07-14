@@ -6,11 +6,12 @@ const apiUrl = 'https://api.slaytheweb.cards/api/runs'
 /**
  * Saves a "game" object into a remote database.
  * @param {object} game
+ * @param {string} name
  * @returns {Promise}
  */
-export function postRun(game) {
+export function postRun(game, name) {
 	const run = {
-		name: 'Player 1',
+		name: name || 'Unknown entity',
 		win: isDungeonCompleted(game.state),
 		state: game.state,
 		past: game.past.list

@@ -1,5 +1,5 @@
 // Third party dependencies
-import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
+import {html, Component, useState} from '../web_modules/htm/preact/standalone.module.js'
 import gsap from './animations.js'
 // @ts-ignore
 import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
@@ -94,9 +94,6 @@ stw.dealCards()`)
 					// console.log(this.game.state)
 				})
 			},
-			postRun() {
-				return backend.postRun(this.game)
-			}
 		}
 	}
 	update(callback) {
@@ -106,9 +103,7 @@ stw.dealCards()`)
 
 	componentDidUpdate() {
 		console.log('dead', this.isDead, 'win', this.didWinEntireGame)
-		if (this.isDead || this.didWinEntireGame) {
-			backend.postRun(this.game)
-		}
+		if (this.isDead || this.didWinEntireGame) {}
 	}
 
 	undo() {
@@ -180,7 +175,9 @@ stw.dealCards()`)
 		el.style.zIndex = this.overlayIndex
 		this.overlayIndex++
 	}
+
 	handleShortcuts(event) {
+		if (event.target.nodeName === 'INPUT') return
 		const {key} = event
 		const keymap = {
 			e: () => this.endTurn(),
@@ -201,11 +198,13 @@ stw.dealCards()`)
 		}
 		keymap[key] && keymap[key]()
 	}
+
 	handlePlayerReward(choice, card) {
 		this.game.enqueue({type: 'addCardToDeck', card})
 		this.setState({didPickCard: card})
 		this.update()
 	}
+
 	handleCampfireChoice(choice, reward) {
 		// Depending on the choice, run an action.
 		if (choice === 'rest') {
@@ -255,6 +254,7 @@ stw.dealCards()`)
 					this.isDead &&
 					html`<${Overlay}>
 						<p center>You are dead.</p>
+						<${PublishRun} game=${this.game}><//>
 						<${DungeonStats} state=${state}><//>
 						<button onclick=${() => this.props.onLoose()}>Try again?</button>
 					<//> `
@@ -264,6 +264,7 @@ stw.dealCards()`)
 					this.didWinEntireGame &&
 					html`<${Overlay}>
 						<p center><button onclick=${() => this.props.onWin()}>You win!</button></p>
+						<${PublishRun} game=${this.game}><//>
 						<${DungeonStats} state=${state}><//>
 					<//> `
 				}
@@ -388,4 +389,26 @@ stw.dealCards()`)
 		</div>
 		`
 	}
+}
+
+function PublishRun({game}) {
+	const [loading, setLoading] = useState(false)
+
+	async function onSubmit(event) {
+		event.preventDefault()
+		setLoading(true)
+		const fd = new FormData(event.target)
+		const name = fd.get('playername')
+		await backend.postRun(game, name)
+		setLoading(false)
+	}
+
+	return html`
+			<form onSubmit=${onSubmit}>
+					<label>What are you? <input type="text" name="playername" /></label>
+					<br/><button disabled=${loading} type="submit">Submit my run to the public, international network of Slay the Web run enthusiasts statistics Inc.</button>
+					<p>${loading ? 'submitting' : ''}</p>
+					<p>Thank you for playing.</p>
+			</form>
+			`
 }
