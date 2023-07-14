@@ -37,11 +37,11 @@ test('game also contains actions', (t) => {
 })
 
 test.only('game has a createdAt timestamp', (t) => {
-	const game = createNewGame()
+	let game = createNewGame()
 	t.is(typeof game.state.createdAt, 'number')
-	// t.falsy(game.endedAt)
-	// setTimeout(() => {
-	// 	const duration = new Date().getTime() - game.state.createdAt
-	// 	t.is(duration, 2000)
-	// }, 2000)
+	t.falsy(game.state.endedAt)
+	t.is(game.state.player.currentHealth, 72)
+	game.state = game.actions.removeHealth(game.state, {amount: 72, target: 'player'})
+	t.is(game.state.player.currentHealth, 0)
+	t.truthy(game.endedAt)
 })
