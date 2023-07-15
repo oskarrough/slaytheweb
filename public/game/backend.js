@@ -18,12 +18,12 @@ const apiUrl = 'https://api.slaytheweb.cards/api/runs'
  * @param {string} name
  * @returns {Promise}
  */
-export function postRun(game, name) {
+export async function postRun(game, name) {
 	const run = {
 		name: name || 'Unknown entity',
 		win: isDungeonCompleted(game.state),
 		state: game.state,
-		past: game.past.list,
+		past: game.past,
 	}
 
 	let body
@@ -34,7 +34,7 @@ export function postRun(game, name) {
 		throw new Error('Could not stringify run')
 	}
 
-	return fetch(apiUrl, {
+	const res = await fetch(apiUrl, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
@@ -42,6 +42,8 @@ export function postRun(game, name) {
 		},
 		body,
 	})
+	console.log(res.status, res.statusText)
+	return res
 }
 
 /**
