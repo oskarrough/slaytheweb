@@ -235,11 +235,14 @@ export function useCardActions(state, {target, card}) {
 		if (action.conditions && !conditionsAreValid(action.conditions, state)) {
 			return newState
 		}
-		// Make sure the action is called with a target.
 		if (!action.parameter) action.parameter = {}
-		// Prefer the target you dropped the card on.
+
+		// Make sure the action is called with a target, preferably the target you dropped the card on.
 		action.parameter.target = target
-		action.parameter.card = card
+
+		// We used to set the card here, which caused a circular JSON structure. Removing this line fixed that, but keeping this comment here for now, in case something breaks.
+		// action.parameter.card = card
+
 		// Run the action
 		newState = allActions[action.type](newState, action.parameter)
 	})
