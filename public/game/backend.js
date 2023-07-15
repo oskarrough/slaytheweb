@@ -25,25 +25,14 @@ export async function postRun(game, name) {
 		state: game.state,
 		past: game.past,
 	}
-
-	let body
-	try {
-		body = JSON.stringify(run)
-	} catch (err) {
-		console.log(err, run)
-		throw new Error('Could not stringify run')
-	}
-
-	const res = await fetch(apiUrl, {
+	return fetch(apiUrl, {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
 		},
-		body,
+		body: JSON.stringify(run),
 	})
-	console.log(res.status, res.statusText)
-	return res
 }
 
 /**
