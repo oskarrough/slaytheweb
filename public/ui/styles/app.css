@@ -349,6 +349,15 @@ h2 {
 	border-top: 1px solid white;
 	border-right: 2px solid hsla(0, 0%, 0%, 0.9);
 }
+.Splash .Article {
+	text-align: left;
+}
+.Article h2 {
+	text-shadow: none;
+}
+.Article tbody {
+	font-size: smaller;
+}
 .Splash-spoder {
 	width: 10%;
 	position: absolute;
