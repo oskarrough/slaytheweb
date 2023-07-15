@@ -28,7 +28,7 @@ test('can decode game state', (t) => {
 	t.is(typeof decoded, 'object')
 
 	t.is(typeof state.deck[0].upgrade, 'function')
-	t.is(typeof decoded.deck[0].upgrade, 'function', 'cards have upgrade() method)')
+	t.is(typeof decoded.deck[0].upgrade, 'function', 'cards still have upgrade() method)')
 
 	const a = state.dungeon.graph[0][0]
 	const b = decoded.dungeon.graph[0][0]

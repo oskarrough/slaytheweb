@@ -5,6 +5,7 @@ import {getTargets, getCurrRoom} from './utils-state.js'
 import powers from './powers.js'
 import {dungeonWithMap} from '../content/dungeon-encounters.js'
 import {conditionsAreValid} from './conditions.js'
+import {isDungeonCompleted} from './utils-state.js'
 
 // Without this, immer.js will throw an error if our `state` is modified outside of an action.
 // While in theory a good idea, we're not there yet. It is a useful way to spot modifications
@@ -22,8 +23,12 @@ import {conditionsAreValid} from './conditions.js'
  * @prop {Array} drawPile
  * @prop {Array} hand
  * @prop {Array} discardPile
+ * @prop {Array} exhaustPile
  * @prop {Player} player
  * @prop {Object} dungeon
+ * @prop {Number} createdAt
+ * @prop {Number} endedAt
+ * @prop {Boolean} won
  */
 
 /**
@@ -47,6 +52,7 @@ function createNewGame() {
 		drawPile: [],
 		hand: [],
 		discardPile: [],
+		exhaustPile: [],
 		player: {
 			maxEnergy: 3,
 			currentEnergy: 3,
@@ -56,6 +62,9 @@ function createNewGame() {
 			powers: {},
 		},
 		dungeon: {},
+		createdAt: new Date().getTime(),
+		endedAt: undefined,
+		won: false,
 	}
 }
 
@@ -120,9 +129,19 @@ function addCardToHand(state, {card}) {
 function discardCard(state, {card}) {
 	return produce(state, (draft) => {
 		draft.hand = state.hand.filter((c) => c.id !== card.id)
-		draft.discardPile.push(card)
+		if (card.exhaust) {
+			draft.exhaustPile.push(card)
+		} else {
+			draft.discardPile.push(card)
+		}
 	})
 }
+
+// function exhaustCard(state, {card}) {
+// 	return produce(state, (draft) => {
+// 		draft.hand = state.hand.filter((c) => c.id !== card.id)
+// 	})
+// }
 
 // Discard your entire hand.
 function discardHand(state) {
@@ -167,7 +186,7 @@ function playCard(state, {card, target}) {
 	if (!target) target = card.target
 	if (typeof target !== 'string')
 		throw new Error(`Wrong target to play card: ${target},${card.target}`)
-	if (target === 'enemy') throw new Error('Did you mean "enemy0" or "allEnemies"?')
+	if (target === 'enemy') throw new Error('Wrong target, did you mean "enemy0" or "allEnemies"?')
 	if (!card) throw new Error('No card to play')
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
 	let newState = discardCard(state, {card})
@@ -184,7 +203,12 @@ function playCard(state, {card, target}) {
 		// we prioritize this over the actual enemy where you dropped the card.
 		const newTarget = card.target === CardTargets.allEnemies ? card.target : target
 		let amount = card.damage
-		if (newState.player.powers.weak) amount = powers.weak.use(amount)
+		if (newState.player.powers.strength) {
+			amount = amount + powers.strength.use(newState.player.powers.strength)
+		}
+		if (newState.player.powers.weak) {
+			amount = powers.weak.use(amount)
+		}
 		newState = removeHealth(newState, {target: newTarget, amount})
 	}
 	if (card.powers) newState = applyCardPowers(newState, {target, card})
@@ -211,11 +235,14 @@ export function useCardActions(state, {target, card}) {
 		if (action.conditions && !conditionsAreValid(action.conditions, state)) {
 			return newState
 		}
-		// Make sure the action is called with a target.
 		if (!action.parameter) action.parameter = {}
-		// Prefer the target you dropped the card on.
+
+		// Make sure the action is called with a target, preferably the target you dropped the card on.
 		action.parameter.target = target
-		action.parameter.card = card
+
+		// We used to set the card here, which caused a circular JSON structure. Removing this line fixed that, but keeping this comment here for now, in case something breaks.
+		// action.parameter.card = card
+
 		// Run the action
 		newState = allActions[action.type](newState, action.parameter)
 	})
@@ -256,10 +283,11 @@ const removePlayerDebuffs = (state) => {
 	})
 }
 
-function addEnergyToPlayer(state) {
+function addEnergyToPlayer(state, options) {
+	const amount = options?.amount ? options.amount : 1
 	return produce(state, (draft) => {
 		/* draft.player.maxEnergy = draft.player.maxEnergy + 1 */
-		draft.player.currentEnergy = draft.player.currentEnergy + 1
+		draft.player.currentEnergy = draft.player.currentEnergy + amount
 	})
 }
 
@@ -281,6 +309,9 @@ const removeHealth = (state, {target, amount}) => {
 				t.currentHealth = t.currentHealth + amountAfterBlock
 			} else {
 				t.block = amountAfterBlock
+			}
+			if (target === 'player' && t.currentHealth < 1) {
+				draft.endedAt = new Date().getTime()
 			}
 		})
 	})
@@ -369,7 +400,16 @@ function endTurn(state) {
 	newState = playMonsterActions(newState)
 	newState = decreasePlayerPowerStacks(newState)
 	newState = decreaseMonsterPowerStacks(newState)
-	newState = newTurn(newState)
+	const isDead = newState.player.currentHealth < 0
+	const didWin = isDungeonCompleted(newState)
+	const gameOver = isDead || didWin
+	newState = produce(newState, (draft) => {
+		if (didWin) draft.won = true
+		if (gameOver) {
+			draft.endedAt = new Date().getTime()
+		}
+	})
+	if (!gameOver) newState = newTurn(newState)
 	return newState
 }
 
@@ -384,10 +424,11 @@ function newTurn(state) {
 	})
 }
 
-function reshuffleAndDraw(state) {
+function endEncounter(state) {
 	const nextState = produce(state, (draft) => {
 		draft.hand = []
 		draft.discardPile = []
+		draft.exhaustPile = []
 		draft.drawPile = shuffle(draft.deck)
 	})
 	return drawCards(nextState)
@@ -412,9 +453,14 @@ function takeMonsterTurn(state, monsterIndex) {
 		const monster = room.monsters[monsterIndex]
 		// Reset block at start of turn.
 		monster.block = 0
-
 		// If dead don't do anything..
 		if (monster.currentHealth < 1) return
+
+		/**		if (monster.powers.poison)
+		{
+			state = removeHealth(state, {monster, powers.poison.use(monster.powers.poison)})
+			--hurt monster?!
+		}*/
 
 		// Get current intent.
 		const intent = monster.intents[monster.nextIntent || 0]
@@ -438,6 +484,9 @@ function takeMonsterTurn(state, monsterIndex) {
 			const updatedPlayer = removeHealth(draft, {target: 'player', amount}).player
 			draft.player.block = updatedPlayer.block
 			draft.player.currentHealth = updatedPlayer.currentHealth
+			if (updatedPlayer.currentHealth < 1) {
+				draft.endedAt = new Date().getTime()
+			}
 		}
 
 		if (intent.vulnerable) {
@@ -463,7 +512,7 @@ function addCardToDeck(state, {card}) {
 
 // Records a move on the map.
 function move(state, {move}) {
-	let nextState = reshuffleAndDraw(state)
+	let nextState = endEncounter(state)
 
 	return produce(nextState, (draft) => {
 		// Clear temporary powers, energy and block on player.
@@ -593,12 +642,12 @@ const allActions = {
 	removeCard,
 	removeHealth,
 	removePlayerDebuffs,
-	reshuffleAndDraw,
 	setDungeon,
 	setHealth,
 	setPower,
 	takeMonsterTurn,
 	upgradeCard,
+	endEncounter,
 }
 
 export default allActions

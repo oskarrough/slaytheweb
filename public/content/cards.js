@@ -1,5 +1,6 @@
 // Here you'll find all the default cards used in the game.
 // See game/cards.js for the details on how they work.
+
 export default [
 	{
 		name: 'Strike',
@@ -76,7 +77,7 @@ export default [
 		type: 'attack',
 		energy: 1,
 		damage: 8,
-		target: 'all enemies',
+		target: 'allEnemies',
 		description: 'Deal 8 damage to all enemies.',
 		image: 'vernal-equinox.jpg',
 		upgrade() {
@@ -343,6 +344,9 @@ export default [
 		actions: [
 			{
 				type: 'addEnergyToPlayer',
+				parameter: {
+					amount: 1,
+				},
 			},
 		],
 		upgrade() {
@@ -351,6 +355,128 @@ export default [
 			this.block = 5
 		},
 	},
+	{
+		name: 'Bludgeon', //add rarity? make it a rare card?
+		type: 'attack',
+		energy: 3,
+		target: 'enemy',
+		damage: 32,
+		description: 'Deal 32 Damage.',
+		image: 'alice-holds-the-white-king.jpg',
+		upgrade() {
+			this.damage = 42
+			this.upgraded = true
+			this.name = 'Bludgeon+'
+			this.description = 'Deal 42 Damage.'
+		},
+	},
+	{
+		name: 'Pommel Strike',
+		type: 'attack',
+		energy: 1,
+		target: 'enemy',
+		description: 'Deal 9 damage. Draw 1 card.',
+		image: '8.jpg',
+		damage: 9,
+		actions: [
+			{
+				type: 'drawCards',
+				parameter: {
+					amount: 1,
+				},
+			},
+		],
+		upgrade() {
+			this.name = 'Pommel Strike+'
+			this.description = 'Deal 10 damage. Draw 2 cards.'
+			this.damage = 10
+			const a = this.actions.find((action) => action.type === 'drawCards')
+			a.parameter.amount = 2
+		},
+	},
+	{
+		name: 'Intimidate',
+		type: 'skill',
+		energy: 0,
+		damage: 0,
+		target: 'allEnemies',
+		powers: {
+			weak: 1,
+		},
+		description: 'Apply 1 Weak to ALL enemies. Exhaust.',
+		image: 'poured-millions-of-bubbles.jpg',
+		upgrade() {
+			this.name = 'Intimidate+'
+			this.powers.weak = 2
+			this.description = 'Apply 2 Weak to ALL enemies. Exhaust.'
+		},
+		exhaust: true,
+	},
+	{
+		name: 'Terror',
+		type: 'skill',
+		energy: 0,
+		damage: 0,
+		target: 'enemy',
+		powers: {
+			vulnerable: 99,
+		},
+		description: 'Apply 99 vulnerable. Exhaust.',
+		image: '2.jpg',
+		upgrade() {
+			this.name = 'Terror+'
+			this.energy = 0
+		},
+		exhaust: true,
+	},
+	{
+		name: 'Adrenaline',
+		type: 'skill',
+		energy: 0,
+		damage: 0,
+		target: 'player',
+		actions: [
+			{
+				type: 'drawCards',
+				parameter: {
+					amount: 2,
+				},
+			},
+			{
+				type: 'addEnergyToPlayer',
+				parameter: {
+					amount: 1,
+				},
+			},
+		],
+		description: 'Gain 1 Energy. Draw 2 cards. Exhaust.',
+		image: 'serpentine-dancer.jpg',
+		upgrade() {
+			this.name = 'Adrenaline+'
+			this.description = 'Gain 2 Energy. Draw 2 cards. Exhaust.'
+			const a = this.actions.find((action) => action.type === 'addEnergyToPlayer')
+			a.parameter.amount = 2
+		},
+		exhaust: true,
+	},
+	/**	{
+		name: 'Deadly Poison',
+		type: 'attack',
+		energy: 1,
+		damage: 0,
+		target: 'enemy',
+		powers: {
+			poison: 5,
+		},
+		description: 'Apply 5 poison.',
+		image: '6.jpg',
+		upgrade() {
+			this.upgraded = true
+			this.name = 'Deadly Poison+'
+			this.powers.poison = 7
+			this.description = 'Apply 7 Poison'
+		},
+	},*/
 	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
 ]
 

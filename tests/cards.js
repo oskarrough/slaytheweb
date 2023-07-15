@@ -1,3 +1,4 @@
+// @ts-ignore
 import test from 'ava'
 import {createCard} from '../public/game/cards.js'
 

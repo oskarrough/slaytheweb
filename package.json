@@ -1,13 +1,13 @@
 {
   "name": "slaytheweb",
-  "version": "0.16.0",
+  "version": "0.16.1",
   "license": "AGPL-3.0-or-later",
   "homepage": "https://slaytheweb.cards",
   "repository": "https://github.com/oskarrough/slaytheweb",
   "bugs": "https://github.com/oskarrough/slaytheweb/issues",
   "type": "module",
   "scripts": {
-    "start": "servor public --reload",
+    "start": "servor public --static --reload",
     "lint": "eslint public tests --fix",
     "test": "ava",
     "test:watch": "ava --watch",
@@ -20,21 +20,21 @@
     "ava": "^4.3.3",
     "c8": "^7.12.0",
     "docco": "^0.9.1",
-    "eslint": "^8.23.0",
-    "eslint-config-prettier": "^8.5.0",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "2.7.1",
-    "release-it": "^15.4.0",
+    "release-it": "^16.1.0",
     "servor": "^4.0.2",
     "snowpack": "^1.7.1"
   },
   "dependencies": {
     "devalue": "^3.1.3",
     "esm": "^3.2.25",
-    "gsap": "^3.11.0",
+    "gsap": "^3.12.2",
     "htm": "^3.1.1",
-    "immer": "^9.0.15",
-    "tone": "^14.8.9"
+    "immer": "^9.0.21",
+    "tone": "^14.8.49"
   },
   "release-it": {
     "git": {

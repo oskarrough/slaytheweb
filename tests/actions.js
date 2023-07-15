@@ -1,10 +1,11 @@
 // @ts-ignore
 import test from 'ava'
 import actions from '../public/game/actions.js'
-import {createCard} from '../public/game/cards.js'
+import {createCard, CardTargets} from '../public/game/cards.js'
 import {MonsterRoom, Monster} from '../public/game/dungeon-rooms.js'
 import {createTestDungeon} from '../public/content/dungeon-encounters.js'
 import {getTargets, getCurrRoom, isCurrRoomCompleted} from '../public/game/utils-state.js'
+import {canPlay} from '../public/game/conditions.js'
 
 const a = actions
 
@@ -20,12 +21,16 @@ test('new game state is ok', (t) => {
 	const {state} = t.context
 	t.true(state.dungeon.graph.length > 0, 'we have a dungeon')
 	delete state.dungeon // deleting for rest of test because can't deepequal ids
+	delete state.createdAt
+	delete state.endedAt
 	t.deepEqual(state, {
+		won: false,
 		turn: 1,
 		deck: [],
 		drawPile: [],
 		hand: [],
 		discardPile: [],
+		exhaustPile: [],
 		player: {
 			maxEnergy: 3,
 			currentEnergy: 3,
@@ -248,13 +253,13 @@ test('can discard the entire hand', (t) => {
 	t.is(state4.discardPile.length, 5)
 })
 
-test('we can reshuffle and draw', (t) => {
+test('we can end an encounter with reshuffle and draw', (t) => {
 	let {state} = t.context
 	const state2 = a.addStarterDeck(state)
 	const state3 = a.drawCards(state2)
 	const state4 = a.discardHand(state3)
 	t.is(state4.discardPile.length, 5)
-	const state5 = a.reshuffleAndDraw(state4)
+	const state5 = a.endEncounter(state4)
 	t.is(state5.hand.length, 5)
 	t.is(state5.discardPile.length, 0)
 })
@@ -450,7 +455,28 @@ test('vulnerable is working', (t) => {
 	t.is(newState.player.currentHealth, 72 - 15)
 })
 
+test('Cleave targets all monsters', (t) => {
+	const cleave = createCard('Cleave')
+	t.is(cleave.target, CardTargets.allEnemies)
+})
+
+test('Clash can only be played if it is the only attack', (t) => {
+	const {state} = t.context
+	const clash = createCard('Clash')
+
+	// It has the righ condition.
+	t.is(clash.conditions[0].type, 'onlyType')
+	t.is(clash.conditions[0].cardType, 'attack')
+
+	t.is(canPlay(clash, state), false, 'can not play because not in hand')
+
+	state.hand.push(clash)
+	t.is(canPlay(clash, state), true, 'can play because in hand')
+
+	const defend = createCard('Defend')
+	state.hand.push(defend)
+	t.is(canPlay(clash, state), false, 'can not play because non-attack card in hand')
+})
+
 test.todo('playing defend on an enemy ?')
-test.todo('Cleave targets all monsters')
 test.todo('can apply a power to a specific monster')
-test.todo("Clash can only be played if it's the only attack")

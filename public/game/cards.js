@@ -42,6 +42,7 @@ export const CardTargets = {
  * @prop {CardTargets} target - a special "target" string to specify which targets the card affects.
  * color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
  * rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
+ * @prop {boolean} exhaust - whether the card will exhaust when played.
  *
  * @prop {CARDPOWERS} [powers] - Cards can apply POWERS with the `powers` object. Powers are hardcoded in the game actions, but feel free to add more.
  * @prop {Array<CardAction>} [actions] - Cards can _optionally_ define a list of `actions`. These actions will be run, in defined order, when the card is played.
@@ -74,6 +75,7 @@ export class Card {
 		this.image = props.image
 		this.upgraded = false
 		if (props.upgrade) this.upgrade = props.upgrade
+		this.exhaust = props.exhaust
 	}
 	upgrade() {
 		if (this.upgraded) return

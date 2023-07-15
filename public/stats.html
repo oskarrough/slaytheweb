@@ -8,59 +8,64 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
 		/>
-		<link rel="manifest" href="manifest.webmanifest" />
+		<link rel="manifest" href="/manifest.webmanifest" />
 		<meta name="mobile-web-app-capable" content="yes" />
 		<meta name="theme-color" content="#116f54" />
 		<meta name="msapplication-TileColor" content="#116f54" />
 		<link rel="icon" type="image/png" href="/ui/images/favicons/favicon-512.png" sizes="512x512" />
 		<link rel="shortcut icon" href="/ui/images/favicons/favicon.ico" />
 		<link rel="apple-touch-icon" href="/ui/images/favicon-512.png" />
-		<link rel="stylesheet" href="ui/index.css" />
+		<link rel="stylesheet" href="/ui/index.css" />
 	</head>
 
 	<body style="overflow: auto">
 		<div id="root"></div>
 		<script type="module">
 			import {html, render, Component} from '../web_modules/htm/preact/standalone.module.js'
-			import {getRuns} from './game/backend.js'
+			import {getRuns} from '../game/backend.js'
 
 			getRuns().then((runs) => {
 				console.log(runs)
-				render(html`<${List} runs=${runs} />`, document.querySelector('#root'))
+				render(html`<${List} runs=${runs.reverse()} />`, document.querySelector('#root'))
 			})
 
 			const List = (props) => html`
 				<article class="Splash">
 					<p><a href="/" class="Button">Back</a></p>
-					<h1>Slay the Web</h1>
-					<h2>Highscores, statistics</h2>
-
 					<div class="Article">
+						<h2>Highscores & Statistics</h2>
+						<p>A chronological list of Slay the Web runs.</p>
+						<p>There is quite a bit of statistics that could be gathered from the runs, but for now, this is what we have:</p>
 						<table>
 							<thead>
-							<tr>
-								<th>Date</th>
-								<th>Name</th>
-								<th>Status</th>
-								<th>Player health</th>
-								<th>Past moves</th>
+								<tr>
+									<th>Date</th>
+									<th>Name</th>
+									<th>Win?</th>
+									<th>Floor</th>
+									<th>Health</th>
+									<th>Time</th>
 								</tr>
-								</thead>
-								<tbody>
-						${props.runs.map((run) => {
-							const game = JSON.parse(run.fields.state)
-							const date = new Intl.DateTimeFormat(new Date(run.createdTime)).format()
-							console.log(game)
-							return html`<tr>
-								<td>${date}</td>
-								<td>${run.fields.name}</td>
-								<td>${run.fields.status}</td>
-								<td>${game.state.player.currentHealth}</td>
-								<td>${game.past.list.length}</td>
-							</tr>`
-						})}
-						</tbody>
+							</thead>
+							<tbody>
+								${props.runs.map((run) => {
+									const date = new Intl.DateTimeFormat('en', {
+										dateStyle: 'long',
+										timeStyle: 'short',
+									}).format(new Date(run.createdAt))
+									const duration = run.state.endedAt ? (run.state.endedAt - run.state.createdAt) / 1000 + 's' : ''
+									return html`<tr>
+										<td>${date}</td>
+										<td>${run.name}</td>
+										<td>${run.win ? 'WIN' : 'LOSS'}</td>
+										<td>${run.state.turn}</td>
+										<td>${run.state.player.currentHealth}</td>
+										<td>${duration}</td>
+									</tr>`
+								})}
+							</tbody>
 						</table>
+						<p>Once a run finishes, there is an option to submit it to this list. If you want your run removed, <a href="https://github.com/oskarrough/slaytheweb/issues">let me know</a>.</p>
 					</div>
 				</article>
 			`

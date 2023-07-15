@@ -3,6 +3,8 @@ import {getPlayerHealthPercentage} from '../game/utils-state.js'
  * Conditions decide whether a card can be played or not.
  * @typedef {Object} Condition — all other props will be passed to the condition as well
  * @prop {string} type
+ * @prop {string=} cardType
+ * @prop {number=} percentage
  */
 
 /** returns number — if all cards in your hand are of the same type */
@@ -29,9 +31,9 @@ export function healthPercentageBelow(state, condition) {
 export function conditionsAreValid(conditions, state) {
 	let isValid = true
 	if (conditions) {
-		conditions.every((condition) => {
+		return conditions.every((condition) => {
 			const cond = allConditions[condition.type]
-			return cond && allConditions[condition.type](state, condition)
+			return cond(state, condition)
 		})
 	}
 	return isValid
@@ -39,8 +41,8 @@ export function conditionsAreValid(conditions, state) {
 
 /**
  * Returns true if the card can be played. Checks whether the card is in hand, you have enough energy and any conditions are all valid.
- * @param {object} state
  * @param {object} card
+ * @param {object} state
  * @returns {boolean}
  */
 export function canPlay(card, state) {

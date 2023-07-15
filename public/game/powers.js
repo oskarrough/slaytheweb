@@ -31,6 +31,13 @@ export const regen = new Power({
 	use: (stacks) => stacks,
 })
 
+export const poison = new Power({
+	type: 'debuff',
+	name: 'Poison',
+	description: 'Hurts equal to poison stacks (todo: make poison reduce at start of turn, not end)',
+	use: (stacks) => stacks,
+})
+
 export const vulnerable = new Power({
 	type: 'debuff',
 	name: 'Vulnerable',
@@ -45,4 +52,13 @@ export const weak = new Power({
 	use: (dmg) => Math.floor(dmg * 0.75),
 })
 
-export default {regen, vulnerable, weak}
+
+export const strength = new Power({
+	type: 'buff',
+	name: 'strength',
+	description: 'Strengthened targets deal +x damage', //make x be current strength level
+	use: (stacks) => stacks,
+})
+
+/**tried to add strength, but can't figure out how to give the +1 dmg per stack and stack doesn't reduce*/
+export default {regen, vulnerable, weak, strength}

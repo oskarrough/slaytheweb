@@ -4,7 +4,6 @@ import {CardTargets} from './cards.js'
  * A bunch of utilities specific to the game state object.
  */
 
-/** returns number */
 export function getPlayerHealthPercentage(state) {
 	return (state.player.currentHealth / state.player.maxHealth) * 100
 }
@@ -69,7 +68,7 @@ export function isCurrRoomCompleted(state) {
 }
 
 // Checks if the whole dungeon (all rooms) has been cleared.
-// As long as there is one cleared node per floor.
+// As long as there is one cleared node per floor, we are good.
 export function isDungeonCompleted(state) {
 	const clearedRooms = state.dungeon.graph
 		.map((floor) => {
