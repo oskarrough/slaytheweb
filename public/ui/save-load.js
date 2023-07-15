@@ -1,4 +1,4 @@
-import {devalue} from '../web_modules/devalue.js'
+// import {devalue} from '../web_modules/devalue.js'
 
 // window.devalue = devalue
 
@@ -14,13 +14,13 @@ export function decodeState(state) {
 }
 
 // Encodes the game state and stores it in the URL.
-// export const saveGame = (state) => {
-// 	try {
-// 		location.hash = encodeURIComponent(encodeState(state))
-// 	} catch (err) {
-// 		console.log(err)
-// 	}
-// }
+export const saveGame = (state) => {
+	try {
+		location.hash = encodeURIComponent(encodeState(state))
+	} catch (err) {
+		console.log(err)
+	}
+}
 
 // function readStateFromURL {
 // 	return decodeURIComponent(window.location.hash.split('#')[1])
