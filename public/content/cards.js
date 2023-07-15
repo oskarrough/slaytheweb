@@ -1,8 +1,6 @@
 // Here you'll find all the default cards used in the game.
 // See game/cards.js for the details on how they work.
 
-//put cards here, to make it easier to add more
-
 export default [
 	{
 		name: 'Strike',
@@ -481,7 +479,6 @@ export default [
 	},*/
 	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
 ]
-//cards should be split into seperate card files to make editing a single card easier
 
 // 'codices.jpg'
 // 'alice-holds-the-white-king.jpg'

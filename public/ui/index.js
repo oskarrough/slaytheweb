@@ -48,4 +48,10 @@ class SlayTheWeb extends Component {
 	}
 }
 
-render(html` <${SlayTheWeb} /> `, document.querySelector('#SlayTheWeb'))
+// render(html` <${SlayTheWeb} /> `, document.querySelector('#SlayTheWeb'))
+
+customElements.define('slay-the-web', class SlayTheWebCustomElement extends HTMLElement {
+	connectedCallback() {
+		render(html` <${SlayTheWeb} /> `, this)
+	}
+})

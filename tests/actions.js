@@ -21,7 +21,10 @@ test('new game state is ok', (t) => {
 	const {state} = t.context
 	t.true(state.dungeon.graph.length > 0, 'we have a dungeon')
 	delete state.dungeon // deleting for rest of test because can't deepequal ids
+	delete state.createdAt
+	delete state.endedAt
 	t.deepEqual(state, {
+		won: false,
 		turn: 1,
 		deck: [],
 		drawPile: [],

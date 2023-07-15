@@ -5,6 +5,7 @@ import {getTargets, getCurrRoom} from './utils-state.js'
 import powers from './powers.js'
 import {dungeonWithMap} from '../content/dungeon-encounters.js'
 import {conditionsAreValid} from './conditions.js'
+import {isDungeonCompleted} from './utils-state.js'
 
 // Without this, immer.js will throw an error if our `state` is modified outside of an action.
 // While in theory a good idea, we're not there yet. It is a useful way to spot modifications
@@ -25,6 +26,9 @@ import {conditionsAreValid} from './conditions.js'
  * @prop {Array} exhaustPile
  * @prop {Player} player
  * @prop {Object} dungeon
+ * @prop {Number} createdAt
+ * @prop {Number} endedAt
+ * @prop {Boolean} won
  */
 
 /**
@@ -58,6 +62,9 @@ function createNewGame() {
 			powers: {},
 		},
 		dungeon: {},
+		createdAt: new Date().getTime(),
+		endedAt: undefined,
+		won: false,
 	}
 }
 
@@ -228,11 +235,14 @@ export function useCardActions(state, {target, card}) {
 		if (action.conditions && !conditionsAreValid(action.conditions, state)) {
 			return newState
 		}
-		// Make sure the action is called with a target.
 		if (!action.parameter) action.parameter = {}
-		// Prefer the target you dropped the card on.
+
+		// Make sure the action is called with a target, preferably the target you dropped the card on.
 		action.parameter.target = target
-		action.parameter.card = card
+
+		// We used to set the card here, which caused a circular JSON structure. Removing this line fixed that, but keeping this comment here for now, in case something breaks.
+		// action.parameter.card = card
+
 		// Run the action
 		newState = allActions[action.type](newState, action.parameter)
 	})
@@ -299,6 +309,9 @@ const removeHealth = (state, {target, amount}) => {
 				t.currentHealth = t.currentHealth + amountAfterBlock
 			} else {
 				t.block = amountAfterBlock
+			}
+			if (target === 'player' && t.currentHealth < 1) {
+				draft.endedAt = new Date().getTime()
 			}
 		})
 	})
@@ -387,7 +400,16 @@ function endTurn(state) {
 	newState = playMonsterActions(newState)
 	newState = decreasePlayerPowerStacks(newState)
 	newState = decreaseMonsterPowerStacks(newState)
-	newState = newTurn(newState)
+	const isDead = newState.player.currentHealth < 0
+	const didWin = isDungeonCompleted(newState)
+	const gameOver = isDead || didWin
+	newState = produce(newState, (draft) => {
+		if (didWin) draft.won = true
+		if (gameOver) {
+			draft.endedAt = new Date().getTime()
+		}
+	})
+	if (!gameOver) newState = newTurn(newState)
 	return newState
 }
 
@@ -462,6 +484,9 @@ function takeMonsterTurn(state, monsterIndex) {
 			const updatedPlayer = removeHealth(draft, {target: 'player', amount}).player
 			draft.player.block = updatedPlayer.block
 			draft.player.currentHealth = updatedPlayer.currentHealth
+			if (updatedPlayer.currentHealth < 1) {
+				draft.endedAt = new Date().getTime()
+			}
 		}
 
 		if (intent.vulnerable) {

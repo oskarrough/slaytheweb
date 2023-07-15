@@ -1,5 +1,5 @@
 // Third party dependencies
-import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
+import {html, Component, useState} from '../web_modules/htm/preact/standalone.module.js'
 import gsap from './animations.js'
 // @ts-ignore
 import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
@@ -32,6 +32,16 @@ Object.keys(realSfx).forEach((key) => {
 const load = () => JSON.parse(decodeURIComponent(window.location.hash.split('#')[1]))
 
 export default class App extends Component {
+	get didWin() {
+		return isCurrRoomCompleted(this.state)
+	}
+	get isDead() {
+		return this.state.player.currentHealth < 1
+	}
+	get didWinEntireGame() {
+		return isDungeonCompleted(this.state)
+	}
+
 	constructor() {
 		super()
 		// Props
@@ -53,7 +63,6 @@ export default class App extends Component {
 		const game = createNewGame()
 		this.game = game
 		this.setState(game.state, this.dealCards)
-
 		sfx.startGame()
 
 		// If there is a saved game state, use it.
@@ -85,22 +94,18 @@ stw.dealCards()`)
 					// console.log(this.game.state)
 				})
 			},
-			getRuns() {
-				return backend.getRuns()
-			},
-			postRun() {
-				return backend.postRun(this.game)
-			},
 		}
 	}
 	update(callback) {
 		this.game.dequeue()
 		this.setState(this.game.state, callback)
 	}
+
 	undo() {
 		this.game.undo()
 		this.setState(this.game.state, this.dealCards)
 	}
+
 	/**
 	 * Plays a card while juggling DOM animations and set state.
 	 * @param {string} cardId
@@ -166,7 +171,9 @@ stw.dealCards()`)
 		el.style.zIndex = this.overlayIndex
 		this.overlayIndex++
 	}
+
 	handleShortcuts(event) {
+		if (event.target.nodeName === 'INPUT') return
 		const {key} = event
 		const keymap = {
 			e: () => this.endTurn(),
@@ -187,11 +194,13 @@ stw.dealCards()`)
 		}
 		keymap[key] && keymap[key]()
 	}
+
 	handlePlayerReward(choice, card) {
 		this.game.enqueue({type: 'addCardToDeck', card})
 		this.setState({didPickCard: card})
 		this.update()
 	}
+
 	handleCampfireChoice(choice, reward) {
 		// Depending on the choice, run an action.
 		if (choice === 'rest') {
@@ -221,11 +230,9 @@ stw.dealCards()`)
 		this.game.enqueue({type: 'move', move})
 		this.update(this.dealCards)
 	}
+
 	render(props, state) {
 		if (!state.player) return
-		const isDead = state.player.currentHealth < 1
-		const didWin = isCurrRoomCompleted(state)
-		const didWinEntireGame = isDungeonCompleted(state)
 		const room = getCurrRoom(state)
 		const noEnergy = !state.player.currentEnergy
 
@@ -240,25 +247,27 @@ stw.dealCards()`)
 				}
 
 				${
-					isDead &&
+					this.isDead &&
 					html`<${Overlay}>
-						<p center>You are dead.</p>
+						<p>You are dead.</p>
+						<${PublishRun} game=${this.game}><//>
 						<${DungeonStats} state=${state}><//>
 						<button onclick=${() => this.props.onLoose()}>Try again?</button>
 					<//> `
 				}
 
 				${
-					didWinEntireGame &&
+					state.won &&
 					html`<${Overlay}>
-						<p center><button onclick=${() => this.props.onWin()}>You win!</button></p>
+						<p><button onclick=${() => this.props.onWin()}>You won!</button></p>
+						<${PublishRun} game=${this.game}><//>
 						<${DungeonStats} state=${state}><//>
 					<//> `
 				}
 
 				${
-					!didWinEntireGame &&
-					didWin &&
+					!this.didWinEntireGame &&
+					this.didWin &&
 					room.type === 'monster' &&
 					html`<${Overlay}>
 						<h1 center medium>Victory. Onwards!</h1>
@@ -354,7 +363,9 @@ stw.dealCards()`)
 
 				<${OverlayWithButton} id="exhaustPile" topleft topleft2>
 					<button class="tooltipped tooltipped-ne" aria-label="The cards you have exhausted" onClick=${() =>
-						this.toggleOverlay('#exhaustPile')}>E<u>x</u>haust pile ${state.exhaustPile.length}</button>
+						this.toggleOverlay('#exhaustPile')}>E<u>x</u>haust pile ${
+			state.exhaustPile.length
+		}</button>
 					<div class="Overlay-content">
 						<${Cards} gameState=${state} type="exhaustPile" />
 					</div>
@@ -374,4 +385,30 @@ stw.dealCards()`)
 		</div>
 		`
 	}
+}
+
+function PublishRun({game}) {
+	const [loading, setLoading] = useState(false)
+
+	async function onSubmit(event) {
+		event.preventDefault()
+		setLoading(true)
+		const fd = new FormData(event.target)
+		const name = fd.get('playername')
+		await backend.postRun(game, name)
+		setLoading(false)
+	}
+
+	const duration = (game.state.endedAt - game.state.createdAt) / 1000
+
+	return html`
+		<form onSubmit=${onSubmit}>
+			<p>You reached floor ${game.state.turn} in ${duration} seconds.</p>
+			<label
+				>What are you? <input type="text" name="playername" required placeholder="Know thyself"
+			/></label>
+			<button disabled=${loading} type="submit">Submit my run</button>
+			<p>${loading ? 'submitting' : ''}</p>
+		</form>
+	`
 }
