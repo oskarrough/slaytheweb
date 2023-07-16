@@ -113,10 +113,8 @@ stw.dealCards()`)
 	 * @param {HTMLElement} cardElement
 	 */
 	playCard(cardId, target, cardElement) {
-		// Play the card.
 		const card = this.state.hand.find((c) => c.id === cardId)
 		this.game.enqueue({type: 'playCard', card, target})
-
 		const supportsFlip = typeof Flip !== 'undefined'
 		let flip
 
@@ -131,7 +129,6 @@ stw.dealCards()`)
 		// Update state and re-enable dragdrop
 		this.update(() => {
 			enableDragDrop(this.base, this.playCard)
-
 			sfx.playCard({card, target})
 
 			// Animate cloned card away

@@ -478,5 +478,12 @@ test('Clash can only be played if it is the only attack', (t) => {
 	t.is(canPlay(clash, state), false, 'can not play because non-attack card in hand')
 })
 
+test('Succube card applies regen', (t) => {
+	const {state} = t.context
+	const succube = createCard('Succube')
+	const newstate = actions.playCard(state, {card: succube, target: 'enemy0'})
+	t.is(newstate.player.powers.regen, 2)
+})
+
 test.todo('playing defend on an enemy ?')
 test.todo('can apply a power to a specific monster')
