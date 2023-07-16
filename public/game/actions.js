@@ -172,10 +172,10 @@ function upgradeCard(state, {card}) {
 	})
 }
 
-// The funky part of this action is the `target` argument. It needs to be a special type of string:
-// Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getTargets
 /**
- *
+ * Play a card
+ * The funky part of this action is the `target` argument. It needs to be a special type of string:
+ * Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getTargets
  * @param {State} state
  * @param {object} props
  * @param {object} props.card
@@ -240,11 +240,8 @@ export function useCardActions(state, {target, card}) {
 		// Make sure the action is called with a target, preferably the target you dropped the card on.
 		action.parameter.target = target
 
-		// We used to set the card here, which caused a circular JSON structure. Removing this line fixed that, but keeping this comment here for now, in case something breaks.
-		// action.parameter.card = card
-
-		// Run the action
-		newState = allActions[action.type](newState, action.parameter)
+		// Run the action (and add the `card` to the parameters
+		newState = allActions[action.type](newState, {...action.parameter, card})
 	})
 	return newState
 }
@@ -265,11 +262,10 @@ function addHealth(state, {target, amount}) {
 }
 
 function addRegenEqualToAllDamage(state, {card}) {
+	if (!card) throw new Error('missing card!')
 	return produce(state, (draft) => {
 		const room = getCurrRoom(state)
-		const aliveMonsters = room.monsters.filter((monster) => {
-			return monster.currentHealth > 0
-		})
+		const aliveMonsters = room.monsters.filter((monster) => monster.currentHealth > 0)
 		const {regen = 0} = state.player.powers
 		const totalDamage = aliveMonsters.length * card.damage
 		draft.player.powers.regen = totalDamage + regen
