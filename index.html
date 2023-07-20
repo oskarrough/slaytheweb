@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="description" content="A video card game for the web" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+		<title>Slay the Web</title>
+		<link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="mobile-web-app-capable" content="yes">
+		<meta name="theme-color" content="#116f54" />
+		<meta name="msapplication-TileColor" content="#116f54">
+		<link rel="icon" type="image/png" href="/images/favicons/favicon-512.png" sizes="512x512" />
+		<link rel="shortcut icon" href="/images/favicons/favicon.ico">
+		<link rel="apple-touch-icon" href="/images/favicon-512.png" />
+	</head>
+	<body>
+
+		<slay-the-web></slay-the-web>
+
+		<script async src="/src/ui/index.js" type="module"></script>
+		<script async src="/src/main.js" type="module"></script>
+		<script>
+			// Offline support
+			if (!location.origin.includes('localhost') && 'serviceWorker' in navigator) {
+				window.addEventListener('load', () => {
+					navigator.serviceWorker.register('/service-worker.js')
+				})
+			}
+			window.TONE_SILENCE_LOGGING = true
+		</script>
+		<noscript>
+			<p>
+				You need JavaScript enabled to play Slay The Web.
+				See <a href="https://github.com/oskarrough/slaytheweb/">github.com/oskarrough/slaytheweb/</a>.
+			</p>
+		</noscript>
+
+	</body>
+</html>

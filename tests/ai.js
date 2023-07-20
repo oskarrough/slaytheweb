@@ -1,8 +1,8 @@
 // @ts-ignore
 import test from 'ava'
-import actions from '../public/game/actions.js'
-import Dungeon from '../public/game/dungeon.js'
-import {MonsterRoom, Monster} from '../public/game/dungeon-rooms.js'
+import actions from '../src/game/actions.js'
+import Dungeon from '../src/game/dungeon.js'
+import {MonsterRoom, Monster} from '../src/game/dungeon-rooms.js'
 
 const a = actions
 
