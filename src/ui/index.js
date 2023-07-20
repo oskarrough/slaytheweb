@@ -1,5 +1,5 @@
-import {html, render, Component} from '../main.js'
-import App from './app.js'
+import {html, render, Component} from './lib.js'
+import GameScreen from './game-screen.js'
 import SplashScreen from './splash-screen.js'
 import WinScreen from './win-screen.js'
 
@@ -43,7 +43,7 @@ class SlayTheWeb extends Component {
 				onContinue=${this.handleNewGame}
 			/>`
 		if (gameMode === GameModes.gameplay)
-			return html` <${App} onWin=${this.handleWin} onLoose=${this.handleLoose} /> `
+			return html` <${GameScreen} onWin=${this.handleWin} onLoose=${this.handleLoose} /> `
 		if (gameMode === GameModes.win) return html` <${WinScreen} onNewGame=${this.handleNewGame} /> `
 	}
 }

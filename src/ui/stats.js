@@ -1,4 +1,4 @@
-import {html, render} from '../main.js'
+import {html, render} from './lib.js'
 import {getRuns} from '../game/backend.js'
 
 const StatsPage = (props) => html`

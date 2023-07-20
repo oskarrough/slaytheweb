@@ -9,7 +9,6 @@ module.exports = {
 		ecmaVersion: 'latest',
 		sourceType: 'module',
 	},
-	ignorePatterns: ['public/web_modules/'],
 	rules: {
 		complexity: ['warn', 14],
 	},

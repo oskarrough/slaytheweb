@@ -1,4 +1,4 @@
-import {html} from '../main.js'
+import {html} from './lib.js'
 import History from './history.js'
 
 const save = (state) => (window.location.hash = encodeURIComponent(JSON.stringify(state)))

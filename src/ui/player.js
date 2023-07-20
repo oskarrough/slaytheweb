@@ -1,4 +1,4 @@
-import {html, Component} from '../main.js'
+import {html, Component} from './lib.js'
 import {
 	weak as weakPower,
 	vulnerable as vulnerablePower,

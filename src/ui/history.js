@@ -1,4 +1,4 @@
-import {html, Component} from '../main.js'
+import {html, Component} from './lib.js'
 
 export default class Queue extends Component {
 	constructor(props) {

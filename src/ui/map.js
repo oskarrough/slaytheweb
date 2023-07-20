@@ -1,4 +1,4 @@
-import {Component, html} from '../main.js'
+import {Component, html} from './lib.js'
 import {random as randomBetween} from '../game/utils.js'
 import {isRoomCompleted} from '../game/utils-state.js'
 

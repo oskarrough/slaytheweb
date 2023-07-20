@@ -1,4 +1,4 @@
-import {html, render} from '../main.js'
+import {html, render} from './lib.js'
 import cards from '../content/cards.js'
 import {Card} from './cards.js'
 

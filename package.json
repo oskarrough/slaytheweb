@@ -8,13 +8,13 @@
   "type": "module",
   "scripts": {
     "start": "vite dev",
-    "lint": "eslint public tests --fix",
+    "lint": "eslint src tests --fix",
     "test": "ava",
     "test:watch": "ava --watch",
     "test:coverage": "c8 ava",
     "build": "vite build",
     "preview": "vite preview",
-    "docs": "rm -rf ./docs; cd public/game; docco *.js; mv docs ../../docs",
+    "docs": "rm -rf ./docs; cd src/game; docco *.js; mv docs ../../docs",
     "release": "release-it"
   },
   "devDependencies": {

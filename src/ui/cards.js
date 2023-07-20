@@ -1,4 +1,4 @@
-import {html, Component} from '../main.js'
+import {html, Component} from './lib.js'
 import {canPlay} from '../game/conditions.js'
 
 export default class Cards extends Component {
