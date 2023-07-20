@@ -1,6 +1,7 @@
 import {Component, html} from './lib.js'
 import {random as randomBetween} from '../game/utils.js'
 import {isRoomCompleted} from '../game/utils-state.js'
+import { roomTypes } from '../game/dungeon.js'
 
 export default function map(props) {
 	const {x, y, pathTaken} = props.dungeon
@@ -150,19 +151,16 @@ export class SlayMap extends Component {
 	}
 }
 
-function emojiFromNodeType(type) {
+/**
+ * Converts the string type of a node to an emoji string.
+ * @param {string} type - a string key to represent the type of room
+ * @returns {string} a single emoji
+ */
+export function emojiFromNodeType(type) {
 	if (!type) return
-	const map = {
-		start: '👣',
-		M: '💀',
-		C: '🏕️,🏝️',
-		// $: '💰',
-		Q: '❓',
-		E: '👹',
-		boss: '🌋',
-	}
-	const list = map[type].split(',')
-	return list.length > 1 ? list[Math.floor(Math.random() * list.length)] : list[0]
+	const emojis = roomTypes[type].split(',')
+	const emoji = emojis.length > 1 ? emojis[Math.floor(Math.random() * emojis.length)] : emojis[0]
+	return emoji
 }
 
 // Since el.offsetLeft doesn't respect CSS transforms,

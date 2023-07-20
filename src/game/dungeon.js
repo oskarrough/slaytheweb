@@ -1,19 +1,19 @@
 import {uuid, shuffle, random as randomBetween} from './utils.js'
 import {StartRoom, CampfireRoom} from './dungeon-rooms.js'
 import {easyMonsters, monsters, elites, bosses} from '../content/dungeon-encounters.js'
+import {emojiFromNodeType} from '../ui/map.js'
 
 /**
+ * @typedef {Object} DungeonOptions
  * A procedural generated dungeon map for Slay the Web. Again, heavily inspired by Slay the Spire.
- * @param {object} options
- * @param {number} options.width how many nodes on each floor
- * @param {number} options.height how many floors
- * @param {number} options.minRoom minimum amount of rooms to generate per floor
- * @param {number} options.maxRoom maximum amount of rooms to generate per floor
- * @param {string} options.roomTypes a string like "MMCE". Repeat a letter to increase the chance of it appearing. M=Monster, C=Campfire, E=Elite. For example "MMMCE" gives 60% chance of a monster, 20% chance of a campfire and 20% chance of an elite.
- * @param {string} options.customPaths The "customPaths" argument should be a string of indexes from where to draw the paths, for example "530" would draw three paths. First at index 5, then 3 and finally 0.
+ * @param {number} width how many nodes on each floor
+ * @param {number} height how many floors
+ * @param {number} minRoom minimum amount of rooms to generate per floor
+ * @param {number} maxRoom maximum amount of rooms to generate per floor
+ * @param {string} roomTypes a string like "MMCE". Repeat a letter to increase the chance of it appearing. M=Monster, C=Campfire, E=Elite. For example "MMMCE" gives 60% chance of a monster, 20% chance of a campfire and 20% chance of an elite.
+ * @param {string} customPaths The "customPaths" argument should be a string of indexes from where to draw the paths, for example "530" would draw three paths. First at index 5, then 3 and finally 0.
  * @returns {object} dungeon {id, graph, paths, x, y, pathTaken}
  */
-
 const defaultOptions = {
 	width: 10,
 	height: 6,
@@ -24,16 +24,23 @@ const defaultOptions = {
 }
 
 /**
- * @typedef {object} DUNGEON
- * @param {string} id
+ * An instance of a dungeon
+ * @typedef {Object} Dungeon
+ * @prop {string} id - a unique id
+ * @prop {array} graph
+ * @prop {array} paths
+ * @prop {number} x - current x position
+ * @prop {number} y - current y position
+ * @prop {array} pathTaken - a list of nodes we've visited
+ *
  */
 
 /**
  * Creates a new dungeon, complete with graph and paths.
- * @param {object} options
- * @returns {DUNGEON}
+ * @param {DungeonOptions} options
+ * @returns {Dungeon}
  */
-export default function Dungeon(options = {}) {
+export default function Dungeon(options) {
 	options = Object.assign(defaultOptions, options)
 
 	const graph = generateGraph(options)
@@ -70,6 +77,11 @@ export default function Dungeon(options = {}) {
 	}
 }
 
+/**
+ * Returns a random item from an array.
+ * @param {Array} types
+ * @returns {any} a random item from the array
+ */
 const pick = (types) => shuffle(Array.from(types))[0]
 
 /**
@@ -101,6 +113,17 @@ function decideRoomType(nodeType, floor /*, graph*/) {
 	if (nodeType === 'E') return pickRandomFromObj(elites)
 	if (nodeType === 'boss') return pickRandomFromObj(bosses)
 	throw new Error(`Could not match node type "${nodeType}" with a dungeon room`)
+}
+
+/** A map of room types to emojis */
+export const roomTypes = {
+	start: '👣',
+	M: '💀',
+	C: '🏕️,🏝️',
+	// $: '💰',
+	Q: '❓',
+	E: '👹',
+	boss: '🌋',
 }
 
 /**
@@ -271,15 +294,12 @@ export function findPath(graph, preferredIndex, debug = false) {
 
 // For debugging purposes, logs a text representation of the map.
 export function graphToString(graph) {
-	graph.forEach((floor, floorNumber) => {
-		let str = `${String(floorNumber).padStart(2, '0')}   `
-		floor.forEach((node) => {
-			if (!node.type) {
-				str = str + ' '
-			} else {
-				str = str + node.type
-			}
+	let textGraph = graph.map((floor) =>
+		floor.map((node) => {
+			if (!node.type) return ' '
+			return emojiFromNodeType(node.type)
 		})
-		console.log(str)
-	})
+	)
+	const str = textGraph.map((floor) => floor.join('')).join('\n')
+	return str
 }
