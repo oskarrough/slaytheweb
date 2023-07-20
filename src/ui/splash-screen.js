@@ -1,5 +1,5 @@
-import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
-import gsap from '../web_modules/gsap.js'
+import {html, Component} from '../../public/web_modules/htm/preact/standalone.module.js'
+import gsap from '../../public/web_modules/gsap.js'
 
 export default class SplashScreen extends Component {
 	componentDidMount() {
@@ -18,7 +18,7 @@ export default class SplashScreen extends Component {
 			<article class="Splash Splash--fadein">
 				<h1 style="margin-top:8vh">Slay the Web</h1>
 				<h2>A card crawl adventure for you and your browser</h2>
-				<img class="Splash-spoder" src="ui/images/spoder.png" title="Oh hello" />
+				<img class="Splash-spoder" src="/images/spoder.png" title="Oh hello" />
 				<ul class="Options">
 					${
 						location.hash

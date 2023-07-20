@@ -8,9 +8,9 @@ html {
 	font-size: 2.2vw;
 	line-height: 1.4;
 	color: var(--text);
-	cursor: url(../images/cursors/default.png), auto;
+	cursor: url(/images/cursors/default.png), auto;
 	min-height: 100%;
-	background: url('../images/scenes/dalle1.jpg');
+	background: url('/images/scenes/dalle1.jpg');
 	background-attachment: fixed;
 	/* background-position: center bottom; */
 	background-position: 50%;
@@ -55,13 +55,13 @@ body {
 a,
 button,
 summary {
-	cursor: url(../images/cursors/point.png) 10 0, auto;
+	cursor: url(/images/cursors/point.png) 10 0, auto;
 }
 
 input,
 textarea,
 select {
-	cursor: url(../images/cursors/select.png) 10 0, auto;
+	cursor: url(/images/cursors/select.png) 10 0, auto;
 }
 
 input[type="text"] {
@@ -151,40 +151,40 @@ h2 {
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
-	background-image: url('../images/scenes/moonlit-landscape-1904.jpg');
+	background-image: url('/images/scenes/moonlit-landscape-1904.jpg');
 }
 .App-background[data-room-index='1'] {
-	background-image: url('../images/scenes/arietty.jpg');
+	background-image: url('/images/scenes/arietty.jpg');
 }
 .App-background[data-room-index='2'] {
-	background-image: url('../images/scenes/bauhaus.jpg');
+	background-image: url('/images/scenes/bauhaus.jpg');
 }
 .App-background[data-room-index='3'] {
-	background-image: url('../images/scenes/chihiro.jpg');
+	background-image: url('/images/scenes/chihiro.jpg');
 }
 .App-background[data-room-index='4'] {
-	background-image: url('../images/scenes/howl.jpg');
+	background-image: url('/images/scenes/howl.jpg');
 }
 .App-background[data-room-index='5'] {
-	background-image: url('../images/scenes/laputa.jpg');
+	background-image: url('/images/scenes/laputa.jpg');
 }
 .App-background[data-room-index='6'] {
-	background-image: url('../images/scenes/mononoke.jpg');
+	background-image: url('/images/scenes/mononoke.jpg');
 }
 .App-background[data-room-index='7'] {
-	background-image: url('../images/scenes/nausicaa.jpg');
+	background-image: url('/images/scenes/nausicaa.jpg');
 }
 .App-background[data-room-index='8'] {
-	background-image: url('../images/scenes/1.jpg');
+	background-image: url('/images/scenes/1.jpg');
 }
 .App-background[data-room-index='9'] {
-	background-image: url('../images/scenes/landscape.jpg');
+	background-image: url('/images/scenes/landscape.jpg');
 }
 .App-background[data-room-index='10'] {
-	background-image: url('../images/scenes/flying-duo.jpg');
+	background-image: url('/images/scenes/flying-duo.jpg');
 }
 .App-background[data-room-index='11'] {
-	background-image: url('../images/scenes/ponyo.jpg');
+	background-image: url('/images/scenes/ponyo.jpg');
 }
 
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
@@ -301,7 +301,7 @@ h2 {
 	margin-left: -1.5rem;
 	/* margin-bottom: -3rem; */
 	cursor: grab;
-	cursor: url(../images/cursors/grab-open.png) 10 0, auto;
+	cursor: url(/images/cursors/grab-open.png) 10 0, auto;
 }
 .Hand .Card-inner {
 	/* because of negative margin */
@@ -405,7 +405,7 @@ h2 {
 }
 .CardBox {
 	cursor: pointer;
-	cursor: url(../images/cursors/grab-open.png) 10 0, auto;
+	cursor: url(/images/cursors/grab-open.png) 10 0, auto;
 }
 
 .History {

@@ -1,6 +1,6 @@
-import {Draggable} from '../web_modules/gsap/Draggable.js'
+import {Draggable} from '../../public/web_modules/gsap/Draggable.js'
 import gsap from './animations.js'
-import {cardHasValidTarget} from '../game/utils-state.js'
+import {cardHasValidTarget} from '../../public/game/utils-state.js'
 import sfx from './sounds.js'
 
 // Class to add to the element we are dragging over.

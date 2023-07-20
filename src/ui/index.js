@@ -1,4 +1,4 @@
-import {html, render, Component} from '../web_modules/htm/preact/standalone.module.js'
+import {html, render, Component} from '../../public/web_modules/htm/preact/standalone.module.js'
 import App from './app.js'
 import SplashScreen from './splash-screen.js'
 import WinScreen from './win-screen.js'
@@ -50,8 +50,11 @@ class SlayTheWeb extends Component {
 
 // render(html` <${SlayTheWeb} /> `, document.querySelector('#SlayTheWeb'))
 
-customElements.define('slay-the-web', class SlayTheWebCustomElement extends HTMLElement {
-	connectedCallback() {
-		render(html` <${SlayTheWeb} /> `, this)
+customElements.define(
+	'slay-the-web',
+	class SlayTheWebCustomElement extends HTMLElement {
+		connectedCallback() {
+			render(html` <${SlayTheWeb} /> `, this)
+		}
 	}
-})
+)

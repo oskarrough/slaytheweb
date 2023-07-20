@@ -1,6 +1,7 @@
 *.swp
 .DS_Store
 coverage/
+dist/
 docs/
 node_modules/
 # package-lock.json

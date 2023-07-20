@@ -5,20 +5,21 @@
 		<meta name="description" content="A video card game for the web" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
 		<title>Slay the Web</title>
-		<link rel="manifest" href="manifest.webmanifest" />
+		<link rel="manifest" href="/manifest.webmanifest" />
     <meta name="mobile-web-app-capable" content="yes">
 		<meta name="theme-color" content="#116f54" />
 		<meta name="msapplication-TileColor" content="#116f54">
-		<link rel="icon" type="image/png" href="/ui/images/favicons/favicon-512.png" sizes="512x512" />
-		<link rel="shortcut icon" href="/ui/images/favicons/favicon.ico">
-		<link rel="apple-touch-icon" href="/ui/images/favicon-512.png" />
-		<link rel="stylesheet" href="ui/index.css" />
+		<link rel="icon" type="image/png" href="/images/favicons/favicon-512.png" sizes="512x512" />
+		<link rel="shortcut icon" href="/images/favicons/favicon.ico">
+		<link rel="apple-touch-icon" href="/images/favicon-512.png" />
+		<link rel="stylesheet" href="/src/ui/index.css" />
 	</head>
 	<body>
 
 		<slay-the-web></slay-the-web>
 
-		<script async src="ui/index.js" type="module"></script>
+		<script async src="/src/ui/index.js" type="module"></script>
+		<script async src="/src/main.js" type="module"></script>
 		<script>
 			// Offline support
 			if (!location.origin.includes('localhost') && 'serviceWorker' in navigator) {

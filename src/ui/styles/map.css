@@ -82,7 +82,7 @@ slay-map-node[can-visit] {
 slay-map-node[type]:hover {
 	border-color: hsla(0, 0%, 0%, 0.9);
 	cursor: pointer;
-	cursor: url(../images/cursors/point.png) 10 0, auto;
+	cursor: url(/images/cursors/point.png) 10 0, auto;
 }
 slay-map-node > span {
 	transition: transform 300ms ease-in-out;

@@ -1,4 +1,4 @@
-import {html} from '../web_modules/htm/preact/standalone.module.js'
+import {html} from '../../public/web_modules/htm/preact/standalone.module.js'
 
 // A tiny overlay UI component.
 export function Overlay(props) {

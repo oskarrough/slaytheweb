@@ -1,4 +1,4 @@
-import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
+import {html, Component} from '../../public/web_modules/htm/preact/standalone.module.js'
 import {Card} from './cards.js'
 
 export default class CardChooser extends Component {

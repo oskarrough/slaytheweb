@@ -1,4 +1,4 @@
-import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
+import {html, Component} from '../../public/web_modules/htm/preact/standalone.module.js'
 
 const getEnemiesStats = (dungeon) => {
 	const stats = {

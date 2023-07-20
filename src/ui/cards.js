@@ -1,5 +1,5 @@
-import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
-import {canPlay} from '../game/conditions.js'
+import {html, Component} from '../../public/web_modules/htm/preact/standalone.module.js'
+import {canPlay} from '../../public/game/conditions.js'
 
 export default class Cards extends Component {
 	// props = {gameState: {}, type ''}
@@ -11,7 +11,7 @@ export default class Cards extends Component {
 
 export function Card(card, gameState) {
 	const isDisabled = !canPlay(card, gameState)
-	const image = card.image ? `/ui/images/cards/${card.image}` : '/ui/images/cards/fallback.jpg'
+	const image = card.image ? `/images/cards/${card.image}` : '/images/cards/fallback.jpg'
 
 	return html`
 		<article

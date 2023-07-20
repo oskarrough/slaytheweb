@@ -1,11 +1,11 @@
-import {html, Component} from '../web_modules/htm/preact/standalone.module.js'
+import {html, Component} from '../../public/web_modules/htm/preact/standalone.module.js'
 import {
 	weak as weakPower,
 	vulnerable as vulnerablePower,
 	regen as regenPower,
 	poison as poisonPower,
 	strength as strengthPower,
-} from '../game/powers.js'
+} from '../../public/game/powers.js'
 
 export const Player = (props) => {
 	return html`<${Target} ...${props} type="player" />`
@@ -36,7 +36,7 @@ export const Monster = (props) => {
 
 		return html`
 			<div class="Target-intent ${tooltip && 'tooltipped tooltipped-n'}" aria-label="${tooltip}">
-				<img alt=${type} src="ui/images/${type}.png" /> ${amount}
+				<img alt=${type} src="/images/${type}.png" /> ${amount}
 			</div>
 		`
 	}

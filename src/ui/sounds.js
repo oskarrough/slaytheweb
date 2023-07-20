@@ -1,4 +1,5 @@
-import * as Tone from '../web_modules/tone.js'
+// import * as Tone from '../web_modules/tone.js'
+import * as Tone from 'tone'
 
 // Create synths and connect it to the main output (your speakers).
 const polySynth = new Tone.PolySynth(Tone.AMSynth, {volume: -36}).toDestination()

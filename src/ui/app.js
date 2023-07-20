@@ -1,14 +1,14 @@
 // Third party dependencies
-import {html, Component, useState} from '../web_modules/htm/preact/standalone.module.js'
+import {html, Component, useState} from '../../public/web_modules/htm/preact/standalone.module.js'
 import gsap from './animations.js'
 // @ts-ignore
 import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 
 // Game logic
-import createNewGame from '../game/new-game.js'
-import {createCard, getCardRewards} from '../game/cards.js'
-import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../game/utils-state.js'
-import * as backend from '../game/backend.js'
+import createNewGame from '../../public/game/new-game.js'
+import {createCard, getCardRewards} from '../../public/game/cards.js'
+import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../../public/game/utils-state.js'
+import * as backend from '../../public/game/backend.js'
 
 // UI Components
 import Cards from './cards.js'
