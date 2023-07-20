@@ -5,8 +5,9 @@
 	},
 	"include": [
 		"public/**/*",
-		"tests/**/*"
-, "src/ui"	],
+		"tests/**/*",
+		"src/**/*"
+	],
 	"exclude": [
 		"public/web_modules/",
 		"node_modules",
