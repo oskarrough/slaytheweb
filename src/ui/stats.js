@@ -1,7 +1,7 @@
 import {html, render} from '../main.js'
-import {getRuns} from '../../public/game/backend.js'
+import {getRuns} from '../game/backend.js'
 
-const List = (props) => html`
+const StatsPage = (props) => html`
 	<article class="Splash">
 		<p><a href="/" class="Button">Back</a></p>
 		<div class="Article">
@@ -52,9 +52,9 @@ const List = (props) => html`
 	</article>
 `
 
-render(html`<${List} />`, document.querySelector('#root'))
+render(html`<${StatsPage} />`, document.querySelector('#root'))
 
 getRuns().then((runs) => {
 	console.log(runs)
-	render(html`<${List} runs=${runs.reverse()} />`, document.querySelector('#root'))
+	render(html`<${StatsPage} runs=${runs.reverse()} />`, document.querySelector('#root'))
 })

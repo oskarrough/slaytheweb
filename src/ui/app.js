@@ -5,10 +5,10 @@ import gsap from './animations.js'
 import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 
 // Game logic
-import createNewGame from '../../public/game/new-game.js'
-import {createCard, getCardRewards} from '../../public/game/cards.js'
-import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../../public/game/utils-state.js'
-import * as backend from '../../public/game/backend.js'
+import createNewGame from '../game/new-game.js'
+import {createCard, getCardRewards} from '../game/cards.js'
+import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../game/utils-state.js'
+import * as backend from '../game/backend.js'
 
 // UI Components
 import Cards from './cards.js'

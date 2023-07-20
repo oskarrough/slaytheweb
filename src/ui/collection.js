@@ -1,8 +1,8 @@
 import {html, render} from '../main.js'
-import cards from '../../public/content/cards.js'
+import cards from '../content/cards.js'
 import {Card} from './cards.js'
 
-const Cardss = (props) => html`
+const CollectionPage = (props) => html`
 	<article class="Splash">
 		<p><a href="/" class="Button">Back</a></p>
 		<h2>${cards.length} Card Collection</h2>
@@ -10,4 +10,4 @@ const Cardss = (props) => html`
 	</article>
 `
 
-render(html`<${Cardss} cards=${cards} />`, document.querySelector('#Cards'))
+render(html`<${CollectionPage} cards=${cards} />`, document.querySelector('#Cards'))

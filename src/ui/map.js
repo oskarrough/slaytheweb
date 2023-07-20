@@ -1,6 +1,6 @@
 import {Component, html} from '../main.js'
-import {random as randomBetween} from '../../public/game/utils.js'
-import {isRoomCompleted} from '../../public/game/utils-state.js'
+import {random as randomBetween} from '../game/utils.js'
+import {isRoomCompleted} from '../game/utils-state.js'
 
 export default function map(props) {
 	const {x, y, pathTaken} = props.dungeon

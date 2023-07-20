@@ -1,5 +1,5 @@
-import Queue from '../game/queue.js'
-import actions from '../game/actions.js'
+import Queue from './queue.js'
+import actions from './actions.js'
 
 // The action manager makes use of queues to keep track of
 // future and past actions in the game state. Also allowing us to undo.

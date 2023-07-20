@@ -1,5 +1,5 @@
 import test from 'ava'
-import powers from '../public/game/powers.js'
+import powers from '../src/game/powers.js'
 
 test('Type is either buff or debuff', (t) => {
 	t.is(powers.regen.type, 'buff')

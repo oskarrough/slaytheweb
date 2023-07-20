@@ -1,4 +1,4 @@
-import {produce} from '../web_modules/immer.js'
+import {produce} from 'immer'
 import {createCard, CardTargets} from './cards.js'
 import {clamp, shuffle} from './utils.js'
 import {getTargets, getCurrRoom} from './utils-state.js'

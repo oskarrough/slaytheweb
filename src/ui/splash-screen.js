@@ -1,15 +1,15 @@
 import {html, Component} from '../main.js'
-import gsap from '../../public/web_modules/gsap.js'
+import gsap from './animations.js'
 
 export default class SplashScreen extends Component {
 	componentDidMount() {
 		gsap.from('.Splash--fadein', {duration: 0.5, autoAlpha: 0, scale: 0.95})
 		gsap.from('.Splash--fadein .Options', {
-			delay: 0.2,
-			duration: 1,
-			y: -20,
-			scale: 0.1,
-			ease: 'bounce',
+			// delay: 0.1,
+			duration: 0.4,
+			y: -8,
+			autoAlpha: 0,
+			scale: 0.5,
 		})
 		gsap.to('.Splash-spoder', {delay: 5, x: 420, y: 60, duration: 3})
 	}

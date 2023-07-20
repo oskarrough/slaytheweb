@@ -5,7 +5,7 @@ import {
 	regen as regenPower,
 	poison as poisonPower,
 	strength as strengthPower,
-} from '../../public/game/powers.js'
+} from '../game/powers.js'
 
 export const Player = (props) => {
 	return html`<${Target} ...${props} type="player" />`

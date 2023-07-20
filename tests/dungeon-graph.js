@@ -1,6 +1,6 @@
 // @ts-ignore
 import test from 'ava'
-import {generateGraph} from '../public/game/dungeon.js'
+import {generateGraph} from '../src/game/dungeon.js'
 
 test('graph is created with default options', (t) => {
 	let g = generateGraph()

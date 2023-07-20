@@ -1,4 +1,4 @@
-import {getPlayerHealthPercentage} from '../game/utils-state.js'
+import {getPlayerHealthPercentage} from './utils-state.js'
 /**
  * Conditions decide whether a card can be played or not.
  * @typedef {Object} Condition — all other props will be passed to the condition as well

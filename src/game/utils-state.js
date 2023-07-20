@@ -22,9 +22,9 @@ export function getCurrRoom(state) {
 
 /**
  * Returns an array of targets (player or monsters) in the current room.
- * @param {import('./actions').State} state
+ * @param {import('./actions.js').State} state
  * @param {CardTargets} targetQuery
- * @returns {Array<import('./dungeon-rooms').MONSTER>}
+ * @returns {Array<import('./dungeon-rooms.js').MONSTER>}
  */
 export function getTargets(state, targetQuery) {
 	if (!targetQuery || typeof targetQuery !== 'string') {
