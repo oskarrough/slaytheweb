@@ -1,4 +1,4 @@
-import {html, render} from '../../public/web_modules/htm/preact/standalone.module.js'
+import {html, render} from '../main.js'
 import {getRuns} from '../../public/game/backend.js'
 
 const List = (props) => html`

@@ -1,4 +1,4 @@
-import {html, Component} from '../../public/web_modules/htm/preact/standalone.module.js'
+import {html, Component} from '../main.js'
 
 export default class StartRoom extends Component {
 	render() {

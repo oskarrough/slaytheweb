@@ -1,4 +1,4 @@
-import {html} from '../../public/web_modules/htm/preact/standalone.module.js'
+import {html} from '../main.js'
 import History from './history.js'
 
 const save = (state) => (window.location.hash = encodeURIComponent(JSON.stringify(state)))

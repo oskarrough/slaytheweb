@@ -1,4 +1,4 @@
-import {html} from '../../public/web_modules/htm/preact/standalone.module.js'
+import {html} from '../main.js'
 
 const WinScreen = (props) => html`
 	<article class="Splash">

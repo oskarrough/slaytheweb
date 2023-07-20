@@ -1,4 +1,4 @@
-import {html, Component} from '../../public/web_modules/htm/preact/standalone.module.js'
+import {html, Component} from '../main.js'
 import {
 	weak as weakPower,
 	vulnerable as vulnerablePower,

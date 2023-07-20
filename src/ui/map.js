@@ -1,4 +1,4 @@
-import {Component, html} from '../../public/web_modules/htm/preact/standalone.module.js'
+import {Component, html} from '../main.js'
 import {random as randomBetween} from '../../public/game/utils.js'
 import {isRoomCompleted} from '../../public/game/utils-state.js'
 

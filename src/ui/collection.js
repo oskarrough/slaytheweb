@@ -1,4 +1,4 @@
-import {html, render} from '../../public/web_modules/htm/preact/standalone.module.js'
+import {html, render} from '../main.js'
 import cards from '../../public/content/cards.js'
 import {Card} from './cards.js'
 

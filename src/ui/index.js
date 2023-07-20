@@ -1,4 +1,4 @@
-import {html, render, Component} from '../../public/web_modules/htm/preact/standalone.module.js'
+import {html, render, Component} from '../main.js'
 import App from './app.js'
 import SplashScreen from './splash-screen.js'
 import WinScreen from './win-screen.js'
