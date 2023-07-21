@@ -18,8 +18,8 @@ import ActionManager from './action-manager.js'
 // game.undo()
 // ```
 
-export default function createNewGame() {
-	const actionManager = ActionManager({debug: false})
+export default function createNewGame(debug = false) {
+	const actionManager = ActionManager({debug})
 
 	// Adds a dungeon, starter deck and draws cards.
 	function createNewState() {
