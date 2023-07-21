@@ -1,0 +1,29 @@
+body {
+	/* color: green; */
+}
+
+h2,
+h3,
+p,
+figure {
+	margin: 0;
+}
+
+/* A smaller map */
+slay-map {
+	/* min-height: 0; */
+	width: 100%;
+	padding: 1em 0;
+	background: black;
+}
+slay-map-row {
+	gap: 0;
+}
+
+stw-card .Card-inner {
+	display: flex;
+	align-items: center;
+}
+stw-card img {
+	display: none;
+}

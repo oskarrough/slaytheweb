@@ -14,7 +14,7 @@ export function Card(card, gameState) {
 	const image = card.image ? `/images/cards/${card.image}` : '/images/cards/fallback.jpg'
 
 	return html`
-		<article
+		<stw-card
 			class="Card"
 			data-card-type=${card.type}
 			data-card-target=${card.target}
@@ -33,6 +33,6 @@ export function Card(card, gameState) {
 				<h3 class="Card-name">${card.name}</h3>
 				<p class="Card-description">${card.description}</p>
 			</div>
-		</article>
+		</stw-card>
 	`
 }
