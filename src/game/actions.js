@@ -79,7 +79,11 @@ function setDungeon(state, dungeon) {
 	// })
 }
 
-// Draws a "starter" deck to your discard pile. Normally you'd run this as you start the game.
+/**
+ * Draws a "starter" deck to your discard pile. Normally you'd run this as you start the game.
+ * @param {State} state
+ * @returns {State}
+ */
 function addStarterDeck(state) {
 	const deck = [
 		createCard('Defend'),
@@ -99,7 +103,12 @@ function addStarterDeck(state) {
 	})
 }
 
-// Move X cards from deck to hand.
+/**
+ * Move X cards from deck to hand.
+ * @param {State} state
+ * @param {{amount: number}} options
+ * @returns {State}
+ */
 function drawCards(state, options) {
 	const amount = options?.amount ? options.amount : 5
 	return produce(state, (draft) => {
