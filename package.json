@@ -7,13 +7,14 @@
   "bugs": "https://github.com/oskarrough/slaytheweb/issues",
   "type": "module",
   "scripts": {
-    "start": "servor public --static --reload",
-    "lint": "eslint public tests --fix",
+    "start": "vite dev",
+    "lint": "eslint src tests --fix",
     "test": "ava",
     "test:watch": "ava --watch",
     "test:coverage": "c8 ava",
-    "build": "snowpack --include 'public/**/*.js' --clean --dest 'public/web_modules' --stat --optimize",
-    "docs": "rm -rf ./docs; cd public/game; docco *.js; mv docs ../../docs",
+    "build": "vite build",
+    "preview": "vite preview",
+    "docs": "rm -rf ./docs; cd src/game; docco *.js; mv docs ../../docs",
     "release": "release-it"
   },
   "devDependencies": {
@@ -25,15 +26,15 @@
     "eslint-plugin-prettier": "^4.2.1",
     "prettier": "2.7.1",
     "release-it": "^16.1.0",
-    "servor": "^4.0.2",
-    "snowpack": "^1.7.1"
+    "vite": "^4.4.4",
+    "vite-plugin-pwa": "^0.16.4"
   },
   "dependencies": {
     "devalue": "^3.1.3",
-    "esm": "^3.2.25",
     "gsap": "^3.12.2",
     "htm": "^3.1.1",
     "immer": "^9.0.21",
+    "preact": "^10.16.0",
     "tone": "^14.8.49"
   },
   "release-it": {

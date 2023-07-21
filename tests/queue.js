@@ -1,5 +1,5 @@
 import test from 'ava'
-import Queue from '../public/game/queue.js'
+import Queue from '../src/game/queue.js'
 
 test('can add and run through queue', (t) => {
 	const q = new Queue()

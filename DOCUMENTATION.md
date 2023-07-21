@@ -2,11 +2,10 @@
 
 Throughout the project I've attempted to document and leave comments. So please, go ahead and explore all folders and files. In the root of this project you'll find configuration files as well as two folders:
 
-- [public →](public/) The web root, ready to deploy to any static web server. No compilation required. You can open the folder locally with your browser, or if you want livereload, with `npm start`.
-  - [game](public/game) contains the core game logic
-  - [content](public/content) uses methods from the game engine to build cards, dungeon and monsters
-  - [ui](public/ui) is the example web interface to actually play the game
-  - [web_modules](public/web_modules) contains our third party dependencies, loaded as ES modules
+- [src →](src/) The web root, ready to deploy to any static web server. No compilation required. You can open the folder locally with your browser, or if you want livereload, with `npm start`.
+  - [game](src/game) contains the core game logic
+  - [content](src/content) uses methods from the game engine to build cards, dungeon and monsters
+  - [ui](src/ui) is the example web interface to actually play the game
 - [tests →](tests/) Contains all tests for the game engine. Nothing for the UI. Run `npm test`.
 
 ## Public
@@ -23,7 +22,7 @@ The full game state is always stored in a single, large "game state" object. It 
 
 An action is a function that takes a `state` object, modifies it, and returns a new one. There are actions for drawing a card, dealing damage, applying a debuff... everything you want to do, there's an action.
 
-See all actions in [actions.js](public/game/actions.js). Most have comments and corresponding tests you can check.
+See all actions in [actions.js](src/game/actions.js). Most have comments and corresponding tests you can check.
 
 #### Action Manager
 
@@ -82,19 +81,19 @@ Contains different monsters, room and dungeons. All created with methods from th
 
 The UI is made with htm and preact. I've tried not to create too many components and abstractions, although this might come back to haunt us.
 
-Everything starts with [index.html](https://github.com/oskarrough/slaytheweb/blob/main/public/index.html). When loaded,
-we show a splash/welcome screen as defined in [index.js](https://github.com/oskarrough/slaytheweb/blob/main/public/ui/index.js).
+Everything starts with [index.html](https://github.com/oskarrough/slaytheweb/blob/main/index.html). When loaded,
+we show a splash/welcome screen as defined in [index.js](https://github.com/oskarrough/slaytheweb/blob/main/src/ui/index.js).
 
-Next, when you tap "Start Game", we load [app.js](https://github.com/oskarrough/slaytheweb/blob/main/public/ui/app.js).
+Next, when you tap "Start Game", we load [app.js](https://github.com/oskarrough/slaytheweb/blob/main/src/ui/app.js).
 This one connects everything and manages the game state.
 
 #### Animations
 
-See [animations.js](public/ui/animations.js). Most are made with gsap.
+See [animations.js](src/ui/animations.js). Most are made with gsap.
 
 #### Sounds
 
-See [sounds.js](public/ui/sounds.js) using Tone.js.
+See [sounds.js](src/ui/sounds.js) using Tone.js.
 
 ## Tests
 
@@ -106,7 +105,7 @@ Additionally the ./tests folder contains the tests. Usually a test goes 1) creat
 - `npm run test:watch` tests continously (good while developing)
 - `npm run test:coverage` check test code coverage
 
-Additionally you can run yarn eslint public --fix to automatically format all scripts according to the prettier standards.
+Additionally you can run `npm run lint` to automatically format all scripts according to the prettier standards.
 
 You can also just run ava directly and do as you please. Example: `npm test tests/actions.js --watch`
 

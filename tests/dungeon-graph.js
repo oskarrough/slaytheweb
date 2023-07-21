@@ -1,6 +1,6 @@
-// @ts-ignore
 import test from 'ava'
-import {generateGraph} from '../public/game/dungeon.js'
+import {generateGraph, graphToString} from '../src/game/dungeon.js'
+import {roomTypes} from '../src/game/dungeon-rooms.js'
 
 test('graph is created with default options', (t) => {
 	let g = generateGraph()
@@ -10,8 +10,8 @@ test('graph is created with default options', (t) => {
 
 test('can customize graph size with height and width', (t) => {
 	let g = generateGraph({height: 3, width: 10})
-	t.is(g.length, 5)
-	t.is(g[1].length, 10)
+	t.is(g.length, 5, 'plus two because of start+end')
+	t.is(g[1].length, 10, 'amount of nodes on each floor')
 	g = generateGraph({height: 2, width: 6})
 	t.is(g.length, 4, 'height match (incl. start+end)')
 	t.is(g[1].length, 6, 'width match')
@@ -58,4 +58,20 @@ test.skip('can customize the type of rooms', (t) => {
 				}
 			})
 	})
+})
+
+test('string graph works', (t) => {
+	const width = 5
+	const height = 8
+
+	const g = generateGraph({width: width, height: height})
+	t.is(g.length, height + 2)
+	t.is(g[1].length, width)
+
+	const str = graphToString(g)
+	t.is(typeof str, 'string')
+	t.true(str.includes(roomTypes.M))
+	t.true(str.includes(roomTypes.start))
+	t.true(str.includes(roomTypes.boss))
+	console.log(str)
 })

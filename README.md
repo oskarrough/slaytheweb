@@ -14,7 +14,7 @@ After many runs in the Spire, I really got into the theory behind the game. Insp
 
 If you're interested in contributing to the game or merely curious how it works, see [the documentation](DOCUMENTATION.md).
 
-TLDR; Clone the repository and open the `public` folder in a web browser. The code is written in a way so no compiling is necessary. The `public/game` folder contains the actual game logic and the `public/ui` folder is the website UI where you can actually play the game. To ease development, you can run `npm install; npm start` to get a live-reloading server, although this is not required.
+TLDR; Clone the repository and run `npm install` followed by `npm start` to open a local development server. The `src/game` folder contains the actual game logic and the `src/ui` folder is the website UI where you can actually play the game. 
 
 ## How to deploy it
 

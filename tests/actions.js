@@ -1,11 +1,11 @@
 // @ts-ignore
 import test from 'ava'
-import actions from '../public/game/actions.js'
-import {createCard, CardTargets} from '../public/game/cards.js'
-import {MonsterRoom, Monster} from '../public/game/dungeon-rooms.js'
-import {createTestDungeon} from '../public/content/dungeon-encounters.js'
-import {getTargets, getCurrRoom, isCurrRoomCompleted} from '../public/game/utils-state.js'
-import {canPlay} from '../public/game/conditions.js'
+import actions from '../src/game/actions.js'
+import {createCard, CardTargets} from '../src/game/cards.js'
+import {MonsterRoom, Monster} from '../src/game/dungeon-rooms.js'
+import {createTestDungeon} from '../src/content/dungeon-encounters.js'
+import {getTargets, getCurrRoom, isCurrRoomCompleted} from '../src/game/utils-state.js'
+import {canPlay} from '../src/game/conditions.js'
 
 const a = actions
 
