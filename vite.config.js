@@ -9,6 +9,26 @@ export default defineConfig({
 			devOptions: {
 				// enabled: true,
 			},
+			manifest: {
+				name: 'Slay the Web',
+				start_url: '/index.html',
+				display: 'fullscreen',
+				orientation: 'landscape',
+				background_color: '#116f54',
+				theme_color: '#116f54',
+				icons: [
+					{
+						src: '/images/favicons/favicon-192.png',
+						sizes: '192x192',
+						type: 'image/png',
+					},
+					{
+						src: '/images/favicons/favicon-512.png',
+						sizes: '512x512',
+						type: 'image/png',
+					},
+				],
+			},
 		}),
 	],
 	build: {
