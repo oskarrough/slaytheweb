@@ -1,3 +1,7 @@
+:root {
+	--energy: green;
+}
+
 body {
 	/* color: green; */
 }
@@ -26,4 +30,8 @@ stw-card .Card-inner {
 }
 stw-card img {
 	display: none;
+}
+
+.EnergyBadge {
+	color: var(--energy);
 }

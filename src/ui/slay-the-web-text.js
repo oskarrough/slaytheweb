@@ -38,7 +38,8 @@ export default class SlayTheWebText extends HTMLElement {
 	playCard(cardId, target) {
 		const card = this.game.state.hand.find((c) => c.id === cardId)
 		this.game.enqueue({type: 'playCard', card, target})
-		this.update()
+		// this.update()
+		this.render()
 	}
 
 	endTurn() {
@@ -71,27 +72,10 @@ export default class SlayTheWebText extends HTMLElement {
 				<button onclick=${() => this.update()}><u>U</u>pdate</button>
 				<button class="EndTurn" onclick=${() => this.endTurn()}><u>E</u>nd turn</button>
 			</menu>
-
-			<form onsubmit=${this.submitCard.bind(this)}>
-				<select name="card" required>
-					<option value="">Select a card</option>
-					${state.hand.map((card) => html`<option value=${card.id}>${card.name}</option>`)}
-				</select>
-				<select name="target" required>
-					<option value="">Select a target</option>
-					<option value="player">Player</option>
-					<option value="allEnemies">All enemies</option>
-					${room?.monsters?.length &&
-					room.monsters.map((monster, i) => html`<option value=${`enemy` + i}>enemy${i}</option>`)}
-				</select>
-				<button type="submit">Play</button>
-			</form>
-
 			<hr />
-
-			<${Player} name="Player" model=${state.player} gameState=${state} />
+			<p>block: ${state.player.block}</p>
 			<p>hp: ${state.player.currentHealth}/${state.player.maxHealth}</p>
-			<p>energy: ${state.player.currentEnergy}/${state.player.maxEnergy}</p>
+			<p class="EnergyBadge">${state.player.currentEnergy}/${state.player.maxEnergy}</p>
 
 			<hr />
 			<h2>${state.dungeon.x}/${state.dungeon.y}: ${room.type}</h2>
@@ -104,10 +88,27 @@ export default class SlayTheWebText extends HTMLElement {
 			<${Cards} type="drawPile" gameState=${state} />
 			<h2>Hand</h2>
 			<${Cards} type="hand" gameState=${state} />
+			<menu>
+				<form onsubmit=${this.submitCard.bind(this)}>
+					<select name="card" required>
+						<option value="">Select a card</option>
+						${state.hand.map((card) => html`<option value=${card.id}>${card.name}</option>`)}
+					</select>
+					<select name="target">
+						<option value="">Select a target</option>
+						<option value="player">Player</option>
+						<option value="allEnemies">All enemies</option>
+						${room?.monsters?.length &&
+						room.monsters.map(
+							(monster, i) => html`<option value=${`enemy` + i}>enemy${i}</option>`
+						)}
+					</select>
+					<button type="submit">Play</button>
+				</form>
+			</menu>
+
 			<h2>Discard pile</h2>
 			<${Cards} type="discardPile" gameState=${state} />
-			<h2>Deck</h2>
-			<${Cards} type="deck" gameState=${state} />
 
 			<${SlayMap}
 				dungeon=${state.dungeon}
