@@ -14,7 +14,6 @@ export const Player = (props) => {
 export const Monster = (props) => {
 	const monster = props.model
 	const state = props.gameState
-	// {damage: 6, block: 2}
 	const intent = monster.intents[monster.nextIntent]
 
 	function MonsterIntent([type, amount]) {
