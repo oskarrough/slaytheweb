@@ -1,7 +1,6 @@
-// @ts-ignore
 import test from 'ava'
-import {generateGraph, graphToString, roomTypes} from '../src/game/dungeon.js'
-import { emojiFromNodeType } from '../src/ui/map.js'
+import {generateGraph, graphToString} from '../src/game/dungeon.js'
+import {roomTypes} from '../src/game/dungeon-rooms.js'
 
 test('graph is created with default options', (t) => {
 	let g = generateGraph()

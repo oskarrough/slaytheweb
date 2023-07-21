@@ -3,7 +3,7 @@ import {MonsterRoom, Monster} from '../game/dungeon-rooms.js'
 import {random} from '../game/utils.js'
 
 // Hello. With the imported functions above you can create a dungeon with different rooms and monsters.
-//should be able to support even more monsters (4-5)
+// Should be able to support even more monsters (4-5)
 // This is the dungeon currently used.
 export const dungeonWithMap = () => {
 	return Dungeon({
@@ -27,7 +27,7 @@ export const createTestDungeon = () => {
 }
 
 // Here are some different monsters we use in the game.
-//should be changed to have monster files, to make adding/editing them easier
+// should be changed to have monster files, to make adding/editing them easier
 export const easyMonsters = {}
 export const monsters = {}
 export const elites = {}
@@ -72,7 +72,7 @@ monsters['Easy one'] = MonsterRoom(
 monsters['jaw worm'] = MonsterRoom(
 	Monster({
 		hp: random(40, 44),
-		intents: [{damage: 11}, {damage: 7, block:5}, {block:6}],
+		intents: [{damage: 11}, {damage: 7, block: 5}, {block: 6}],
 	})
 )
 monsters['First double trouble'] = MonsterRoom(

@@ -48,3 +48,12 @@ export function random(from, to) {
 export function clamp(x, lower, upper) {
 	return Math.max(lower, Math.min(x, upper))
 }
+
+/**
+ * Returns a random item from an array.
+ * @param {Array|string} list
+ * @returns {any} a random item from the array
+ */
+export function pick(list) {
+	return shuffle(Array.from(list))[0]
+}

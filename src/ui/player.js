@@ -7,6 +7,21 @@ import {
 	strength as strengthPower,
 } from '../game/powers.js'
 
+/**
+ * @typedef {Object} TargetProps
+ * @prop {string} type - a string enum "player" or "enemy"?
+ * @prop {object} model - the player or monster model
+ * @prop {number} model.currentHealth
+ * @prop {number} model.maxHealth
+ * @prop {number} model.currentEnergy
+ * @prop {number} model.maxEnergy
+ * @prop {string} name
+ */
+
+/**
+ * Renders a player
+ * @param {TargetProps} props
+ */
 export const Player = (props) => {
 	return html`<${Target} ...${props} type="player" />`
 }
@@ -14,7 +29,6 @@ export const Player = (props) => {
 export const Monster = (props) => {
 	const monster = props.model
 	const state = props.gameState
-	// {damage: 6, block: 2}
 	const intent = monster.intents[monster.nextIntent]
 
 	function MonsterIntent([type, amount]) {

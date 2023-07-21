@@ -1,7 +1,7 @@
 import {Component, html} from './lib.js'
 import {random as randomBetween} from '../game/utils.js'
 import {isRoomCompleted} from '../game/utils-state.js'
-import { roomTypes } from '../game/dungeon.js'
+import {roomTypes} from '../game/dungeon-rooms.js'
 
 export default function map(props) {
 	const {x, y, pathTaken} = props.dungeon
@@ -21,7 +21,24 @@ export default function map(props) {
 	`
 }
 
+/**
+ * Renders a map of the dungeon.
+ * @param {Object} props
+ * @param {Object} props.dungeon
+ * @param {number} props.x
+ * @param {number} props.y
+ * @param {Function} props.onSelect
+ */
+
+/** Renders a map */
 export class SlayMap extends Component {
+	constructor(props) {
+		super()
+		this.disableScatter = props.disableScatter
+		this.didDrawPaths = false
+		console.log(props)
+	}
+
 	componentDidMount() {
 		// trigger update..
 		this.setState({universe: 42})
@@ -36,9 +53,8 @@ export class SlayMap extends Component {
 		// no set state because we don't want to rerender
 		if (!this.didDrawPaths) {
 			this.didDrawPaths = true
-			this.scatter()
+			if (!this.disableScatter) this.scatter()
 			const resizeObserver = new ResizeObserver(() => {
-				console.log('Drawing map')
 				this.drawPaths()
 			})
 			resizeObserver.observe(this.base)
@@ -59,6 +75,7 @@ export class SlayMap extends Component {
 
 	// Draws SVG lines between the DOM nodes from the dungeon's path.
 	drawPaths() {
+		console.log('drawing map paths')
 		this.props.dungeon.paths.forEach((path, index) => {
 			this.drawPath(path, index)
 		})
@@ -153,14 +170,13 @@ export class SlayMap extends Component {
 
 /**
  * Converts the string type of a node to an emoji string.
- * @param {string} type - a string key to represent the type of room
+ * if node type is supplied it'll use ' ' whitespace as type
+ * @param {string} [type] - a string key to represent the type of room
  * @returns {string} a single emoji
  */
 export function emojiFromNodeType(type) {
-	if (!type) return
-	const emojis = roomTypes[type].split(',')
-	const emoji = emojis.length > 1 ? emojis[Math.floor(Math.random() * emojis.length)] : emojis[0]
-	return emoji
+	if (!type) return ' '
+	return roomTypes[type]
 }
 
 // Since el.offsetLeft doesn't respect CSS transforms,

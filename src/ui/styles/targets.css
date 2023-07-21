@@ -113,32 +113,3 @@
 	font-weight: bold;
 	text-shadow: 1px 1px 0 hsla(0, 0%, 95%, 0.8);
 }
-
-/* Used to animate a number. It pops in and then fades up and away */
-.FCT {
-	display: inline-block;
-	margin: 0;
-	font-size: 5rem;
-	animation: fct-up 3s cubic-bezier(0.23, 1, 0.32, 1);
-	animation-fill-mode: both;
-	transform-origin: center;
-	text-shadow: 0.1rem 0.1rem 0px rgba(0, 0, 0, 0.5);
-}
-.FCT--block {
-	color: #afafff;
-	font-size: 3rem;
-}
-@keyframes fct-up {
-	0% {
-		transform: scale(0) translateY(0%);
-		opacity: 0;
-	}
-	10% {
-		opacity: 1;
-		transform: scale(1) translateY(-50%);
-	}
-	100% {
-		transform: translateY(-100%) rotateZ(15deg);
-		opacity: 0;
-	}
-}

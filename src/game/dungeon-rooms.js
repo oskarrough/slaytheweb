@@ -1,13 +1,24 @@
 import {shuffle, range} from './utils.js'
 
 /**
- * @typedef {object} ROOM
+ * @typedef {object} Room
  * @prop {string} type
  * @prop {Array=} monsters
  */
 
+/** A map of room types to emojis */
+export const roomTypes = {
+	start: '👣',
+	M: '💀',
+	C: '🏕️',
+	// $: '💰'
+	Q: '❓',
+	E: '👹',
+	boss: '🌋',
+}
+
 /**
- * @returns {ROOM}
+ * @returns {Room}
  */
 export function StartRoom() {
 	return {
@@ -17,7 +28,7 @@ export function StartRoom() {
 
 /**
  * A campfire gives our hero the opportunity to rest, remove or upgrade a card.
- * @returns {ROOM}
+ * @returns {Room}
  */
 export function CampfireRoom() {
 	return {
@@ -29,7 +40,7 @@ export function CampfireRoom() {
 /**
  * A monster room has one or more monsters.
  * @param {...Object} monsters
- * @returns {ROOM}
+ * @returns {Room}
  */
 export function MonsterRoom(...monsters) {
 	return {
