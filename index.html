@@ -20,12 +20,6 @@
 		<script async src="/src/ui/index.js" type="module"></script>
 		<script async src="/src/main.js" type="module"></script>
 		<script>
-			// Offline support
-			if (!location.origin.includes('localhost') && 'serviceWorker' in navigator) {
-				window.addEventListener('load', () => {
-					navigator.serviceWorker.register('/service-worker.js')
-				})
-			}
 			window.TONE_SILENCE_LOGGING = true
 		</script>
 		<noscript>
