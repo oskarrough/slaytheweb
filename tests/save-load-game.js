@@ -1,8 +1,8 @@
 // @ts-ignore
 import test from 'ava'
-import actions from '../public/game/actions.js'
-import {encodeState, decodeState} from '../public/ui/save-load.js'
-// import {saveGame, loadGame} from '../public/ui/save-load.js'
+import actions from '../src/game/actions.js'
+import {encodeState, decodeState} from '../src/ui/save-load.js'
+// import {saveGame, loadGame} from '../src/ui/save-load.js'
 
 // Each test gets a fresh dungeon with a dungeon and cards.
 test.beforeEach((t) => {
@@ -37,3 +37,4 @@ test('can decode game state', (t) => {
 	t.truthy(a.edges.size > 0)
 	t.truthy(b.edges.size > 0, 'node has "edges"')
 })
+

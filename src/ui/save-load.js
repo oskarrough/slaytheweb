@@ -22,11 +22,11 @@ export const saveGame = (state) => {
 	}
 }
 
-// function readStateFromURL {
-// 	return decodeURIComponent(window.location.hash.split('#')[1])
-// }
+function readStateFromURL() {
+	return decodeURIComponent(window.location.hash.split('#')[1])
+}
 
-// export const loadGame = () => decodeState(readStateFromURL())
+export const loadGame = () => decodeState(readStateFromURL())
 
 // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Cyclic_object_value
 // const getCircularReplacer = () => {
