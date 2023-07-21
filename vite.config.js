@@ -40,7 +40,6 @@ export default defineConfig({
 		rollupOptions: {
 			input: {
 				index: resolve('index.html'),
-				text: resolve('text.html'),
 				stats: resolve('stats.html'),
 				collection: resolve('collection.html'),
 			},
