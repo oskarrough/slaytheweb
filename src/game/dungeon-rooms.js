@@ -10,7 +10,7 @@ import {shuffle, range} from './utils.js'
 export const roomTypes = {
 	start: '👣',
 	M: '💀',
-	C: '🏕️,🏝️',
+	C: '🏕️',
 	// $: '💰'
 	Q: '❓',
 	E: '👹',

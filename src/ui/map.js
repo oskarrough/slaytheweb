@@ -170,14 +170,13 @@ export class SlayMap extends Component {
 
 /**
  * Converts the string type of a node to an emoji string.
- * @param {string} type - a string key to represent the type of room
+ * if node type is supplied it'll use ' ' whitespace as type
+ * @param {string} [type] - a string key to represent the type of room
  * @returns {string} a single emoji
  */
 export function emojiFromNodeType(type) {
-	if (!type) return
-	const emojis = roomTypes[type].split(',')
-	const emoji = emojis.length > 1 ? emojis[Math.floor(Math.random() * emojis.length)] : emojis[0]
-	return emoji
+	if (!type) return ' '
+	return roomTypes[type]
 }
 
 // Since el.offsetLeft doesn't respect CSS transforms,
