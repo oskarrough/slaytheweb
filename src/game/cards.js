@@ -48,7 +48,6 @@ export const CardTargets = {
  * @prop {Array<CardAction>} [actions] - Cards can _optionally_ define a list of `actions`. These actions will be run, in defined order, when the card is played.
  * @prop {Array<{type: string}>} [conditions] - In the same way, you can define a list of `conditions` that have to pass for the card to be playable. You can even add conditions directly on your actions.
  * @prop {Function} [use]
- * @prop {*} upgrade
  */
 
 /**
@@ -74,12 +73,7 @@ export class Card {
 		this.actions = props.actions
 		this.image = props.image
 		this.upgraded = false
-		if (props.upgrade) this.upgrade = props.upgrade
 		this.exhaust = props.exhaust
-	}
-	upgrade() {
-		if (this.upgraded) return
-		// Here you can upgrade the card. Like this.damage = this.damage * 2
 	}
 }
 
@@ -98,11 +92,17 @@ function findCard(name) {
  * @param {string} name - exact name of the Card
  * @returns {CARD}
  */
-
-export function createCard(name) {
-	const baseCard = findCard(name)
+export function createCard(name, upgrade) {
+	let baseCard = findCard(name)
 	if (!baseCard) throw new Error(`Card not found: ${name}`)
-	return new Card(baseCard)
+
+	if (upgrade) {
+		baseCard = Object.assign({}, baseCard)
+		baseCard.upgrade()
+	}
+
+	const {...obj} = new Card(baseCard)
+	return obj
 }
 
 /**

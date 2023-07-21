@@ -10,7 +10,7 @@ import {createCard, getCardRewards} from '../game/cards.js'
 import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../game/utils-state.js'
 
 // UI Components
-import {saveGame, loadGame} from './save-load.js'
+import {saveGame, loadGameFromUrl} from './save-load.js'
 import * as backend from '../game/backend.js'
 import Cards from './cards.js'
 import Map from './map.js'
@@ -65,7 +65,7 @@ export default class App extends Component {
 		sfx.startGame()
 
 		// If there is a saved game state, use it.
-		const savedGameState = window.location.hash && loadGame()
+		const savedGameState = window.location.hash && loadGameFromUrl()
 		if (savedGameState) this.restoreGame(savedGameState)
 
 		this.enableConsole()

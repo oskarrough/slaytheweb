@@ -23,7 +23,7 @@ export default function createNewGame(debug = false) {
 
 	// Adds a dungeon, starter deck and draws cards.
 	function createNewState() {
-		let state = actions.createNewGame()
+		let state = actions.createNewState()
 		state = actions.setDungeon(state)
 		state = actions.addStarterDeck(state)
 		state = actions.drawCards(state)

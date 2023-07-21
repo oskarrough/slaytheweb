@@ -1,43 +1,24 @@
-// import {devalue} from '../web_modules/devalue.js'
+import superjson from 'superjson'
 
-// window.devalue = devalue
-
-export function encodeState(state) {
-	// return devalue(state)
-	return JSON.stringify(state)
+export function encode(state) {
+	return superjson.stringify(state)
 }
 
-export function decodeState(state) {
-	// const simplestate = devalue(state)
-	// console.log({state, simplestate})
-	return JSON.parse(state)
+export function decode(state) {
+	return superjson.parse(state)
 }
 
 // Encodes the game state and stores it in the URL.
 export const saveGame = (state) => {
 	try {
-		location.hash = encodeURIComponent(encodeState(state))
+		location.hash = encodeURIComponent(encode(state))
 	} catch (err) {
 		console.log(err)
 	}
 }
 
-function readStateFromURL() {
+export const loadGameFromUrl = () => decode(readStateFromUrl())
+
+function readStateFromUrl() {
 	return decodeURIComponent(window.location.hash.split('#')[1])
 }
-
-export const loadGame = () => decodeState(readStateFromURL())
-
-// From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Errors/Cyclic_object_value
-// const getCircularReplacer = () => {
-// 	const seen = new WeakSet()
-// 	return (key, value) => {
-// 		if (typeof value === 'object' && value !== null) {
-// 			if (seen.has(value)) {
-// 				return
-// 			}
-// 			seen.add(value)
-// 		}
-// 		return value
-// 	}
-// }

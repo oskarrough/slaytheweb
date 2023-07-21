@@ -20,13 +20,13 @@ test('can create a dungeon', (t) => {
 
 test('can set a dungeon', (t) => {
 	const dungeon = Dungeon()
-	let state = a.createNewGame()
+	let state = a.createNewState()
 	state = a.setDungeon(state, dungeon)
 	t.deepEqual(state.dungeon.id, dungeon.id, 'setting dungeon works')
 })
 
 test('we know when a monster room is won', (t) => {
-	let state = a.createNewGame()
+	let state = a.createNewState()
 	state = a.setDungeon(state, createTestDungeon())
 	state.dungeon.y = 1
 	t.false(isCurrRoomCompleted(state))
@@ -35,7 +35,7 @@ test('we know when a monster room is won', (t) => {
 })
 
 test('we know when a monster room with many monsters is completed', (t) => {
-	let state = a.createNewGame()
+	let state = a.createNewState()
 	state = a.setDungeon(state, Dungeon({height: 1, width: 1}))
 	state.dungeon.graph[1][0].room = MonsterRoom(Monster(), Monster())
 	state.dungeon.y = 1
@@ -48,7 +48,7 @@ test('we know when a monster room with many monsters is completed', (t) => {
 })
 
 test('we know when the entire dungeon is compelete', (t) => {
-	let state = a.createNewGame()
+	let state = a.createNewState()
 	state = a.setDungeon(state, createTestDungeon())
 	state.dungeon.y = 1
 	getCurrRoom(state).monsters[0].currentHealth = 0
@@ -65,7 +65,7 @@ test('we know when the entire dungeon is compelete', (t) => {
 test.todo('we know when a campfire has been used')
 
 test('we can navigate a dungeon', (t) => {
-	let state = a.createNewGame()
+	let state = a.createNewState()
 	state = a.setDungeon(state, Dungeon())
 	t.is(state.dungeon.x, 0)
 	t.is(state.dungeon.y, 0)

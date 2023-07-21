@@ -45,7 +45,7 @@ import {isDungeonCompleted} from './utils-state.js'
  * This is the big object of game state. Everything starts here.
  * @returns {State}
  */
-function createNewGame() {
+function createNewState() {
 	return {
 		turn: 1,
 		deck: [],
@@ -177,7 +177,8 @@ function removeCard(state, {card}) {
  */
 function upgradeCard(state, {card}) {
 	return produce(state, (draft) => {
-		draft.deck.find((c) => c.id === card.id).upgrade()
+		const upgraded = createCard(card.name, true)
+		card = upgraded
 	})
 }
 
@@ -632,7 +633,7 @@ const allActions = {
 	addRegenEqualToAllDamage,
 	addStarterDeck,
 	applyCardPowers,
-	createNewGame,
+	createNewState,
 	dealDamageEqualToBlock,
 	dealDamageEqualToVulnerable,
 	dealDamageEqualToWeak,

@@ -1,40 +1,37 @@
 // @ts-ignore
 import test from 'ava'
 import actions from '../src/game/actions.js'
-import {encodeState, decodeState} from '../src/ui/save-load.js'
+import {encode, decode} from '../src/ui/save-load.js'
 // import {saveGame, loadGame} from '../src/ui/save-load.js'
+// import exampleSaveGame from './example-save-state.js'
 
 // Each test gets a fresh dungeon with a dungeon and cards.
 test.beforeEach((t) => {
-	let state = actions.createNewGame()
+	let state = actions.createNewState()
 	state = actions.setDungeon(state)
 	state = actions.addStarterDeck(state)
 	t.context = {state}
 })
 
-test('can encode game state', (t) => {
+test('can save and load a game state', (t) => {
 	const {state} = t.context
-	const x = encodeState(state)
-	t.is(typeof x, 'string')
-})
-
-test('can decode game state', (t) => {
-	const {state} = t.context
-	// Encode it
-	const encoded = encodeState(state)
-	// Decode again
-	const decoded = decodeState(encoded)
-	// Verify that we have what we need
+	const x = state
+	// const x = state.dungeon.graph[1]
+	// console.log(1, x)
+	t.is(typeof x, 'object')
+	const encoded = encode(x)
+	// console.log(2, encoded)
+	t.is(typeof encoded, 'string')
+	const decoded = decode(encoded)
+	// console.log(3, decoded)
 	t.is(typeof decoded, 'object')
-
-	t.is(typeof state.deck[0].upgrade, 'function')
-	t.is(typeof decoded.deck[0].upgrade, 'function', 'cards still have upgrade() method)')
-
-	const a = state.dungeon.graph[0][0]
-	const b = decoded.dungeon.graph[0][0]
-	// console.log(a)
-	// console.log(b)
-	t.truthy(a.edges.size > 0)
-	t.truthy(b.edges.size > 0, 'node has "edges"')
 })
 
+test('can serialize Set()', (t) => {
+	const set = new Set()
+	set.add(42)
+	const obj = {set}
+	const encoded = encode(obj)
+	const decoded = decode(encoded)
+	t.true(decoded.set.has(42))
+})
