@@ -9,7 +9,7 @@ const a = actions
 // Each test gets a fresh game state with a dungeon set up.
 // Prepare a dungeon with a test monster and set starting floor to 1.
 test.beforeEach((t) => {
-	let state = a.createNewGame()
+	let state = a.createNewState()
 	state = a.setDungeon(state, Dungeon({width: 3, height: 1}))
 	state.dungeon.y = 1
 	state.dungeon.graph[1][0].room = MonsterRoom(

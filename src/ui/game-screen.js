@@ -1,4 +1,3 @@
-// Third party dependencies
 import {html, Component, useState} from './lib.js'
 import gsap from './animations.js'
 // @ts-ignore
@@ -8,9 +7,10 @@ import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 import createNewGame from '../game/new-game.js'
 import {createCard, getCardRewards} from '../game/cards.js'
 import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../game/utils-state.js'
-import * as backend from '../game/backend.js'
 
 // UI Components
+import {saveToUrl, loadFromUrl} from './save-load.js'
+import * as backend from '../game/backend.js'
 import Cards from './cards.js'
 import Map from './map.js'
 import {Overlay, OverlayWithButton} from './overlays.js'
@@ -28,8 +28,6 @@ const sfx = {}
 Object.keys(realSfx).forEach((key) => {
 	sfx[key] = () => null
 })
-
-const load = () => JSON.parse(decodeURIComponent(window.location.hash.split('#')[1]))
 
 export default class App extends Component {
 	get didWin() {
@@ -66,25 +64,22 @@ export default class App extends Component {
 		sfx.startGame()
 
 		// If there is a saved game state, use it.
-		const savedGameState = window.location.hash && load()
-		if (savedGameState) {
-			this.game.state = savedGameState
-			this.setState(savedGameState, this.dealCards)
-		}
+		const savedGameState = window.location.hash && loadFromUrl()
+		if (savedGameState) this.restoreGame(savedGameState)
 
 		this.enableConsole()
 	}
+	restoreGame(oldState) {
+		this.game.state = oldState
+		this.setState(oldState, this.dealCards)
+	}
 	enableConsole() {
 		// Enable a "console" in the browser.
-		console.log(`Welcome to the Slay The Web Console. Some examples:
-stw.game.state.player.maxHealth = 999; stw.update()
-stw.game.enqueue({type: 'drawCards', amount: 2})
-stw.update()
-stw.dealCards()`)
 		// @ts-ignore
 		window.stw = {
 			game: this.game,
 			update: this.update.bind(this),
+			saveGame: (state) => saveToUrl(state || this.state),
 			createCard,
 			dealCards: this.dealCards.bind(this),
 			iddqd() {
@@ -94,7 +89,17 @@ stw.dealCards()`)
 					// console.log(this.game.state)
 				})
 			},
+			submitGame() {
+				backend.postRun(this.game)
+			},
+			help() {
+		console.log(`Welcome to the Slay The Web Console. Some examples:
+stw.game.enqueue({type: 'drawCards', amount: 2})
+stw.update()
+stw.dealCards()`)
+			}
 		}
+		stw.help()
 	}
 	update(callback) {
 		this.game.dequeue()

@@ -7,7 +7,7 @@
   "bugs": "https://github.com/oskarrough/slaytheweb/issues",
   "type": "module",
   "scripts": {
-    "start": "vite dev",
+    "dev": "vite dev",
     "lint": "eslint src tests --fix",
     "test": "ava",
     "test:watch": "ava --watch",
@@ -34,6 +34,7 @@
     "htm": "^3.1.1",
     "immer": "^9.0.21",
     "preact": "^10.16.0",
+    "superjson": "^1.13.1",
     "tone": "^14.8.49"
   },
   "release-it": {
