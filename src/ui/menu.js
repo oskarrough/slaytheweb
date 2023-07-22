@@ -1,7 +1,7 @@
 import {html} from './lib.js'
 import History from './history.js'
+import {saveToUrl} from './save-load.js'
 
-const save = (state) => (window.location.hash = encodeURIComponent(JSON.stringify(state)))
 const abandonGame = () => (window.location = window.location.origin)
 
 export default function Menu({game, gameState, onUndo}) {
@@ -12,7 +12,7 @@ export default function Menu({game, gameState, onUndo}) {
 			<ul class="Options">
 				<li>
 					<button
-						onclick=${() => save(gameState)}
+						onclick=${() => saveToUrl(gameState)}
 						title="Your save game will be stored in the URL. Copy it"
 					>
 						Save

@@ -1,4 +1,3 @@
-// @ts-ignore
 import test from 'ava'
 import {createCard} from '../src/game/cards.js'
 
@@ -23,3 +22,10 @@ test('card name must be exact', (t) => {
 	t.throws(() => createCard('Naaaah doesnt exist'))
 })
 
+test('can upgrade cards', (t) => {
+	const strikeplus = createCard('Strike', true)
+	t.is(strikeplus.damage, 9)
+	t.true(strikeplus.upgraded)
+	const strike = createCard('Strike')
+	t.is(strike.damage, 6)
+})

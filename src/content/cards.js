@@ -12,7 +12,6 @@ export default [
 		image: 'the-angel-of-death.jpg',
 		upgrade() {
 			this.damage = 9
-			this.upgraded = true
 			this.name = 'Strike+'
 			this.description = 'Deal 9 Damage.'
 		},
@@ -27,7 +26,6 @@ export default [
 		description: 'Gain 5 Block.',
 		upgrade() {
 			this.block = 8
-			this.upgraded = true
 			this.name = 'Defend+'
 			this.description = 'Gain 8 Block.'
 		},
@@ -45,7 +43,6 @@ export default [
 		description: 'Deal 8 damage. Apply 2 Vulnerable.',
 		upgrade() {
 			this.damage = 10
-			this.upgraded = true
 			this.name = 'Bash+'
 			this.powers.vulnerable = 3
 			this.description = 'Deal 10 Damage. Apply 3 Vulnerable'
@@ -82,7 +79,6 @@ export default [
 		image: 'vernal-equinox.jpg',
 		upgrade() {
 			this.damage = 11
-			this.upgraded = true
 			this.name = 'Cleave+'
 			this.description = 'Deal 11 Damage to all enemies.'
 		},
@@ -99,7 +95,6 @@ export default [
 		upgrade() {
 			this.damage = 7
 			this.block = 7
-			this.upgraded = true
 			this.name = 'Iron Wave+'
 			this.description = 'Deal 7 Damage. Gain 7 Block.'
 		},
@@ -117,7 +112,6 @@ export default [
 		image: 'manicule.jpg',
 		upgrade() {
 			this.damage = 8
-			this.upgraded = true
 			this.name = 'Sucker Punch+'
 			this.powers.weak = 2
 			this.description = 'Deal 8 Damage. Apply 2 Weak'
@@ -365,7 +359,6 @@ export default [
 		image: 'alice-holds-the-white-king.jpg',
 		upgrade() {
 			this.damage = 42
-			this.upgraded = true
 			this.name = 'Bludgeon+'
 			this.description = 'Deal 42 Damage.'
 		},
@@ -471,7 +464,6 @@ export default [
 		description: 'Apply 5 poison.',
 		image: '6.jpg',
 		upgrade() {
-			this.upgraded = true
 			this.name = 'Deadly Poison+'
 			this.powers.poison = 7
 			this.description = 'Apply 7 Poison'

@@ -5,13 +5,14 @@ import {createCard, CardTargets} from '../src/game/cards.js'
 import {MonsterRoom, Monster} from '../src/game/dungeon-rooms.js'
 import {createTestDungeon} from '../src/content/dungeon-encounters.js'
 import {getTargets, getCurrRoom, isCurrRoomCompleted} from '../src/game/utils-state.js'
+import {pick} from '../src/game/utils.js'
 import {canPlay} from '../src/game/conditions.js'
 
 const a = actions
 
 // Each test gets a fresh game state with a dungeon set up.
 test.beforeEach((t) => {
-	let state = a.createNewGame()
+	let state = a.createNewState()
 	state = a.setDungeon(state, createTestDungeon())
 	state.dungeon.y = 1
 	t.context = {state}
@@ -71,6 +72,17 @@ test('can add a card to hand', (t) => {
 	state = a.addCardToHand(state, {card: strike})
 	t.is(state.hand.length, 1)
 	t.is(state.hand[0].id, strike.id)
+	t.is(strike.damage, 6)
+})
+
+test('can upgrade a card', (t) => {
+	// let {state} = t.context
+	const strike = createCard('Strike', true)
+	// state = a.addCardToHand(state, {card: strike})
+	// const state2 = a.upgradeCard(state, {card: strike})
+	// const strike2 = state2.hand.find(c => c.id === strike.id)
+	// console.log(state2.hand)
+	t.is(strike.damage, 9, 'can upgrade card')
 })
 
 test('can draw cards from drawPile to hand', (t) => {
@@ -485,5 +497,14 @@ test('Succube card applies regen', (t) => {
 	t.is(newstate.player.powers.regen, 2)
 })
 
+test('upgraded cards are really upgraded', (t) => {
+	let state = a.createNewState()
+	state = a.addStarterDeck(state)
+	t.is(state.deck[9].name, 'Bash')
+	state = a.upgradeCard(state, {card: state.deck[9]})
+	t.is(state.deck[9].name, 'Bash+')
+})
+
 test.todo('playing defend on an enemy ?')
 test.todo('can apply a power to a specific monster')
+

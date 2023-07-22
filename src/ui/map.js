@@ -36,7 +36,6 @@ export class SlayMap extends Component {
 		super()
 		this.disableScatter = props.disableScatter
 		this.didDrawPaths = false
-		console.log(props)
 	}
 
 	componentDidMount() {
@@ -137,6 +136,7 @@ export class SlayMap extends Component {
 		if (!dungeon.graph) throw new Error('No graph to render. This should not happen?', dungeon)
 
 		const edgesFromCurrentNode = dungeon.graph[y][x].edges
+		// console.log('edges from current map node', edgesFromCurrentNode)
 
 		return html`
 			<slay-map>
