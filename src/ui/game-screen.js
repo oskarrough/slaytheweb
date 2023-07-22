@@ -44,7 +44,7 @@ export default class App extends Component {
 		super()
 		// Props
 		this.base = undefined
-		this.state = {}
+		this.state = undefined
 		this.game = {}
 		this.overlayIndex = 11
 
@@ -93,13 +93,14 @@ export default class App extends Component {
 				backend.postRun(this.game)
 			},
 			help() {
-		console.log(`Welcome to the Slay The Web Console. Some examples:
+				console.log(`Welcome to the Slay The Web Console. Some examples:
 stw.game.enqueue({type: 'drawCards', amount: 2})
 stw.update()
 stw.dealCards()`)
-			}
+			},
 		}
-		stw.help()
+		// @ts-ignore
+		window.stw.help()
 	}
 	update(callback) {
 		this.game.dequeue()
@@ -396,7 +397,7 @@ function PublishRun({game}) {
 		event.preventDefault()
 		setLoading(true)
 		const fd = new FormData(event.target)
-		const name = fd.get('playername')
+		const name = String(fd.get('playername'))
 		await backend.postRun(game, name)
 		setLoading(false)
 	}

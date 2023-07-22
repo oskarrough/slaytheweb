@@ -480,14 +480,14 @@ test('Clash can only be played if it is the only attack', (t) => {
 	t.is(clash.conditions[0].type, 'onlyType')
 	t.is(clash.conditions[0].cardType, 'attack')
 
-	t.is(canPlay(clash, state), false, 'can not play because not in hand')
+	t.is(canPlay(state, clash), false, 'can not play because not in hand')
 
 	state.hand.push(clash)
-	t.is(canPlay(clash, state), true, 'can play because in hand')
+	t.is(canPlay(state, clash), true, 'can play because in hand')
 
 	const defend = createCard('Defend')
 	state.hand.push(defend)
-	t.is(canPlay(clash, state), false, 'can not play because non-attack card in hand')
+	t.is(canPlay(state, clash), false, 'can not play because non-attack card in hand')
 })
 
 test('Succube card applies regen', (t) => {

@@ -52,7 +52,6 @@ export const weak = new Power({
 	use: (dmg) => Math.floor(dmg * 0.75),
 })
 
-
 export const strength = new Power({
 	type: 'buff',
 	name: 'strength',
