@@ -113,7 +113,7 @@ export class SlayMap extends Component {
 			const bPos = getPosWithin(bEl, containerElement)
 			if (!aPos.top) {
 				throw Error(
-					"Could not render the svg path. Is the graph's container element rendered/visible?"
+					"Could not render the svg path. Is the graph's container element rendered/visible?",
 				)
 			}
 			const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
@@ -161,7 +161,7 @@ export class SlayMap extends Component {
 								</slay-map-node>`
 							})}
 						</slay-map-row>
-					`
+					`,
 				)}
 			</slay-map>
 		`

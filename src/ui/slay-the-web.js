@@ -59,5 +59,5 @@ customElements.define(
 		connectedCallback() {
 			render(html` <${SlayTheWeb} /> `, this)
 		}
-	}
+	},
 )

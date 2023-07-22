@@ -320,7 +320,7 @@ export function graphToString(graph) {
 	let textGraph = graph.map((floor) =>
 		floor.map((node) => {
 			return emojiFromNodeType(node.type)
-		})
+		}),
 	)
 	const str = textGraph.map((floor) => floor.join('')).join('\n')
 	return str
