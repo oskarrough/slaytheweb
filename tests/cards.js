@@ -1,7 +1,5 @@
-// @ts-ignore
 import test from 'ava'
-import {createCard, findCard} from '../src/game/cards.js'
-import * as actions from '../src/game/actions.js'
+import {createCard} from '../src/game/cards.js'
 
 test('can create an attack card', (t) => {
 	const card = createCard('Strike')
@@ -24,12 +22,10 @@ test('card name must be exact', (t) => {
 	t.throws(() => createCard('Naaaah doesnt exist'))
 })
 
-test('can upgrade a Strike', (t) => {
-	const strike = createCard('Strike')
-	t.is(strike.damage, 6)
-	t.falsy(strike.upgraded)
-	const strikeplus = findCard('Strike')
-	strikeplus.upgrade()
+test('can upgrade cards', (t) => {
+	const strikeplus = createCard('Strike', true)
 	t.is(strikeplus.damage, 9)
 	t.true(strikeplus.upgraded)
+	const strike = createCard('Strike')
+	t.is(strike.damage, 6)
 })

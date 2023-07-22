@@ -22,10 +22,17 @@ export const CardTargets = {
 }
 
 /**
- * @typedef {object} CARDPOWERS
+ * @typedef {object} CardPowers
  * @prop {number=} regen
  * @prop {number=} vulnerable
  * @prop {number=} weak
+ */
+
+/**
+ * @typedef {Object} CardAction - allows the card to run all defined actions
+ * @prop {string} type - name of the action to call. See game/actions.js
+ * @prop {Object} [parameter] - props to pass to the action
+ * @prop {Array<{type: string}>} [conditions] - list of conditions
  */
 
 /**
@@ -42,19 +49,11 @@ export const CardTargets = {
  * @prop {CardTargets} target - a special "target" string to specify which targets the card affects.
  * color = [RED, GREEN, BLUE, PURPLE, COLORLESS, CURSE]
  * rarity = [BASIC, SPECIAL, COMMON, UNCOMMON, RARE, CURSE]
- * @prop {boolean} exhaust - whether the card will exhaust when played.
- *
- * @prop {CARDPOWERS} [powers] - Cards can apply POWERS with the `powers` object. Powers are hardcoded in the game actions, but feel free to add more.
+ * @prop {boolean=} exhaust - whether the card will exhaust when played.
+ * @prop {boolean=} upgraded
+ * @prop {CardPowers} [powers] - Cards can apply POWERS with the `powers` object. Powers are hardcoded in the game actions, but feel free to add more.
  * @prop {Array<CardAction>} [actions] - Cards can _optionally_ define a list of `actions`. These actions will be run, in defined order, when the card is played.
  * @prop {Array<{type: string}>} [conditions] - In the same way, you can define a list of `conditions` that have to pass for the card to be playable. You can even add conditions directly on your actions.
- * @prop {Function} [use]
- */
-
-/**
- * @typedef {Object} CardAction - allows the card to run all defined actions
- * @prop {string} type - name of the action to call. See game/actions.js
- * @prop {Object} [parameter] - props to pass to the action
- * @prop {Array<{type: string}>} [conditions] - list of conditions
  */
 
 export class Card {
@@ -72,37 +71,27 @@ export class Card {
 		this.conditions = props.conditions
 		this.actions = props.actions
 		this.image = props.image
-		this.upgraded = false
+		this.upgraded = props.upgraded
 		this.exhaust = props.exhaust
 	}
 }
 
 /**
- * Returns the POJO card definition. Not to be confused with createCard().
- * @param {string} name
- * @returns {CARD}
- */
-function findCard(name) {
-	return cards.find((card) => card.name === name)
-}
-
-/**
  * Creates a new card. Turns a plain object card into a class-based one.
+ * Very important, we clone the object. Otherwise, all cards would share the same object.
  * We do this so we can define the cards without using class syntax.
  * @param {string} name - exact name of the Card
  * @returns {CARD}
  */
-export function createCard(name, upgrade) {
-	let baseCard = findCard(name)
-	if (!baseCard) throw new Error(`Card not found: ${name}`)
-
-	if (upgrade) {
-		baseCard = Object.assign({}, baseCard)
-		baseCard.upgrade()
+export function createCard(name, shouldUpgrade) {
+	let card = cards.find((card) => card.name === name)
+	if (!card) throw new Error(`Card not found: ${name}`)
+	card = {...card}
+	if (shouldUpgrade) {
+		card.upgrade()
+		card.upgraded = true
 	}
-
-	const {...obj} = new Card(baseCard)
-	return obj
+	return new Card(card)
 }
 
 /**
