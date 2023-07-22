@@ -93,6 +93,9 @@ stw.dealCards()`)
 					// console.log(this.game.state)
 				})
 			},
+			submitGame() {
+				backend.postRun(this.game)
+			},
 		}
 	}
 	update(callback) {

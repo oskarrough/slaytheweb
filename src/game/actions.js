@@ -176,7 +176,7 @@ function removeCard(state, {card}) {
  * @returns {State}
  */
 function upgradeCard(state, {card}) {
-	return produce(state, (draft) => {
+	return produce(state, () => {
 		const upgraded = createCard(card.name, true)
 		card = upgraded
 	})

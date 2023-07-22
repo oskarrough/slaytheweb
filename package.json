@@ -7,7 +7,7 @@
   "bugs": "https://github.com/oskarrough/slaytheweb/issues",
   "type": "module",
   "scripts": {
-    "start": "vite dev",
+    "dev": "vite dev",
     "lint": "eslint src tests --fix",
     "test": "ava",
     "test:watch": "ava --watch",
