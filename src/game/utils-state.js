@@ -4,16 +4,28 @@ import {CardTargets} from './cards.js'
  * A bunch of utilities specific to the game state object.
  */
 
+/**
+ * @param {import('./actions.js').State} state
+ * @returns {number} The percentage of player health remaining.
+ */
 export function getPlayerHealthPercentage(state) {
 	return (state.player.currentHealth / state.player.maxHealth) * 100
 }
 
-// Returns the current dungeon node
+/**
+ * Returns the node you are currently on.
+ * @param {import('./dungeon.js').Dungeon} dungeon
+ * @returns {import('./dungeon.js').MapNode}
+ */
 export function getCurrentNode(dungeon) {
 	return dungeon.graph[dungeon.y][dungeon.x]
 }
 
-// Returns the current dungeon room from the the y/x props
+/**
+ * Returns the current dungeon room from the the y/x props
+ * @param {import('./actions.js').State} state
+ * @returns {import('./dungeon-rooms.js').Room}
+ */
 export function getCurrRoom(state) {
 	const node = getCurrentNode(state.dungeon)
 	if (!node.room) throw new Error('This node has no room')
@@ -41,6 +53,12 @@ export function getTargets(state, targetQuery) {
 	throw new Error(`Could not find target "${targetQuery}" on ${state.dungeon.y}/${state.dungeon.x}`)
 }
 
+/**
+ * What does this do again?
+ * @param {CardTargets} cardTarget
+ * @param {string} targetQuery
+ * @returns {boolean}
+ */
 export function cardHasValidTarget(cardTarget, targetQuery) {
 	return (
 		(cardTarget === 'player' && targetQuery.includes('player')) ||
@@ -49,6 +67,10 @@ export function cardHasValidTarget(cardTarget, targetQuery) {
 	)
 }
 
+/**
+ * @param {import('./dungeon.js').Room} room
+ * @returns {boolean} true if the room has been cleared.
+ */
 export function isRoomCompleted(room) {
 	if (room.type === 'monster') {
 		const deadMonsters = room.monsters.filter((m) => m.currentHealth < 1)
@@ -58,17 +80,24 @@ export function isRoomCompleted(room) {
 	} else if (room.type === 'start') {
 		return true
 	}
-	throw new Error(`could not check if room has been completed: "${room.type}"`)
+	throw new Error(`Could not check if room has been completed: "${room.type}"`)
 }
 
-// Check if the current room in a game has been cleared.
+/**
+ * Check if the current room in a game has been cleared.
+ * @param {import('./actions.js').State} state
+ */
 export function isCurrRoomCompleted(state) {
 	const room = getCurrRoom(state)
 	return isRoomCompleted(room)
 }
 
-// Checks if the whole dungeon (all rooms) has been cleared.
-// As long as there is one cleared node per floor, we are good.
+/**
+ * Checks if the whole dungeon (all rooms) has been cleared.
+ * As long as there is one cleared node per floor, we are good.
+ * @param {import('./actions.js').State} state
+ * @returns {boolean}
+ */
 export function isDungeonCompleted(state) {
 	const clearedRooms = state.dungeon.graph
 		.map((floor) => {

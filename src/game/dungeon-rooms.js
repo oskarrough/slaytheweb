@@ -3,6 +3,8 @@ import {shuffle, range} from './utils.js'
 /**
  * @typedef {object} Room
  * @prop {string} type
+ * @prop {string} [choice] - for campfire rooms, the choice made by the player
+ * @prop {object} [reward] - for campfire rooms, the reward given to the player
  * @prop {Array<MONSTER>} [monsters]
  */
 

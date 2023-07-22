@@ -254,7 +254,7 @@ export function useCardActions(state, {target, card}) {
 	let newState = state
 	card.actions.forEach((action) => {
 		// Don't run action if it has an invalid condition.
-		if (action.conditions && !conditionsAreValid(action.conditions, state)) {
+		if (action.conditions && !conditionsAreValid(state, action.conditions)) {
 			return newState
 		}
 		if (!action.parameter) action.parameter = {}
