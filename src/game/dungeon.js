@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import {uuid, shuffle, random as randomBetween, pick} from './utils.js'
 import {StartRoom, CampfireRoom} from './dungeon-rooms.js'
 import {easyMonsters, monsters, elites, bosses} from '../content/dungeon-encounters.js'
@@ -191,7 +192,7 @@ export function generateGraph(options = {}) {
  * Returns an array of possible paths from start to finish.
  * @param {Graph} graph - dungeon graph
  * @param {string} customPaths
- * @returns {array} customPaths a list of paths
+ * @returns {Array<Path>} customPaths a list of paths
  */
 export function generatePaths(graph, customPaths) {
 	const paths = []
@@ -212,16 +213,27 @@ export function generatePaths(graph, customPaths) {
 	return paths
 }
 
-// Finds a path from start to finish in the graph.
-// Pass it an index of the column you'd like the path to follow where possible.
-// Returns an array of moves. Each move contains the Y/X coords of the graph.
-// Starting node connects to all nodes on the first floor
-// End node connects to all nodes on the last floor
-// Note, it is Y/X and not X/Y.
-// [
-// 	[[0, 0], [1,4]], <-- first move.
-// 	[[1, 4], [2,1]] <-- second move
-// ]
+/**
+ * @typedef {Array<Array<Array<number, number>>>} Path
+ */
+
+/**
+ * Finds a path from start to finish in the graph.
+* @param {Graph} graph
+* @param {number} preferredIndex the column you'd like the path to follow where possible
+* @param {boolean} debug if true, logs to console
+* @returns {Path} an array of moves. Each move contains the Y/X coords of the graph.
+
+ Starting node connects to all nodes on the first floor
+ End node connects to all nodes on the last floor
+
+ It is Y/X, not X/Y (think floor/room, not room/floor)
+
+ [
+ 	[[0, 0], [1,4]], <-- first move is from 0,0 to 1,4
+ 	[[1, 4], [2,1]] <-- second move is from 1,4 to 2,1
+ ]
+ */
 export function findPath(graph, preferredIndex, debug = false) {
 	let path = []
 	let lastVisited
@@ -233,31 +245,32 @@ export function findPath(graph, preferredIndex, debug = false) {
 	// Walk through each floor.
 	for (let [floorIndex, floor] of graph.entries()) {
 		if (debug) console.group(`floor ${floorIndex}`)
-		const nextFloor = graph[floorIndex + 1]
-		let aIndex = preferredIndex
-		let bIndex = preferredIndex
-
 		// If on last floor, stop drawing.
+		const nextFloor = graph[floorIndex + 1]
 		if (!nextFloor) {
 			if (debug) console.log('no next floor, stopping')
 			if (debug) console.groupEnd()
 			break
 		}
 
-		// Find the node we came from.
+		let aIndex = preferredIndex
+		let bIndex = preferredIndex
+
+		// Find the node we came FROM.
 		let a = lastVisited
 		const newAIndex = floor.indexOf(a)
 		if (a) {
 			if (debug) console.log('changing a index to', newAIndex)
 			aIndex = newAIndex
 		} else {
+			// Or start from 0,0
 			if (debug) console.log('forcing "from" to first node in floor')
 			a = floor[0]
 			aIndex = 0
 		}
 		if (!a) throw Error('missing from')
 
-		// Find the node we are going to.
+		// Find the node we are going TO.
 		// Search to the right of our index.
 		let b
 		for (let i = bIndex; i < nextFloor.length; i++) {
@@ -287,13 +300,14 @@ export function findPath(graph, preferredIndex, debug = false) {
 		lastVisited = b
 
 		if (debug) console.log(`connected floor ${floorIndex}:${aIndex} to ${floorIndex + 1}:${bIndex}`)
-		const moveA = [floorIndex, aIndex]
-		const moveB = [floorIndex + 1, bIndex]
-		path.push([moveA, moveB])
+		const moveFrom = [floorIndex, aIndex]
+		const moveTo = [floorIndex + 1, bIndex]
+		path.push([moveFrom, moveTo])
 		if (debug) console.groupEnd()
 	}
 
 	if (debug) console.groupEnd()
+
 	return path
 }
 

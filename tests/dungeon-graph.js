@@ -1,5 +1,5 @@
 import test from 'ava'
-import {generateGraph, graphToString} from '../src/game/dungeon.js'
+import {generateGraph, generatePaths, graphToString} from '../src/game/dungeon.js'
 import {roomTypes} from '../src/game/dungeon-rooms.js'
 
 test('graph is created with default options', (t) => {
@@ -74,4 +74,19 @@ test('string graph works', (t) => {
 	t.true(str.includes(roomTypes.start))
 	t.true(str.includes(roomTypes.boss))
 	// console.log(str)
+})
+
+test('can draw a path', (t) => {
+	const g = generateGraph({width: 3, height: 3})
+	const paths = generatePaths(g, '12')
+	// console.log(paths[0], paths[1])
+	t.is(paths.length, 2, 'two different paths')
+	t.is(paths[0].length, 4, 'path 1 has 4 moves')
+	t.is(paths[1].length, 4, 'path 2 has 4 moves')
+	t.is(paths[0][2][0][1], 1, 'path 1 follows column 1')
+	t.is(paths[1][2][0][1], 2, 'path 2 follows column 2')
+	const otherPaths = generatePaths(g, '21')
+	// console.log(otherPaths[0], otherPaths[1])
+	t.is(otherPaths[0][2][0][1], 2, 'path 1 follows column 2')
+	t.is(otherPaths[1][2][0][1], 1, 'path 2 follows column 1')
 })
