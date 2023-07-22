@@ -3,7 +3,7 @@ import {shuffle, range} from './utils.js'
 /**
  * @typedef {object} Room
  * @prop {string} type
- * @prop {Array=} monsters
+ * @prop {Array<MONSTER>} [monsters]
  */
 
 /** A map of room types to emojis */
@@ -26,13 +26,17 @@ export function StartRoom() {
 	}
 }
 
+export const campfireRoomTypes = {
+	campfire: 'campfire',
+}
+
 /**
  * A campfire gives our hero the opportunity to rest, remove or upgrade a card.
  * @returns {Room}
  */
 export function CampfireRoom() {
 	return {
-		type: 'campfire',
+		type: campfireRoomTypes.campfire,
 		// choices: ['rest', 'remove', 'upgrade'],
 	}
 }
