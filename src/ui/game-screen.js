@@ -75,10 +75,6 @@ export default class App extends Component {
 	}
 	enableConsole() {
 		// Enable a "console" in the browser.
-		console.log(`Welcome to the Slay The Web Console. Some examples:
-stw.game.enqueue({type: 'drawCards', amount: 2})
-stw.update()
-stw.dealCards()`)
 		// @ts-ignore
 		window.stw = {
 			game: this.game,
@@ -96,7 +92,14 @@ stw.dealCards()`)
 			submitGame() {
 				backend.postRun(this.game)
 			},
+			help() {
+		console.log(`Welcome to the Slay The Web Console. Some examples:
+stw.game.enqueue({type: 'drawCards', amount: 2})
+stw.update()
+stw.dealCards()`)
+			}
 		}
+		stw.help()
 	}
 	update(callback) {
 		this.game.dequeue()

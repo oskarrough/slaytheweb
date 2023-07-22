@@ -162,7 +162,13 @@ function discardHand(state) {
 	})
 }
 
-// Discard a single card from your hand.
+/**
+ * Discard a single card from your hand.
+ * @param {State} state
+ * @param {object} props
+ * @param {CARD} props.card
+ * @returns {State}
+ */
 function removeCard(state, {card}) {
 	return produce(state, (draft) => {
 		draft.deck = state.deck.filter((c) => c.id !== card.id)
@@ -176,9 +182,9 @@ function removeCard(state, {card}) {
  * @returns {State}
  */
 function upgradeCard(state, {card}) {
-	return produce(state, () => {
-		const upgraded = createCard(card.name, true)
-		card = upgraded
+	return produce(state, (draft) => {
+		const index = draft.deck.findIndex((c) => c.id === card.id)
+		draft.deck[index] = createCard(card.name, true)
 	})
 }
 

@@ -497,5 +497,14 @@ test('Succube card applies regen', (t) => {
 	t.is(newstate.player.powers.regen, 2)
 })
 
+test('upgraded cards are really upgraded', (t) => {
+	let state = a.createNewState()
+	state = a.addStarterDeck(state)
+	t.is(state.deck[9].name, 'Bash')
+	state = a.upgradeCard(state, {card: state.deck[9]})
+	t.is(state.deck[9].name, 'Bash+')
+})
+
 test.todo('playing defend on an enemy ?')
 test.todo('can apply a power to a specific monster')
+
