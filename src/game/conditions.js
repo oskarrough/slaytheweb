@@ -42,7 +42,7 @@ export function healthPercentageBelow(state, condition) {
 /**
  * Returns true if all conditions are valid on a certain game state.
  * @param {import('./actions.js').State} state
- * @param {Array.<Condition} conditions
+ * @param {Array.<Condition>} conditions
  * @returns {boolean}
  */
 export function conditionsAreValid(state, conditions) {

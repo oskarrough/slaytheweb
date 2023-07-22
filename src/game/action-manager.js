@@ -3,24 +3,15 @@ import actions from './actions.js'
 
 /**
  * @typedef {Object} FutureAction
- * @prop {string} type
+ * @prop {string} type - the name of a function in actions.js
  * @prop {any} [any] - arguments are passed to the action
  */
 
 /**
  * @typedef {Object} PastAction
- * @prop {string} type
+ * @prop {string} type - the name of a function in actions.js
  * @prop {import('./actions.js').State} state
  */
-
-/**
- * @typedef {Object} ActionManagerReally
- * @prop {Function} enqueue - stores an action in the "future"
- * @prop {Function} dequeue - runs the oldest "future" action, and stores result in the "past"
- * @prop {Function} undo - undoes the last "past" action
- * @prop {Queue} future
- * @prop {Queue} past
-	* /
 
 /**
  * The action manager makes use of queues to keep track of future and past actions in the game state + undo.
