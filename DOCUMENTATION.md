@@ -2,15 +2,16 @@
 
 Throughout the project I've attempted to document and leave comments. So please, go ahead and explore all folders and files. In the root of this project you'll find configuration files as well as two folders:
 
-- [src →](src/) The web root, ready to deploy to any static web server. No compilation required. You can open the folder locally with your browser, or if you want livereload, with `npm start`.
+- [src →](src/) The web root. All code is transpiled.
   - [game](src/game) contains the core game logic
   - [content](src/content) uses methods from the game engine to build cards, dungeon and monsters
   - [ui](src/ui) is the example web interface to actually play the game
+- [public →](public/) Copied to the web root as-is
 - [tests →](tests/) Contains all tests for the game engine. Nothing for the UI. Run `npm test`.
 
-## Public
+## Src
 
-This is the full source code of the game _and_ UI. The folder is meant to be deployed as-is to any static web server. The game logic does not concern with the UI.
+This is the full source code of the game _and_ UI. The game logic does not concern with the UI.
 
 ### Game
 

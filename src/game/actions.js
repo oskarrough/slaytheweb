@@ -79,7 +79,7 @@ function createNewState() {
 /**
  * By default a new game doesn't come with a dungeon. You have to set one explicitly. Look in dungeon-encounters.js for inspiration.
  * @param {State} state
- * @param {import('./dungeon.js').Dungeon} dungeon
+ * @param {import('./dungeon.js').Dungeon} [dungeon]
  * @returns {State}
  */
 function setDungeon(state, dungeon) {
@@ -490,7 +490,7 @@ function playMonsterActions(state) {
 	return nextState
 }
 
-/** @type {ActionFn<{}>} Runs the "intent" for a single monster (index) in the current room. */
+/** @type {ActionFn<number>} Runs the "intent" for a single monster (index) in the current room. */
 function takeMonsterTurn(state, monsterIndex) {
 	return produce(state, (draft) => {
 		const room = getCurrRoom(draft)
