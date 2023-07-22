@@ -18,21 +18,21 @@
     "release": "release-it"
   },
   "devDependencies": {
-    "ava": "^4.3.3",
-    "c8": "^7.12.0",
+    "ava": "^5.3.1",
+    "c8": "^8.0.0",
     "docco": "^0.9.1",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "prettier": "2.7.1",
-    "release-it": "^16.1.0",
-    "vite": "^4.4.4",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "3.0.0",
+    "release-it": "^16.1.3",
+    "vite": "^4.4.6",
     "vite-plugin-pwa": "^0.16.4"
   },
   "dependencies": {
     "gsap": "^3.12.2",
     "htm": "^3.1.1",
-    "immer": "^9.0.21",
+    "immer": "^10.0.2",
     "preact": "^10.16.0",
     "superjson": "^1.13.1",
     "tone": "^14.8.49"

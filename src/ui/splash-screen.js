@@ -57,7 +57,9 @@ export default class SplashScreen extends Component {
 							<p>
 								The game is
 								<a href="https://github.com/oskarrough/slaytheweb" rel="noreferrer" target="_blank"
-									>open source</a> and it'd be wonderful with more contributors
+									>open source</a
+								>
+								and it'd be wonderful with more contributors
 							</p>
 						</div>
 					`

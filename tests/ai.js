@@ -13,7 +13,7 @@ test.beforeEach((t) => {
 	state = a.setDungeon(state, Dungeon({width: 3, height: 1}))
 	state.dungeon.y = 1
 	state.dungeon.graph[1][0].room = MonsterRoom(
-		Monster({intents: [{block: 7}, {damage: 10}, {damage: 10}]})
+		Monster({intents: [{block: 7}, {damage: 10}, {damage: 10}]}),
 	)
 	t.context = {state}
 })

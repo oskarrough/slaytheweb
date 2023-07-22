@@ -82,7 +82,7 @@ export function Monster(
 		currentHealth: 42,
 		maxHealth: 42,
 		intents: [],
-	}
+	},
 ) {
 	// By setting props.random to a number, all damage intents will be randomized with this range.
 	let randomIntents

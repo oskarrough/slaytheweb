@@ -5,7 +5,6 @@ import {createCard, CardTargets} from '../src/game/cards.js'
 import {MonsterRoom, Monster} from '../src/game/dungeon-rooms.js'
 import {createTestDungeon} from '../src/content/dungeon-encounters.js'
 import {getTargets, getCurrRoom, isCurrRoomCompleted} from '../src/game/utils-state.js'
-import {pick} from '../src/game/utils.js'
 import {canPlay} from '../src/game/conditions.js'
 
 const a = actions
@@ -178,7 +177,7 @@ test('weak makes you deal 25% less damage', (t) => {
 	t.is(
 		getTargets(nextState, 'enemy0')[0].currentHealth,
 		32,
-		'weak is rounded down. 25% of 6 is 4.5, so we deal 4 damage'
+		'weak is rounded down. 25% of 6 is 4.5, so we deal 4 damage',
 	)
 })
 
@@ -189,7 +188,7 @@ test('weak makes a monster deal 25% less damage', (t) => {
 	t.deepEqual(
 		getTargets(state, 'enemy0')[0].intents[1],
 		{damage: 10},
-		'second turn monster will deal 10 damage'
+		'second turn monster will deal 10 damage',
 	)
 
 	let nextState = a.endTurn(state)
@@ -410,7 +409,7 @@ test('target "allEnemies" works for damage as well as power', (t) => {
 	t.is(room.monsters[1].currentHealth, 13)
 	t.falsy(
 		room.monsters[0].powers.vulnerable && room.monsters[1].powers.vulnerable,
-		'none are vulnerable'
+		'none are vulnerable',
 	)
 	const card = createCard('Thunderclap')
 	const nextState = a.playCard(state, {card})
@@ -507,4 +506,3 @@ test('upgraded cards are really upgraded', (t) => {
 
 test.todo('playing defend on an enemy ?')
 test.todo('can apply a power to a specific monster')
-

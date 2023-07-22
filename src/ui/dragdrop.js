@@ -42,7 +42,7 @@ export default function enableDragDrop(container, afterRelease) {
 						if (
 							cardHasValidTarget(
 								this.target.getAttribute('data-card-target'),
-								getTargetStringFromElement(targets[i])
+								getTargetStringFromElement(targets[i]),
 							)
 						) {
 							targets[i].classList.add(overClass)
