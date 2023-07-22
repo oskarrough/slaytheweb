@@ -42,6 +42,14 @@ import {isDungeonCompleted} from './utils-state.js'
  */
 
 /**
+ * @template T
+ * @callback ActionFn
+ * @param {State} state - first argument must be the state object
+ * @param {T} [props]
+ * @returns {State} returns a new state object
+ */
+
+/**
  * This is the big object of game state. Everything starts here.
  * @returns {State}
  */
@@ -522,7 +530,12 @@ function addCardToDeck(state, {card}) {
 	})
 }
 
-// Records a move on the map.
+/**
+ * Records a move on the dungeon map.
+ * @param {State} state
+ * @param {{move: {x: number, y: number}}} props.move
+ * @returns {State}
+ */
 function move(state, {move}) {
 	let nextState = endEncounter(state)
 
@@ -555,6 +568,13 @@ function dealDamageEqualToBlock(state, {target}) {
 	}
 }
 
+/**
+ * Deals damage to "target" equal to the amount of vulnerable on the target.
+ * @param {State} state
+ * @param {object} props
+ * @prop {string} props.target
+ * @returns {State}
+ */
 function dealDamageEqualToVulnerable(state, {target}) {
 	return produce(state, (draft) => {
 		getTargets(draft, target).forEach((t) => {
@@ -566,6 +586,7 @@ function dealDamageEqualToVulnerable(state, {target}) {
 		return draft
 	})
 }
+
 function dealDamageEqualToWeak(state, {target}) {
 	return produce(state, (draft) => {
 		getTargets(draft, target).forEach((t) => {
@@ -613,7 +634,7 @@ function makeCampfireChoice(state, {choice, reward}) {
 }
 
 /**
- * Sets the health of all monsters in the dungeon to 1.
+ * A cheat code. Sets the health of all monsters in the dungeon to 1.
  * @param {State} state
  * @returns {State}
  */
