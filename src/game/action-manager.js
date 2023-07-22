@@ -2,20 +2,38 @@ import Queue from './queue.js'
 import actions from './actions.js'
 
 /**
- * @typedef {Object} Action
- * @prop {string} type - name of the action to call
- * @prop {*} anything - pass it what you need
+ * @typedef {Object} FutureAction
+ * @prop {string} type
+ * @prop {any} [any] - arguments are passed to the action
  */
 
-// The action manager makes use of queues to keep track of future and past actions in the game state + undo.
+/**
+ * @typedef {Object} PastAction
+ * @prop {string} type
+ * @prop {import('./actions.js').State} state
+ */
+
+/**
+ * @typedef {Object} ActionManagerReally
+ * @prop {Function} enqueue - stores an action in the "future"
+ * @prop {Function} dequeue - runs the oldest "future" action, and stores result in the "past"
+ * @prop {Function} undo - undoes the last "past" action
+ * @prop {Queue} future
+ * @prop {Queue} past
+	* /
+
+/**
+ * The action manager makes use of queues to keep track of future and past actions in the game state + undo.
+ * @param {Object} props
+ * @prop {boolean} props.debug - whether to log actions to the console
+ */
 export default function ActionManager(props) {
 	const future = new Queue()
 	const past = new Queue()
 
 	/**
-	 * Enqueued items are added to the "future" list. An action looks like this:
-	 * {type: 'dealDamage', amount: 7, ... }
-	 * @param {Object} action
+	 * Enqueued items are added to the "future" list
+	 * @param {FutureAction} action
 	 */
 	function enqueue(action) {
 		if (props.debug) console.log('am:enqueue', action)
@@ -48,7 +66,7 @@ export default function ActionManager(props) {
 
 	/**
 	 * Returns an object with the most recently run action and how the state looked before.
-	 * @returns {Action}
+	 * @returns {PastAction}
 	 */
 	function undo() {
 		if (props.debug) console.log('am:undo')

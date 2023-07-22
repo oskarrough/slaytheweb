@@ -19,14 +19,6 @@ import {getPlayerHealthPercentage} from './utils-state.js'
  * Returns true if all cards in your hand are of the same type as condition.cardType
  * @type {ConditionFn}
  */
-export function onlyWhat(state, condition) {
-	return state.hand.every((card) => card.type === condition.cardType)
-}
-
-/**
- * Returns true if all cards in your hand are of the same type as condition.cardType
- * @type {ConditionFn}
- */
 export function onlyType(state, condition) {
 	return state.hand.every((card) => card.type === condition.cardType)
 }

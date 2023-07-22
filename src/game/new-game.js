@@ -1,31 +1,15 @@
 import actions from './actions.js'
 import ActionManager from './action-manager.js'
 
-// This function returns a "game" object which wraps and controls a "game state".
-// You enqueue actions on the game object, and then dequeue them.
-
-// Here's an example:
-// ```
-// const game = createNewGame()
-// game.enqueue({type: 'drawCards'})
-// // game.future.length === 1
-// game.dequeue()
-// // game.future.length === 0
-// // game.past.length === 1
-// // game.state now includes the updated state.
-// // You can also undo!
-// game.undo()
-// ```
-
 /**
  * @typedef {Object} Game
  * @prop {import('./actions.js').State} state
  * @prop {object} actions
- * @prop {Function} enqueue
- * @prop {Function} dequeue
- * @prop {Function} undo
- * @prop {Array<import('./actions.js').State>} future
- * @prop {Array<import('./actions.js').State>} past
+ * @prop {Function} enqueue - stores an action in the "future"
+ * @prop {Function} dequeue - runs the oldest "future" action, and stores result in the "past"
+ * @prop {Function} undo - undoes the last "past" action
+ * @prop {{list: Array<{type: string}>}} future
+ * @prop {{list: Array<{type: string, state: import('./actions.js').State}>}} past
  */
 
 /**
