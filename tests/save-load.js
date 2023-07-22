@@ -1,12 +1,6 @@
-// @ts-ignore
 import test from 'ava'
 import actions from '../src/game/actions.js'
 import {encode, decode} from '../src/ui/save-load.js'
-
-// Each test gets a fresh dungeon with a dungeon and cards.
-test.beforeEach((t) => {
-	// t.context = {state}
-})
 
 test('can save and load a game state', (t) => {
 	let state = actions.createNewState()

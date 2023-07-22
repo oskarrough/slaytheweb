@@ -26,4 +26,3 @@ export function loadFromUrl() {
 	const state = decodeURIComponent(window.location.hash.split('#')[1])
 	return decode(state)
 }
-
