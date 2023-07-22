@@ -1,37 +1,64 @@
 import Queue from './queue.js'
 import actions from './actions.js'
 
-// The action manager makes use of queues to keep track of
-// future and past actions in the game state. Also allowing us to undo.
+/**
+ * @typedef {Object} FutureAction
+ * @prop {string} type - the name of a function in actions.js
+ * @prop {any} [any] - arguments are passed to the action
+ */
+
+/**
+ * @typedef {Object} PastAction
+ * @prop {string} type - the name of a function in actions.js
+ * @prop {import('./actions.js').State} state
+ */
+
+/**
+ * The action manager makes use of queues to keep track of future and past actions in the game state + undo.
+ * @param {Object} props
+ * @prop {boolean} props.debug - whether to log actions to the console
+ */
 export default function ActionManager(props) {
 	const future = new Queue()
 	const past = new Queue()
 
-	// Enqueued items are added to the "future" list. An action looks like this:
-	// {type: 'dealDamage', amount: 7, ... }
+	/**
+	 * Enqueued items are added to the "future" list
+	 * @param {FutureAction} action
+	 */
 	function enqueue(action) {
 		if (props.debug) console.log('am:enqueue', action)
 		future.enqueue({action})
 	}
 
-	// Deqeueing means running the oldest action in the queue on a game state.
-	// The action is then moved to the "past". Returns the next state.
+	/**
+	 * Deqeueing runs the oldest action (from the `future` queue) on the state.
+	 * The action is then moved to the `past` queue.
+	 * @param {import('./actions.js').State} state
+	 * @returns {import('./actions.js').State} new state
+	 */
 	function dequeue(state) {
+		// Get the oldest action
 		const {action} = future.dequeue() || {}
 		if (props.debug) console.log('am:dequeue', action)
+		if (!action) return state
+		// Run it on the state
 		let nextState
-		if (!action) return
 		try {
 			nextState = actions[action.type](state, action)
 		} catch (err) {
 			console.warn('am:Failed running action', action)
 			throw new Error(err)
 		}
-		past.enqueue({state, action})
+		// Move the action along with its state to the past
+		past.enqueue({action, state})
 		return nextState
 	}
 
-	// Returns an object with the most recently run action and how the state looked before.
+	/**
+	 * Returns an object with the most recently run action and how the state looked before.
+	 * @returns {PastAction}
+	 */
 	function undo() {
 		if (props.debug) console.log('am:undo')
 		return this.past.list.pop()

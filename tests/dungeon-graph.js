@@ -73,5 +73,5 @@ test('string graph works', (t) => {
 	t.true(str.includes(roomTypes.M))
 	t.true(str.includes(roomTypes.start))
 	t.true(str.includes(roomTypes.boss))
-	console.log(str)
+	// console.log(str)
 })

@@ -42,6 +42,14 @@ import {isDungeonCompleted} from './utils-state.js'
  */
 
 /**
+ * @template T
+ * @callback ActionFn
+ * @param {State} state - first argument must be the state object
+ * @param {T} [props]
+ * @returns {State} returns a new state object
+ */
+
+/**
  * This is the big object of game state. Everything starts here.
  * @returns {State}
  */
@@ -68,8 +76,12 @@ function createNewState() {
 	}
 }
 
-// By default a new game doesn't come with a dungeon. You have to set one explicitly. Look in dungeon-encounters.js for inspiration.
-/** @returns {State} */
+/**
+ * By default a new game doesn't come with a dungeon. You have to set one explicitly. Look in dungeon-encounters.js for inspiration.
+ * @param {State} state
+ * @param {import('./dungeon.js').Dungeon} [dungeon]
+ * @returns {State}
+ */
 function setDungeon(state, dungeon) {
 	if (!dungeon) dungeon = dungeonWithMap()
 	state.dungeon = dungeon
@@ -105,9 +117,7 @@ function addStarterDeck(state) {
 
 /**
  * Move X cards from deck to hand.
- * @param {State} state
- * @param {{amount: number}} options
- * @returns {State}
+ * @type {ActionFn<{amount: number}>}
  */
 function drawCards(state, options) {
 	const amount = options?.amount ? options.amount : 5
@@ -127,14 +137,20 @@ function drawCards(state, options) {
 	})
 }
 
-// Adds a card (from nowhere) directly to your hand.
+/**
+ * Adds a card (from nowhere) directly to your hand.
+ * @type {ActionFn<{card: import('./cards.js').CARD}>}
+ */
 function addCardToHand(state, {card}) {
 	return produce(state, (draft) => {
 		draft.hand.push(card)
 	})
 }
 
-// Discard a single card from your hand.
+/**
+ * Discard a single card from your hand.
+ * @type {ActionFn<{card: import('./cards.js').CARD}>}
+ */
 function discardCard(state, {card}) {
 	return produce(state, (draft) => {
 		draft.hand = state.hand.filter((c) => c.id !== card.id)
@@ -152,7 +168,10 @@ function discardCard(state, {card}) {
 // 	})
 // }
 
-// Discard your entire hand.
+/**
+ * Discard all cards in your hand.
+ * @type {ActionFn<{}>}
+ */
 function discardHand(state) {
 	return produce(state, (draft) => {
 		draft.hand.forEach((card) => {
@@ -164,10 +183,7 @@ function discardHand(state) {
 
 /**
  * Discard a single card from your hand.
- * @param {State} state
- * @param {object} props
- * @param {CARD} props.card
- * @returns {State}
+ * @type {ActionFn<{card: object}>}
  */
 function removeCard(state, {card}) {
 	return produce(state, (draft) => {
@@ -177,9 +193,7 @@ function removeCard(state, {card}) {
 
 /**
  * Upgrades a card.
- * @param {State} state
- * @param {card} object
- * @returns {State}
+ * @type {ActionFn<{card: object}>}
  */
 function upgradeCard(state, {card}) {
 	return produce(state, (draft) => {
@@ -192,11 +206,7 @@ function upgradeCard(state, {card}) {
  * Play a card
  * The funky part of this action is the `target` argument. It needs to be a special type of string:
  * Either "player" to target yourself, or "enemyx", where "x" is the index of the monster starting from 0. See utils.js#getTargets
- * @param {State} state
- * @param {object} props
- * @param {object} props.card
- * @param {string=} props.target
- * @returns {State}
+ * @type {ActionFn<{card: object, target?: string}>}
  */
 function playCard(state, {card, target}) {
 	if (!target) target = card.target
@@ -237,18 +247,14 @@ function playCard(state, {card, target}) {
  * Runs through a list of actions and return the updated state.
  * Called when the card is played.
  * You CAN overwrite it, just make sure to return a new state.
- * @param {State} state
- * @param {object} props
- * @prop {string} props.target
- * @prop {object} props.card
- * @returns {State}
+ * @type {ActionFn<{card: object, target?: string}>}
  */
 export function useCardActions(state, {target, card}) {
 	if (!card.actions) return state
 	let newState = state
 	card.actions.forEach((action) => {
 		// Don't run action if it has an invalid condition.
-		if (action.conditions && !conditionsAreValid(action.conditions, state)) {
+		if (action.conditions && !conditionsAreValid(state, action.conditions)) {
 			return newState
 		}
 		if (!action.parameter) action.parameter = {}
@@ -263,10 +269,8 @@ export function useCardActions(state, {target, card}) {
 }
 
 /**
- *
- * @param {State} state
- * @param {{target: string, amount: number}} param1
- * @returns {State} new state
+ * Adds health to a "target". Will stay between 0 and target.maxHealth.
+ * @type {ActionFn<{target: string, amount: number}>}
  */
 function addHealth(state, {target, amount}) {
 	return produce(state, (draft) => {
@@ -277,6 +281,10 @@ function addHealth(state, {target, amount}) {
 	})
 }
 
+/**
+ * Adds regen to the player equal to the amount of damage dealt to all enemies.
+ * @type {ActionFn<{card: import('./cards.js').CARD}>}
+ */
 function addRegenEqualToAllDamage(state, {card}) {
 	if (!card) throw new Error('missing card!')
 	return produce(state, (draft) => {
@@ -288,6 +296,10 @@ function addRegenEqualToAllDamage(state, {card}) {
 	})
 }
 
+/**
+ * Removes any weak or vulnerable powers from the player.
+ * @type {ActionFn<{}>}
+ */
 const removePlayerDebuffs = (state) => {
 	return produce(state, (draft) => {
 		draft.player.powers.weak = 0
@@ -295,21 +307,20 @@ const removePlayerDebuffs = (state) => {
 	})
 }
 
-function addEnergyToPlayer(state, options) {
-	const amount = options?.amount ? options.amount : 1
+/**
+ * Adds energy to the player
+ * @type {ActionFn<{amount?: number}>}
+ */
+function addEnergyToPlayer(state, props) {
+	const amount = props?.amount ? props.amount : 1
 	return produce(state, (draft) => {
-		/* draft.player.maxEnergy = draft.player.maxEnergy + 1 */
 		draft.player.currentEnergy = draft.player.currentEnergy + amount
 	})
 }
 
 /**
  * Removes health from a target, respecting vulnerable and block.
- * @param {Object} state
- * @param {Object} props
- * @param {CardTargets} props.target
- * @param {number} props.amount
- * @returns {Object} - new state
+ * @type {ActionFn<{target: string, amount: number}>}
  */
 const removeHealth = (state, {target, amount}) => {
 	return produce(state, (draft) => {
@@ -331,9 +342,7 @@ const removeHealth = (state, {target, amount}) => {
 
 /**
  * Sets the health of a target
- * @param {Object} state
- * @param {{target: CardTargets, amount: number}} props
- * @returns {State}
+ * @type {ActionFn<{target: CardTargets, amount: number}>}
  */
 const setHealth = (state, {target, amount}) => {
 	return produce(state, (draft) => {
@@ -343,7 +352,10 @@ const setHealth = (state, {target, amount}) => {
 	})
 }
 
-// Used by playCard. Applies each power on the card to?
+/**
+ * Used by playCard. Applies each power on the card to?
+ * @type {ActionFn<{card: import('./cards.js').CARD, target: CardTargets}>}
+ */
 function applyCardPowers(state, {card, target}) {
 	return produce(state, (draft) => {
 		Object.entries(card.powers).forEach(([name, stacks]) => {
@@ -371,21 +383,30 @@ function applyCardPowers(state, {card, target}) {
 	})
 }
 
-// Helper to decrease all power stacks by one.
+/**
+ * Helper to decrease all power stacks by one.
+ * @param {import('./cards.js').CardPowers} powers
+ */
 function _decreasePowers(powers) {
 	Object.entries(powers).forEach(([name, stacks]) => {
 		if (stacks > 0) powers[name] = stacks - 1
 	})
 }
 
-// Decrease player's power stacks.
+/**
+ * Decrease player's power stacks..
+ * @type {ActionFn<{}>}
+ */
 function decreasePlayerPowerStacks(state) {
 	return produce(state, (draft) => {
 		_decreasePowers(draft.player.powers)
 	})
 }
 
-// Decrease monster's power stacks.
+/**
+ * Decrease monster's power stacks.
+ * @type {ActionFn<{}>}
+ */
 function decreaseMonsterPowerStacks(state) {
 	return produce(state, (draft) => {
 		getCurrRoom(draft).monsters.forEach((monster) => {
@@ -394,6 +415,10 @@ function decreaseMonsterPowerStacks(state) {
 	})
 }
 
+/**
+ * End the current turn. This does many things..
+ * @type {ActionFn<{}>}
+ */
 function endTurn(state) {
 	let newState = discardHand(state)
 	if (state.player.powers.regen) {
@@ -425,7 +450,10 @@ function endTurn(state) {
 	return newState
 }
 
-// Draws new cards, reset energy, remove player block, check powers
+/**
+ * Draws new cards, reset energy, remove player block, check powers.
+ * @type {ActionFn<{}>}
+ */
 function newTurn(state) {
 	let newState = drawCards(state)
 
@@ -436,6 +464,10 @@ function newTurn(state) {
 	})
 }
 
+/**
+ * Ends an encounter. Called after making a map move. Why?
+ * @type {ActionFn<{}>}
+ */
 function endEncounter(state) {
 	const nextState = produce(state, (draft) => {
 		draft.hand = []
@@ -446,7 +478,7 @@ function endEncounter(state) {
 	return drawCards(nextState)
 }
 
-// Run all monster intents in current room.
+/** @type {ActionFn<{}>} Run all monster intents in current room. */
 function playMonsterActions(state) {
 	const room = getCurrRoom(state)
 	if (!room.monsters) return state
@@ -458,7 +490,7 @@ function playMonsterActions(state) {
 	return nextState
 }
 
-// Runs the "intent" for a single monster (index) in the current room.
+/** @type {ActionFn<number>} Runs the "intent" for a single monster (index) in the current room. */
 function takeMonsterTurn(state, monsterIndex) {
 	return produce(state, (draft) => {
 		const room = getCurrRoom(draft)
@@ -512,9 +544,8 @@ function takeMonsterTurn(state, monsterIndex) {
 }
 
 /**
- * @param {State} state
- * @param {{card: object}} param1
- * @returns {State}
+ * Adds a card to the deck.
+ * @type {ActionFn<{card: import('./cards.js').CARD}>}
  */
 function addCardToDeck(state, {card}) {
 	return produce(state, (draft) => {
@@ -522,7 +553,10 @@ function addCardToDeck(state, {card}) {
 	})
 }
 
-// Records a move on the map.
+/**
+ * Records a move on the dungeon map.
+ * @type {ActionFn<{move: {x: number, y: number}}}
+ */
 function move(state, {move}) {
 	let nextState = endEncounter(state)
 
@@ -543,10 +577,7 @@ function move(state, {move}) {
 
 /**
  * Deals damage to a target equal to the current player's block.
- * @param {State} state
- * @param {object} props
- * @param {string} props.target
- * @returns {State}
+ * @type {ActionFn<{target: CardTargets}}
  */
 function dealDamageEqualToBlock(state, {target}) {
 	if (state.player.block) {
@@ -555,6 +586,10 @@ function dealDamageEqualToBlock(state, {target}) {
 	}
 }
 
+/**
+ * Deals damage to "target" equal to the amount of vulnerable on the target.
+ * @type {ActionFn<{target: CardTargets}>}
+ */
 function dealDamageEqualToVulnerable(state, {target}) {
 	return produce(state, (draft) => {
 		getTargets(draft, target).forEach((t) => {
@@ -566,6 +601,11 @@ function dealDamageEqualToVulnerable(state, {target}) {
 		return draft
 	})
 }
+
+/**
+ * Deals damage to "target" equal to the amount of vulnerable on the target.
+ * @type {ActionFn<{target: CardTargets}>}
+ */
 function dealDamageEqualToWeak(state, {target}) {
 	return produce(state, (draft) => {
 		getTargets(draft, target).forEach((t) => {
@@ -580,12 +620,7 @@ function dealDamageEqualToWeak(state, {target}) {
 
 /**
  * Sets a single power on a specific target
- * @param {State} state
- * @param {Object} props
- * @param {string} props.target
- * @param {string} props.power
- * @param {number} props.amount
- * @returns {State}
+ * @type {ActionFn<{target: CardTargets, power: string, amount: number}>}
  */
 function setPower(state, {target, power, amount}) {
 	return produce(state, (draft) => {
@@ -597,12 +632,7 @@ function setPower(state, {target, power, amount}) {
 
 /**
  * Stores a campfire choice on the room (useful for stats and whatnot)
- * @param {State} state
- * @param {object} props
- * @param {object} props.room a dungeon room
- * @param {string} props.choice enum of the campfire choices
- * @param {object} props.reward card
- * @returns {State}
+ * @type {ActionFn<{room: import('./dungeon-rooms.js').Room, choice: string, reward: import('./cards.js').CARD}>}
  */
 function makeCampfireChoice(state, {choice, reward}) {
 	return produce(state, (draft) => {
@@ -613,9 +643,8 @@ function makeCampfireChoice(state, {choice, reward}) {
 }
 
 /**
- * Sets the health of all monsters in the dungeon to 1.
- * @param {State} state
- * @returns {State}
+ * A cheat code. Sets the health of all monsters in the dungeon to 1.
+ * @type {ActionFn<{}>}
  */
 function iddqd(state) {
 	console.log('iddqd')

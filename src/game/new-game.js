@@ -1,23 +1,22 @@
 import actions from './actions.js'
 import ActionManager from './action-manager.js'
 
-// This function returns a "game" object with everything you need to play and control the game.
-// Note: it IS possible to modify all aspects of the game using actions directly.
-// This is purely a nicer API.
+/**
+ * @typedef {Object} Game
+ * @prop {import('./actions.js').State} state
+ * @prop {object} actions
+ * @prop {Function} enqueue - stores an action in the "future"
+ * @prop {Function} dequeue - runs the oldest "future" action, and stores result in the "past"
+ * @prop {Function} undo - undoes the last "past" action
+ * @prop {{list: Array<{type: string}>}} future
+ * @prop {{list: Array<{type: string, state: import('./actions.js').State}>}} past
+ */
 
-// Here's an example:
-// ```
-// const game = createNewGame()
-// game.enqueue({type: 'drawCards'})
-// // game.future.length === 1
-// game.dequeue()
-// // game.future.length === 0
-// // game.past.length === 1
-// // game.state now includes the updated state.
-// // You can also undo!
-// game.undo()
-// ```
-
+/**
+ * Creates a new game
+ * @param {boolean} debug - whether to log actions to the console
+ * @returns {Game}
+ */
 export default function createNewGame(debug = false) {
 	const actionManager = ActionManager({debug})
 
