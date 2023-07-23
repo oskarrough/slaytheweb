@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as Tone from 'tone'
 
 // Create synths and connect it to the main output (your speakers).

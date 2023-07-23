@@ -4,42 +4,42 @@ import {emojiFromNodeType} from '../ui/map.js'
 import {easyMonsters, monsters, elites, bosses} from '../content/dungeon-encounters.js'
 import {StartRoom, CampfireRoom} from './rooms.js'
 
-/** @typedef {import('./rooms.js').Room} Room */
-/** @typedef {import('./cards.js').CARD} Card */
-/**
- * @typedef {object} MapNode
- * @prop {string} id
- * @prop {MapNodeTypes} type
- * @prop {Room} room
- * @prop {Set} edges
- * @prop {boolean} didVisit
- */
-/** @typedef {Array<Array<MapNode>>} Graph */
-/** @typedef {Array<Array<Move>>} Path */
-/** @typedef {{x: number, y: number}} Position */
-/** @typedef {Array<number, number>} Move */
-
 /**
  * A procedural generated dungeon map for Slay the Web. Again, heavily inspired by Slay the Spire.
- * This is kind of complicated, so let me lay down the vocabulary, starting from the bottom.
+ * This is kind of complicated, so let me lay down the vocabulary, starting from the top.
+ * A "dungeon" wraps it all together. A navigatable graph with a list of paths.
+ * A "graph" is a list of floors.
+ * A "path" is a list of moves from one node to another, going from top to bottom.
+ * A "floor" is a row (list) of nodes.
+ * A "node" is a point on the map
+ * A "room" lives on a node, and could be a monster room, a a campfire etc.
+ * A "move" y/x coodinates
+ */
 
-	* A "room" come in different types, like "MonsterRoom" or "CampfireRoom".
-	* A "node" is a single point on the map. It will either contain a room, or be a filler node.
-	* A "floor" is a row (list) of nodes.
-	* A "graph" is a list of floors.
-	* A "move" is a single step from one node to another. Two numbers floor, node. For example [0, 2] is floor 0, node 2.
-	* A "path" is a list of moves from one node to another, going from top to bottom.
-	* A "dungeon" wraps it all together. Call it a navigatable graph with a list of paths.
-*/
+/** @typedef {import('./cards.js').CARD} Card */
+/** @typedef {import('./rooms.js').Room} Room */
+
+/**
+ * @typedef {object} MapNode - is a single point on the map. It will either contain a room, or be a filler node.
+ * @prop {string} id
+ * @prop {MapNodeTypes} type
+ * @prop {Room} [room]
+ * @prop {Set} edges - a list of node ids that this node connects to
+ * @prop {boolean} didVisit - whether you have visited this node or not
+ */
+/** @typedef {Array<Array<MapNode>>} Graph is a list of floors with nodes*/
+/** @typedef {Array<Array<Move>>} Path is a list of moves that describe a path from top to bottom */
+/** @typedef {{x: number, y: number}} Position on the map. Y is the floor. X is the node. */
+/** @typedef {Array<number, number>} Move also position map, but stored differently */
 
 /**
  * @typedef {object} GraphOptions
- * @param {number} width how many nodes on each floor
- * @param {number} height how many floors
- * @param {number} minRoom minimum amount of rooms to generate per floor
- * @param {number} maxRoom maximum amount of rooms to generate per floor
- * @param {string} roomTypes a string like "MMCE". Repeat a letter to increase the chance of it appearing. M=Monster, C=Campfire, E=Elite. For example "MMMCE" gives 60% chance of a monster, 20% chance of a campfire and 20% chance of an elite.
- * @param {string} customPaths a string of indexes (numbers) from where to draw the paths, for example "530" would draw three paths. First at index 5, then 3 and finally 0.
+ * @prop {number} width how many nodes on each floor
+ * @prop {number} height how many floors
+ * @prop {number} [minRooms] minimum amount of rooms to generate per floor
+ * @prop {number} [maxRooms] maximum amount of rooms to generate per floor
+ * @prop {string} [roomTypes] a string like "MMCE". Repeat a letter to increase the chance of it appearing. M=Monster, C=Campfire, E=Elite. For example "MMMCE" gives 60% chance of a monster, 20% chance of a campfire and 20% chance of an elite.
+ * @prop {string} [customPaths] a string of indexes (numbers) from where to draw the paths, for example "530" would draw three paths. First at index 5, then 3 and finally 0.
  */
 
 /** @type {GraphOptions} */
@@ -109,8 +109,8 @@ export default function Dungeon(options) {
  * @param {GraphOptions} [options]
  * @returns {Graph}
  */
-export function generateGraph(options = {}) {
-	options = Object.assign(defaultOptions, options)
+export function generateGraph(options) {
+	options = Object.assign(defaultOptions, options || {})
 	const {width, height, minRooms, maxRooms, roomTypes} = options
 
 	const graph = []
@@ -170,27 +170,28 @@ export function generatePaths(graph, customPaths) {
 	return paths
 }
 
-/** Ensures it's not a filler node */
+/**
+ * Ensures it's not a filler node
+ * @param {MapNode} node
+ * @returns {boolean}
+ */
 function validNode(node) {
 	return node && Boolean(node.type)
 }
 
 /**
  * Finds a path from start to finish in the graph.
-* @param {Graph} graph
-* @param {number} preferredIndex the column you'd like the path to follow where possible
-* @param {boolean} debug if true, logs to console
-* @returns {Path} an array of moves. Each move contains the Y/X coords of the graph.
-
- Starting node connects to all nodes on the first floor
- End node connects to all nodes on the last floor
-
- It is Y/X, not X/Y (think floor/room, not room/floor)
-
- [
- 	[[0, 0], [1,4]], <-- first move is from 0,0 to 1,4
- 	[[1, 4], [2,1]] <-- second move is from 1,4 to 2,1
- ]
+ * Starting node connects to all nodes on the first floor
+ * End node connects to all nodes on the last floor
+ * It is Y/X, not X/Y (think floor/room, not room/floor)
+ * [
+ * [[0, 0], [1,4]], <-- first move is from 0,0 to 1,4
+ * [[1, 4], [2,1]] <-- second move is from 1,4 to 2,1
+ *]
+ * @param {Graph} graph
+ * @param {number} preferredIndex the column you'd like the path to follow where possible
+ * @param {boolean} debug if true, logs to console
+ * @returns {Path} an array of moves. Each move contains the Y/X coords of the graph.
  */
 function findPath(graph, preferredIndex, debug = false) {
 	if (debug) console.groupCollapsed('finding path', preferredIndex)
@@ -241,6 +242,13 @@ function findPath(graph, preferredIndex, debug = false) {
 	return path
 }
 
+/**
+ * Searches for the first valid node in a direction
+ * @param {Array<MapNode>} floor
+ * @param {number} startX - the index to start search from
+ * @param {string} direction must be "forward" or "backward"
+ * @returns {{node: MapNode, index: number}|null}
+ */
 function searchValidNode(floor, startX, direction) {
 	const step = direction === 'forward' ? 1 : -1
 	if (direction === 'forward') {
@@ -328,7 +336,7 @@ function createMapNode(type) {
 
 /**
  * The type of node is decided by the floor number and the room types.
- * @param {string} nodeTypes - a string of possible node types
+ * @param {MapNodeTypes} nodeTypes - a string of possible node types
  * @param {number} [floor] - useful for balance e.g. more monsters on higher floors
  * @returns {string} a single character representing the node type
  */

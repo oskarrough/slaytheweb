@@ -390,6 +390,12 @@ stw.dealCards()`)
 	}
 }
 
+/**
+ * Renders a form to submit the game to the backend.
+ * @param {object} props
+ * @param {import('../game/new-game.js').Game} props.game
+ * @returns {import('preact').VNode}
+ */
 function PublishRun({game}) {
 	const [loading, setLoading] = useState(false)
 

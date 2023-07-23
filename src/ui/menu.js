@@ -2,8 +2,20 @@ import {html} from './lib.js'
 import History from './history.js'
 import {saveToUrl} from './save-load.js'
 
-const abandonGame = () => (window.location = window.location.origin)
+// @ts-ignore
+const abandonGame = () => (window.location.href = window.location.origin)
 
+/** @typedef {import('../game/new-game.js').Game} Game */
+/** @typedef {import('../game/actions.js').State} State */
+
+/**
+ * Do something
+ * @param {object} props
+ * @param {Game} props.game
+ * @param {State} props.gameState
+ * @param {Function} props.onUndo
+ * @returns {import('preact').VNode}
+ */
 export default function Menu({game, gameState, onUndo}) {
 	return html`
 		<div class="Splash">

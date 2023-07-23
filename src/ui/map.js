@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {Component, html} from './lib.js'
 import {random as randomBetween} from '../utils.js'
 import {isRoomCompleted} from '../game/utils-state.js'

@@ -8,7 +8,7 @@ export default class StartRoom extends Component {
 				<li><button onclick=${() => this.props.onContinue()}>Open the map</button></li>
 			</ul>
 			<p center>
-				<button onclick=${() => (window.location = window.location.origin)}>Leave</button>
+				<button onclick=${() => (window.location.href = window.location.origin)}>Leave</button>
 			</p>
 		`
 	}

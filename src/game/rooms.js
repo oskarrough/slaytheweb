@@ -1,7 +1,8 @@
 /** @typedef {import('./monster.js').MONSTER} MONSTER */
+
 /**
- * @typedef {object} Room
- * @prop {RoomTypes} type
+ * @typedef {object} Room - a room in the dungeon
+ * @prop {RoomTypes} type - the type of room
  * @prop {Array<MONSTER>} [monsters] - for monster rooms
  * @prop {object} [reward] - the reward given to the player, if any
  * @prop {string} [choice] - for campfire rooms, the choice made by the player
@@ -18,7 +19,7 @@ export const RoomTypes = {
 
 /**
  * This is usually where you start. The first node on the map.
- * @returns {Room}
+ * @returns {Room} the starting room
  */
 export function StartRoom() {
 	return {
@@ -39,7 +40,7 @@ export function CampfireRoom() {
 }
 
 /**
- * @param {...Object} monsters
+ * @param {...MONSTER} monsters - pass it one or more monsters (as multiple arguments, not an array)
  * @returns {Room}
  */
 export function MonsterRoom(...monsters) {
