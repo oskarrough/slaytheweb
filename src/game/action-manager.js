@@ -16,9 +16,19 @@ import Queue from '../utils.js'
  */
 
 /**
+ * @typedef {object} ActionManager
+ * @prop {function(FutureAction):void} enqueue
+ * @prop {function(State):State} dequeue
+ * @prop {function():PastAction} undo
+ * @prop {Queue} future
+ * @prop {Queue} past
+ */
+
+/**
  * The action manager makes use of queues to keep track of future and past actions in the game state + undo.
  * @param {object} props
- * @prop {boolean} props.debug - whether to log actions to the console
+ * @param {boolean} props.debug - whether to log actions to the console
+ * @returns {ActionManager} action manager
  */
 export default function ActionManager(props) {
 	const future = new Queue()

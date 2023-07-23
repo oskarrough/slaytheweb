@@ -93,6 +93,7 @@ export function isRoomCompleted(room) {
 /**
  * Check if the current room in a game has been cleared.
  * @param {State} state
+ * @returns {boolean}
  */
 export function isCurrRoomCompleted(state) {
 	const room = getCurrRoom(state)

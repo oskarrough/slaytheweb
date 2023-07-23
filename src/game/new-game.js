@@ -22,7 +22,9 @@ import ActionManager from './action-manager.js'
 export default function createNewGame(debug = false) {
 	const actionManager = ActionManager({debug})
 
-	// Adds a dungeon, starter deck and draws cards.
+	/**
+	 * @returns {State} with a dungeon, start deck and cards drawn
+	 */
 	function createNewState() {
 		let state = actions.createNewState()
 		state = actions.setDungeon(state)

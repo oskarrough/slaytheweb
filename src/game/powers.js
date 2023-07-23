@@ -1,11 +1,11 @@
 /**
  * The type of a power
  * @typedef POWER
- * @property {string} name
- * @property {string} description
- * @property {string} type
- * @property {string=} target
- * @property {Function=} use
+ * @prop {string} name
+ * @prop {string} description
+ * @prop {string} type
+ * @prop {string=} target
+ * @prop {Function=} use
  */
 
 // Class representing a power.

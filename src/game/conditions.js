@@ -15,7 +15,7 @@ import {getPlayerHealthPercentage} from './utils-state.js'
  * @callback ConditionFn
  * @param {State} State
  * @param {Condition} condition
- * @return {boolean}
+ * @returns {boolean}
  */
 
 /**
