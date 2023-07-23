@@ -1,21 +1,21 @@
-import Queue from './queue.js'
 import actions from './actions.js'
+import Queue from '../utils.js'
 
 /**
- * @typedef {Object} FutureAction
+ * @typedef {object} FutureAction
  * @prop {string} type - the name of a function in actions.js
  * @prop {any} [any] - arguments are passed to the action
  */
 
 /**
- * @typedef {Object} PastAction
+ * @typedef {object} PastAction
  * @prop {string} type - the name of a function in actions.js
  * @prop {import('./actions.js').State} state
  */
 
 /**
  * The action manager makes use of queues to keep track of future and past actions in the game state + undo.
- * @param {Object} props
+ * @param {object} props
  * @prop {boolean} props.debug - whether to log actions to the console
  */
 export default function ActionManager(props) {

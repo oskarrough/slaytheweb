@@ -12,12 +12,23 @@ import {isDungeonCompleted} from './utils-state.js'
 // of the game state that should not be there.
 // setAutoFreeze(false)
 
-// In Slay the Web, we have one big object with game state.
-// Whenever we want to change something, call an "action" from this file.
-// Each action takes two arguments: 1) the current state, 2) an object of arguments.
+/**
+
+	We don't mutate it directly, instead we run "action functions" on it.
+	An action function takes two arguments: 1) the current state, 2) an object of arguments.
+ * @template T
+ * @callback ActionFn
+ * @param {State} state the current state
+ * @param {T} [props] an object of arguments
+ * @returns {State} a new state object
+ */
 
 /**
+ * The big "game state" object
  * @typedef {object} State
+ * @prop {Number} createdAt
+ * @prop {Number} endedAt
+ * @prop {Boolean} won
  * @prop {number} turn
  * @prop {Array} deck
  * @prop {Array} drawPile
@@ -25,10 +36,7 @@ import {isDungeonCompleted} from './utils-state.js'
  * @prop {Array} discardPile
  * @prop {Array} exhaustPile
  * @prop {Player} player
- * @prop {Object} dungeon
- * @prop {Number} createdAt
- * @prop {Number} endedAt
- * @prop {Boolean} won
+ * @prop {import('./dungeon.js').Dungeon} [dungeon]
  */
 
 /**
@@ -38,15 +46,7 @@ import {isDungeonCompleted} from './utils-state.js'
  * @prop {number} currentHealth
  * @prop {number} maxHealth
  * @prop {number} block
- * @prop {Object} powers
- */
-
-/**
- * @template T
- * @callback ActionFn
- * @param {State} state - first argument must be the state object
- * @param {T} [props]
- * @returns {State} returns a new state object
+ * @prop {object} powers
  */
 
 /**
@@ -69,7 +69,7 @@ function createNewState() {
 			block: 0,
 			powers: {},
 		},
-		dungeon: {},
+		dungeon: undefined,
 		createdAt: new Date().getTime(),
 		endedAt: undefined,
 		won: false,
@@ -555,7 +555,7 @@ function addCardToDeck(state, {card}) {
 
 /**
  * Records a move on the dungeon map.
- * @type {ActionFn<{move: {x: number, y: number}}}
+ * @type {ActionFn<{move: {x: number, y: number}}>}
  */
 function move(state, {move}) {
 	let nextState = endEncounter(state)
@@ -577,7 +577,7 @@ function move(state, {move}) {
 
 /**
  * Deals damage to a target equal to the current player's block.
- * @type {ActionFn<{target: CardTargets}}
+ * @type {ActionFn<{target: CardTargets}>}
  */
 function dealDamageEqualToBlock(state, {target}) {
 	if (state.player.block) {
@@ -632,7 +632,7 @@ function setPower(state, {target, power, amount}) {
 
 /**
  * Stores a campfire choice on the room (useful for stats and whatnot)
- * @type {ActionFn<{room: import('./dungeon-rooms.js').Room, choice: string, reward: import('./cards.js').CARD}>}
+ * @type {ActionFn<{room: import('./rooms.js').Room, choice: string, reward: import('./cards.js').CARD}>}
  */
 function makeCampfireChoice(state, {choice, reward}) {
 	return produce(state, (draft) => {

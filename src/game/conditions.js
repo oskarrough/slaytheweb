@@ -2,7 +2,7 @@ import {getPlayerHealthPercentage} from './utils-state.js'
 
 /**
  * Conditions decide whether a card can be played or not.
- * @typedef {Object} Condition — all other props will be passed to the condition as well
+ * @typedef {object} Condition — all other props will be passed to the condition as well
  * @prop {string} type
  * @prop {string=} cardType
  * @prop {number=} percentage

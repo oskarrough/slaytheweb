@@ -2,7 +2,7 @@ import actions from './actions.js'
 import ActionManager from './action-manager.js'
 
 /**
- * @typedef {Object} Game
+ * @typedef {object} Game
  * @prop {import('./actions.js').State} state
  * @prop {object} actions
  * @prop {Function} enqueue - stores an action in the "future"

@@ -29,9 +29,9 @@ export const CardTargets = {
  */
 
 /**
- * @typedef {Object} CardAction - allows the card to run all defined actions
+ * @typedef {object} CardAction - allows the card to run all defined actions
  * @prop {string} type - name of the action to call. See game/actions.js
- * @prop {Object} [parameter] - props to pass to the action
+ * @prop {object} [parameter] - props to pass to the action
  * @prop {Array<{type: string}>} [conditions] - list of conditions
  */
 

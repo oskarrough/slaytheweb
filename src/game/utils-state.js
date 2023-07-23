@@ -24,7 +24,7 @@ export function getCurrentNode(dungeon) {
 /**
  * Returns the current dungeon room from the the y/x props
  * @param {import('./actions.js').State} state
- * @returns {import('./dungeon-rooms.js').Room}
+ * @returns {import('./rooms.js').Room}
  */
 export function getCurrRoom(state) {
 	const node = getCurrentNode(state.dungeon)
@@ -36,7 +36,7 @@ export function getCurrRoom(state) {
  * Returns an array of targets (player or monsters) in the current room.
  * @param {import('./actions.js').State} state
  * @param {CardTargets} targetQuery
- * @returns {Array<import('./dungeon-rooms.js').MONSTER>}
+ * @returns {Array<import('./monster.js').MONSTER>}
  */
 export function getTargets(state, targetQuery) {
 	if (!targetQuery || typeof targetQuery !== 'string') {
@@ -68,7 +68,7 @@ export function cardHasValidTarget(cardTarget, targetQuery) {
 }
 
 /**
- * @param {import('./dungeon.js').Room} room
+ * @param {import('./rooms.js').Room} room
  * @returns {boolean} true if the room has been cleared.
  */
 export function isRoomCompleted(room) {

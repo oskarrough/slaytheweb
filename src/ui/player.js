@@ -8,7 +8,7 @@ import {
 } from '../game/powers.js'
 
 /**
- * @typedef {Object} TargetProps
+ * @typedef {object} TargetProps
  * @prop {string} type - a string enum "player" or "enemy"?
  * @prop {object} model - the player or monster model
  * @prop {number} model.currentHealth
