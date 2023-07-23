@@ -60,8 +60,7 @@ On `state.player` we have you, the player. This object describes the health, pow
 
 #### Dungeon
 
-Every game starts in a dungeon. You make your way through rooms to reach the end.
-
+Every game evolves around and in a dungeon. A dungeon consists of a graph (think a 2d array with rows and columns, or positions and nodes, or floors and rooms).
 There are different types of rooms. Like Monster and Campfire. One day there'll be more like Merchant and Treasure or a "random" room.
 
 #### Monsters

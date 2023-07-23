@@ -1,23 +1,31 @@
 import {produce} from 'immer'
-import {createCard, CardTargets} from './cards.js'
-import {clamp, shuffle} from './utils.js'
-import {getTargets, getCurrRoom} from './utils-state.js'
+import {clamp, shuffle} from '../utils.js'
+import {isDungeonCompleted, getTargets, getCurrRoom} from './utils-state.js'
 import powers from './powers.js'
-import {dungeonWithMap} from '../content/dungeon-encounters.js'
 import {conditionsAreValid} from './conditions.js'
-import {isDungeonCompleted} from './utils-state.js'
+import {createCard, CardTargets} from './cards.js'
+import {dungeonWithMap} from '../content/dungeon-encounters.js'
 
-// Without this, immer.js will throw an error if our `state` is modified outside of an action.
-// While in theory a good idea, we're not there yet. It is a useful way to spot modifications
-// of the game state that should not be there.
-// setAutoFreeze(false)
-
-// In Slay the Web, we have one big object with game state.
-// Whenever we want to change something, call an "action" from this file.
-// Each action takes two arguments: 1) the current state, 2) an object of arguments.
+/** @typedef {import('./dungeon.js').Dungeon} Dungeon */
+/** @typedef {import('./cards.js').CARD} CARD */
+/** @typedef {import('./rooms.js').Room} Room */
+/** @typedef {import('./cards.js').CardPowers} CardPowers */
 
 /**
+	We don't mutate the state directly, instead we run "action functions" on it.
+ * @template T
+ * @callback ActionFn
+ * @param {State} state the current state
+ * @param {T} [props] an object of arguments
+ * @returns {State} a new state object
+ */
+
+/**
+ * The big "game state" object
  * @typedef {object} State
+ * @prop {Number} createdAt
+ * @prop {Number} endedAt
+ * @prop {Boolean} won
  * @prop {number} turn
  * @prop {Array} deck
  * @prop {Array} drawPile
@@ -25,10 +33,7 @@ import {isDungeonCompleted} from './utils-state.js'
  * @prop {Array} discardPile
  * @prop {Array} exhaustPile
  * @prop {Player} player
- * @prop {Object} dungeon
- * @prop {Number} createdAt
- * @prop {Number} endedAt
- * @prop {Boolean} won
+ * @prop {Dungeon} [dungeon]
  */
 
 /**
@@ -38,15 +43,7 @@ import {isDungeonCompleted} from './utils-state.js'
  * @prop {number} currentHealth
  * @prop {number} maxHealth
  * @prop {number} block
- * @prop {Object} powers
- */
-
-/**
- * @template T
- * @callback ActionFn
- * @param {State} state - first argument must be the state object
- * @param {T} [props]
- * @returns {State} returns a new state object
+ * @prop {object} powers
  */
 
 /**
@@ -69,7 +66,7 @@ function createNewState() {
 			block: 0,
 			powers: {},
 		},
-		dungeon: {},
+		dungeon: undefined,
 		createdAt: new Date().getTime(),
 		endedAt: undefined,
 		won: false,
@@ -79,7 +76,7 @@ function createNewState() {
 /**
  * By default a new game doesn't come with a dungeon. You have to set one explicitly. Look in dungeon-encounters.js for inspiration.
  * @param {State} state
- * @param {import('./dungeon.js').Dungeon} [dungeon]
+ * @param {Dungeon} [dungeon]
  * @returns {State}
  */
 function setDungeon(state, dungeon) {
@@ -139,7 +136,7 @@ function drawCards(state, options) {
 
 /**
  * Adds a card (from nowhere) directly to your hand.
- * @type {ActionFn<{card: import('./cards.js').CARD}>}
+ * @type {ActionFn<{card: CARD}>}
  */
 function addCardToHand(state, {card}) {
 	return produce(state, (draft) => {
@@ -149,7 +146,7 @@ function addCardToHand(state, {card}) {
 
 /**
  * Discard a single card from your hand.
- * @type {ActionFn<{card: import('./cards.js').CARD}>}
+ * @type {ActionFn<{card: CARD}>}
  */
 function discardCard(state, {card}) {
 	return produce(state, (draft) => {
@@ -283,7 +280,7 @@ function addHealth(state, {target, amount}) {
 
 /**
  * Adds regen to the player equal to the amount of damage dealt to all enemies.
- * @type {ActionFn<{card: import('./cards.js').CARD}>}
+ * @type {ActionFn<{card: CARD}>}
  */
 function addRegenEqualToAllDamage(state, {card}) {
 	if (!card) throw new Error('missing card!')
@@ -354,7 +351,7 @@ const setHealth = (state, {target, amount}) => {
 
 /**
  * Used by playCard. Applies each power on the card to?
- * @type {ActionFn<{card: import('./cards.js').CARD, target: CardTargets}>}
+ * @type {ActionFn<{card: CARD, target: CardTargets}>}
  */
 function applyCardPowers(state, {card, target}) {
 	return produce(state, (draft) => {
@@ -385,7 +382,7 @@ function applyCardPowers(state, {card, target}) {
 
 /**
  * Helper to decrease all power stacks by one.
- * @param {import('./cards.js').CardPowers} powers
+ * @param {CardPowers} powers
  */
 function _decreasePowers(powers) {
 	Object.entries(powers).forEach(([name, stacks]) => {
@@ -545,7 +542,7 @@ function takeMonsterTurn(state, monsterIndex) {
 
 /**
  * Adds a card to the deck.
- * @type {ActionFn<{card: import('./cards.js').CARD}>}
+ * @type {ActionFn<{card: CARD}>}
  */
 function addCardToDeck(state, {card}) {
 	return produce(state, (draft) => {
@@ -555,7 +552,7 @@ function addCardToDeck(state, {card}) {
 
 /**
  * Records a move on the dungeon map.
- * @type {ActionFn<{move: {x: number, y: number}}}
+ * @type {ActionFn<{move: {x: number, y: number}}>}
  */
 function move(state, {move}) {
 	let nextState = endEncounter(state)
@@ -577,7 +574,7 @@ function move(state, {move}) {
 
 /**
  * Deals damage to a target equal to the current player's block.
- * @type {ActionFn<{target: CardTargets}}
+ * @type {ActionFn<{target: CardTargets}>}
  */
 function dealDamageEqualToBlock(state, {target}) {
 	if (state.player.block) {
@@ -632,7 +629,7 @@ function setPower(state, {target, power, amount}) {
 
 /**
  * Stores a campfire choice on the room (useful for stats and whatnot)
- * @type {ActionFn<{room: import('./dungeon-rooms.js').Room, choice: string, reward: import('./cards.js').CARD}>}
+ * @type {ActionFn<{room: Room, choice: string, reward: CARD}>}
  */
 function makeCampfireChoice(state, {choice, reward}) {
 	return produce(state, (draft) => {
