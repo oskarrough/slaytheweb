@@ -4,12 +4,28 @@ module.exports = {
 		browser: true,
 		es2021: true,
 	},
-	extends: ['eslint:recommended', 'plugin:prettier/recommended'],
+	plugins: ['jsdoc'],
+	extends: [
+		'eslint:recommended',
+		'plugin:prettier/recommended',
+		'plugin:jsdoc/recommended',
+		// 'plugin:jsdoc/recommended-typescript-flavor',
+	],
 	parserOptions: {
 		ecmaVersion: 'latest',
 		sourceType: 'module',
 	},
 	rules: {
 		complexity: ['warn', 14],
+		'jsdoc/require-property-description': 'off',
+		'jsdoc/require-param-description': 'off',
+		'jsdoc/require-returns-description': 'off',
+	},
+	settings: {
+		jsdoc: {
+			tagNamePreference: {
+				property: 'prop',
+			},
+		},
 	},
 }

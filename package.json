@@ -23,6 +23,7 @@
     "docco": "^0.9.1",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-jsdoc": "^46.4.4",
     "eslint-plugin-prettier": "^5.0.0",
     "prettier": "3.0.0",
     "release-it": "^16.1.3",
