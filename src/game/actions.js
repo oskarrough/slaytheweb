@@ -6,6 +6,11 @@ import {conditionsAreValid} from './conditions.js'
 import {createCard, CardTargets} from './cards.js'
 import {dungeonWithMap} from '../content/dungeon-encounters.js'
 
+/** @typedef {import('./dungeon.js').Dungeon} Dungeon */
+/** @typedef {import('./cards.js').CARD} CARD */
+/** @typedef {import('./rooms.js').Room} Room */
+/** @typedef {import('./cards.js').CardPowers} CardPowers */
+
 /**
 	We don't mutate the state directly, instead we run "action functions" on it.
  * @template T
@@ -28,7 +33,7 @@ import {dungeonWithMap} from '../content/dungeon-encounters.js'
  * @prop {Array} discardPile
  * @prop {Array} exhaustPile
  * @prop {Player} player
- * @prop {import('./dungeon.js').Dungeon} [dungeon]
+ * @prop {Dungeon} [dungeon]
  */
 
 /**
@@ -71,7 +76,7 @@ function createNewState() {
 /**
  * By default a new game doesn't come with a dungeon. You have to set one explicitly. Look in dungeon-encounters.js for inspiration.
  * @param {State} state
- * @param {import('./dungeon.js').Dungeon} [dungeon]
+ * @param {Dungeon} [dungeon]
  * @returns {State}
  */
 function setDungeon(state, dungeon) {
@@ -131,7 +136,7 @@ function drawCards(state, options) {
 
 /**
  * Adds a card (from nowhere) directly to your hand.
- * @type {ActionFn<{card: import('./cards.js').CARD}>}
+ * @type {ActionFn<{card: CARD}>}
  */
 function addCardToHand(state, {card}) {
 	return produce(state, (draft) => {
@@ -141,7 +146,7 @@ function addCardToHand(state, {card}) {
 
 /**
  * Discard a single card from your hand.
- * @type {ActionFn<{card: import('./cards.js').CARD}>}
+ * @type {ActionFn<{card: CARD}>}
  */
 function discardCard(state, {card}) {
 	return produce(state, (draft) => {
@@ -275,7 +280,7 @@ function addHealth(state, {target, amount}) {
 
 /**
  * Adds regen to the player equal to the amount of damage dealt to all enemies.
- * @type {ActionFn<{card: import('./cards.js').CARD}>}
+ * @type {ActionFn<{card: CARD}>}
  */
 function addRegenEqualToAllDamage(state, {card}) {
 	if (!card) throw new Error('missing card!')
@@ -346,7 +351,7 @@ const setHealth = (state, {target, amount}) => {
 
 /**
  * Used by playCard. Applies each power on the card to?
- * @type {ActionFn<{card: import('./cards.js').CARD, target: CardTargets}>}
+ * @type {ActionFn<{card: CARD, target: CardTargets}>}
  */
 function applyCardPowers(state, {card, target}) {
 	return produce(state, (draft) => {
@@ -377,7 +382,7 @@ function applyCardPowers(state, {card, target}) {
 
 /**
  * Helper to decrease all power stacks by one.
- * @param {import('./cards.js').CardPowers} powers
+ * @param {CardPowers} powers
  */
 function _decreasePowers(powers) {
 	Object.entries(powers).forEach(([name, stacks]) => {
@@ -537,7 +542,7 @@ function takeMonsterTurn(state, monsterIndex) {
 
 /**
  * Adds a card to the deck.
- * @type {ActionFn<{card: import('./cards.js').CARD}>}
+ * @type {ActionFn<{card: CARD}>}
  */
 function addCardToDeck(state, {card}) {
 	return produce(state, (draft) => {
@@ -624,7 +629,7 @@ function setPower(state, {target, power, amount}) {
 
 /**
  * Stores a campfire choice on the room (useful for stats and whatnot)
- * @type {ActionFn<{room: import('./rooms.js').Room, choice: string, reward: import('./cards.js').CARD}>}
+ * @type {ActionFn<{room: Room, choice: string, reward: CARD}>}
  */
 function makeCampfireChoice(state, {choice, reward}) {
 	return produce(state, (draft) => {

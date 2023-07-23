@@ -1,11 +1,18 @@
 import {CardTargets} from './cards.js'
 
+/** @typedef {import('./actions.js').State} State */
+/** @typedef {import('./cards.js').CARD} CARD */
+/** @typedef {import('./dungeon.js').Dungeon} Dungeon */
+/** @typedef {import('./dungeon.js').MapNode} MapNode */
+/** @typedef {import('./rooms.js').Room} Room */
+/** @typedef {import('./monster.js').MONSTER} MONSTER */
+
 /**
  * A bunch of utilities specific to the game state object.
  */
 
 /**
- * @param {import('./actions.js').State} state
+ * @param {State} state
  * @returns {number} The percentage of player health remaining.
  */
 export function getPlayerHealthPercentage(state) {
@@ -14,8 +21,8 @@ export function getPlayerHealthPercentage(state) {
 
 /**
  * Returns the node you are currently on.
- * @param {import('./dungeon.js').Dungeon} dungeon
- * @returns {import('./dungeon.js').MapNode}
+ * @param {Dungeon} dungeon
+ * @returns {MapNode}
  */
 export function getCurrentNode(dungeon) {
 	return dungeon.graph[dungeon.y][dungeon.x]
@@ -23,8 +30,8 @@ export function getCurrentNode(dungeon) {
 
 /**
  * Returns the current dungeon room from the the y/x props
- * @param {import('./actions.js').State} state
- * @returns {import('./rooms.js').Room}
+ * @param {State} state
+ * @returns {Room}
  */
 export function getCurrRoom(state) {
 	const node = getCurrentNode(state.dungeon)
@@ -34,9 +41,9 @@ export function getCurrRoom(state) {
 
 /**
  * Returns an array of targets (player or monsters) in the current room.
- * @param {import('./actions.js').State} state
+ * @param {State} state
  * @param {CardTargets} targetQuery
- * @returns {Array<import('./monster.js').MONSTER>}
+ * @returns {Array<MONSTER>}
  */
 export function getTargets(state, targetQuery) {
 	if (!targetQuery || typeof targetQuery !== 'string') {
@@ -68,7 +75,7 @@ export function cardHasValidTarget(cardTarget, targetQuery) {
 }
 
 /**
- * @param {import('./rooms.js').Room} room
+ * @param {Room} room
  * @returns {boolean} true if the room has been cleared.
  */
 export function isRoomCompleted(room) {
@@ -85,7 +92,7 @@ export function isRoomCompleted(room) {
 
 /**
  * Check if the current room in a game has been cleared.
- * @param {import('./actions.js').State} state
+ * @param {State} state
  */
 export function isCurrRoomCompleted(state) {
 	const room = getCurrRoom(state)
@@ -95,7 +102,7 @@ export function isCurrRoomCompleted(state) {
 /**
  * Checks if the whole dungeon (all rooms) has been cleared.
  * As long as there is one cleared node per floor, we are good.
- * @param {import('./actions.js').State} state
+ * @param {State} state
  * @returns {boolean}
  */
 export function isDungeonCompleted(state) {

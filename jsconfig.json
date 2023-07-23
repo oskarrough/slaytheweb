@@ -5,4 +5,5 @@
 		"target": "esnext",
 		"moduleResolution": "nodenext"
 	},
+	"include": ["src/**/*"]
 }

@@ -1,7 +1,23 @@
 /* eslint-disable complexity */
-import {decideRoomType} from './rooms.js'
 import {uuid, shuffle, random as randomBetween, pick} from '../utils.js'
 import {emojiFromNodeType} from '../ui/map.js'
+import {easyMonsters, monsters, elites, bosses} from '../content/dungeon-encounters.js'
+import {StartRoom, CampfireRoom} from './rooms.js'
+
+/** @typedef {import('./rooms.js').Room} Room */
+/** @typedef {import('./cards.js').CARD} Card */
+/**
+ * @typedef {object} MapNode
+ * @prop {string} id
+ * @prop {MapNodeTypes} type
+ * @prop {Room} room
+ * @prop {Set} edges
+ * @prop {boolean} didVisit
+ */
+/** @typedef {Array<Array<MapNode>>} Graph */
+/** @typedef {Array<Array<Move>>} Path */
+/** @typedef {{x: number, y: number}} Position */
+/** @typedef {Array<number, number>} Move */
 
 /**
  * A procedural generated dungeon map for Slay the Web. Again, heavily inspired by Slay the Spire.
@@ -76,18 +92,11 @@ export default function Dungeon(options) {
 	}
 }
 
-/** @typedef {{id: string, type: MapNodeTypes, room?: import('./rooms.js').Room, edges: Set, didVisit?: boolean}} MapNode */
-/** @typedef {Array<Array<MapNode>>} Graph */
-/** @typedef {Array<Array<Move>>} Path */
-/** @typedef {{x: number, y: number}} Position */
-/** @typedef {Array<number, number>} Move */
-
 /**
  * Returns a "graph" array representation of the map we want to render.
  * Each nested array represents a floor with nodes.
  * All nodes have a type.
  * Nodes with type of `false` are filler nodes nededed for the layout.
-
 	```
 	graph = [
 		[startNode]
@@ -98,7 +107,7 @@ export default function Dungeon(options) {
 	]
 	```
  * @param {GraphOptions} [options]
- * @ returns {Graph}
+ * @returns {Graph}
  */
 export function generateGraph(options = {}) {
 	options = Object.assign(defaultOptions, options)
@@ -313,6 +322,7 @@ function createMapNode(type) {
 		type: type,
 		room: undefined,
 		edges: new Set(),
+		didVisit: false,
 	}
 }
 
@@ -327,4 +337,21 @@ function decideNodeType(nodeTypes, floor) {
 	if (floor < 3) return pick('MC')
 	if (floor > 6) return pick('MMEEC')
 	return pick(nodeTypes)
+}
+
+/**
+ * Create a room from the node's type
+ * @param {string} type
+ * @param {number} floor
+ * @returns {Room}
+ */
+export function decideRoomType(type, floor) {
+	const pickRandomFromObj = (obj) => obj[shuffle(Object.keys(obj))[0]]
+	if (floor === 0) return StartRoom()
+	if (type === 'C') return CampfireRoom()
+	if (type === 'M' && floor < 2) return pickRandomFromObj(easyMonsters)
+	if (type === 'M') return pickRandomFromObj(monsters)
+	if (type === 'E') return pickRandomFromObj(elites)
+	if (type === 'boss') return pickRandomFromObj(bosses)
+	throw new Error(`Could not match node type "${type}" with a dungeon room`)
 }

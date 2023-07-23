@@ -1,5 +1,8 @@
 import {getPlayerHealthPercentage} from './utils-state.js'
 
+/** @typedef {import('./actions.js').State} State */
+/** @typedef {import('./cards.js').CARD} Card */
+
 /**
  * Conditions decide whether a card can be played or not.
  * @typedef {object} Condition — all other props will be passed to the condition as well
@@ -10,7 +13,7 @@ import {getPlayerHealthPercentage} from './utils-state.js'
 
 /**
  * @callback ConditionFn
- * @param {import('./actions.js').State} state
+ * @param {State} State
  * @param {Condition} condition
  * @return {boolean}
  */
@@ -41,7 +44,7 @@ export function healthPercentageBelow(state, condition) {
 
 /**
  * Returns true if all conditions are valid on a certain game state.
- * @param {import('./actions.js').State} state
+ * @param {State} state
  * @param {Array.<Condition>} conditions
  * @returns {boolean}
  */
@@ -58,8 +61,8 @@ export function conditionsAreValid(state, conditions) {
 
 /**
  * Returns true if the card can be played. Checks whether the card is in hand, you have enough energy and any conditions are all valid.
- * @param {import('./actions.js').State} state
- * @param {import('./cards.js').CARD} card
+ * @param {State} state
+ * @param {Card} card
  * @returns {boolean}
  */
 export function canPlay(state, card) {

@@ -1,6 +1,8 @@
 import actions from './actions.js'
 import Queue from '../utils.js'
 
+/** @typedef {import('./actions.js').State} State */
+
 /**
  * @typedef {object} FutureAction
  * @prop {string} type - the name of a function in actions.js
@@ -10,7 +12,7 @@ import Queue from '../utils.js'
 /**
  * @typedef {object} PastAction
  * @prop {string} type - the name of a function in actions.js
- * @prop {import('./actions.js').State} state
+ * @prop {State} state
  */
 
 /**
@@ -34,8 +36,8 @@ export default function ActionManager(props) {
 	/**
 	 * Deqeueing runs the oldest action (from the `future` queue) on the state.
 	 * The action is then moved to the `past` queue.
-	 * @param {import('./actions.js').State} state
-	 * @returns {import('./actions.js').State} new state
+	 * @param {State} state
+	 * @returns {State} new state
 	 */
 	function dequeue(state) {
 		// Get the oldest action
