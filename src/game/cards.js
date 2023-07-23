@@ -1,4 +1,4 @@
-import {uuid} from './utils.js'
+import {uuid} from '../utils.js'
 import cards from '../content/cards.js'
 
 // This file contains the logic to create cards.

@@ -1,6 +1,6 @@
 import {produce} from 'immer'
 import {createCard, CardTargets} from './cards.js'
-import {clamp, shuffle} from './utils.js'
+import {clamp, shuffle} from '../utils.js'
 import {getTargets, getCurrRoom} from './utils-state.js'
 import powers from './powers.js'
 import {dungeonWithMap} from '../content/dungeon-encounters.js'

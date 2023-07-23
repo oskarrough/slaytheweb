@@ -1,12 +1,11 @@
 /* eslint-disable complexity */
-import {uuid, shuffle, random as randomBetween, pick} from './utils.js'
-import {StartRoom, CampfireRoom} from './dungeon-rooms.js'
-import {easyMonsters, monsters, elites, bosses} from '../content/dungeon-encounters.js'
+import {decideRoomType} from './rooms.js'
+import {uuid, shuffle, random as randomBetween, pick} from '../utils.js'
 import {emojiFromNodeType} from '../ui/map.js'
 
 /**
  * A procedural generated dungeon map for Slay the Web. Again, heavily inspired by Slay the Spire.
-	* This is kind of complicated, so let me lay down the vocabulary:
+ * This is kind of complicated, so let me lay down the vocabulary, starting from the bottom.
 
 	* A "room" could be a "start room", monster encounter, a campfire, a treasure chest, a shop, etc.
 	* A "node" is a single point on the map. It can contain a room, or just a filler node.
