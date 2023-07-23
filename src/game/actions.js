@@ -1,21 +1,13 @@
 import {produce} from 'immer'
-import {createCard, CardTargets} from './cards.js'
 import {clamp, shuffle} from '../utils.js'
-import {getTargets, getCurrRoom} from './utils-state.js'
+import {isDungeonCompleted, getTargets, getCurrRoom} from './utils-state.js'
 import powers from './powers.js'
-import {dungeonWithMap} from '../content/dungeon-encounters.js'
 import {conditionsAreValid} from './conditions.js'
-import {isDungeonCompleted} from './utils-state.js'
-
-// Without this, immer.js will throw an error if our `state` is modified outside of an action.
-// While in theory a good idea, we're not there yet. It is a useful way to spot modifications
-// of the game state that should not be there.
-// setAutoFreeze(false)
+import {createCard, CardTargets} from './cards.js'
+import {dungeonWithMap} from '../content/dungeon-encounters.js'
 
 /**
-
-	We don't mutate it directly, instead we run "action functions" on it.
-	An action function takes two arguments: 1) the current state, 2) an object of arguments.
+	We don't mutate the state directly, instead we run "action functions" on it.
  * @template T
  * @callback ActionFn
  * @param {State} state the current state

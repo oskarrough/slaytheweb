@@ -76,10 +76,11 @@ export default function Dungeon(options) {
 	}
 }
 
+/** @typedef {{id: string, type: MapNodeTypes, room?: import('./rooms.js').Room, edges: Set, didVisit?: boolean}} MapNode */
 /** @typedef {Array<Array<MapNode>>} Graph */
+/** @typedef {Array<Array<Move>>} Path */
 /** @typedef {{x: number, y: number}} Position */
 /** @typedef {Array<number, number>} Move */
-/** @typedef {Array<Array<Move>>} Path */
 
 /**
  * Returns a "graph" array representation of the map we want to render.
@@ -97,7 +98,7 @@ export default function Dungeon(options) {
 	]
 	```
  * @param {GraphOptions} [options]
- * @returns {Graph}
+ * @ returns {Graph}
  */
 export function generateGraph(options = {}) {
 	options = Object.assign(defaultOptions, options)
@@ -300,10 +301,6 @@ export const MapNodeTypes = {
 	E: '👹',
 	boss: '🌋',
 }
-
-/**
- * @typedef {{id: string, type: MapNodeTypes, room?: import('./rooms.js').Room, edges: Set, didVisit?: boolean}} MapNode
- */
 
 /**
  * A node in the dungeon map graph
