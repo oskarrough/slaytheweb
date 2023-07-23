@@ -1,4 +1,4 @@
-import {html, Component} from './lib.js'
+import {html, Component} from '../lib.js'
 
 const getEnemiesStats = (dungeon) => {
 	const stats = {

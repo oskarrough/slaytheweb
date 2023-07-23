@@ -1,4 +1,4 @@
-import {html, Component} from './lib.js'
+import {html, Component} from '../lib.js'
 import CardChooser from './card-chooser.js'
 
 export default class CampfireRoom extends Component {

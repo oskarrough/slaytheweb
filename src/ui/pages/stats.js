@@ -1,6 +1,6 @@
-import {html, render} from './lib.js'
-import {getRuns} from '../game/backend.js'
-import './styles/index.css'
+import {html, render} from '../lib.js'
+import {getRuns} from '../../game/backend.js'
+import '../styles/index.css'
 
 const StatsPage = (props) => html`
 	<article class="Splash">

@@ -1,12 +1,12 @@
-import {html} from './lib.js'
+import {html} from '../lib.js'
 import History from './history.js'
-import {saveToUrl} from './save-load.js'
+import {saveToUrl} from '../save-load.js'
 
 // @ts-ignore
 const abandonGame = () => (window.location.href = window.location.origin)
 
-/** @typedef {import('../game/new-game.js').Game} Game */
-/** @typedef {import('../game/actions.js').State} State */
+/** @typedef {import('../../game/new-game.js').Game} Game */
+/** @typedef {import('../../game/actions.js').State} State */
 
 /**
  * Do something

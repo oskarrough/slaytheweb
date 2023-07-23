@@ -1,4 +1,4 @@
-import {html} from './lib.js'
+import {html} from '../lib.js'
 
 // A tiny overlay UI component.
 export function Overlay(props) {
