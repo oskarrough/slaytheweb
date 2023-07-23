@@ -1,7 +1,8 @@
+// @ts-nocheck
 import {Component, html} from './lib.js'
-import {random as randomBetween} from '../game/utils.js'
+import {random as randomBetween} from '../utils.js'
 import {isRoomCompleted} from '../game/utils-state.js'
-import {roomTypes} from '../game/dungeon-rooms.js'
+import {MapNodeTypes} from '../game/dungeon.js'
 
 export default function map(props) {
 	const {x, y, pathTaken} = props.dungeon
@@ -23,8 +24,8 @@ export default function map(props) {
 
 /**
  * Renders a map of the dungeon.
- * @param {Object} props
- * @param {Object} props.dungeon
+ * @param {object} props
+ * @param {object} props.dungeon
  * @param {number} props.x
  * @param {number} props.y
  * @param {Function} props.onSelect
@@ -176,7 +177,7 @@ export class SlayMap extends Component {
  */
 export function emojiFromNodeType(type) {
 	if (!type) return ' '
-	return roomTypes[type]
+	return MapNodeTypes[type]
 }
 
 // Since el.offsetLeft doesn't respect CSS transforms,

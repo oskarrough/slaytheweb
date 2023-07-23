@@ -1,6 +1,6 @@
 import test from 'ava'
 import {generateGraph, generatePaths, graphToString} from '../src/game/dungeon.js'
-import {roomTypes} from '../src/game/dungeon-rooms.js'
+import {MapNodeTypes} from '../src/game/dungeon.js'
 
 test('graph is created with default options', (t) => {
 	let g = generateGraph()
@@ -70,9 +70,9 @@ test('string graph works', (t) => {
 
 	const str = graphToString(g)
 	t.is(typeof str, 'string')
-	t.true(str.includes(roomTypes.M))
-	t.true(str.includes(roomTypes.start))
-	t.true(str.includes(roomTypes.boss))
+	t.true(str.includes(MapNodeTypes.M))
+	t.true(str.includes(MapNodeTypes.start))
+	t.true(str.includes(MapNodeTypes.boss))
 	// console.log(str)
 })
 

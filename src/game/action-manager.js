@@ -1,22 +1,34 @@
-import Queue from './queue.js'
 import actions from './actions.js'
+import Queue from '../utils.js'
+
+/** @typedef {import('./actions.js').State} State */
 
 /**
- * @typedef {Object} FutureAction
+ * @typedef {object} FutureAction
  * @prop {string} type - the name of a function in actions.js
  * @prop {any} [any] - arguments are passed to the action
  */
 
 /**
- * @typedef {Object} PastAction
+ * @typedef {object} PastAction
  * @prop {string} type - the name of a function in actions.js
- * @prop {import('./actions.js').State} state
+ * @prop {State} state
+ */
+
+/**
+ * @typedef {object} ActionManager
+ * @prop {function(FutureAction):void} enqueue
+ * @prop {function(State):State} dequeue
+ * @prop {function():PastAction} undo
+ * @prop {Queue} future
+ * @prop {Queue} past
  */
 
 /**
  * The action manager makes use of queues to keep track of future and past actions in the game state + undo.
- * @param {Object} props
- * @prop {boolean} props.debug - whether to log actions to the console
+ * @param {object} props
+ * @param {boolean} props.debug - whether to log actions to the console
+ * @returns {ActionManager} action manager
  */
 export default function ActionManager(props) {
 	const future = new Queue()
@@ -34,8 +46,8 @@ export default function ActionManager(props) {
 	/**
 	 * Deqeueing runs the oldest action (from the `future` queue) on the state.
 	 * The action is then moved to the `past` queue.
-	 * @param {import('./actions.js').State} state
-	 * @returns {import('./actions.js').State} new state
+	 * @param {State} state
+	 * @returns {State} new state
 	 */
 	function dequeue(state) {
 		// Get the oldest action

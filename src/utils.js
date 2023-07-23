@@ -1,7 +1,9 @@
 // A collection of utility functions.
-// None are allowed to modify the game state.
 
-// Returns a random-looking string for ids.
+/**
+ * Creates a random-looking string for ids.
+ * @returns {string}
+ */
 export function uuid(a) {
 	return a
 		? (a ^ ((Math.random() * 16) >> (a / 4))).toString(16)
@@ -9,8 +11,12 @@ export function uuid(a) {
 		  ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, uuid)
 }
 
-// Returns a new, shuffled version of an array.
-// See https://bost.ocks.org/mike/shuffle/
+/**
+ * Returns a new, shuffled version of an array.
+ * See https://bost.ocks.org/mike/shuffle/
+ * @param {Array} array
+ * @returns {Array}
+ */
 export function shuffle(array) {
 	// Make a copy
 	array = array.slice()
@@ -32,13 +38,23 @@ export function shuffle(array) {
 	return array
 }
 
-// Returns a range of numbers. Example: range(3) === [1,2,3] or range(3, 6) === [6,7,8]
-// range(3, 2) = [2,3,4]
+/**
+ * Returns a range of numbers.
+ * Example: range(3) === [1,2,3] or range(3, 6) === [6,7,8]
+ * range(3, 2) = [2,3,4]
+ * @param {*} size
+ * @param {*} startAt
+ * @returns {Array<number>}
+ */
 export function range(size, startAt = 0) {
 	return [...Array(size).keys()].map((i) => i + startAt)
 }
 
-// Get a random number within a range
+/**
+ * @param {number} from
+ * @param {number} to
+ * @returns {number} a random number within the range
+ */
 export function random(from, to) {
 	const r = range(1 + to - from, from) // random(2,4) = range(3,2)
 	if (from === to) return from // e.g. 5-5 returns 5 instead of 0
@@ -50,10 +66,26 @@ export function clamp(x, lower, upper) {
 }
 
 /**
- * Returns a random item from an array.
  * @param {Array|string} list
- * @returns {any} a random item from the array
+ * @returns {any} random item from the list
  */
 export function pick(list) {
 	return shuffle(Array.from(list))[0]
+}
+
+/**
+ * A queue is a list of objects that are inserted and removed first-in-first-out (FIFO).
+ */
+export default class Queue {
+	constructor(items = []) {
+		this.list = items
+	}
+	/** Enqueue and add an item at the end of the queue. */
+	enqueue(item) {
+		this.list.push(item)
+	}
+	/** Dequeue and remove an item at the front of the queue. */
+	dequeue() {
+		return this.list.shift()
+	}
 }

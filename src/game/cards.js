@@ -1,4 +1,4 @@
-import {uuid} from './utils.js'
+import {uuid} from '../utils.js'
 import cards from '../content/cards.js'
 
 // This file contains the logic to create cards.
@@ -29,9 +29,9 @@ export const CardTargets = {
  */
 
 /**
- * @typedef {Object} CardAction - allows the card to run all defined actions
+ * @typedef {object} CardAction - allows the card to run all defined actions
  * @prop {string} type - name of the action to call. See game/actions.js
- * @prop {Object} [parameter] - props to pass to the action
+ * @prop {object} [parameter] - props to pass to the action
  * @prop {Array<{type: string}>} [conditions] - list of conditions
  */
 
@@ -81,6 +81,7 @@ export class Card {
  * Very important, we clone the object. Otherwise, all cards would share the same object.
  * We do this so we can define the cards without using class syntax.
  * @param {string} name - exact name of the Card
+ * @param {boolean} [shouldUpgrade] - whether to upgrade the card
  * @returns {CARD}
  */
 export function createCard(name, shouldUpgrade) {
@@ -95,10 +96,10 @@ export function createCard(name, shouldUpgrade) {
 }
 
 /**
- * Returns {amount} of random cards from a {list}
- * @param {array} list - collection of POJO cards
+ * Returns X random cards from a list of cards.
+ * @param {Array} list - collection of POJO cards
  * @param {number} amount - how many
- * @returns {array} results
+ * @returns {Array} results
  */
 export function getRandomCards(list, amount) {
 	const cardNames = list.map((card) => card.name)

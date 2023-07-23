@@ -1,10 +1,14 @@
 import Dungeon from '../game/dungeon.js'
-import {MonsterRoom, Monster} from '../game/dungeon-rooms.js'
-import {random} from '../game/utils.js'
+import {MonsterRoom} from '../game/rooms.js'
+import {Monster} from '../game/monster.js'
+import {random} from '../utils.js'
+
+// A dungeon encounter is the combination of a Room and Monster(s).
 
 // Hello. With the imported functions above you can create a dungeon with different rooms and monsters.
 // Should be able to support even more monsters (4-5)
-// This is the dungeon currently used.
+
+// This is the efault dungeon currently used.
 export const dungeonWithMap = () => {
 	return Dungeon({
 		width: 6,
@@ -18,7 +22,7 @@ export const dungeonWithMap = () => {
 // This is the dungeon used in tests. Don't change it without running tests.
 export const createTestDungeon = () => {
 	const dungeon = Dungeon({width: 1, height: 3})
-	// The tests rely on the first room having a single monster, second two monsters.
+	// The tests rely on the first room having a single monster, second room two monsters.
 	const intents = [{block: 7}, {damage: 10}, {damage: 8}, {}, {damage: 14}]
 	dungeon.graph[1][0].room = MonsterRoom(Monster({hp: 42, intents}))
 	dungeon.graph[2][0].room = MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents}))

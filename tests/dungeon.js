@@ -3,7 +3,8 @@ import test from 'ava'
 import {createTestDungeon} from '../src/content/dungeon-encounters.js'
 import actions from '../src/game/actions.js'
 import Dungeon from '../src/game/dungeon.js'
-import {MonsterRoom, Monster} from '../src/game/dungeon-rooms.js'
+import {MonsterRoom} from '../src/game/rooms.js'
+import {Monster} from '../src/game/monster.js'
 import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../src/game/utils-state.js'
 
 const a = actions
