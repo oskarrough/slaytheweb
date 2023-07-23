@@ -1,4 +1,4 @@
-import {html, Component, useState} from './lib.js'
+import {html, Component} from './lib.js'
 import gsap from './animations.js'
 // @ts-ignore
 import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
@@ -7,20 +7,21 @@ import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 import createNewGame from '../game/new-game.js'
 import {createCard, getCardRewards} from '../game/cards.js'
 import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../game/utils-state.js'
+import * as backend from '../game/backend.js'
 
 // UI Components
-import {saveToUrl, loadFromUrl} from './save-load.js'
-import * as backend from '../game/backend.js'
+import CampfireRoom from './campfire.js'
 import Cards from './cards.js'
+import CardChooser from './card-chooser.js'
+import enableDragDrop from './dragdrop.js'
+import DungeonStats from './dungeon-stats.js'
 import Map from './map.js'
+import Menu from './menu.js'
 import {Overlay, OverlayWithButton} from './overlays.js'
 import {Player, Monster} from './player.js'
-import CardChooser from './card-chooser.js'
-import CampfireRoom from './campfire.js'
-import Menu from './menu.js'
+import {PublishRun} from './publish-run.js'
+import {saveToUrl, loadFromUrl} from './save-load.js'
 import StartRoom from './start-room.js'
-import DungeonStats from './dungeon-stats.js'
-import enableDragDrop from './dragdrop.js'
 
 // Temporary hack to disabled sounds without touching game code.
 import realSfx from './sounds.js'
@@ -56,6 +57,7 @@ export default class App extends Component {
 		this.toggleOverlay = this.toggleOverlay.bind(this)
 		this.handleMapMove = this.handleMapMove.bind(this)
 	}
+
 	componentDidMount() {
 		// Set up a new game
 		const game = createNewGame()
@@ -69,10 +71,12 @@ export default class App extends Component {
 
 		this.enableConsole()
 	}
+
 	restoreGame(oldState) {
 		this.game.state = oldState
 		this.setState(oldState, this.dealCards)
 	}
+
 	enableConsole() {
 		// Enable a "console" in the browser.
 		// @ts-ignore
@@ -102,6 +106,7 @@ stw.dealCards()`)
 		// @ts-ignore
 		window.stw.help()
 	}
+
 	update(callback) {
 		this.game.dequeue()
 		this.setState(this.game.state, callback)
@@ -152,6 +157,7 @@ stw.dealCards()`)
 			}
 		})
 	}
+
 	endTurn() {
 		sfx.endTurn()
 		gsap.effects.discardHand('.Hand .Card', {
@@ -162,12 +168,14 @@ stw.dealCards()`)
 			this.update(this.dealCards)
 		}
 	}
+
 	// Animate the cards in and make sure any new cards are draggable.
 	dealCards() {
 		gsap.effects.dealCards('.Hand .Card')
 		sfx.startTurn()
 		enableDragDrop(this.base, this.playCard)
 	}
+
 	toggleOverlay(el) {
 		if (typeof el === 'string') el = this.base.querySelector(el)
 		el.toggleAttribute('open')
@@ -222,10 +230,12 @@ stw.dealCards()`)
 		this.update(this.update)
 		this.goToNextRoom()
 	}
+
 	goToNextRoom() {
 		console.log('Go to next room, toggling map')
 		this.toggleOverlay('#Map')
 	}
+
 	handleMapMove(move) {
 		console.log('Made a move')
 		this.toggleOverlay('#Map')
@@ -388,36 +398,4 @@ stw.dealCards()`)
 		</div>
 		`
 	}
-}
-
-/**
- * Renders a form to submit the game to the backend.
- * @param {object} props
- * @param {import('../game/new-game.js').Game} props.game
- * @returns {import('preact').VNode}
- */
-function PublishRun({game}) {
-	const [loading, setLoading] = useState(false)
-
-	async function onSubmit(event) {
-		event.preventDefault()
-		setLoading(true)
-		const fd = new FormData(event.target)
-		const name = String(fd.get('playername'))
-		await backend.postRun(game, name)
-		setLoading(false)
-	}
-
-	const duration = (game.state.endedAt - game.state.createdAt) / 1000
-
-	return html`
-		<form onSubmit=${onSubmit}>
-			<p>You reached floor ${game.state.turn} in ${duration} seconds.</p>
-			<label
-				>What are you? <input type="text" name="playername" required placeholder="Know thyself"
-			/></label>
-			<button disabled=${loading} type="submit">Submit my run</button>
-			<p>${loading ? 'submitting' : ''}</p>
-		</form>
-	`
 }
