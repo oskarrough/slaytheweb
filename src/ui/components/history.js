@@ -1,6 +1,6 @@
-import {html, Component} from './lib.js'
+import {html, Component} from '../lib.js'
 
-export default class Queue extends Component {
+export default class HistoryQueue extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {time: Date.now()}

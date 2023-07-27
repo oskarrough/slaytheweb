@@ -1,30 +1,30 @@
-import {html, Component} from './lib.js'
-import gsap from './animations.js'
+import {html, Component} from '../lib.js'
+import gsap from '../animations.js'
 // @ts-ignore
 import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
 
 // Game logic
-import createNewGame from '../game/new-game.js'
-import {createCard, getCardRewards} from '../game/cards.js'
-import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../game/utils-state.js'
-import * as backend from '../game/backend.js'
+import createNewGame from '../../game/new-game.js'
+import {createCard, getCardRewards} from '../../game/cards.js'
+import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../../game/utils-state.js'
+import * as backend from '../../game/backend.js'
 
 // UI Components
-import CampfireRoom from './campfire.js'
-import Cards from './cards.js'
-import CardChooser from './card-chooser.js'
-import enableDragDrop from './dragdrop.js'
-import DungeonStats from './dungeon-stats.js'
-import Map from './map.js'
-import Menu from './menu.js'
-import {Overlay, OverlayWithButton} from './overlays.js'
-import {Player, Monster} from './player.js'
-import {PublishRun} from './publish-run.js'
-import {saveToUrl, loadFromUrl} from './save-load.js'
+import CampfireRoom from '../components/campfire.js'
+import Cards from '../components/cards.js'
+import CardChooser from '../components/card-chooser.js'
+import enableDragDrop from '../dragdrop.js'
+import DungeonStats from '../components/dungeon-stats.js'
+import Map from '../components/map.js'
+import Menu from '../components/menu.js'
+import {Overlay, OverlayWithButton} from '../components/overlays.js'
+import {Player, Monster} from '../components/player.js'
+import {PublishRun} from '../components/publish-run.js'
+import {saveToUrl, loadFromUrl} from '../save-load.js'
 import StartRoom from './start-room.js'
 
 // Temporary hack to disabled sounds without touching game code.
-import realSfx from './sounds.js'
+import realSfx from '../sounds.js'
 const sfx = {}
 Object.keys(realSfx).forEach((key) => {
 	sfx[key] = () => null

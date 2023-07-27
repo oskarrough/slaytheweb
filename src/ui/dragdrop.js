@@ -12,7 +12,6 @@ function animateCardToHand(draggable) {
 }
 
 /**
- *
  * @param {HTMLElement} el
  * @returns {string}
  */

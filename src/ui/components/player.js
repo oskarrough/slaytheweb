@@ -1,11 +1,11 @@
-import {html, Component} from './lib.js'
+import {html, Component} from '../lib.js'
 import {
 	weak as weakPower,
 	vulnerable as vulnerablePower,
 	regen as regenPower,
 	poison as poisonPower,
 	strength as strengthPower,
-} from '../game/powers.js'
+} from '../../game/powers.js'
 
 /**
  * @typedef {object} TargetProps

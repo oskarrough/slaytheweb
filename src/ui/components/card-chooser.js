@@ -1,4 +1,4 @@
-import {html, Component} from './lib.js'
+import {html, Component} from '../lib.js'
 import {Card} from './cards.js'
 
 export default class CardChooser extends Component {

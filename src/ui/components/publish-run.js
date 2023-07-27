@@ -1,10 +1,10 @@
-import {html, useState} from './lib.js'
-import {postRun} from '../game/backend.js'
+import {html, useState} from '../lib.js'
+import {postRun} from '../../game/backend.js'
 
 /**
  * Renders a form to submit the game run to the backend.
  * @param {object} props
- * @param {import('../game/new-game.js').Game} props.game
+ * @param {import('../../game/new-game.js').Game} props.game
  * @returns {import('preact').VNode}
  */
 export function PublishRun({game}) {

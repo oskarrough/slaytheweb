@@ -1,7 +1,7 @@
 import {html, render, Component} from './lib.js'
-import GameScreen from './game-screen.js'
-import SplashScreen from './splash-screen.js'
-import WinScreen from './win-screen.js'
+import SplashScreen from './pages/splash-screen.js'
+import GameScreen from './pages/game-screen.js'
+import WinScreen from './pages/win-screen.js'
 
 /** @enum {string} */
 const GameModes = {

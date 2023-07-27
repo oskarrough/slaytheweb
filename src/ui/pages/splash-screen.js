@@ -1,5 +1,5 @@
-import {html, Component} from './lib.js'
-import gsap from './animations.js'
+import {html, Component} from '../lib.js'
+import gsap from '../animations.js'
 
 export default class SplashScreen extends Component {
 	componentDidMount() {

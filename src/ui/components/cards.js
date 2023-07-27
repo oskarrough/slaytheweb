@@ -1,5 +1,5 @@
-import {html, Component} from './lib.js'
-import {canPlay} from '../game/conditions.js'
+import {html, Component} from '../lib.js'
+import {canPlay} from '../../game/conditions.js'
 
 export default class Cards extends Component {
 	// props = {gameState: {}, type ''}

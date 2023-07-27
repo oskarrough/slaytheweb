@@ -1,8 +1,8 @@
 // @ts-nocheck
-import {Component, html} from './lib.js'
-import {random as randomBetween} from '../utils.js'
-import {isRoomCompleted} from '../game/utils-state.js'
-import {MapNodeTypes} from '../game/dungeon.js'
+import {Component, html} from '../lib.js'
+import {random as randomBetween} from '../../utils.js'
+import {isRoomCompleted} from '../../game/utils-state.js'
+import {MapNodeTypes} from '../../game/dungeon.js'
 
 export default function map(props) {
 	const {x, y, pathTaken} = props.dungeon
