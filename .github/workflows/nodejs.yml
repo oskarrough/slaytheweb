@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Test
 
 on:
   push:
@@ -11,9 +11,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-node@v3.7.0
-      with:
-        node-version: 18
-    # - run: npm run build
-    - run: npm ci
-    - run: npm test
+    - uses: oven-sh/setup-bun@v1
+    - run: bun install
+    - run: bun run test
