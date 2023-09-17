@@ -93,8 +93,8 @@ export default class App extends Component {
 					// console.log(this.game.state)
 				})
 			},
-			submitGame() {
-				backend.postRun(this.game)
+			submitGame(playerName) {
+				backend.postRun(this.game, playerName)
 			},
 			help() {
 				console.log(`Welcome to the Slay The Web Console. Some examples:
