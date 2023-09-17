@@ -105,6 +105,10 @@ button:active {
 	box-shadow: none;
 }
 
+input[type="text"] {
+	min-height: 2rem;
+}
+
 h1 {
 	transform: rotate3d(5, 15, 3, -20deg);
 	margin-top: 2rem;

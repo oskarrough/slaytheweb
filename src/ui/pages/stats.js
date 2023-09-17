@@ -30,7 +30,7 @@ const StatsPage = ({runs}) => html`
 						? runs.map((run) => {
 								const state = run.gameState
 								// const past = run.gamePast
-								let date = new Intl.DateTimeFormat('en', {
+								const date = new Intl.DateTimeFormat('en', {
 									dateStyle: 'long',
 									timeStyle: 'short',
 									hour12: false,
@@ -40,7 +40,7 @@ const StatsPage = ({runs}) => html`
 									<td>${date}</td>
 									<td>${run.player}</td>
 									<td>${state.won ? 'WIN' : 'LOSS'}</td>
-									<td>${state.turn}</td>
+									<td>${state.dungeon.y}</td>
 									<td>${run.gamePast.length}</td>
 									<td>${state.player.currentHealth}</td>
 									<td>${run.gameState.deck.length}</td>

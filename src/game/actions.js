@@ -452,7 +452,7 @@ function endTurn(state) {
  * @type {ActionFn<{}>}
  */
 function newTurn(state) {
-	let newState = drawCards(state)
+	const newState = drawCards(state)
 
 	return produce(newState, (draft) => {
 		draft.turn++
