@@ -1,29 +1,31 @@
 # Slay the Web
 
-This is a browser-based card game and engine based on Slay The Spire, a fantastic video game designed by [MegaCrit](https://www.megacrit.com/):
+Slay the Web is a digital card game for the web based on Slay The Spire, a fantastic video game designed by [MegaCrit](https://www.megacrit.com/). They say:
 
 > We fused card games and roguelikes together to make the best single player deckbuilder we could. Craft a unique deck, encounter bizarre creatures, discover relics of immense power, and Slay the Spire!
 
-### 🎴 [Play now on https://slaytheweb.cards](https://slaytheweb.cards/)
+# 🎴 [Play on slaytheweb.cards](https://slaytheweb.cards/) 
+
+Come chat on https://matrix.to/#/#slaytheweb:matrix.org
 
 <a href="https://slaytheweb.cards"><img src="https://i.imgur.com/m9CRCsa.png" alt="Screenshot of Slay the Web" width="640"></a>
 
-After many runs in the Spire, I really got into the theory behind the game. Inspired by the STS modding community, I thought it'd be neat and a great learning experience to try and implement the core logic of the game in JavaScript for the web. And that is what _Slay the Web_ is: a kind of stable, UI agnostic game engine and an example UI for the web.
+After many runs in the Spire, I got into the theory behind the game. Inspired by the STS modding community, I thought it'd be fun and a great learning experience to try and implement the core logic of the game in JavaScript for the web. And that is what _Slay the Web_ is: a kind of stable, UI agnostic game engine with an example UI for the web.
 
 ## Documentation
 
 If you're interested in contributing to the game or merely curious how it works, see [the documentation](DOCUMENTATION.md).
 
-TLDR; Clone the repository and run `npm install` followed by `npm run dev` to open a local development server. The `src/game` folder contains the actual game logic and the `src/ui` folder is the website UI where you can actually play the game. 
+TLDR; Clone the repository and run `npm install` followed by `npm run dev` to open a local development server. The `src/game` folder contains the actual game logic and the `src/ui` folder is the website UI where you can actually play the game. The `src/content` folder builds content for the game.
 
 ## How to deploy it
 
-The `main` branch automatically deploys to https://slaytheweb.cards, via the Vercel service, every time it is pushed to. If you open a PR, it'll give you a preview URL as well for testing.
+The `main` branch automatically deploys to https://slaytheweb.cards, via the Vercel service. If you open a PR, it'll give you a preview URL as well for testing.
 
 ## References
 
 <details>
-	<summary>A collection of related links, inspiration and ideas.</summary>
+  <summary>A collection of related links, inspiration and ideas.</summary>
 
 - FTL, Into The Breach, Darkest Dungeon, Dungeon of the Endless, Spelunky, Rogue Legacy,
 - [Pollywog Games: A history of roguelite deck building games](https://pollywog.games/rgdb/)
