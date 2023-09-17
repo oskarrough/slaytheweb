@@ -1,32 +1,37 @@
-import {isDungeonCompleted} from './utils-state.js'
+import {produce} from 'immer'
 
-const apiUrl = 'https://api.slaytheweb.cards/api/runs'
-// const apiUrl = 'http://localhost:3000/api/runs'
+// const apiUrl = 'https://api.slaytheweb.cards/api/runs'
+const apiUrl = 'http://localhost:3000/api/runs'
 
 /**
  * @typedef {object} Run
- * @prop {string} name - user inputted player name
- * @prop {boolean} win - whether the player won the game
- * @prop {object} state - the final state
- * @prop {Array<object>} past - a list of past states
+ * @prop {string} player - user inputted player name
+ * @prop {object} gameState - the final state
+ * @prop {Array<object>} gamePast - a list of past states
  */
 
 /**
- * Saves a "game" object into a remote database.
- * @param {object} game
- * @param {string=} name
+ * Saves a "game" object into a remote database for highscores.
+ * @param {import('./new-game.js').Game} game
+ * @param {string=} playerName
  * @returns {Promise}
  */
-export async function postRun(game, name) {
-	// Make sure we have an end time.
-	if (!game.state.endedAt) game.state.endedAt = new Date().getTime()
+export async function postRun(game, playerName) {
+	console.log('postRun', game.past.list)
 
 	/** @type {Run} */
 	const run = {
-		name: name || 'Unknown entity',
-		win: isDungeonCompleted(game.state),
-		state: game.state,
-		past: game.past,
+		player: playerName || 'Unknown entity',
+		gameState: produce(game.state, (draft) => {
+			if (!draft.endedAt) draft.endedAt = new Date().getTime()
+		}),
+		gamePast: game.past.list.map((item) => {
+			return {
+				action: item.action,
+				turn: item.state.turn,
+				player: item.state.player,
+			}
+		}),
 	}
 
 	return fetch(apiUrl, {
@@ -40,8 +45,7 @@ export async function postRun(game, name) {
 }
 
 /**
- * Fetches a list of maximum 100 runs from the remote database.
- * @returns {Promise<[]>} list of game runs
+ * @returns {Promise<Run[]>} list of game runs
  */
 export async function getRuns() {
 	const res = await fetch(apiUrl)
