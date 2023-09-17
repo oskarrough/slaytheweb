@@ -37,6 +37,7 @@ const pwaOptions = {
 export default defineConfig({
 	plugins: [VitePWA(pwaOptions)],
 	build: {
+		target: 'esnext',
 		rollupOptions: {
 			input: {
 				index: resolve('index.html'),
