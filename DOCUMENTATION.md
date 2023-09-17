@@ -71,7 +71,11 @@ Monsters exist inside the rooms in a dungeon. A monster has health and a list of
 
 #### cards.js
 
-Contains the actual cards used in the game. Not to be confused with `game/cards.js`, which contains the logic.
+Collects all cards from the `src/content/cards/*` folder.
+
+Every card must define two exports:
+- default: the card
+- upgrade: upgrade(card) => card
 
 #### dungeon-encounters.js
 
