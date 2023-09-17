@@ -1,7 +1,7 @@
 import {produce} from 'immer'
 
-// const apiUrl = 'https://api.slaytheweb.cards/api/runs'
-const apiUrl = 'http://localhost:3000/api/runs'
+const apiUrl = 'https://api.slaytheweb.cards/api/runs'
+// const apiUrl = 'http://localhost:3000/api/runs'
 
 /**
  * @typedef {object} Run
