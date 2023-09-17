@@ -1,5 +1,5 @@
 import {html, render} from '../lib.js'
-import cards from '../../content/cards.js'
+import {cards} from '../../content/cards.js'
 import {Card} from './cards.js'
 import '../styles/index.css'
 
