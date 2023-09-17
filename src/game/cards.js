@@ -1,5 +1,7 @@
 import {uuid} from '../utils.js'
-import cards from '../content/cards.js'
+import {cards, cardUpgrades} from '../content/cards.js'
+
+// console.log(cardUpgrades)
 
 // This file contains the logic to create cards.
 // While cards are described in plain object form, they are always converted to a class equivalent.
@@ -87,10 +89,14 @@ export class Card {
 export function createCard(name, shouldUpgrade) {
 	let card = cards.find((card) => card.name === name)
 	if (!card) throw new Error(`Card not found: ${name}`)
-	card = {...card}
 	if (shouldUpgrade) {
-		card.upgrade()
+		const upgradeFn = cardUpgrades[name]
+		card = upgradeFn(card)
 		card.upgraded = true
+		if (!card.name.includes('+')) card.name += '+'
+	} else {
+		// Clone it.
+		card = {...card}
 	}
 	return new Card(card)
 }

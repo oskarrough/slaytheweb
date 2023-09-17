@@ -3,7 +3,8 @@
 		"allowJs": true,
 		"checkJs": true,
 		"target": "esnext",
-		"moduleResolution": "nodenext",
+		"moduleResolution": "bundler",
 		"noEmit": true
-	}
+	},
+	"types": ["vite/client"]
 }
