@@ -15,10 +15,12 @@ figure {
 
 /* A smaller map */
 slay-map {
-	/* min-height: 0; */
+	max-width: 500px;
+	min-height: 0;
 	width: 100%;
 	padding: 1em 0;
-	background: black;
+	background: none;
+	--pathColor: black;
 }
 slay-map-row {
 	gap: 0;
