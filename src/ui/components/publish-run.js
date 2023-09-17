@@ -9,6 +9,7 @@ import {postRun} from '../../game/backend.js'
  */
 export function PublishRun({game}) {
 	const [loading, setLoading] = useState(false)
+	const [didSubmit, setDidSubmit] = useState(false)
 
 	async function onSubmit(event) {
 		event.preventDefault()
@@ -17,18 +18,28 @@ export function PublishRun({game}) {
 		const name = String(fd.get('playername'))
 		await postRun(game, name)
 		setLoading(false)
+		setDidSubmit(true)
 	}
 
-	const duration = (game.state.endedAt - game.state.createdAt) / 1000
+	const endedAt = game.state.endedAt || new Date().getTime()
+	const duration = (endedAt - game.state.createdAt) / 1000
 
 	return html`
 		<form onSubmit=${onSubmit}>
-			<p>You reached floor ${game.state.turn} in ${duration} seconds.</p>
-			<label
-				>What are you? <input type="text" name="playername" required placeholder="Know thyself"
-			/></label>
-			<button disabled=${loading} type="submit">Submit my run</button>
-			<p>${loading ? 'submitting' : ''}</p>
+			<p>You reached floor ${game.state.dungeon.y} in ${duration} seconds.</p>
+			${!didSubmit ? (
+				html`
+					<label
+						>Want to post your run to the public, Slay the Web highscores?<br/>
+						<input type="text" name="playername" required placeholder="Know thyself" />
+					</label>
+					<button disabled=${loading} type="submit">Submit my run</button>
+					<p>${loading ? 'submitting' : ''}</p>
+					<p><a href="/stats.html">View highscores</a></p>
+				`
+			) : (
+				html`<p>Thank you.</p>`
+			)}
 		</form>
 	`
 }

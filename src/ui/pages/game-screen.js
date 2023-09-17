@@ -272,9 +272,10 @@ stw.dealCards()`)
 				${
 					state.won &&
 					html`<${Overlay}>
-						<p><button onclick=${() => this.props.onWin()}>You won!</button></p>
+						<h1>You won!</h1>
 						<${PublishRun} game=${this.game}><//>
-						<${DungeonStats} state=${state}><//>
+						${DungeonStats} state=${state}><//>
+						<p><button onclick=${() => this.props.onWin()}>Continue</button></p>
 					<//> `
 				}
 
