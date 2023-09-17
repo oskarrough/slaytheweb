@@ -1,4 +1,5 @@
 import test from 'ava'
+import {cards} from '../src/content/cards.js'
 import {createCard} from '../src/game/cards.js'
 
 test('can create an attack card', (t) => {
@@ -22,10 +23,18 @@ test('card name must be exact', (t) => {
 	t.throws(() => createCard('Naaaah doesnt exist'))
 })
 
-test('can upgrade cards', (t) => {
+test('can upgrade Strike card', (t) => {
 	const strikeplus = createCard('Strike', true)
 	t.is(strikeplus.damage, 9)
 	t.true(strikeplus.upgraded)
 	const strike = createCard('Strike')
 	t.is(strike.damage, 6)
+})
+
+test('can upgrade all cards', (t) => {
+	for (const card of cards) {
+		const upgraded = createCard(card.name, true)
+		t.true(upgraded.upgraded)
+		t.true(upgraded.name.includes('+'), upgraded.name)
+	}
 })

@@ -1,484 +1,126 @@
-// Here you'll find all the default cards used in the game.
-// See game/cards.js for the details on how they work.
-export default [
-	{
-		name: 'Strike',
-		type: 'attack',
-		energy: 1,
-		target: 'enemy',
-		damage: 6,
-		description: 'Deal 6 Damage.',
-		image: 'the-angel-of-death.jpg',
-		upgrade() {
-			this.damage = 9
-			this.name = 'Strike+'
-			this.description = 'Deal 9 Damage.'
-		},
-	},
-	{
-		name: 'Defend',
-		type: 'skill',
-		energy: 1,
-		block: 5,
-		target: 'player',
-		image: 'angel-messenger.jpg',
-		description: 'Gain 5 Block.',
-		upgrade() {
-			this.block = 8
-			this.name = 'Defend+'
-			this.description = 'Gain 8 Block.'
-		},
-	},
-	{
-		name: 'Bash',
-		type: 'attack',
-		energy: 2,
-		damage: 8,
-		target: 'enemy',
-		image: 'apteryx-mantelli.jpg',
-		powers: {
-			vulnerable: 2,
-		},
-		description: 'Deal 8 damage. Apply 2 Vulnerable.',
-		upgrade() {
-			this.damage = 10
-			this.name = 'Bash+'
-			this.powers.vulnerable = 3
-			this.description = 'Deal 10 Damage. Apply 3 Vulnerable'
-		},
-	},
-	{
-		name: 'Clash',
-		type: 'attack',
-		energy: 0,
-		damage: 14,
-		target: 'enemy',
-		conditions: [
-			{
-				type: 'onlyType',
-				cardType: 'attack',
-			},
-		],
-		description: 'Can only be played if every card in your hand is an Attack. Deal 14 damage.',
-		image: 'h-sperling-horrified.jpg',
-		upgrade() {
-			this.name = 'Clash+'
-			this.damage = 17
-			this.description =
-				'Can only be played if every card in your hand is an Attack. Deal 17 damage.'
-		},
-	},
-	{
-		name: 'Cleave',
-		type: 'attack',
-		energy: 1,
-		damage: 8,
-		target: 'allEnemies',
-		description: 'Deal 8 damage to all enemies.',
-		image: 'vernal-equinox.jpg',
-		upgrade() {
-			this.damage = 11
-			this.name = 'Cleave+'
-			this.description = 'Deal 11 Damage to all enemies.'
-		},
-	},
-	{
-		name: 'Iron Wave',
-		type: 'attack',
-		energy: 1,
-		damage: 5,
-		block: 5,
-		target: 'enemy',
-		description: 'Deal 5 damage. Gain 5 Block.',
-		image: 'henry-stares-back.jpg',
-		upgrade() {
-			this.damage = 7
-			this.block = 7
-			this.name = 'Iron Wave+'
-			this.description = 'Deal 7 Damage. Gain 7 Block.'
-		},
-	},
-	{
-		name: 'Sucker Punch',
-		type: 'attack',
-		energy: 1,
-		damage: 7,
-		target: 'enemy',
-		powers: {
-			weak: 1,
-		},
-		description: 'Deal 7 Damage. Apply 1 Weak.',
-		image: 'manicule.jpg',
-		upgrade() {
-			this.damage = 8
-			this.name = 'Sucker Punch+'
-			this.powers.weak = 2
-			this.description = 'Deal 8 Damage. Apply 2 Weak'
-		},
-	},
-	{
-		name: 'Thunderclap',
-		type: 'attack',
-		energy: 1,
-		damage: 4,
-		target: 'allEnemies',
-		powers: {
-			vulnerable: 1,
-		},
-		description: 'Deal 4 Damage. Apply 1 Vulnerable to all enemies.',
-		image: '4.jpg',
-		upgrade() {
-			this.name = 'Thunderclap+'
-			this.damage = 6
-			this.description = 'Deal 6 Damage. Apply 1 Vulnerable to all enemies.'
-		},
-	},
-	{
-		name: 'Flourish',
-		type: 'skill',
-		energy: 2,
-		target: 'player',
-		description: 'Gain 5 Regen. Can only be played if your health is below 50%.',
-		image: '5.jpg',
-		powers: {
-			regen: 5,
-		},
-		conditions: [
-			{
-				type: 'healthPercentageBelow',
-				percentage: 50,
-			},
-		],
-		upgrade() {
-			this.name = 'Flourish+'
-			const a = this.conditions.find((action) => action.type === 'healthPercentageBelow')
-			a.percentage = 75
-			this.description = 'Gain 5 Regen. Can only be played if your health is below 75%.'
-		},
-	},
-	{
-		name: 'Summer of Sam',
-		type: 'skill',
-		energy: 1,
-		target: 'player',
-		description: 'Gain 1 Health. Draw 2 Cards if your health is below 50%.',
-		image: 'bare-feet-of-god.jpg',
-		actions: [
-			{
-				type: 'addHealth',
-				parameter: {
-					amount: 1,
-				},
-			},
-			{
-				type: 'drawCards',
-				parameter: {
-					amount: 2,
-				},
-				conditions: [
-					{
-						type: 'healthPercentageBelow',
-						percentage: 50,
-					},
-				],
-			},
-		],
-		upgrade() {
-			this.name = 'Summer of Sam+'
-			this.description = 'Gain 2 Health. Draw 2 Cards if your health is below 50%.'
-			// An example of how to upgrade a local action.
-			const a = this.actions.find((action) => action.type === 'addHealth')
-			a.parameter.amount = 2
-		},
-	},
-	{
-		name: 'Body Slam',
-		energy: 1,
-		type: 'attack',
-		target: 'enemy',
-		description: 'Deal Damage equal to your Block.',
-		image: 'fallback.jpg',
-		actions: [
-			{
-				type: 'dealDamageEqualToBlock',
-			},
-		],
-		upgrade() {
-			this.energy = 0
-			this.name = 'Body Slam+'
-		},
-	},
-	{
-		name: 'Succube',
-		type: 'attack',
-		energy: 3,
-		target: 'allEnemies',
-		description: 'Deal 2 Damage to all enemies and suck it into life.',
-		image: 'succube.png',
-		damage: 2,
-		actions: [
-			{
-				type: 'addRegenEqualToAllDamage',
-			},
-		],
-		upgrade() {
-			this.name = 'High Succube'
-			this.description = 'Deal 3 damage to all enemies and suck it into life.'
-			this.damage = 3
-		},
-	},
-	{
-		name: 'Soul Drain',
-		type: 'attack',
-		energy: 1,
-		target: 'allEnemies',
-		description: 'Drain 3 Health into Weakness and Vulnerability.',
-		image: 'soul-drain.png',
-		damage: 0,
-		powers: {
-			weak: 3,
-			vulnerable: 3,
-		},
-		actions: [
-			{
-				type: 'removeHealth',
-				parameter: {
-					amount: 3,
-					target: 'player',
-				},
-			},
-		],
-		upgrade() {
-			this.name = 'Lower Soul Drain'
-			this.description = 'Drain 4 Health into Weakness and Vulnerability.'
-			this.powers.vulnerable = 4
-			this.powers.weak = 4
-			this.actions = [
-				{
-					type: 'removeHealth',
-					parameter: {
-						amount: 4,
-						target: 'player',
-					},
-				},
-			]
-		},
-	},
-	{
-		name: 'Voodoo Education',
-		energy: 0,
-		type: 'attack',
-		target: 'enemy',
-		description: "Deal Damage equal to target's Vulnerable and Weak and remove the debuffs.",
-		image: 'voodoo-education.png',
-		actions: [
-			{
-				type: 'dealDamageEqualToWeak',
-			},
-			{
-				type: 'dealDamageEqualToVulnerable',
-			},
-			{
-				type: 'setPower',
-				parameter: {
-					power: 'weak',
-					amount: 0,
-				},
-			},
-			{
-				type: 'setPower',
-				parameter: {
-					power: 'vulnerable',
-					amount: 0,
-				},
-			},
-		],
-		upgrade() {
-			this.name = 'Voodoo Gift'
-			// remove the "reset of monster power"
-			this.description = this.description + ' but without resets.'
-			this.actions = [
-				{
-					type: 'dealDamageEqualToWeak',
-				},
-				{
-					type: 'dealDamageEqualToVulnerable',
-				},
-			]
-		},
-	},
-	{
-		name: 'Ritual Rain',
-		type: 'skill',
-		energy: 2,
-		target: 'player',
-		description: 'Remove your Weaknesses and Vulnerabilities.',
-		image: 'ritual-rain.png',
-		damage: 0,
-		actions: [
-			{
-				type: 'removePlayerDebuffs',
-			},
-		],
-		upgrade() {
-			this.name = 'Eventual Rain'
-			this.description = 'Remove your weaknesses and vulnerabilities. Gain 10 Block.'
-			this.block = 10
-		},
-	},
-	{
-		name: 'Mask of the Faceless',
-		type: 'skill',
-		energy: 0,
-		target: 'player',
-		description: 'Gain 1 energy point',
-		image: 'mask-of-the-faceless.png',
-		damage: 0,
-		actions: [
-			{
-				type: 'addEnergyToPlayer',
-				parameter: {
-					amount: 1,
-				},
-			},
-		],
-		upgrade() {
-			this.description = 'Gain 1 energy point and 5 block'
-			this.name = 'Masks of the Faceless'
-			this.block = 5
-		},
-	},
-	{
-		name: 'Bludgeon', //add rarity? make it a rare card?
-		type: 'attack',
-		energy: 3,
-		target: 'enemy',
-		damage: 32,
-		description: 'Deal 32 Damage.',
-		image: 'alice-holds-the-white-king.jpg',
-		upgrade() {
-			this.damage = 42
-			this.name = 'Bludgeon+'
-			this.description = 'Deal 42 Damage.'
-		},
-	},
-	{
-		name: 'Pommel Strike',
-		type: 'attack',
-		energy: 1,
-		target: 'enemy',
-		description: 'Deal 9 damage. Draw 1 card.',
-		image: '8.jpg',
-		damage: 9,
-		actions: [
-			{
-				type: 'drawCards',
-				parameter: {
-					amount: 1,
-				},
-			},
-		],
-		upgrade() {
-			this.name = 'Pommel Strike+'
-			this.description = 'Deal 10 damage. Draw 2 cards.'
-			this.damage = 10
-			const a = this.actions.find((action) => action.type === 'drawCards')
-			a.parameter.amount = 2
-		},
-	},
-	{
-		name: 'Intimidate',
-		type: 'skill',
-		energy: 0,
-		damage: 0,
-		target: 'allEnemies',
-		powers: {
-			weak: 1,
-		},
-		description: 'Apply 1 Weak to ALL enemies. Exhaust.',
-		image: 'poured-millions-of-bubbles.jpg',
-		upgrade() {
-			this.name = 'Intimidate+'
-			this.powers.weak = 2
-			this.description = 'Apply 2 Weak to ALL enemies. Exhaust.'
-		},
-		exhaust: true,
-	},
-	{
-		name: 'Terror',
-		type: 'skill',
-		energy: 0,
-		damage: 0,
-		target: 'enemy',
-		powers: {
-			vulnerable: 99,
-		},
-		description: 'Apply 99 vulnerable. Exhaust.',
-		image: '2.jpg',
-		upgrade() {
-			this.name = 'Terror+'
-			this.energy = 0
-		},
-		exhaust: true,
-	},
-	{
-		name: 'Adrenaline',
-		type: 'skill',
-		energy: 0,
-		damage: 0,
-		target: 'player',
-		actions: [
-			{
-				type: 'drawCards',
-				parameter: {
-					amount: 2,
-				},
-			},
-			{
-				type: 'addEnergyToPlayer',
-				parameter: {
-					amount: 1,
-				},
-			},
-		],
-		description: 'Gain 1 Energy. Draw 2 cards. Exhaust.',
-		image: 'serpentine-dancer.jpg',
-		upgrade() {
-			this.name = 'Adrenaline+'
-			this.description = 'Gain 2 Energy. Draw 2 cards. Exhaust.'
-			const a = this.actions.find((action) => action.type === 'addEnergyToPlayer')
-			a.parameter.amount = 2
-		},
-		exhaust: true,
-	},
-	/**	{
-		name: 'Deadly Poison',
-		type: 'attack',
-		energy: 1,
-		damage: 0,
-		target: 'enemy',
-		powers: {
-			poison: 5,
-		},
-		description: 'Apply 5 poison.',
-		image: '6.jpg',
-		upgrade() {
-			this.name = 'Deadly Poison+'
-			this.powers.poison = 7
-			this.description = 'Apply 7 Poison'
-		},
-	},*/
-	// {name: 'Flex', energy: 0, type: 'skill', description: 'Gain 2 Strength.'},
+const cardIndex = [
+	// 'adrenaline',
+	// 'bash',
+	// 'bludgeon',
+	// 'bodySlam',
+	// 'clash',
+	// 'cleave',
+	// 'defend',
+	// 'flourish',
+	// 'intimidate',
+	// 'ironWave',
+	// 'maskOfTheFaceless',
+	// 'pommelStrike',
+	// 'ritualRain',
+	// 'soulDrain',
+	// 'strike',
+	// 'succube',
+	// 'suckerPunch',
+	// 'summerOfSam',
+	// 'terror',
+	// 'thunderclap',
+	// 'voodooEducation',
+	'adrenaline',
+	'bash',
+	'bludgeon',
+	'body-slam',
+	'clash',
+	'cleave',
+	'defend',
+	'flourish',
+	'intimidate',
+	'iron-wave',
+	'mask-of-the-faceless',
+	'pommel-strike',
+	'ritual-rain',
+	'soul-drain',
+	'strike',
+	'succube',
+	'sucker-punch',
+	'summer-of-sam',
+	'terror',
+	'thunderclap',
+	'voodoo-education',
 ]
 
-// 'codices.jpg'
-// 'alice-holds-the-white-king.jpg'
-// '3.jpg'
-// 'poured-millions-of-bubbles.jpg'
-// 'railway-trains-in-space.jpg'
-// 2.jpg
-// 4.jpg
-// 5.jpg
-// 6.jpg
-// 8.jpg
-// serpentine-dancer
+/**
+ * A collection of all existing cards in this game.
+ * @type {import("../game/cards.js").CARD[]}
+ */
+export const cards = []
+
+/**
+ * A map of card names to their upgrade function.
+ */
+export const cardUpgrades = {}
+
+// Use Vite's glob import to import all cards.
+// const modules = import.meta.glob('./cards/*.js', {eager: true})
+
+// Fill out the cards and upgrades maps.
+// for (const module of Object.values(modules)) {
+for (const fileName of cardIndex) {
+	const module = await import(`./cards/${fileName}.js`)
+	// cards[module.default.name] = module.default
+	cards.push(module.default)
+	cardUpgrades[module.default.name] = module.upgrade
+}
+
+// for (const card of cardIndex) {
+// 	const module = await import(`./cards/${card.name}.js`)
+// 	console.log(card, module)
+// 	// cards[card.name] = module.default
+// 	// upgrades[card.name] = module.upgrade
+// }
+
+// adrenaline,
+// bash,
+// bludgeon,
+// bodySlam,
+// clash,
+// cleave,
+// defend,
+// flourish,
+// intimidate,
+// ironWave,
+// maskOfTheFaceless,
+// pommelStrike,
+// ritualRain,
+// soulDrain,
+// strike,
+// succube,
+// suckerPunch,
+// summerOfSam,
+// terror,
+// thunderclap,
+// voodooEducation,
+// ]
+
+// import adrenaline, {upgrade as upgradeAdrenaline} from './cards/adrenaline.js'
+// import bash, {upgrade as upgradeBash} from './cards/bash.js'
+// import bludgeon, {upgrade as upgradeBludgeon} from './cards/bludgeon.js'
+// import bodySlam, {upgrade as upgradeBodySlam} from './cards/body-slam.js'
+// import clash, {upgrade as upgradeClash} from './cards/clash.js'
+// import cleave, {upgrade as upgradeCleave} from './cards/cleave.js'
+// import defend, {upgrade as upgradeDefend} from './cards/defend.js'
+// import flourish, {upgrade as upgradeFlourish} from './cards/flourish.js'
+// import intimidate, {upgrade as upgradeIntimidate} from './cards/intimidate.js'
+// import ironWave, {upgrade as upgradeIronWave} from './cards/iron-wave.js'
+// import maskOfTheFaceless, {
+// 	upgrade as upgradeMaskOfTheFaceless,
+// } from './cards/mask-of-the-faceless.js'
+// import pommelStrike, {upgrade as upgradePommelStrike} from './cards/pommel-strike.js'
+// import ritualRain, {upgrade as upgradeRitualRain} from './cards/ritual-rain.js'
+// import soulDrain, {upgrade as upgradeSoulDrain} from './cards/soul-drain.js'
+// import strike, {upgrade as upgradeStrike} from './cards/strike.js'
+// import succube, {upgrade as upgradeSuccube} from './cards/succube.js'
+// import suckerPunch, {upgrade as upgradeSuckerPunch} from './cards/sucker-punch.js'
+// import summerOfSam, {upgrade as upgradeSummerOfSam} from './cards/summer-of-sam.js'
+// import terror, {upgrade as upgradeTerror} from './cards/terror.js'
+// import thunderclap, {upgrade as upgradeThunderclap} from './cards/thunderclap.js'
+// import voodooEducation, {upgrade as upgradeVoodooEducation} from './cards/voodoo-education.js'
+
+// const cardModules = import.meta.glob('../content/cards/*.js', {eager: true})
+// console.log(cardModules)
+// const cards = Object.entries(cardModules).map([key, module] => {
+// })
