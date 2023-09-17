@@ -23,9 +23,9 @@ import {dungeonWithMap} from '../content/dungeon-encounters.js'
 /**
  * The big "game state" object
  * @typedef {object} State
- * @prop {Number} createdAt
- * @prop {Number} endedAt
- * @prop {Boolean} won
+ * @prop {number} createdAt
+ * @prop {number} endedAt
+ * @prop {boolean} won
  * @prop {number} turn
  * @prop {Array} deck
  * @prop {Array} drawPile

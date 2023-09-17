@@ -1,8 +1,8 @@
-import {html, render} from './lib.js'
-import {getRuns} from '../game/backend.js'
-import './styles/index.css'
+import {html, render} from '../lib.js'
+import {getRuns} from '../../game/backend.js'
+import '../styles/index.css'
 
-const StatsPage = (props) => html`
+const StatsPage = ({runs}) => html`
 	<article class="Splash">
 		<p><a href="/" class="Button">Back</a></p>
 		<div class="Article">
@@ -16,29 +16,34 @@ const StatsPage = (props) => html`
 				<thead>
 					<tr>
 						<th>Date</th>
-						<th>Name</th>
+						<th>Player</th>
 						<th>Win?</th>
 						<th>Floor</th>
+						<th>Moves</th>
 						<th>Health</th>
+						<th>Cards</th>
 						<th>Time</th>
 					</tr>
 				</thead>
 				<tbody>
-					${props.runs?.length
-						? props.runs.map((run) => {
-								const date = new Intl.DateTimeFormat('en', {
+					${runs?.length
+						? runs.map((run) => {
+								const state = run.gameState
+								// const past = run.gamePast
+								let date = new Intl.DateTimeFormat('en', {
 									dateStyle: 'long',
 									timeStyle: 'short',
-								}).format(new Date(run.createdAt))
-								const duration = run.state.endedAt
-									? (run.state.endedAt - run.state.createdAt) / 1000 + 's'
-									: ''
+									hour12: false,
+								}).format(new Date(state.createdAt))
+								const duration = state.endedAt ? (state.endedAt - state.createdAt) / 1000 + 's' : ''
 								return html`<tr>
 									<td>${date}</td>
-									<td>${run.name}</td>
-									<td>${run.win ? 'WIN' : 'LOSS'}</td>
-									<td>${run.state.turn}</td>
-									<td>${run.state.player.currentHealth}</td>
+									<td>${run.player}</td>
+									<td>${state.won ? 'WIN' : 'LOSS'}</td>
+									<td>${state.turn}</td>
+									<td>${run.gamePast.length}</td>
+									<td>${state.player.currentHealth}</td>
+									<td>${run.gameState.deck.length}</td>
 									<td>${duration}</td>
 								</tr>`
 						  })

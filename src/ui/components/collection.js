@@ -1,9 +1,9 @@
-import {html, render} from './lib.js'
-import cards from '../content/cards.js'
+import {html, render} from '../lib.js'
+import cards from '../../content/cards.js'
 import {Card} from './cards.js'
-import './styles/index.css'
+import '../styles/index.css'
 
-const CollectionPage = (props) => html`
+const CollectionPage = () => html`
 	<article class="Splash">
 		<p><a href="/" class="Button">Back</a></p>
 		<h2>${cards.length} Card Collection</h2>

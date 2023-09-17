@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import {uuid, shuffle, random as randomBetween, pick} from '../utils.js'
-import {emojiFromNodeType} from '../ui/map.js'
+import {emojiFromNodeType} from '../ui/components/map.js'
 import {easyMonsters, monsters, elites, bosses} from '../content/dungeon-encounters.js'
 import {StartRoom, CampfireRoom} from './rooms.js'
 

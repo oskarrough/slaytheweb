@@ -1,4 +1,4 @@
-import {html} from './lib.js'
+import {html} from '../lib.js'
 
 const WinScreen = (props) => html`
 	<article class="Splash">

@@ -11,7 +11,7 @@ import ActionManager from './action-manager.js'
  * @prop {Function} dequeue - runs the oldest "future" action, and stores result in the "past"
  * @prop {Function} undo - undoes the last "past" action
  * @prop {{list: Array<{type: string}>}} future
- * @prop {{list: Array<{type: string, state: State}>}} past
+ * @prop {{list: Array<{action: string, state: State}>}} past
  */
 
 /**
