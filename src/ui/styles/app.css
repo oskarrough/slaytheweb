@@ -352,6 +352,7 @@ h2 {
 	padding: 1em 2em;
 	border-top: 1px solid white;
 	border-right: 2px solid hsla(0, 0%, 0%, 0.9);
+	border-radius: 3px;
 }
 .Splash .Article {
 	text-align: left;
@@ -362,6 +363,15 @@ h2 {
 .Article tbody {
 	font-size: smaller;
 }
+.Article--book {
+	max-width: 100ch;
+	background: hsl(15deg 100% 2.35%);
+	color: hsl(0deg 0% 95%);
+	border-top-color: hsla(0, 0%, 0%, 0.9);
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .Splash-spoder {
 	width: 10%;
 	position: absolute;

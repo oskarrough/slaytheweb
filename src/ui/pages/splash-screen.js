@@ -46,7 +46,7 @@ export default class SplashScreen extends Component {
 								get 3 energy every turn.
 							</p>
 							<p>
-								Cards can deal damage to monsters, block enemy attacks or make them weak or
+								Cards may deal damage to monsters, block enemy attacks or make them weak or
 								vulnerable. They can heal you and other things. You'll figure it out.
 							</p>
 							<p>Beware, whenever you end your turn, the monsters take turn.</p>
@@ -55,11 +55,7 @@ export default class SplashScreen extends Component {
 								to the next room. Maybe there will be rewards. Can you reach the end?
 							</p>
 							<p>
-								The game is
-								<a href="https://github.com/oskarrough/slaytheweb" rel="noreferrer" target="_blank"
-									>open source</a
-								>
-								and it'd be wonderful with more contributors
+								The game is inspired by Slay the Spire and the <a href="https://github.com/oskarrough/slaytheweb" rel="noreferrer" target="_blank">source code is open</a>. It'd be wonderful with more contributors
 							</p>
 						</div>
 					`
