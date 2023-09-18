@@ -1,0 +1,19 @@
+{
+  "name": "slaytheweb",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/preact": "^3.0.0",
+    "astro": "^3.1.0",
+    "gsap": "^3.12.2",
+    "preact": "^10.6.5",
+    "tone": "next"
+  }
+}

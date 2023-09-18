@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Card from '../components/Card.astro'
+// import Cards from '../../ui/components/cards.js'
+import {cards} from '../content/cards.js'
+// console.log(cards)
+---
+
+<Layout>
+  <main>
+    <p><a href="/" class="Button">Back</a></p>
+    <h1>{cards.length} Card Collection</h1>
+    <div class="Cards Cards--grid">
+      {cards.map((card) => <Card card={card} />)}
+    </div>
+  </main>
+</Layout>
