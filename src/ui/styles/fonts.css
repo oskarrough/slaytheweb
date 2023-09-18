@@ -3,7 +3,7 @@
 	font-style: normal;
 	font-weight: normal;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_3_regular.woff2') format('woff2');
 }
 
@@ -12,7 +12,7 @@
 	font-style: italic;
 	font-weight: normal;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_3_italic.woff2') format('woff2');
 }
 
@@ -21,7 +21,7 @@
 	font-style: normal;
 	font-weight: bold;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_3_bold.woff2') format('woff2');
 }
 
@@ -30,7 +30,7 @@
 	font-style: italic;
 	font-weight: bold;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_3_bold_italic.woff2') format('woff2');
 }
 @font-face {
@@ -38,7 +38,7 @@
 	font-style: normal;
 	font-weight: normal;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_3_caps_regular.woff2') format('woff2');
 }
 
@@ -47,7 +47,7 @@
 	font-style: normal;
 	font-weight: bold;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_3_caps_bold.woff2') format('woff2');
 }
 @font-face {
@@ -55,7 +55,7 @@
 	font-style: normal;
 	font-weight: normal;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_regular.woff2') format('woff2');
 }
 
@@ -64,7 +64,7 @@
 	font-style: italic;
 	font-weight: normal;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_italic.woff2') format('woff2');
 }
 
@@ -73,7 +73,7 @@
 	font-style: normal;
 	font-weight: bold;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_bold.woff2') format('woff2');
 }
 
@@ -82,7 +82,7 @@
 	font-style: italic;
 	font-weight: bold;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_bold_italic.woff2') format('woff2');
 }
 @font-face {
@@ -90,7 +90,7 @@
 	font-style: normal;
 	font-weight: normal;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_caps_regular.woff2') format('woff2');
 }
 
@@ -99,7 +99,7 @@
 	font-style: normal;
 	font-weight: bold;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_caps_bold.woff2') format('woff2');
 }
 @font-face {
@@ -107,7 +107,7 @@
 	font-style: normal;
 	font-weight: normal;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_6_regular.woff2') format('woff2');
 }
 
@@ -116,7 +116,7 @@
 	font-style: italic;
 	font-weight: normal;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_6_italic.woff2') format('woff2');
 }
 @font-face {
@@ -124,7 +124,7 @@
 	font-style: normal;
 	font-weight: normal;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_6_caps_regular.woff2') format('woff2');
 }
 @font-face {
@@ -132,7 +132,7 @@
 	font-style: normal;
 	font-weight: normal;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_8_regular.woff2') format('woff2');
 }
 
@@ -141,7 +141,7 @@
 	font-style: italic;
 	font-weight: normal;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_8_italic.woff2') format('woff2');
 }
 @font-face {
@@ -149,6 +149,6 @@
 	font-style: normal;
 	font-weight: normal;
 	font-stretch: normal;
-	font-display: auto;
+	font-display: swap;
 	src: url('https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_8_caps_regular.woff2') format('woff2');
 }
