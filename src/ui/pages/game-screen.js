@@ -1,7 +1,7 @@
 import {html, Component} from '../lib.js'
 import gsap from '../animations.js'
 // @ts-ignore
-import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
+import Flip from 'gsap/Flip'
 
 // Game logic
 import createNewGame from '../../game/new-game.js'

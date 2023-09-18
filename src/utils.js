@@ -2,6 +2,7 @@
 
 /**
  * Creates a random-looking string for ids.
+ * @param {number} [a]
  * @returns {string}
  */
 export function uuid(a) {
