@@ -349,12 +349,7 @@ stw.dealCards()`)
 				<//>
 
 				<${OverlayWithButton} id="Map" open topright key=${1}>
-					${
-						room.type !== 'start' &&
-						html`<button align-right onClick=${() => this.toggleOverlay('#Map')}>
-							<u>M</u>ap
-						</button>`
-					}
+					<button align-right onClick=${() => this.toggleOverlay('#Map')}><u>M</u>ap</button>
 					<div class="Overlay-content">
 						<${Map} dungeon=${state.dungeon} onMove=${this.handleMapMove} />
 					</div>
