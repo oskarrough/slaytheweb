@@ -19,7 +19,8 @@ const abandonGame = () => (window.location.href = window.location.origin)
 export default function Menu({game, gameState, onUndo}) {
 	return html`
 		<div class="Container">
-			<h1 medium>Slay the Web</h1>
+			<h1>Slay the Web</h1>
+			<h2>Menu</p>
 			<div class="Box">
 				<ul class="Options">
 					<li>

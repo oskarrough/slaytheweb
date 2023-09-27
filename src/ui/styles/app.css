@@ -337,11 +337,14 @@ h2 {
 .Container {
 	min-height: 100vh;
 	display: flex;
-	/* justify-content: center; */
 	margin: auto;
 	flex-flow: column;
 	text-align: center;
 	padding: 0 1rem;
+}
+
+.Container--center {
+	justify-content: center;
 }
 
 .Splash-spoder {
@@ -359,7 +362,7 @@ h2 {
 	padding: 1rem;
 	border-radius: 1em;
 	border: 2px solid hsla(17, 6%, 3%, 1);
-	/* max-width: 20rem; */
+	min-width: 15rem;
 	margin: 0.5rem auto;
 }
 
@@ -371,6 +374,10 @@ h2 {
 	text-align: left;
 }
 
+.Box--text a {
+	color: var(--teal);
+	text-decoration-thickness: from-font;
+}
 
 .Box--full {
 	max-width: 60rem;
@@ -380,8 +387,9 @@ h2 {
 	/* margin-top: 0.5rem; */
 }
 
-.Box--text p {
-	/* font-size: larger; */
+.Box h2,
+.Box h3 {
+	text-shadow: none;
 }
 
 .Header {
@@ -390,7 +398,6 @@ h2 {
 }
 
 .Options {
-	min-width: 15rem;
 	display: flex;
 	flex-flow: column nowrap;
 	gap: 1rem;
