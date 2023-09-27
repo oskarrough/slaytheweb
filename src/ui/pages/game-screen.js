@@ -255,7 +255,7 @@ stw.dealCards()`)
 				<figure class="App-background" data-room-index=${state.dungeon.y}></div>
 
 				${
-					room.type === 'start DISABLED' &&
+					room.type === 'start' &&
 					html`<${Overlay}><${StartRoom} onContinue=${this.goToNextRoom} /><//>`
 				}
 
@@ -348,7 +348,7 @@ stw.dealCards()`)
 					</div>
 				<//>
 
-				<${OverlayWithButton} id="Map" open topright key=${1}>
+				<${OverlayWithButton} id="Map" topright key=${1}>
 					<button align-right onClick=${() => this.toggleOverlay('#Map')}><u>M</u>ap</button>
 					<div class="Overlay-content">
 						<${Map} dungeon=${state.dungeon} onMove=${this.handleMapMove} />
