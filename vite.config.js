@@ -44,6 +44,7 @@ export default defineConfig({
 				collection: resolve('collection.html'),
 				stats: resolve('stats.html'),
 				text: resolve('text.html'),
+				manual: resolve('manual.html'),
 			},
 		},
 	},
