@@ -3,13 +3,24 @@ import {getRuns} from '../../game/backend.js'
 import '../styles/index.css'
 
 const StatsPage = ({runs}) => html`
-	<article class="Splash">
-		<p><a href="/" class="Button">Back</a></p>
-		<div class="Article Article--book">
+	<article class="Container">
+		<header class="Header">
+			<h1 medium>Slay the Web</h1>
 			<h2>Highscores & Statistics</h2>
-			<p>A chronological list of Slay the Web runs.<br/>
-				There is quite a bit of statistics that could be gathered from the runs. For now, this
-				is what we have:
+			<img class="Splash-spoder" src="/images/spoder.png" title="Oh hello" />
+		</header>
+
+		<div class="Box">
+			<ul class="Options">
+				<li><a class="Button" href="/">Back</a></li>
+			</ul>
+		</div>
+
+		<div class="Box Box--text Box--full">
+			<p>
+				A chronological list of Slay the Web runs.<br />
+				There is quite a bit of statistics that could be gathered from the runs. For now, this is
+				what we have:
 			</p>
 			<table>
 				<thead>
@@ -20,8 +31,8 @@ const StatsPage = ({runs}) => html`
 						<th>Moves</th>
 						<th>Health</th>
 						<th>Cards</th>
-						<th align=right>Time</th>
-						<th align=right>Date</th>
+						<th align="right">Time</th>
+						<th align="right">Date</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -41,8 +52,8 @@ const StatsPage = ({runs}) => html`
 									<td>${run.gamePast.length}</td>
 									<td>${state.player.currentHealth}</td>
 									<td>${run.gameState.deck.length}</td>
-									<td align=right>${duration}</td>
-									<td align=right>${date}</td>
+									<td align="right">${duration}</td>
+									<td align="right">${date}</td>
 								</tr>`
 						  })
 						: 'Loading...'}
