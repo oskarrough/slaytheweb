@@ -295,7 +295,9 @@ stw.dealCards()`)
 									/>
 							  `
 							: html`<p center>Added <strong>${state.didPickCard.name}</strong> to your deck.</p>`}
-						<p center><button onclick=${() => this.goToNextRoom()}>Continue to the next room</button></p>
+						<p center>
+							<button onclick=${() => this.goToNextRoom()}>Continue to the next room</button>
+						</p>
 					<//> `
 				}
 

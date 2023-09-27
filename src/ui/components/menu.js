@@ -39,15 +39,17 @@ export default function Menu({game, gameState, onUndo}) {
 
 			<${History} future=${game.future.list} past=${game.past.list} />
 
-			${game.past.list.length &&
-			html`<p>
-				<button onclick=${() => onUndo()}>
-					<u>U</u>
-					ndo
-				</button>
+			${
+				game.past.list.length &&
+				html`<p>
+					<button onclick=${() => onUndo()}>
+						<u>U</u>
+						ndo
+					</button>
 
-				<br />
-			</p>`}
+					<br />
+				</p>`
+			}
 
 			<p style="margin-top:auto">
 				<a rel="noreferrer" target="_blank" href="https://github.com/oskarrough/slaytheweb"
