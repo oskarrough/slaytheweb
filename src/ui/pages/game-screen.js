@@ -21,6 +21,8 @@ import {Overlay, OverlayWithButton} from '../components/overlays.js'
 import {Player, Monster} from '../components/player.js'
 import {PublishRun} from '../components/publish-run.js'
 import {saveToUrl, loadFromUrl} from '../save-load.js'
+
+// Pages?
 import StartRoom from './start-room.js'
 
 // Temporary hack to disabled sounds without touching game code.
@@ -81,6 +83,7 @@ export default class App extends Component {
 		// Enable a "console" in the browser.
 		// @ts-ignore
 		window.stw = {
+			uiComponent: this,
 			game: this.game,
 			update: this.update.bind(this),
 			saveGame: (state) => saveToUrl(state || this.state),
@@ -254,17 +257,14 @@ stw.dealCards()`)
 			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
 				<figure class="App-background" data-room-index=${state.dungeon.y}></div>
 
-				${
-					room.type === 'start' &&
-					html`<${Overlay}><${StartRoom} onContinue=${this.goToNextRoom} /><//>`
-				}
+				${room.type === 'start' && html`<${Overlay}><${StartRoom} onContinue=${this.goToNextRoom} /><//>`}
 
 				${
 					this.isDead &&
 					html`<${Overlay}>
 						<p>You are dead.</p>
 						<${PublishRun} game=${this.game}><//>
-						<${DungeonStats} state=${state}><//>
+						<${DungeonStats} dungeon=${state.dungeon}><//>
 						<button onclick=${() => this.props.onLoose()}>Try again?</button>
 					<//> `
 				}
@@ -274,7 +274,7 @@ stw.dealCards()`)
 					html`<${Overlay}>
 						<h1>You won!</h1>
 						<${PublishRun} game=${this.game}><//>
-						${DungeonStats} state=${state}><//>
+						<${DungeonStats} dungeon=${state.dungeon}><//>
 						<p><button onclick=${() => this.props.onWin()}>Continue</button></p>
 					<//> `
 				}
