@@ -9,6 +9,12 @@ export default class Cards extends Component {
 	}
 }
 
+/**
+ * Renders a card
+ * @param {import('../../game/cards.js').CARD} card
+ * @param {import('../../game/actions.js').State} gameState
+ * @returns {?}
+ */
 export function Card(card, gameState) {
 	const isDisabled = !canPlay(gameState, card)
 	const image = card.image ? `/images/cards/${card.image}` : '/images/cards/fallback.jpg'

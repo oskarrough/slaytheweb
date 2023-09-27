@@ -5,9 +5,7 @@ export function Overlay(props) {
 	return html`
 		<div class="Overlay" topleft open>
 			<div class="Overlay-content">
-				<div class="Splash">
-					<div class="Splash-details">${props.children}</div>
-				</div>
+				${props.children}
 			</div>
 			<figure class="Overlay-bg"></figure>
 		</div>

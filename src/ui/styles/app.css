@@ -10,12 +10,15 @@ html {
 	color: var(--text);
 	cursor: url(/images/cursors/default.png), auto;
 	min-height: 100%;
-	background: url('/images/scenes/dalle5.jpg');
+	background-color: var(--bg);
+	/* background: url('/images/scenes/dalle5.webp'); */
 	background-attachment: fixed;
 	/* background-position: center bottom; */
 	background-position: 50%;
 	background-size: cover;
 	background-repeat: no-repeat;
+	overflow-x: hidden;
+	overflow-y: scroll;
 }
 
 /* Minimum font size */
@@ -109,10 +112,15 @@ input[type="text"] {
 	min-height: 2rem;
 }
 
+tbody {
+	font-size: smaller;
+}
+
+
 h1 {
-	transform: rotate3d(5, 15, 3, -20deg);
+	transform: rotate3d(5, 15, 3, -13deg);
 	margin-top: 2rem;
-	font-size: 5rem;
+	font-size: 4rem;
 	margin-bottom: -1rem;
 	/* background-image: linear-gradient(63deg, var(--yellow), hsl(17, 80%, 60%), hsl(0, 97.2%, 42.7%)); */
 	background-image: linear-gradient(68deg, #ffd75f, hsl(39.3, 100%, 60.8%), hsl(0, 28.1%, 17.5%));
@@ -122,9 +130,6 @@ h1 {
 	text-shadow: 2px 3px hsla(240, 89%, 4%, 0.1);
 	letter-spacing: -2px;
 	line-height: 1;
-}
-h1[medium] {
-	font-size: 3rem;
 }
 h2,
 h3 {
@@ -258,6 +263,7 @@ h2 {
 	box-shadow: 0 0 0.1em var(--lightblue);
 	margin-left: 1rem;
 	transition: background 700ms;
+	user-select: none;
 }
 .EnergyBadge > span {
 	transform: rotate(-45deg);
@@ -328,48 +334,17 @@ h2 {
 	z-index: 1;
 }
 
-.Splash {
+.Container {
 	min-height: 100vh;
 	display: flex;
-	justify-content: center;
 	margin: auto;
 	flex-flow: column;
 	text-align: center;
 	padding: 0 1rem;
 }
-.Splash-details {
-	width: 100%;
-	max-width: 35rem;
-	text-align: left;
-	margin: 0 auto;
-	position: relative;
-	z-index: 2;
-}
-.Article {
-	/* margin-top: 24vh; */
-	background: whitesmoke;
-	color: #222;
-	padding: 1em 2em;
-	border-top: 1px solid white;
-	border-right: 2px solid hsla(0, 0%, 0%, 0.9);
-	border-radius: 3px;
-}
-.Splash .Article {
-	text-align: left;
-}
-.Article h2 {
-	text-shadow: none;
-}
-.Article tbody {
-	font-size: smaller;
-}
-.Article--book {
-	max-width: 100ch;
-	background: hsl(15deg 100% 2.35%);
-	color: hsl(0deg 0% 95%);
-	border-top-color: hsla(0, 0%, 0%, 0.9);
-	margin-left: auto;
-	margin-right: auto;
+
+.Container--center {
+	justify-content: center;
 }
 
 .Splash-spoder {
@@ -380,19 +355,58 @@ h2 {
 	transform: rotate(130deg);
 }
 
+.Box,
+.Box--text {
+	background: hsla(17, 6%, 53%, 1);
+	color: hsl(17, 6%, 7%);
+	padding: 1rem;
+	border-radius: 1em;
+	border: 2px solid hsla(17, 6%, 3%, 1);
+	min-width: 15rem;
+	margin: 0.5rem auto;
+}
+
+.Box--text {
+	/* background: hsla(17, 6%, 53%, 1); */
+	background: var(--text-inverse);
+	color: inherit;
+	max-width: 30rem;
+	text-align: left;
+}
+
+.Box--text a {
+	color: var(--teal);
+	text-decoration-thickness: from-font;
+}
+
+.Box--full {
+	max-width: 60rem;
+}
+
+.Box + .Box {
+	/* margin-top: 0.5rem; */
+}
+
+.Box h2,
+.Box h3 {
+	text-shadow: none;
+}
+
+.Header {
+	text-align: center;
+	margin-bottom: 1rem;
+}
+
 .Options {
+	display: flex;
+	flex-flow: column nowrap;
+	gap: 1rem;
+	margin: auto;
 	list-style: none;
 	padding: 0;
-	max-width: 30em;
-	margin-left: auto;
-	margin-right: auto;
-	background: hsla(17, 6%, 53%, 1);
-	padding: 0.25rem;
-	border-radius: 1em;
-	border: 2px solid black;
 }
 .Options > li {
-	margin: 1rem;
+	text-align: center;
 }
 .Options .Button,
 .Options button {

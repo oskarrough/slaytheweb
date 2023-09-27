@@ -19,8 +19,8 @@ export default class HistoryQueue extends Component {
 		// <h2>Future ${time}</h2>
 		// <${List} items=${props.future} />
 		return html`
-			<div class="History">
-				<h3>Your past ${time}</h3>
+			<div class="Box">
+				<h2>Your past...<br/>${time}</h2>
 				<${List} items=${props.past} />
 			</div>
 		`
@@ -30,7 +30,7 @@ export default class HistoryQueue extends Component {
 function List({items}) {
 	if (!items.length) return html` <p>...is uncertain.</p> `
 	return html`
-		<ol>
+		<ol style="text-align:left">
 			${items.map(Item)}
 		</ol>
 	`

@@ -89,7 +89,8 @@
 
 /* Inside overlays cards are allowed to wrap */
 .Overlay[open] .Cards {
-	flex-wrap: wrap;
+	margin-top: 4rem;
 	gap: 1rem;
+	flex-wrap: wrap;
 	align-content: center;
 }

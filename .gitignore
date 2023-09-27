@@ -5,7 +5,7 @@ dist/
 dev-dist/
 docs/
 node_modules/
-# package-lock.json
+package-lock.json
 yarn-error.log
 yarn.lock
 .log

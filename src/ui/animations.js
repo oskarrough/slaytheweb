@@ -1,7 +1,6 @@
 import gsap from 'gsap'
 import {Draggable} from 'gsap/Draggable.js'
-// @ts-ignore
-import Flip from 'https://slaytheweb-assets.netlify.app/gsap/Flip.js'
+import Flip from 'gsap/Flip.js'
 
 // This file contains some resuable animations/effects.
 // https://greensock.com/cheatsheet/
