@@ -8,7 +8,7 @@ const overClass = 'is-dragOver'
 
 // Makes the card fly back into the hand.
 function animateCardToHand(draggable) {
-	return gsap.to(draggable.target, {x: draggable.startX, y: draggable.startY})
+	return gsap.to(draggable.target, {x: draggable.startX, y: draggable.startY, zIndex: 0})
 }
 
 /**
