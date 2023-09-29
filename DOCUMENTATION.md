@@ -4,7 +4,7 @@ Throughout the project I've attempted to document and leave comments. Go ahead a
 
 In the root of this project you'll find configuration files as well as three folders:
 
-- [src →](src/) The web root. All code is transpiled.
+- [src →](src/) The web root. 
   - [game](src/game) contains the core game logic
   - [content](src/content) uses methods from the game engine to build cards, dungeon and monsters
   - [ui](src/ui) is the example web interface to actually play the game
@@ -117,9 +117,7 @@ You can also just run ava directly and do as you please. Example: `npm test test
 
 ## Backend
 
-With the integration of https://github.com/oskarrough/slaytheweb-backend in `game/backend.js`, you can choose to save your current run state in the Slay the Web database. Nothing but game state is stored. All runs are listed on `stats.html`.
-
-To save a run, open the browser console and run `stw.postRun()`.
+With the integration of https://github.com/oskarrough/slaytheweb-backend in `game/backend.js`, you can choose to save your current run state in the Slay the Web database. Nothing but game state & date is stored. All runs are visible on `stats.html`.
 
 ## Footnotes
 
