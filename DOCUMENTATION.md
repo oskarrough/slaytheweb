@@ -1,6 +1,8 @@
 # Documentation for Slay the Web
 
-Throughout the project I've attempted to document and leave comments. So please, go ahead and explore all folders and files. In the root of this project you'll find configuration files as well as two folders:
+Throughout the project I've attempted to document and leave comments. Go ahead and explore all folders and files.
+
+In the root of this project you'll find configuration files as well as three folders:
 
 - [src →](src/) The web root. All code is transpiled.
   - [game](src/game) contains the core game logic

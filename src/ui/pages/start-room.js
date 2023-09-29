@@ -14,7 +14,7 @@ export default class StartRoom extends Component {
 				</div>
 				<p center>
 					<button onclick=${() => (window.location.href = window.location.origin)}>
-						Nevermind, let me out
+						Let me out
 					</button>
 				</p>
 			</div>

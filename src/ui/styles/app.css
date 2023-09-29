@@ -119,8 +119,8 @@ tbody {
 
 h1 {
 	transform: rotate3d(5, 15, 3, -13deg);
-	margin-top: 2rem;
 	font-size: 4rem;
+	margin-top: 2rem;
 	margin-bottom: -1rem;
 	/* background-image: linear-gradient(63deg, var(--yellow), hsl(17, 80%, 60%), hsl(0, 97.2%, 42.7%)); */
 	background-image: linear-gradient(68deg, #ffd75f, hsl(39.3, 100%, 60.8%), hsl(0, 28.1%, 17.5%));
@@ -129,7 +129,7 @@ h1 {
 	color: transparent;
 	text-shadow: 2px 3px hsla(240, 89%, 4%, 0.1);
 	letter-spacing: -2px;
-	line-height: 1;
+	/* line-height: 1; */
 }
 h2,
 h3 {
