@@ -34,17 +34,16 @@ export const cards = []
  */
 export const cardUpgrades = {}
 
-// Use Vite's glob import to import all cards.
-const modules = import.meta.glob('./cards/*.js', {eager: true})
-for (const module of Object.values(modules)) {
-	cards.push(module.default)
-	cardUpgrades[module.default.name] = module.upgrade
-}
-
-// Fill out the cards and upgrades maps.
-// for (const fileName of cardIndex) {
-// 	const module = await import(`./cards/${fileName}.js`)
-// 	// cards[module.default.name] = module.default
+// Use Vite's glob import to import all cards. We don't use this because it'll make the project dependent on vite.
+// const modules = import.meta.glob('./cards/*.js', {eager: true})
+// for (const module of Object.values(modules)) {
 // 	cards.push(module.default)
 // 	cardUpgrades[module.default.name] = module.upgrade
 // }
+
+// Fill out the cards and upgrades maps.
+for (const fileName of cardIndex) {
+	const module = await import(`./cards/${fileName}.js`)
+	cards.push(module.default)
+	cardUpgrades[module.default.name] = module.upgrade
+}
