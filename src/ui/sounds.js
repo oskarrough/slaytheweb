@@ -130,6 +130,10 @@ const playDefenseCard = () => {
 	amSynth.triggerAttackRelease('G#2', 0.02)
 }
 
+export const toggleMute = (shouldMute) => {
+	Tone.Master.mute = shouldMute
+}
+
 export default {
 	startGame,
 	startTurn,
