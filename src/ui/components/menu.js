@@ -1,6 +1,7 @@
-import {html} from '../lib.js'
+import {html, useState} from '../lib.js'
 import History from './history.js'
 import {saveToUrl} from '../save-load.js'
+import {toggleMute} from '../sounds.js'
 
 // @ts-ignore
 const abandonGame = () => (window.location.href = window.location.origin)
@@ -17,6 +18,13 @@ const abandonGame = () => (window.location.href = window.location.origin)
  * @returns {import('preact').VNode}
  */
 export default function Menu({game, gameState, onUndo}) {
+	const [muted, setMuted] = useState(false)
+
+	function toggleSound() {
+		toggleMute(!muted)
+		setMuted(!muted)
+	}
+
 	return html`
 		<div class="Container">
 			<h1 center>Slay the Web</h1>
@@ -34,6 +42,7 @@ export default function Menu({game, gameState, onUndo}) {
 					<li>
 						<button onclick=${() => abandonGame()}>Abandon Game</button>
 					</li>
+					<li><label>Sound <input type="checkbox" checked=${!muted} onClick=${() => toggleSound()}/></label></li>
 				</ul>
 			</div>
 
