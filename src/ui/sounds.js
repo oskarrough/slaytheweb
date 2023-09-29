@@ -5,7 +5,10 @@ import * as Tone from 'tone'
 const polySynth = new Tone.PolySynth(Tone.AMSynth, {volume: -36}).toDestination()
 const amSynth = new Tone.AMSynth({volume: -14}).toDestination()
 
-Tone.start()
+export async function init() {
+	await Tone.start()
+	console.log('audio is ready')
+}
 
 function startGame() {
 	polySynth.triggerAttackRelease(['D4', 'F4', 'A4', 'C5', 'E5'], 0.7)

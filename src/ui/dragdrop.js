@@ -1,7 +1,7 @@
 import {Draggable} from 'gsap/Draggable.js'
 import {cardHasValidTarget} from '../game/utils-state.js'
 import gsap from './animations.js'
-import sfx from './sounds.js'
+import sounds from './sounds.js'
 
 // Class to add to the element we are dragging over.
 const overClass = 'is-dragOver'
@@ -20,6 +20,11 @@ function getTargetStringFromElement(el) {
 	return el.dataset.type + targetIndex
 }
 
+/**
+ *
+ * @param {Element} container
+ * @param {Function} afterRelease
+ */
 export default function enableDragDrop(container, afterRelease) {
 	const targets = container.querySelectorAll('.Target')
 	const cards = container.querySelectorAll('.Hand .Card')
@@ -27,7 +32,7 @@ export default function enableDragDrop(container, afterRelease) {
 	cards.forEach((card) => {
 		Draggable.create(card, {
 			onDragStart() {
-				sfx.selectCard()
+				sounds.selectCard()
 			},
 			// While dragging, highlight any targets we are dragging over.
 			onDrag() {
@@ -72,7 +77,7 @@ export default function enableDragDrop(container, afterRelease) {
 					afterRelease(cardEl.dataset.id, targetString, cardEl)
 				} else {
 					animateCardToHand(this)
-					sfx.cardToHand()
+					sounds.cardToHand()
 				}
 
 				// Remove active class from any other targets.

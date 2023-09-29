@@ -3,15 +3,15 @@ export default {
 	type: 'attack',
 	energy: 3,
 	target: 'enemy',
-	damage: 32,
-	description: 'Deal 32 Damage.',
+	damage: 24,
+	description: 'Deal 24 Damage.',
 	image: 'alice-holds-the-white-king.jpg',
 }
 
 export const upgrade = (card) => {
 	return {
 		...card,
-		damage: 42,
-		description: 'Deal 42 Damage.',
+		damage: 36,
+		description: 'Deal 36 Damage.',
 	}
 }

@@ -5,17 +5,14 @@ export default class StartRoom extends Component {
 		return html`
 			<div class="Container Container--centerRRRR">
 				<h1 center>It begins…</h1>
-				<h2>with a choice</h2>
-
+				<br/>
 				<div class="Box">
 					<ul class="Options">
 						<li><button onclick=${() => this.props.onContinue()}>View the map</button></li>
 					</ul>
 				</div>
 				<p center>
-					<button onclick=${() => (window.location.href = window.location.origin)}>
-						Nevermind, let me out
-					</button>
+					<a href="/">Let me out</a>
 				</p>
 			</div>
 		`
