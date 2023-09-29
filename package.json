@@ -22,7 +22,7 @@
     "c8": "^8.0.1",
     "docco": "^0.9.1",
     "eslint": "^8.50.0",
-    "eslint-config-prettier": "^8.10.0",
+    "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-jsdoc": "^46.8.2",
     "eslint-plugin-prettier": "^5.0.0",
     "prettier": "3.0.3",
@@ -34,8 +34,8 @@
     "gsap": "^3.12.2",
     "htm": "^3.1.1",
     "immer": "^10.0.2",
-    "preact": "^10.17.1",
-    "superjson": "^1.13.1",
+    "preact": "^10.18.0",
+    "superjson": "^1.13.3",
     "tone": "^14.8.49"
   },
   "release-it": {

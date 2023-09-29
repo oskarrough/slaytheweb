@@ -1,12 +1,16 @@
+# system 
 *.swp
 .DS_Store
-coverage/
-dist/
-dev-dist/
-docs/
+
+# package managers
 node_modules/
 package-lock.json
 yarn-error.log
 yarn.lock
-.log
+
+# build 
 .vercel
+coverage/
+dist/
+dev-dist/
+docs/
