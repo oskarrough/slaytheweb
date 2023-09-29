@@ -19,8 +19,8 @@ const abandonGame = () => (window.location.href = window.location.origin)
 export default function Menu({game, gameState, onUndo}) {
 	return html`
 		<div class="Container">
-			<h1>Slay the Web</h1>
-			<h2>Menu</p>
+			<h1 center>Slay the Web</h1>
+			<h2 center>Menu</p>
 			<div class="Box">
 				<ul class="Options">
 					<li>
@@ -37,25 +37,7 @@ export default function Menu({game, gameState, onUndo}) {
 				</ul>
 			</div>
 
-			<${History} future=${game.future.list} past=${game.past.list} />
-
-			${
-				game.past.list.length &&
-				html`<p>
-					<button onclick=${() => onUndo()}>
-						<u>U</u>
-						ndo
-					</button>
-
-					<br />
-				</p>`
-			}
-
-			<p style="margin-top:auto">
-				<a rel="noreferrer" target="_blank" href="https://github.com/oskarrough/slaytheweb"
-					>View source</a
-				>
-			</p>
+			<${History} future=${game.future.list} past=${game.past.list} onUndo=${onUndo} />
 		</div>
 	`
 }

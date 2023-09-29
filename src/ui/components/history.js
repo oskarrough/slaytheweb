@@ -21,23 +21,25 @@ export default class HistoryQueue extends Component {
 		return html`
 			<div class="Box">
 				<h2>Your past...<br/>${time}</h2>
-				<${List} items=${props.past} />
+				<${List} items=${props.past} onUndo=${props.onUndo} />
 			</div>
 		`
 	}
 }
 
-function List({items}) {
+function List({items, onUndo}) {
 	if (!items.length) return html` <p>...is uncertain.</p> `
 	return html`
-		<ol style="text-align:left">
+		<ol class="HistoryList">
 			${items.map(Item)}
 		</ol>
+		<p><button onclick=${() => onUndo()}><u>U</u>ndo</button></p>
 	`
 }
 
 function Item(item) {
 	return html`
-		<li key=${item}>${item.action.type} ${item.action.card && item.action.card.name}</li>
+		<li key=${item}><em>${item.action.type}</em> ${item.action.card?.name}</li>
 	`
 }
+

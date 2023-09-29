@@ -12,6 +12,7 @@ html {
 	min-height: 100%;
 	background-color: var(--bg);
 	/* background: url('/images/scenes/dalle5.webp'); */
+	background-image: url('/images/scenes/moonlit-landscape-1904.jpg');
 	background-attachment: fixed;
 	/* background-position: center bottom; */
 	background-position: 50%;
@@ -110,6 +111,10 @@ button:active {
 
 input[type="text"] {
 	min-height: 2rem;
+}
+
+table {
+	width: 100%;
 }
 
 tbody {
@@ -339,7 +344,6 @@ h2 {
 	display: flex;
 	margin: auto;
 	flex-flow: column;
-	text-align: center;
 	padding: 0 1rem;
 }
 
@@ -436,11 +440,7 @@ h2 {
 	cursor: url(/images/cursors/grab-open.png) 10 0, auto;
 }
 
-.History {
-	max-width: 30rem;
-	margin: 0 auto;
-}
-
-table {
-	width: 100%;
+.HistoryList {
+	text-align: left;
+	padding: 0 0 0 1rem;
 }
