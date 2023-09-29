@@ -2,10 +2,15 @@
 import * as Tone from 'tone'
 
 // Create synths and connect it to the main output (your speakers).
-const polySynth = new Tone.PolySynth(Tone.AMSynth, {volume: -36}).toDestination()
-const amSynth = new Tone.AMSynth({volume: -14}).toDestination()
+let polySynth
+let amSynth
 
-Tone.start()
+export async function init() {
+	await Tone.start()
+	polySynth = new Tone.PolySynth(Tone.AMSynth, {volume: -36}).toDestination()
+	amSynth = new Tone.AMSynth({volume: -14}).toDestination()
+	console.log('audio is ready')
+}
 
 function startGame() {
 	polySynth.triggerAttackRelease(['D4', 'F4', 'A4', 'C5', 'E5'], 0.7)

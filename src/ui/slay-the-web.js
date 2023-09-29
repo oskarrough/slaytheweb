@@ -2,6 +2,7 @@ import {html, render, Component} from './lib.js'
 import SplashScreen from './pages/splash-screen.js'
 import GameScreen from './pages/game-screen.js'
 import WinScreen from './pages/win-screen.js'
+import {init as initSounds} from '../ui/sounds.js'
 
 /** @enum {string} */
 const GameModes = {
@@ -25,7 +26,8 @@ class SlayTheWeb extends Component {
 		this.handleNewGame = this.handleNewGame.bind(this)
 		this.handleLoose = this.handleLoose.bind(this)
 	}
-	handleNewGame() {
+	async handleNewGame() {
+		await initSounds()
 		this.setState({gameMode: GameModes.gameplay})
 		// Clear any previous saved game.
 		window.history.pushState('', document.title, window.location.pathname)

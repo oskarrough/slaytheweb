@@ -1,6 +1,5 @@
 import {html, Component} from '../lib.js'
 import gsap from '../animations.js'
-// @ts-ignore
 import Flip from 'gsap/Flip'
 
 // Game logic
@@ -8,6 +7,9 @@ import createNewGame from '../../game/new-game.js'
 import {createCard, getCardRewards} from '../../game/cards.js'
 import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../../game/utils-state.js'
 import * as backend from '../../game/backend.js'
+
+import {saveToUrl, loadFromUrl} from '../save-load.js'
+import sounds from '../sounds.js'
 
 // UI Components
 import CampfireRoom from '../components/campfire.js'
@@ -20,17 +22,7 @@ import Menu from '../components/menu.js'
 import {Overlay, OverlayWithButton} from '../components/overlays.js'
 import {Player, Monster} from '../components/player.js'
 import {PublishRun} from '../components/publish-run.js'
-import {saveToUrl, loadFromUrl} from '../save-load.js'
-
-// Pages?
-import StartRoom from './start-room.js'
-
-// Temporary hack to disabled sounds without touching game code.
-import realSfx from '../sounds.js'
-const sfx = {}
-Object.keys(realSfx).forEach((key) => {
-	sfx[key] = () => null
-})
+import StartRoom from '../components/start-room.js'
 
 export default class App extends Component {
 	get didWin() {
@@ -65,7 +57,7 @@ export default class App extends Component {
 		const game = createNewGame()
 		this.game = game
 		this.setState(game.state, this.dealCards)
-		sfx.startGame()
+		sounds.startGame()
 
 		// If there is a saved game state, use it.
 		const savedGameState = window.location.hash && loadFromUrl()
@@ -143,7 +135,7 @@ stw.dealCards()`)
 		// Update state and re-enable dragdrop
 		this.update(() => {
 			enableDragDrop(this.base, this.playCard)
-			sfx.playCard({card, target})
+			sounds.playCard({card, target})
 
 			// Animate cloned card away
 			gsap.effects.playCard(clone).then(() => {
@@ -162,7 +154,7 @@ stw.dealCards()`)
 	}
 
 	endTurn() {
-		sfx.endTurn()
+		sounds.endTurn()
 		gsap.effects.discardHand('.Hand .Card', {
 			onComplete: reallyEndTurn.bind(this),
 		})
@@ -175,7 +167,7 @@ stw.dealCards()`)
 	// Animate the cards in and make sure any new cards are draggable.
 	dealCards() {
 		gsap.effects.dealCards('.Hand .Card')
-		sfx.startTurn()
+		sounds.startTurn()
 		enableDragDrop(this.base, this.playCard)
 	}
 
