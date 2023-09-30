@@ -63,7 +63,7 @@ export default class App extends Component {
 		if (debugMode) {
 			// this.game.enqueue({type: 'removeHealth', amount: 10, target: 'player'})
 			// this.game.enqueue({type: 'addEnergyToPlayer', amount: 10})
-			const roomIndex = game.state.dungeon.graph[1].findIndex(r => r.room)
+			const roomIndex = game.state.dungeon.graph[1].findIndex((r) => r.room)
 			this.game.enqueue({type: 'move', move: {y: 1, x: roomIndex}})
 			this.game.enqueue({type: 'iddqd'})
 			this.game.dequeue()
