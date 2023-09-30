@@ -48,6 +48,10 @@ body {
 	margin: 0;
 }
 
+[inverse] {
+	color: var(--text-inverse);
+}
+
 [center] {
 	text-align: center;
 }

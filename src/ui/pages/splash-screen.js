@@ -1,9 +1,11 @@
 import {html, Component} from '../lib.js'
+// import ReloadPrompt from '../components/reload-prompt.js'
+import VersionInfo from '../components/version-info.js'
 import gsap from '../animations.js'
 
 export default class SplashScreen extends Component {
 	componentDidMount() {
-		// gsap.from('.Splash--fadein', {duration: 0.4, autoAlpha: 0, scale: 0.98})
+		gsap.from('.Splash--fadein', {duration: 0.4, autoAlpha: 0, scale: 0.98})
 		// gsap.from('.Splash--fadein .Options', {
 		// 	// delay: 0.1,
 		// 	duration: 0.4,
@@ -11,7 +13,7 @@ export default class SplashScreen extends Component {
 		// 	autoAlpha: 0,
 		// 	scale: 0.5,
 		// })
-		// gsap.to('.Splash-spoder', {delay: 5, x: 420, y: 60, duration: 3})
+		gsap.to('.Splash-spoder', {delay: 5, x: 420, y: 60, duration: 3})
 	}
 	render(props, state) {
 		return html`
@@ -30,10 +32,11 @@ export default class SplashScreen extends Component {
 					`
 							: html`<li><button autofocus onClick=${props.onNewGame}>Play</a></li>`}
 						<li><a class="Button" href="/collection.html">Collection</a></li>
-						<li><a class="Button" href="/stats.html">Statistics</a></li>
+						<li><a class="Button" href="/stats.html">Highscores</a></li>
 						<li><a class="Button" href="/manual.html">Manual</a></li>
 					</ul>
 				</div>
+					<${VersionInfo}><//>
 			</article>
 		`
 	}
