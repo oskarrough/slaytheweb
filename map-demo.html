@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Manual for Slay the Web</title>
+		<meta name="description" content="A video card game for the web" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
+		/>
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="theme-color" content="#116f54" />
+		<meta name="msapplication-TileColor" content="#116f54" />
+		<link rel="icon" type="image/png" href="/images/favicons/favicon-512.png" sizes="512x512" />
+		<link rel="shortcut icon" href="/images/favicons/favicon.ico" />
+		<link rel="apple-touch-icon" href="/images/favicon-512.png" />
+		<link rel="stylesheet" href="/src/ui/styles/index.css" />
+		<style>
+			html {
+				background-image: none;
+			}
+			slay-map {
+				border: 5px solid red;
+				width: 500px;
+				min-height: 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="Container">
+			<div id="root"></div>
+		</div>
+
+		<script async src="/src/ui/pages/map-demo.js" type="module"></script>
+
+	</body>
+</html>
