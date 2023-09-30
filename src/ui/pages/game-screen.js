@@ -14,7 +14,6 @@ import sounds from '../sounds.js'
 // UI Components
 import CampfireRoom from '../components/campfire.js'
 import Cards from '../components/cards.js'
-import CardChooser from '../components/card-chooser.js'
 import enableDragDrop from '../dragdrop.js'
 import DungeonStats from '../components/dungeon-stats.js'
 import Map from '../components/map.js'
@@ -23,6 +22,7 @@ import {Overlay, OverlayWithButton} from '../components/overlays.js'
 import {Player, Monster} from '../components/player.js'
 import {PublishRun} from '../components/publish-run.js'
 import StartRoom from '../components/start-room.js'
+import VictoryRoom from '../components/victory-room.js'
 
 export default class App extends Component {
 	get didWin() {
@@ -205,6 +205,7 @@ stw.dealCards()`)
 		this.game.enqueue({type: 'addCardToDeck', card})
 		this.setState({didPickCard: card})
 		this.update()
+		this.goToNextRoom()
 	}
 
 	handleCampfireChoice(choice, reward) {
@@ -266,10 +267,12 @@ stw.dealCards()`)
 				${
 					state.won &&
 					html`<${Overlay}>
-						<h1>You won!</h1>
-						<${PublishRun} game=${this.game}><//>
-						<${DungeonStats} dungeon=${state.dungeon}><//>
-						<p><button onClick=${() => this.props.onWin()}>Continue</button></p>
+						<div class="Container CContainer--center">
+							<h1 center>You won!</h1>
+							<${PublishRun} game=${this.game}><//>
+							<${DungeonStats} dungeon=${state.dungeon}><//>
+							<p><button onClick=${() => this.props.onWin()}>Continue</button></p>
+						</div>
 					<//> `
 				}
 
@@ -278,20 +281,11 @@ stw.dealCards()`)
 					this.didWin &&
 					room.type === 'monster' &&
 					html`<${Overlay}>
-						<h1 center medium>Victory. Onwards!</h1>
-						${!state.didPickCard
-							? html`
-									<p center>Here is your reward. Pick a card to add to your deck.</p>
-
-									<${CardChooser}
-										cards=${getCardRewards(3)}
-										didSelectCard=${(card) => this.handlePlayerReward('addCard', card)}
-									/>
-							  `
-							: html`<p center>Added <strong>${state.didPickCard.name}</strong> to your deck.</p>`}
-						<p center>
-							<button onClick=${() => this.goToNextRoom()}>Continue to the next room</button>
-						</p>
+						<${VictoryRoom}
+							gameState=${state}
+							onSelectCard=${(card) => this.handlePlayerReward('addCard', card)}
+							onContinue=${() => this.goToNextRoom()}
+						><//>
 					<//> `
 				}
 
@@ -302,7 +296,7 @@ stw.dealCards()`)
 							gameState=${state}
 							onChoose=${this.handleCampfireChoice}
 							onContinue=${this.goToNextRoom}
-						/>
+						><//>
 					<//>`
 				}
 
