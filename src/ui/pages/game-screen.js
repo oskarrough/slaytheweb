@@ -256,7 +256,7 @@ stw.dealCards()`)
 					this.isDead &&
 					html`<${Overlay}>
 						<div class="Container">
-							<h1>You are dead</h1>
+							<h1 center>You are dead</h1>
 							<${PublishRun} game=${this.game}><//>
 							<${DungeonStats} dungeon=${state.dungeon}><//>
 							<button onClick=${() => this.props.onLoose()}>Try again?</button>
