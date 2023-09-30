@@ -258,7 +258,7 @@ stw.dealCards()`)
 							<h1>You are dead</h1>
 							<${PublishRun} game=${this.game}><//>
 							<${DungeonStats} dungeon=${state.dungeon}><//>
-							<button onclick=${() => this.props.onLoose()}>Try again?</button>
+							<button onClick=${() => this.props.onLoose()}>Try again?</button>
 						</div>
 					<//> `
 				}
@@ -269,7 +269,7 @@ stw.dealCards()`)
 						<h1>You won!</h1>
 						<${PublishRun} game=${this.game}><//>
 						<${DungeonStats} dungeon=${state.dungeon}><//>
-						<p><button onclick=${() => this.props.onWin()}>Continue</button></p>
+						<p><button onClick=${() => this.props.onWin()}>Continue</button></p>
 					<//> `
 				}
 
@@ -290,7 +290,7 @@ stw.dealCards()`)
 							  `
 							: html`<p center>Added <strong>${state.didPickCard.name}</strong> to your deck.</p>`}
 						<p center>
-							<button onclick=${() => this.goToNextRoom()}>Continue to the next room</button>
+							<button onClick=${() => this.goToNextRoom()}>Continue to the next room</button>
 						</p>
 					<//> `
 				}
@@ -327,7 +327,7 @@ stw.dealCards()`)
 							}/${state.player.maxEnergy}</span>
 					</div>
 					<p class="Actions">
-						<button class="EndTurn" onclick=${() => this.endTurn()}>
+						<button class="EndTurn" onClick=${() => this.endTurn()}>
 							<u>E</u>nd turn
 						</button>
 					</p>

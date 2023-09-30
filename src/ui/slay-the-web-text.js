@@ -69,8 +69,8 @@ export default class SlayTheWebText extends HTMLElement {
 			<p>${this.game.future.list.length} future actions in queue</p>
 			<p>${this.game.past.list.length} past actions</p>
 			<menu>
-				<button onclick=${() => this.update()}><u>U</u>pdate</button>
-				<button class="EndTurn" onclick=${() => this.endTurn()}><u>E</u>nd turn</button>
+				<button onClick=${() => this.update()}><u>U</u>pdate</button>
+				<button class="EndTurn" onClick=${() => this.endTurn()}><u>E</u>nd turn</button>
 			</menu>
 			<hr />
 			<p>block: ${state.player.block}</p>

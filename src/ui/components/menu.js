@@ -33,14 +33,14 @@ export default function Menu({game, gameState, onUndo}) {
 				<ul class="Options">
 					<li>
 						<button
-							onclick=${() => saveToUrl(gameState)}
+							onClick=${() => saveToUrl(gameState)}
 							title="Your save game will be stored in the URL. Copy it"
 						>
 							Save
 						</button>
 					</li>
 					<li>
-						<button onclick=${() => abandonGame()}>Abandon Game</button>
+						<button onClick=${() => abandonGame()}>Abandon Game</button>
 					</li>
 					<li><label>Sound <input type="checkbox" checked=${!muted} onClick=${() => toggleSound()}/></label></li>
 				</ul>

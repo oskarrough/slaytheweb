@@ -30,13 +30,13 @@ export default class CampfireRoom extends Component {
 				${isChoosingCard
 					? html`
 							<li>
-								<button onclick=${() => this.setState({isChoosingCard: false})}>Cancel</button>
+								<button onClick=${() => this.setState({isChoosingCard: false})}>Cancel</button>
 							</li>
 					  `
 					: html`
-							<li><button onclick=${() => this.rest()}>Rest</button></li>
-							<li><button onclick=${() => this.choose('upgradeCard')}>Upgrade card</button></li>
-							<li><button onclick=${() => this.choose('removeCard')}>Remove card</button></li>
+							<li><button onClick=${() => this.rest()}>Rest</button></li>
+							<li><button onClick=${() => this.choose('upgradeCard')}>Upgrade card</button></li>
+							<li><button onClick=${() => this.choose('removeCard')}>Remove card</button></li>
 					  `}
 			</ul>
 			${isChoosingCard &&
@@ -48,7 +48,7 @@ export default class CampfireRoom extends Component {
 					didSelectCard=${(card) => this.onSelectCard(card)}
 				/>`}
 			<p center>
-				<button onclick=${() => this.props.onContinue()}>No, thanks</button>
+				<button onClick=${() => this.props.onContinue()}>No, thanks</button>
 			</p>
 		`
 	}
