@@ -4,6 +4,7 @@ import gsap from '../animations.js'
 
 export default class CardChooser extends Component {
 	componentDidMount() {
+		if (!this.props.animate) return
 		// Animate all the cards in with a nice animation and staggered delay with gsap
 		const cards = this.base.querySelectorAll('.CardBox')
 		gsap.effects.dealCards(cards)

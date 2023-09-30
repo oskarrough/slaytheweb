@@ -16,15 +16,14 @@ export default function VictoryRoom(props) {
 		<div class="Container Container--center">
 			<h1 center>Victory. Onwards!</h1>
 			<h2 center>${pick(victoryRoomIntroTexts)}</h2>
-			${!state.didPickCard
-				? html`
-						<p center>Choose a card reward to add to your deck.</p>
-						<${CardChooser}
-							cards=${getCardRewards(3)}
-							didSelectCard=${(card) => props.onSelectCard(card)}
-						/>
-				  `
-				: html`<p center>Added <strong>${state.didPickCard.name}</strong> to your deck.</p>`}
+			${!state.didPickCard &&
+			html`
+				<${CardChooser}
+					animate
+					cards=${getCardRewards(3)}
+					didSelectCard=${(card) => props.onSelectCard(card)}
+				/>
+			`}
 			<ul class="Options">
 				<button onClick=${props.onContinue}>Continue to the next room</button>
 			</ul>
