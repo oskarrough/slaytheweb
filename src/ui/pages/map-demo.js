@@ -20,10 +20,8 @@ const useSyncStyle = (ref, styleKey, inputId, initialValue) => {
 	}, [ref, styleKey, inputId])
 }
 
-const Demo = () => {
-	const ref = useRef(null)
-
-	const [dungeonConfig, setDungeonConfig] = useState({
+const DungeonConfigForm = (props) => {
+	const [config, setConfig] = useState({
 		width: 10,
 		height: 6,
 		minRooms: 2,
@@ -32,84 +30,78 @@ const Demo = () => {
 		customPaths: '123',
 	})
 
-	const [dungeon, setDungeon] = useState(Dungeon(dungeonConfig))
+	const handleInput = (e, field) => {
+		const newConfig = {...config}
+		newConfig[field] = e.target.value
+		setConfig(newConfig)
+	}
 
-	useSyncStyle(ref, '--highlight', 'highlightColor', 'gold')
-	useSyncStyle(ref, '--pathColor', 'pathColor', 'black')
-	useSyncStyle(ref, 'width', 'width', '500')
-	useSyncStyle(ref, 'min-height', 'minHeight', 'none')
+	useEffect(() => {
+		const dungeon = Dungeon(config)
+		props.onUpdate(dungeon)
+	}, [config])
+
+	return html`
+		<form>
+			<label>
+				Width
+				<input type="number" value=${config.width} onInput=${(e) => handleInput(e, 'width')} />
+			</label>
+			<label>
+				Height
+				<input type="number" value=${config.height} onInput=${(e) => handleInput(e, 'height')} />
+			</label>
+			<label>
+				Min Rooms
+				<input type="number" value=${config.minRooms} onInput=${(e) => handleInput(e, 'minRooms')} />
+			</label>
+			<label>
+				Max Rooms
+				<input type="number" value=${config.maxRooms} onInput=${(e) => handleInput(e, 'maxRooms')} />
+			</label>
+			<label>
+				Room Types
+				<input type="text" value=${config.roomTypes} onInput=${(e) => handleInput(e, 'roomTypes')} />
+			</label>
+			<label>
+				Custom Paths
+				<input type="text" value=${config.customPaths} onInput=${(e) => handleInput(e, 'customPaths')} />
+			</label>
+		</form>
+	`
+}
+
+const Demo = () => {
+	const ref = useRef(null)
+	const [dungeon, setDungeon] = useState(Dungeon())
+
+	// useSyncStyle(ref, '--highlight', 'highlightColor', 'gold')
+	// useSyncStyle(ref, '--pathColor', 'pathColor', 'black')
+	// useSyncStyle(ref, 'width', 'width', '500')
+	// useSyncStyle(ref, 'min-height', 'minHeight', 'none')
 
 	const x = 0
 	const y = 0
 	const onSelect = (move) => {
-		console.log(move)
+		console.log('move', move)
 	}
-
-	console.log('demo', {dungeon, x, y})
 
 	return html`
 		<div class="Box">
-			<form>
+			<form hidden>
 				<fieldset>
 					<legend>Dungeon settings</legend>
-					<label
-						>Width
-						<input
-							type="number"
-							id="dungeonWidth"
-							value=${dungeonConfig.width}
-							onInput=${(event) => {
-								setDungeonConfig({...dungeonConfig, width: event.target.value})
-								setDungeon(Dungeon(dungeonConfig))
-							}}
-						/>
-					</label>
-					<label
-						>Height
-						<input
-							type="number"
-							id="dungeonHeight"
-							value=${dungeonConfig.height}
-							onInput=${(event) => {
-								setDungeonConfig({...dungeonConfig, height: event.target.value})
-								setDungeon(Dungeon(dungeonConfig))
-							}}
-						/>
-					</label>
-					<label
-						>Min Rooms
-						<input
-							type="number"
-							id="dungeonMinRooms"
-							value=${dungeonConfig.minRooms}
-							onInput=${(event) => {
-								setDungeonConfig({...dungeonConfig, minRooms: event.target.value})
-								setDungeon(Dungeon(dungeonConfig))
-							}}
-					/></label>
-					<label
-						>Max Rooms
-						<input
-							type="number"
-							id="dungeonMaxRooms"
-							value=${dungeonConfig.maxRooms}
-							onInput=${(event) => {
-								setDungeonConfig({...dungeonConfig, maxRooms: event.target.value})
-								setDungeon(Dungeon(dungeonConfig))
-							}}
-					/></label>
-					<br />
-					<label>Room Types <input type="text" id="dungeonRoomTypes" /> </label>
-					<label>Custom Paths <input type="text" id="dungeonCustomPaths" /> </label>
 				</fieldset>
 				<fieldset>
 					<legend>Styles</legend>
-					<label>Highlight color <input type="color" id="highlightColor" /></label>
-					<label>Path color <input type="color" id="pathColor" /></label>
-					<label>Width <input type="number" id="width" step="20" value="500" /></label>
-					<label>Height <input type="number" id="minHeight" step="100" value="0" /></label>
+					<label>Highlight color <input type="color" id="highlightColor" value="gold" /></label>
+					<label>Path color <input type="color" id="pathColor" value="black" /></label>
+					<!-- <label>Width <input type="number" id="width" step="20" value="500" /></label> -->
+					<!-- <label>Height <input type="number" id="minHeight" step="100" value="0" /></label> -->
 				</fieldset>
 			</form>
+
+			<${DungeonConfigForm} onUpdate=${(x) => setDungeon(x)} />
 		</div>
 
 		<${SlayMap}
@@ -118,7 +110,7 @@ const Demo = () => {
 			x=${x}
 			y=${y}
 			onSelect=${onSelect}
-			disableScatter=${false}
+			disableScatter=${true}
 			debug=${false}
 		><//>
 	`

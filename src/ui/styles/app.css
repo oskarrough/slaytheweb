@@ -72,7 +72,8 @@ select {
 	cursor: url(/images/cursors/select.png) 10 0, auto;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="number"] {
 	font-size: 1em;
 }
 
@@ -113,8 +114,9 @@ button:active {
 	box-shadow: none;
 }
 
-input[type="text"] {
-	min-height: 2rem;
+input[type="text"],
+input[type="number"] {
+	min-height: 1.5rem;
 }
 
 table {
