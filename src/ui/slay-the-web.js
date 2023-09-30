@@ -18,10 +18,9 @@ const GameModes = {
 class SlayTheWeb extends Component {
 	constructor() {
 		super()
-		this.state = {
-			// The game mode to start in.
-			gameMode: GameModes.splash,
-		}
+		const urlParams = new URLSearchParams(window.location.search)
+		const gameMode = urlParams.has('debug') ? GameModes.gameplay : GameModes.splash
+		this.state = {gameMode}
 		this.handleWin = this.handleWin.bind(this)
 		this.handleNewGame = this.handleNewGame.bind(this)
 		this.handleLoose = this.handleLoose.bind(this)
