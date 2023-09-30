@@ -28,6 +28,8 @@ export default function map(props) {
  * @param {object} props.dungeon
  * @param {number} props.x
  * @param {number} props.y
+ * @param {Boolean} props.disableScatter
+ * @param {Boolean} props.debug
  * @param {Function} props.onSelect
  */
 
@@ -35,8 +37,9 @@ export default function map(props) {
 export class SlayMap extends Component {
 	constructor(props) {
 		super()
-		this.disableScatter = props.disableScatter
 		this.didDrawPaths = false
+		this.disableScatter = props.disableScatter
+		this.debug = props.debug
 	}
 
 	componentDidMount() {
@@ -75,7 +78,7 @@ export class SlayMap extends Component {
 
 	// Draws SVG lines between the DOM nodes from the dungeon's path.
 	drawPaths() {
-		console.log('drawing map paths')
+		if (this.debug) console.log('drawing map paths')
 		this.props.dungeon.paths.forEach((path, index) => {
 			this.drawPath(path, index)
 		})
@@ -84,7 +87,7 @@ export class SlayMap extends Component {
 	drawPath(path, preferredIndex) {
 		const containerElement = this.base
 		const graph = this.props.dungeon.graph
-		const debug = false
+		const debug = this.debug
 
 		const nodeFromMove = ([row, col]) => graph[row][col]
 		const elFromNode = ([row, col]) => containerElement.childNodes[row].childNodes[col]
@@ -126,7 +129,7 @@ export class SlayMap extends Component {
 			line.setAttribute('length', String(line.getTotalLength()))
 			aEl.setAttribute('linked', true)
 			bEl.setAttribute('linked', true)
-			if (debug) console.log(`Move no. ${index} is from ${a} to ${b}`)
+			if (debug) console.log(`Move ${index}`, {from: a, to: b})
 		})
 		if (debug) console.groupEnd()
 	}

@@ -17,15 +17,17 @@ slay-map {
 	--columns: 6;
 	--pathColor: darkgray;
 	--highlight: gold;
+	--nodeSize: 1.5em;
+
 	box-sizing: border-box;
 	display: grid;
 	width: 90%;
 	margin: auto;
 	/* min-height: 300vh; */
-	min-height: 150rem;
+	min-height: 125rem;
 	padding: 1em;
 	position: relative;
-	/* background: hsl(120, 17.5%, 19%); */
+	background: hsl(120, 17.5%, 19%);
 }
 
 slay-map-row {
@@ -49,7 +51,7 @@ slay-map-node {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 1.5em;
+	font-size: var(--nodeSize);
 	border: 3px dashed transparent;
 	position: relative;
 	z-index: 2;
