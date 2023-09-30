@@ -360,7 +360,8 @@ stw.dealCards()`)
 				<//>
 
 				<${OverlayWithButton} id="Deck" topright topright2>
-					<button onClick=${() => this.toggleOverlay('#Deck')}><u>D</u>eck ${state.deck.length}</button>
+					<button class="tooltipped tooltipped-se" aria-label="All the cards you own" onClick=${() =>
+						this.toggleOverlay('#Deck')}><u>D</u>eck ${state.deck.length}</button>
 					<div class="Overlay-content">
 						<${Cards} gameState=${state} type="deck" />
 					</div>
@@ -375,7 +376,7 @@ stw.dealCards()`)
 				<//>
 
 				<${OverlayWithButton} id="exhaustPile" topleft topleft2>
-					<button class="tooltipped tooltipped-ne" aria-label="The cards you have exhausted" onClick=${() =>
+					<button class="tooltipped tooltipped-se" aria-label="The cards you have exhausted in this encounter" onClick=${() =>
 						this.toggleOverlay('#exhaustPile')}>E<u>x</u>haust pile ${
 						state.exhaustPile.length
 					}</button>
