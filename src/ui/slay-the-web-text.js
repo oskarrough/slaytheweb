@@ -114,7 +114,6 @@ export default class SlayTheWebText extends HTMLElement {
 				dungeon=${state.dungeon}
 				x=${state.dungeon.x}
 				y=${state.dungeon.y}
-				disableScatter=${true}
 				onSelect=${this.move.bind(this)}
 			><//>
 		`

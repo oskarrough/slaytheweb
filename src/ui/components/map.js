@@ -1,15 +1,17 @@
 import {Component, html} from '../lib.js'
-import {random as randomBetween} from '../../utils.js'
+import {debounce, random as randomBetween} from '../../utils.js'
 import {isRoomCompleted} from '../../game/utils-state.js'
 import {MapNodeTypes} from '../../game/dungeon.js'
 
-/* A wrapper around the <slay-map>. Why? */
-export default function map(props) {
-	const {x, y, pathTaken} = props.dungeon
+/**
+ * A wrapper around the <slay-map>. Why?
+ */
+export default function map({dungeon, onMove}) {
+	const {x, y, pathTaken} = dungeon
 
 	return html`
 		<div class="MapContainer">
-			<${SlayMap} dungeon=${props.dungeon} x=${x} y=${y} onSelect=${props.onMove}><//>
+			<${SlayMap} dungeon=${dungeon} x=${x} y=${y} scatter=${20} onSelect=${onMove}><//>
 
 			<footer class="MapFooter">
 				<h2>History</h2>
@@ -28,16 +30,17 @@ export default function map(props) {
  * @param {object} props.dungeon
  * @param {number} props.x - starting column
  * @param {number} props.y - starting row
- * @param {Boolean} props.disableScatter - whether to visually move the nodes randomly a bit
+ * @param {number} props.scatter - whether to visually move the nodes randomly a bit
  * @param {Function} props.onSelect - function called on map node select
- * @param {Boolean} props.debug - if true, will console.log things
+ * @param {boolean} props.debug - if true, will console.log things
  */
 export class SlayMap extends Component {
 	constructor(props) {
 		super()
 		this.didDrawPaths = false
-		this.disableScatter = props.disableScatter
 		this.debug = props.debug
+		// this.drawPathsThrottled = throttle(this.drawPaths.bind(this), 500)
+		this.drawPathsDebounced = debounce(this.drawPaths.bind(this), 300, {leading: true, trailing: true})
 	}
 
 	componentDidMount() {
@@ -45,7 +48,7 @@ export class SlayMap extends Component {
 		this.setState({universe: 42})
 	}
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate(prevProps) {
 		const newDungeon = this.props.dungeon.id !== prevProps.dungeon.id
 
 		// Let CSS know about the amount of rows and cols we have.
@@ -53,19 +56,33 @@ export class SlayMap extends Component {
 		this.base.style.setProperty('--columns', Number(this.props.dungeon.graph[1].length))
 
 		// Add references to our DOM elements on the graph. Why?
-		// We skip setState, because we don't want a rerender
+		// if (!this.didDrawPaths) this.drawPaths()
 		if (newDungeon || !this.didDrawPaths) {
-			this.didDrawPaths = true
-			if (!this.disableScatter) this.scatter()
-			const resizeObserver = new ResizeObserver(() => {
-				this.drawPaths()
+			// this.drawPathsThrottled()
+			this.drawPathsDebounced()
+			this.scatterNodes()
+		}
+
+		if (!this.resizeObserver) {
+			// const delay = 1000 // Set to a bit higher than your max time, like 500ms
+			// let timer
+			// console.log('new observer')
+			this.resizeObserver = new ResizeObserver(() => {
+				// debounce
+				this.drawPathsDebounced()
+				// clearTimeout(timer)
+				// timer = setTimeout(() => {
+				// 	this.drawPaths()
+				// }, delay)
 			})
-			resizeObserver.observe(this.base)
+			this.resizeObserver.observe(this.base)
 		}
 	}
 
 	// Shake the positions up a bit.
-	scatter(distance = 40) {
+	scatterNodes() {
+		const distance = Number(this.props.scatter)
+		if (!distance) return
 		if (this.debug) console.log('scattering map nodes with a type')
 		const nodes = this.base.querySelectorAll('slay-map-node[type]')
 		nodes.forEach((node) => {
@@ -78,8 +95,10 @@ export class SlayMap extends Component {
 	}
 
 	// Draws SVG lines between the DOM nodes from the dungeon's path.
+	// This is heavy work, don't do it on every render
 	drawPaths() {
-		if (this.debug) console.log(`drawing ${this.props.dungeon.paths.length} paths`)
+		if (this.debug) console.time('drawPaths')
+		if (this.debug) console.groupCollapsed(`drawing ${this.props.dungeon.paths.length} paths`)
 
 		const existingPaths = this.base.querySelectorAll(`svg.paths`)
 		for (const p of existingPaths) {
@@ -89,12 +108,17 @@ export class SlayMap extends Component {
 		this.props.dungeon.paths.forEach((path, index) => {
 			this.drawPath(path, index)
 		})
+
+		this.didDrawPaths = true
+
+		if (this.debug) console.groupEnd()
+		if (this.debug) console.timeEnd('drawPaths')
 	}
 
 	/**
 	 * Draw an svg path on a certain (column/x) index.
-	 * @param {Move[]} path
-	 * @param {Number} preferredIndex
+	 * @param {Array<object>} path
+	 * @param {number} preferredIndex
 	 */
 	drawPath(path, preferredIndex) {
 		const graph = this.props.dungeon.graph
@@ -141,7 +165,7 @@ export class SlayMap extends Component {
 			aEl.setAttribute('linked', true)
 			bEl.setAttribute('linked', true)
 
-			// if (debug) console.log(`Move ${index}`, {from: a, to: b})
+			if (debug) console.log(`Move ${index}`, {from: a, to: b})
 		})
 
 		if (debug) console.groupEnd()
@@ -176,7 +200,7 @@ export class SlayMap extends Component {
 								</slay-map-node>`
 							})}
 						</slay-map-row>
-					`
+					`,
 				)}
 			</slay-map>
 		`
@@ -200,7 +224,6 @@ export function emojiFromNodeType(type) {
  *
  * @param {HTMLElement} el
  * @param {HTMLElement} container
- * @returns {{top: number, left: number, width: number, height: number}}
  */
 function getPosWithin(el, container) {
 	if (!el) throw new Error('Could not find DOM node for graph row node')

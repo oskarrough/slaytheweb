@@ -4,6 +4,7 @@ import Dungeon, {defaultOptions as defaultDungeonOptions} from '../../game/dunge
 
 const Demo = () => {
 	const [dungeon, setDungeon] = useState(Dungeon())
+	const [scatter, setScatter] = useState(0)
 
 	const x = 0
 	const y = 0
@@ -20,7 +21,11 @@ const Demo = () => {
 		</div>
 
 		${dungeon &&
-		html` <${SlayMap} dungeon=${dungeon} x=${x} y=${y} onSelect=${onSelect} disableScatter=${true} debug=${true}><//>`}
+		html` <${SlayMap} dungeon=${dungeon} x=${x} y=${y}
+			onSelect=${onSelect}
+			scatter=${scatter}
+			debug=${true}><//>
+		`}
 	`
 }
 
@@ -29,7 +34,7 @@ const DungeonConfigForm = (props) => {
 	const [styles, setStyles] = useState(defaultDungeonOptions)
 
 	const handleInput = (e, field) => {
-		console.log('requested dungeon update', field)
+		console.log('requested dungeon config update:', field)
 		const newConfig = {...config}
 		newConfig[field] = e.target.type === 'number' ? Number(e.target.value) : e.target.value
 		setConfig(newConfig)
@@ -48,6 +53,11 @@ const DungeonConfigForm = (props) => {
 		}
 	}
 
+	const toggleDebugStyles = (e) => {
+		const el = document.querySelector('slay-map')
+		el.classList.toggle('debug')
+	}
+
 	return html`
 		<form class="Form">
 			<fieldset>
@@ -63,6 +73,7 @@ const DungeonConfigForm = (props) => {
 			</fieldset>
 			<fieldset>
 				<legend>Map size</legend>
+				<label>Debug styles <input type="checkbox" onInput=${e => toggleDebugStyles()} /></label>
 				<label>
 					Height
 					<input type="number" value="70" min="0" step="5" onInput=${(e) => handleStyleInput(e, 'min-height')} />vh

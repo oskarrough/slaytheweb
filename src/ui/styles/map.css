@@ -24,7 +24,7 @@ slay-map {
 	display: grid;
 	width: 100%;
 	margin: auto;
-	min-height: 70vh;
+	min-height: 125vh;
 	padding: 1em;
 	position: relative;
 	background: hsl(120, 17.5%, 19%);
@@ -186,10 +186,9 @@ slay-map svg.paths line {
 	}
 }
 
-/* slay-map.debug slay-map-row { outline: 1px solid green; } */
-/* slay-map.debug slay-map-node { outline: 1px solid cyan; } */
+/* slay-map.debug slay-map-row { border-bottom: 1px solid rgba(0,0,0,0.2); } */
+slay-map.debug slay-map-node { outline: 1px solid cyan; border-radius: 0;}
 /* slay-map.debug slay-map-node span { outline: 1px solid white; } */
-
 /* slay-map.debug slay-map-node[type] span { outline: 1px solid red; } */
 /* slay-map.debug slay-map-node[linked] span { outline: 1px solid red; } */
 /* slay-map.debug slay-map-node[current] span { outline: 1px solid var(--highlight); } */
