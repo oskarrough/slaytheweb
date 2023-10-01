@@ -43,7 +43,7 @@ import {StartRoom, CampfireRoom} from './rooms.js'
  */
 
 /** @type {GraphOptions} */
-const defaultOptions = {
+export const defaultOptions = {
 	width: 10,
 	height: 6,
 	minRooms: 2,

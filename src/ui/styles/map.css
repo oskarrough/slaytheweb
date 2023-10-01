@@ -15,36 +15,26 @@
 slay-map {
 	--rows: 12;
 	--columns: 6;
-	--pathColor: darkgray;
+	--pathColor: white;
+	--pathWidth: 1px;
 	--highlight: gold;
 	--nodeSize: 1.5em;
 
 	box-sizing: border-box;
 	display: grid;
-	width: 90%;
+	width: 100%;
 	margin: auto;
-	/* min-height: 300vh; */
-	min-height: 125rem;
+	min-height: 70vh;
 	padding: 1em;
 	position: relative;
 	background: hsl(120, 17.5%, 19%);
+	border-radius: 0.75rem;
 }
 
 slay-map-row {
 	display: grid;
 	grid-template-columns: repeat(var(--columns), 1fr);
-	grid-gap: 0.5em;
-}
-
-slay-map-row:first-of-type,
-slay-map-row:last-of-type {
-	grid-template-columns: repeat(var(--rows), 1fr);
-}
-slay-map-row:first-of-type slay-map-node,
-slay-map-row:last-of-type slay-map-node {
-	grid-column-start: 6;
-	grid-column-end: 8;
-	transform: none !important;
+	/* grid-gap: 0.5em; */
 }
 
 slay-map-node {
@@ -57,6 +47,21 @@ slay-map-node {
 	z-index: 2;
 	border-radius: 50%;
 	transition: opacity 250ms, border-color 250ms;
+}
+
+slay-map-row:first-of-type,
+slay-map-row:last-of-type {
+	grid-template-columns: repeat(var(--rows), 1fr);
+}
+slay-map-row:first-of-type slay-map-node,
+slay-map-row:last-of-type slay-map-node {
+	grid-column-start: 4;
+	grid-column-end: 6;
+	transform: none !important;
+}
+
+/* Styles for maps you can navigate */
+slay-map-node {
 	/* All nodes are disabled by default */
 	pointer-events: none;
 	visibility: hidden;
@@ -65,11 +70,11 @@ slay-map-node[linked] {
 	visibility: visible;
 }
 slay-map-node[did-visit] {
-	border-color: hsla(0, 0%, 0%, 0.9);
+	/* border-color: hsla(0, 0%, 0%, 0.9); */
 	opacity: 0.666;
 }
 slay-map-node:not([did-visit]) {
-	opacity: 0.5;
+	opacity: 0.333;
 }
 slay-map-node[current][type] {
 	border-color: var(--highlight);
@@ -82,7 +87,7 @@ slay-map-node[can-visit] {
 	opacity: 1;
 }
 slay-map-node[type]:hover {
-	border-color: hsla(0, 0%, 0%, 0.9);
+	/* border-color: hsla(0, 0%, 0%, 0.9); */
 	cursor: pointer;
 	cursor: url(/images/cursors/point.png) 10 0, auto;
 }
@@ -95,7 +100,6 @@ slay-map-node[type]:hover > span {
 	transition-duration: 100ms;
 }
 /* the map node-types (what happens in this node) */
-/* node-type "start" */
 slay-map-node[node-type] span {
 	user-select: none;
 	/* min-height: 3em; */
@@ -107,7 +111,6 @@ slay-map-node[node-type] span {
 	background-color: var(--bg);
 }
 
-
 /* footstep to the bottom */
 slay-map-node[node-type='start'][current] span {
 	transform: rotate(180deg);
@@ -115,12 +118,12 @@ slay-map-node[node-type='start'][current] span {
 /* the start and end nodes */
 slay-map-node[node-type='start'],
 slay-map-node[node-type='boss'] {
-	font-size: 3rem;
+	/* font-size: 3rem; */
 }
 /* "Camp" */
 slay-map-node[node-type='C'] {
-	font-size: 3rem;
-	border-style: dotted;
+	/* font-size: 3rem; */
+	/* border-style: dotted; */
 }
 /* "Monster" of normal level */
 slay-map-node[node-type='M'][current] {
@@ -158,9 +161,9 @@ slay-map svg.paths {
 }
 slay-map svg.paths line {
 	stroke: var(--pathColor);
-	stroke-width: 3px;
-	stroke-dasharray: 0.7em;
-	opacity: 0.3;
+	stroke-width: var(--pathWidth);
+	stroke-dasharray: 0.5em;
+	/* opacity: 0.3; */
 }
 
 /* map animations */
@@ -182,3 +185,12 @@ slay-map svg.paths line {
 		border-color: cyan;
 	}
 }
+
+/* slay-map.debug slay-map-row { outline: 1px solid green; } */
+/* slay-map.debug slay-map-node { outline: 1px solid cyan; } */
+/* slay-map.debug slay-map-node span { outline: 1px solid white; } */
+
+/* slay-map.debug slay-map-node[type] span { outline: 1px solid red; } */
+/* slay-map.debug slay-map-node[linked] span { outline: 1px solid red; } */
+/* slay-map.debug slay-map-node[current] span { outline: 1px solid var(--highlight); } */
+/* slay-map.debug slay-map-node[can-visit] { outline: 1px solid orange; } */

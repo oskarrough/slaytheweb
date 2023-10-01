@@ -1,9 +1,9 @@
-// @ts-nocheck
 import {Component, html} from '../lib.js'
 import {random as randomBetween} from '../../utils.js'
 import {isRoomCompleted} from '../../game/utils-state.js'
 import {MapNodeTypes} from '../../game/dungeon.js'
 
+/* A wrapper around the <slay-map>. Why? */
 export default function map(props) {
 	const {x, y, pathTaken} = props.dungeon
 
@@ -137,18 +137,19 @@ export class SlayMap extends Component {
 			line.setAttribute('y2', String(bPos.top + bPos.height / 2))
 			svg.appendChild(line)
 			line.setAttribute('length', String(line.getTotalLength()))
+
 			aEl.setAttribute('linked', true)
 			bEl.setAttribute('linked', true)
-			if (debug) console.log(`Move ${index}`, {from: a, to: b})
+
+			// if (debug) console.log(`Move ${index}`, {from: a, to: b})
 		})
+
 		if (debug) console.groupEnd()
 	}
 
 	render(props) {
 		const {dungeon, x, y} = props
-
 		if (!dungeon.graph) throw new Error('No graph to render. This should not happen?', dungeon)
-
 		const edgesFromCurrentNode = dungeon.graph[y][x].edges
 		// console.log('edges from current map node', edgesFromCurrentNode)
 
