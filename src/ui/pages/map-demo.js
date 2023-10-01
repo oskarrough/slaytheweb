@@ -13,7 +13,10 @@ const Demo = () => {
 
 	return html`
 		<div class="Box">
-			<${DungeonConfigForm} onUpdate=${(config) => setDungeon(Dungeon(config))} />
+			<details>
+				<summary>Options</summary>
+				<${DungeonConfigForm} onUpdate=${(config) => setDungeon(Dungeon(config))} />
+			</details>
 		</div>
 
 		${dungeon &&
@@ -86,7 +89,10 @@ const DungeonConfigForm = (props) => {
 					Room Types
 					<input type="text" value=${config.roomTypes} onInput=${(e) => handleInput(e, 'roomTypes')} />
 				</label>
-				<p>M for monster, E for elite, C for camp. Repeat character to increase chance of appearing. There is additional logic in the code as well, which for example increases chance of elites on higher floors.</p>
+				<p>
+					M for monster, E for elite, C for camp. Repeat character to increase chance of appearing. There is additional
+					logic in the code as well, which for example increases chance of elites on higher floors.
+				</p>
 				<label>
 					Paths to draw
 					<input
@@ -97,7 +103,8 @@ const DungeonConfigForm = (props) => {
 					/>
 				</label>
 				<p>
-					Defaults to draw one path per column. To draw paths on specific columns enter a string of indexes like <code>034</code>. This would attempt to draw three paths at those indexes.
+					Defaults to draw one path per column. To draw paths on specific columns enter a string of indexes like
+					<code>034</code>. This would attempt to draw three paths at those indexes.
 				</p>
 			</fieldset>
 		</form>

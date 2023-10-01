@@ -65,6 +65,8 @@ On `state.player` we have you, the player. This object describes the health, pow
 Every game evolves around and in a dungeon. A dungeon consists of a graph (think a 2d array with rows and columns, or positions and nodes, or floors and rooms).
 There are different types of rooms. Like Monster and Campfire. One day there'll be more like Merchant and Treasure or a "random" room.
 
+To be able to navigate a dungeon, we have the concept of a `Map`. It takes a `Dungeon` and renders the UI. Check https://slaytheweb.cards/map-demo.html. I'm biased but it's kind of cool.
+
 #### Monsters
 
 Monsters exist inside the rooms in a dungeon. A monster has health and a list of "intents" that it will take each turn. These intents are basically the AI. Monsters can do damage, block and apply powers. It's not super flexible, as we're not using actions and cards like the player does. But it is enough for now.
