@@ -90,7 +90,7 @@ export class SlayMap extends Component {
 		if (this.debug) console.time('drawPaths')
 		if (this.debug) console.groupCollapsed(`drawing ${this.props.dungeon.paths.length} paths`)
 
-		const existingPaths = this.base.querySelectorAll(`svg.paths`)
+		const existingPaths = this.base?.querySelectorAll(`svg.paths`) || []
 		for (const p of existingPaths) {
 			p.remove()
 		}
