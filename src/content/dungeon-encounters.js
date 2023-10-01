@@ -136,11 +136,11 @@ elites['The Trio'] = MonsterRoom(
 	}),
 	Monster({
 		hp: random(39, 46),
-		intents: [{damage: 10}, {weak: 1}],
+		intents: [{damage: 10}, {weak: 1}, {damage: 4}],
 	}),
 	Monster({
 		hp: random(39, 46),
-		intents: [{weak: 1}, {damage: 10}],
+		intents: [{damage: 2}, {damage: 10}, {damage: 8}],
 	}),
 )
 
