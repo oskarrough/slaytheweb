@@ -77,7 +77,7 @@ export function pick(list) {
 /**
  * A queue is a list of objects that are inserted and removed first-in-first-out (FIFO).
  */
-export default class Queue {
+export class Queue {
 	constructor(items = []) {
 		this.list = items
 	}
@@ -89,4 +89,42 @@ export default class Queue {
 	dequeue() {
 		return this.list.shift()
 	}
+}
+
+/**
+ * @param {Function} func
+ * @param {number} delay
+ * @returns {function}
+ */
+export function throttle(func, delay) {
+  let lastCall = 0
+  return function (...args) {
+    const now = new Date().getTime()
+    if (now - lastCall < delay) return
+    lastCall = now
+    return func(...args)
+  }
+}
+
+/**
+ * @param {Function} func
+ * @param {number} wait
+ * @param {object} options
+ * @prop {boolean} options.leading
+ * @prop {boolean} options.trailing
+ * @returns {function}
+ */
+export function debounce(func, wait, options = {}) {
+  let timeout
+  return function executedFunction(...args) {
+    const context = this
+    const later = function() {
+      timeout = null
+      if (options.trailing) func.apply(context, args)
+    }
+    const callNow = options.leading && !timeout
+    clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+    if (callNow) func.apply(context, args)
+  }
 }
