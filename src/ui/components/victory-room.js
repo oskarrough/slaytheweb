@@ -1,7 +1,7 @@
 import {html} from '../lib.js'
-import CardChooser from './card-chooser.js'
-import {getCardRewards} from '../../game/cards.js'
 import {pick} from '../../utils.js'
+import {getCardRewards} from '../../game/cards.js'
+import CardChooser from './card-chooser.js'
 
 /**
  *
@@ -11,17 +11,16 @@ import {pick} from '../../utils.js'
  * @returns {import('preact').VNode}
  */
 export default function VictoryRoom(props) {
-	const state = props.gameState
 	return html`
 		<div class="Container Container--center">
 			<h1 center>Victory. Onwards!</h1>
 			<h2 center>${pick(victoryRoomIntroTexts)}</h2>
-			${!state.didPickCard &&
+			${!props.gameState.didPickCard &&
 			html`
 				<${CardChooser}
 					animate
 					cards=${getCardRewards(3)}
-					didSelectCard=${(card) => props.onSelectCard(card)}
+					didSelectCard=${(card) => props.handlePlayerReward('addCard', card)}
 				/>
 			`}
 			<ul class="Options">

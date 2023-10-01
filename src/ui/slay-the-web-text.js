@@ -99,9 +99,7 @@ export default class SlayTheWebText extends HTMLElement {
 						<option value="player">Player</option>
 						<option value="allEnemies">All enemies</option>
 						${room?.monsters?.length &&
-						room.monsters.map(
-							(monster, i) => html`<option value=${`enemy` + i}>enemy${i}</option>`
-						)}
+						room.monsters.map((monster, i) => html`<option value=${`enemy` + i}>enemy${i}</option>`)}
 					</select>
 					<button type="submit">Play</button>
 				</form>
@@ -143,7 +141,6 @@ export default class SlayTheWebText extends HTMLElement {
 		// Update twice (because two actions were enqueued)
 		this.update()
 		this.update()
-		// this.goToNextRoom()
 	}
 }
 
