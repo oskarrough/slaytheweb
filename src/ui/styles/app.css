@@ -457,3 +457,9 @@ h2 {
 .Form p {
 	font-size: smaller;
 }
+
+.FlexGrid {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: baseline;
+}
