@@ -4,10 +4,8 @@ import Flip from 'gsap/Flip'
 
 // Game logic
 import createNewGame from '../../game/new-game.js'
-import {createCard, getCardRewards} from '../../game/cards.js'
+import {createCard} from '../../game/cards.js'
 import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../../game/utils-state.js'
-import * as backend from '../../game/backend.js'
-
 import {saveToUrl, loadFromUrl} from '../save-load.js'
 import sounds from '../sounds.js'
 
@@ -101,9 +99,6 @@ export default class App extends Component {
 				this.update(() => {
 					// console.log(this.game.state)
 				})
-			},
-			submitGame(playerName) {
-				backend.postRun(this.game, playerName)
 			},
 			help() {
 				console.log(`Welcome to the Slay The Web Console. Some examples:

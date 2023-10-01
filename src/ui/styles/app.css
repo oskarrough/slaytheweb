@@ -393,10 +393,6 @@ h2 {
 	max-width: 60rem;
 }
 
-.Box + .Box {
-	/* margin-top: 0.5rem; */
-}
-
 .Box h2,
 .Box h3 {
 	text-shadow: none;

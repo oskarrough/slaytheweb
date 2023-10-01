@@ -56,24 +56,14 @@ export class SlayMap extends Component {
 		this.base.style.setProperty('--columns', Number(this.props.dungeon.graph[1].length))
 
 		// Add references to our DOM elements on the graph. Why?
-		// if (!this.didDrawPaths) this.drawPaths()
 		if (newDungeon || !this.didDrawPaths) {
-			// this.drawPathsThrottled()
 			this.drawPathsDebounced()
 			this.scatterNodes()
 		}
 
 		if (!this.resizeObserver) {
-			// const delay = 1000 // Set to a bit higher than your max time, like 500ms
-			// let timer
-			// console.log('new observer')
 			this.resizeObserver = new ResizeObserver(() => {
-				// debounce
 				this.drawPathsDebounced()
-				// clearTimeout(timer)
-				// timer = setTimeout(() => {
-				// 	this.drawPaths()
-				// }, delay)
 			})
 			this.resizeObserver.observe(this.base)
 		}
