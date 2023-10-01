@@ -17,6 +17,7 @@ export default defineConfig(() => {
 					stats: resolve('stats.html'),
 					text: resolve('text.html'),
 					manual: resolve('manual.html'),
+					mapDemo: resolve('map-demo.html'),
 				},
 			},
 		},

@@ -72,7 +72,8 @@ select {
 	cursor: url(/images/cursors/select.png) 10 0, auto;
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="number"] {
 	font-size: 1em;
 }
 
@@ -113,8 +114,9 @@ button:active {
 	box-shadow: none;
 }
 
-input[type="text"] {
-	min-height: 2rem;
+input[type="text"],
+input[type="number"] {
+	min-height: 1.5rem;
 }
 
 table {
@@ -348,7 +350,7 @@ h2 {
 	display: flex;
 	margin: auto;
 	flex-flow: column;
-	padding: 0 1rem;
+	padding: 0 0.5rem;
 }
 
 .Container--center {
@@ -368,7 +370,7 @@ h2 {
 	background: hsla(17, 6%, 53%, 1);
 	color: hsl(17, 6%, 7%);
 	padding: 1rem;
-	border-radius: 1em;
+	border-radius: 0.75rem;
 	border: 2px solid hsla(17, 6%, 3%, 1);
 	min-width: 15rem;
 	margin: 0.5rem auto;
@@ -450,4 +452,14 @@ h2 {
 .HistoryList {
 	text-align: left;
 	padding: 0 0 0 1rem;
+}
+
+.Form p {
+	font-size: smaller;
+}
+
+.FlexGrid {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: baseline;
 }

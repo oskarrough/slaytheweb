@@ -1,5 +1,5 @@
 import test from 'ava'
-import Queue from '../src/utils.js'
+import {Queue} from '../src/utils.js'
 
 test('can add and run through queue', (t) => {
 	const q = new Queue()

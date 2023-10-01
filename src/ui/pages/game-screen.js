@@ -319,12 +319,7 @@ stw.dealCards()`)
 						<${Player} model=${state.player} name="Player" />
 					</div>
 					<div class="Targets-group">
-						${
-							room.monsters &&
-							room.monsters.map(
-								(monster) => html`<${Monster} model=${monster} gameState=${state} />`,
-							)
-						}
+						${room.monsters && room.monsters.map((monster) => html`<${Monster} model=${monster} gameState=${state} />`)}
 					</div>
 				</div>
 
@@ -377,9 +372,7 @@ stw.dealCards()`)
 
 				<${OverlayWithButton} id="exhaustPile" topleft topleft2>
 					<button class="tooltipped tooltipped-se" aria-label="The cards you have exhausted in this encounter" onClick=${() =>
-						this.toggleOverlay('#exhaustPile')}>E<u>x</u>haust pile ${
-						state.exhaustPile.length
-					}</button>
+						this.toggleOverlay('#exhaustPile')}>E<u>x</u>haust pile ${state.exhaustPile.length}</button>
 					<div class="Overlay-content">
 						<${Cards} gameState=${state} type="exhaustPile" />
 					</div>
