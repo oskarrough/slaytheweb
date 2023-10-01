@@ -8,7 +8,7 @@ export default class StartRoom extends Component {
 				<br/>
 				<div class="Box">
 					<ul class="Options">
-						<li><button onclick=${() => this.props.onContinue()}>View the map</button></li>
+						<li><button onClick=${() => this.props.onContinue()}>View the map</button></li>
 					</ul>
 				</div>
 				<p center>

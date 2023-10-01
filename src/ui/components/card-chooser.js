@@ -1,9 +1,20 @@
 import {html, Component} from '../lib.js'
 import {Card} from './cards.js'
+import gsap from '../animations.js'
 
 export default class CardChooser extends Component {
+	componentDidMount() {
+		if (!this.props.animate) return
+		// Animate all the cards in with a nice animation and staggered delay with gsap
+		const cards = this.base.querySelectorAll('.CardBox')
+		gsap.effects.dealCards(cards)
+	}
+
 	clickedCard(card) {
-		this.props.didSelectCard(card)
+		const cardEl = this.base.querySelector(`[data-id="${card.id}"]`)
+		gsap.effects.playCard(cardEl).then(() => {
+			this.props.didSelectCard(card)
+		})
 	}
 	render(props) {
 		return html`

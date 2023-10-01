@@ -33,7 +33,7 @@ function List({items, onUndo}) {
 		<ol class="HistoryList">
 			${items.map(Item)}
 		</ol>
-		<p><button onclick=${() => onUndo()}><u>U</u>ndo</button></p>
+		<p><button onClick=${() => onUndo()}><u>U</u>ndo</button></p>
 	`
 }
 

@@ -48,6 +48,10 @@ body {
 	margin: 0;
 }
 
+[inverse] {
+	color: var(--text-inverse);
+}
+
 [center] {
 	text-align: center;
 }
@@ -405,7 +409,7 @@ h2 {
 	display: flex;
 	flex-flow: column nowrap;
 	gap: 1rem;
-	margin: auto;
+	margin: 0 auto;
 	list-style: none;
 	padding: 0;
 }
@@ -421,7 +425,10 @@ h2 {
 /* Rewards */
 .RewardsBox {
 	text-align: center;
-	margin-bottom: 4rem;
+	margin-bottom: 2rem;
+	/* so card animations dont cause scroll */
+	overflow: hidden;
+	padding: 2rem;
 }
 .RewardsBox h2 {
 	margin-bottom: 4rem;

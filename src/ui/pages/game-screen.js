@@ -14,7 +14,6 @@ import sounds from '../sounds.js'
 // UI Components
 import CampfireRoom from '../components/campfire.js'
 import Cards from '../components/cards.js'
-import CardChooser from '../components/card-chooser.js'
 import enableDragDrop from '../dragdrop.js'
 import DungeonStats from '../components/dungeon-stats.js'
 import Map from '../components/map.js'
@@ -23,6 +22,7 @@ import {Overlay, OverlayWithButton} from '../components/overlays.js'
 import {Player, Monster} from '../components/player.js'
 import {PublishRun} from '../components/publish-run.js'
 import StartRoom from '../components/start-room.js'
+import VictoryRoom from '../components/victory-room.js'
 
 export default class App extends Component {
 	get didWin() {
@@ -53,9 +53,23 @@ export default class App extends Component {
 	}
 
 	componentDidMount() {
+		const urlParams = new URLSearchParams(window.location.search)
+		const debugMode = urlParams.has('debug')
+
 		// Set up a new game
 		const game = createNewGame()
 		this.game = game
+
+		if (debugMode) {
+			// this.game.enqueue({type: 'removeHealth', amount: 10, target: 'player'})
+			// this.game.enqueue({type: 'addEnergyToPlayer', amount: 10})
+			const roomIndex = game.state.dungeon.graph[1].findIndex((r) => r.room)
+			this.game.enqueue({type: 'move', move: {y: 1, x: roomIndex}})
+			this.game.enqueue({type: 'iddqd'})
+			this.game.dequeue()
+			this.game.dequeue()
+		}
+
 		this.setState(game.state, this.dealCards)
 		sounds.startGame()
 
@@ -205,6 +219,7 @@ stw.dealCards()`)
 		this.game.enqueue({type: 'addCardToDeck', card})
 		this.setState({didPickCard: card})
 		this.update()
+		this.goToNextRoom()
 	}
 
 	handleCampfireChoice(choice, reward) {
@@ -255,10 +270,10 @@ stw.dealCards()`)
 					this.isDead &&
 					html`<${Overlay}>
 						<div class="Container">
-							<h1>You are dead</h1>
+							<h1 center>You are dead</h1>
 							<${PublishRun} game=${this.game}><//>
 							<${DungeonStats} dungeon=${state.dungeon}><//>
-							<button onclick=${() => this.props.onLoose()}>Try again?</button>
+							<button onClick=${() => this.props.onLoose()}>Try again?</button>
 						</div>
 					<//> `
 				}
@@ -266,10 +281,12 @@ stw.dealCards()`)
 				${
 					state.won &&
 					html`<${Overlay}>
-						<h1>You won!</h1>
-						<${PublishRun} game=${this.game}><//>
-						<${DungeonStats} dungeon=${state.dungeon}><//>
-						<p><button onclick=${() => this.props.onWin()}>Continue</button></p>
+						<div class="Container CContainer--center">
+							<h1 center>You won!</h1>
+							<${PublishRun} game=${this.game}><//>
+							<${DungeonStats} dungeon=${state.dungeon}><//>
+							<p><button onClick=${() => this.props.onWin()}>Continue</button></p>
+						</div>
 					<//> `
 				}
 
@@ -278,20 +295,11 @@ stw.dealCards()`)
 					this.didWin &&
 					room.type === 'monster' &&
 					html`<${Overlay}>
-						<h1 center medium>Victory. Onwards!</h1>
-						${!state.didPickCard
-							? html`
-									<p center>Here is your reward. Pick a card to add to your deck.</p>
-
-									<${CardChooser}
-										cards=${getCardRewards(3)}
-										didSelectCard=${(card) => this.handlePlayerReward('addCard', card)}
-									/>
-							  `
-							: html`<p center>Added <strong>${state.didPickCard.name}</strong> to your deck.</p>`}
-						<p center>
-							<button onclick=${() => this.goToNextRoom()}>Continue to the next room</button>
-						</p>
+						<${VictoryRoom}
+							gameState=${state}
+							onSelectCard=${(card) => this.handlePlayerReward('addCard', card)}
+							onContinue=${() => this.goToNextRoom()}
+						><//>
 					<//> `
 				}
 
@@ -302,7 +310,7 @@ stw.dealCards()`)
 							gameState=${state}
 							onChoose=${this.handleCampfireChoice}
 							onContinue=${this.goToNextRoom}
-						/>
+						><//>
 					<//>`
 				}
 
@@ -327,7 +335,7 @@ stw.dealCards()`)
 							}/${state.player.maxEnergy}</span>
 					</div>
 					<p class="Actions">
-						<button class="EndTurn" onclick=${() => this.endTurn()}>
+						<button class="EndTurn" onClick=${() => this.endTurn()}>
 							<u>E</u>nd turn
 						</button>
 					</p>
@@ -352,7 +360,8 @@ stw.dealCards()`)
 				<//>
 
 				<${OverlayWithButton} id="Deck" topright topright2>
-					<button onClick=${() => this.toggleOverlay('#Deck')}><u>D</u>eck ${state.deck.length}</button>
+					<button class="tooltipped tooltipped-se" aria-label="All the cards you own" onClick=${() =>
+						this.toggleOverlay('#Deck')}><u>D</u>eck ${state.deck.length}</button>
 					<div class="Overlay-content">
 						<${Cards} gameState=${state} type="deck" />
 					</div>
@@ -367,7 +376,7 @@ stw.dealCards()`)
 				<//>
 
 				<${OverlayWithButton} id="exhaustPile" topleft topleft2>
-					<button class="tooltipped tooltipped-ne" aria-label="The cards you have exhausted" onClick=${() =>
+					<button class="tooltipped tooltipped-se" aria-label="The cards you have exhausted in this encounter" onClick=${() =>
 						this.toggleOverlay('#exhaustPile')}>E<u>x</u>haust pile ${
 						state.exhaustPile.length
 					}</button>
