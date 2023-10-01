@@ -26,14 +26,12 @@ export default function map(props) {
  * Renders a map of the dungeon.
  * @param {object} props
  * @param {object} props.dungeon
- * @param {number} props.x
- * @param {number} props.y
- * @param {Boolean} props.disableScatter
- * @param {Boolean} props.debug
- * @param {Function} props.onSelect
+ * @param {number} props.x - starting column
+ * @param {number} props.y - starting row
+ * @param {Boolean} props.disableScatter - whether to visually move the nodes randomly a bit
+ * @param {Function} props.onSelect - function called on map node select
+ * @param {Boolean} props.debug - if true, will console.log things
  */
-
-/** Renders a map */
 export class SlayMap extends Component {
 	constructor(props) {
 		super()
@@ -47,14 +45,16 @@ export class SlayMap extends Component {
 		this.setState({universe: 42})
 	}
 
-	componentDidUpdate(prevProps) {
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		const newDungeon = this.props.dungeon.id !== prevProps.dungeon.id
+
 		// Let CSS know about the amount of rows and cols we have.
-		this.base.style.setProperty('--rows', Number(prevProps.dungeon.graph.length))
-		this.base.style.setProperty('--columns', Number(prevProps.dungeon.graph[1].length))
+		this.base.style.setProperty('--rows', Number(this.props.dungeon.graph.length))
+		this.base.style.setProperty('--columns', Number(this.props.dungeon.graph[1].length))
 
 		// Add references to our DOM elements on the graph. Why?
-		// no set state because we don't want to rerender
-		if (!this.didDrawPaths) {
+		// We skip setState, because we don't want a rerender
+		if (newDungeon || !this.didDrawPaths) {
 			this.didDrawPaths = true
 			if (!this.disableScatter) this.scatter()
 			const resizeObserver = new ResizeObserver(() => {
@@ -66,6 +66,7 @@ export class SlayMap extends Component {
 
 	// Shake the positions up a bit.
 	scatter(distance = 40) {
+		if (this.debug) console.log('scattering map nodes with a type')
 		const nodes = this.base.querySelectorAll('slay-map-node[type]')
 		nodes.forEach((node) => {
 			node.style.transform = `translate3d(
@@ -78,15 +79,26 @@ export class SlayMap extends Component {
 
 	// Draws SVG lines between the DOM nodes from the dungeon's path.
 	drawPaths() {
-		if (this.debug) console.log('drawing map paths')
+		if (this.debug) console.log(`drawing ${this.props.dungeon.paths.length} paths`)
+
+		const existingPaths = this.base.querySelectorAll(`svg.paths`)
+		for (const p of existingPaths) {
+			p.remove()
+		}
+
 		this.props.dungeon.paths.forEach((path, index) => {
 			this.drawPath(path, index)
 		})
 	}
 
+	/**
+	 * Draw an svg path on a certain (column/x) index.
+	 * @param {Move[]} path
+	 * @param {Number} preferredIndex
+	 */
 	drawPath(path, preferredIndex) {
-		const containerElement = this.base
 		const graph = this.props.dungeon.graph
+		const containerElement = this.base
 		const debug = this.debug
 
 		const nodeFromMove = ([row, col]) => graph[row][col]
@@ -103,22 +115,20 @@ export class SlayMap extends Component {
 		svg.classList.add('paths')
 		containerElement.appendChild(svg)
 
+		if (debug) console.groupCollapsed(`drawing path on x${preferredIndex}`, path)
+
 		// For each move, add a <line> element from a to b.
-		if (debug) console.groupCollapsed('drawing path', preferredIndex)
 		path.forEach((move, index) => {
 			const a = nodeFromMove(move[0])
 			const b = nodeFromMove(move[1])
 			const aEl = elFromNode(move[0])
 			const bEl = elFromNode(move[1])
 
-			if (debug) console.groupEnd()
 			// Create a line between each element.
 			const aPos = getPosWithin(aEl, containerElement)
 			const bPos = getPosWithin(bEl, containerElement)
 			if (!aPos.top) {
-				throw Error(
-					"Could not render the svg path. Is the graph's container element rendered/visible?",
-				)
+				throw Error("Could not render the svg path. Is the graph's container element rendered/visible?")
 			}
 			const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
 			line.setAttribute('x1', String(aPos.left + aPos.width / 2))
@@ -165,7 +175,7 @@ export class SlayMap extends Component {
 								</slay-map-node>`
 							})}
 						</slay-map-row>
-					`,
+					`
 				)}
 			</slay-map>
 		`
