@@ -39,13 +39,6 @@ export default class App extends Component {
 		this.endTurn = this.endTurn.bind(this)
 	}
 
-	get didCompleteRoom() {
-		return isCurrRoomCompleted(this.state)
-	}
-	get didWinEntireGame() {
-		return isDungeonCompleted(this.state)
-	}
-
 	componentDidMount() {
 		const urlParams = new URLSearchParams(window.location.search)
 		const debugMode = urlParams.has('debug')
@@ -114,7 +107,7 @@ stw.dealCards()`)
 	}
 
 	/**
-	 * Plays a card while juggling DOM animations and set state.
+	 * Plays a card while juggling DOM animations, sound and state.
 	 * @param {string} cardId
 	 * @param {string} target
 	 * @param {HTMLElement} cardElement
@@ -179,25 +172,26 @@ stw.dealCards()`)
 		this.overlayIndex++
 	}
 
-	handleShortcuts(event) {
-		if (event.target.nodeName === 'INPUT') return
-		const {key} = event
+	closeOverlays() {
+		const selector = '#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #exhaustPile[open]'
+		let openOverlays = this.base.querySelectorAll(selector)
+		openOverlays.forEach((el) => el.removeAttribute('open'))
+	}
+
+	handleShortcuts({target, key}) {
+		if (target.nodeName === 'INPUT') return
 		const keymap = {
 			e: () => this.endTurn(),
 			u: () => this.undo(),
-			Escape: () => {
-				// let openOverlays = this.base.querySelectorAll('.Overlay:not(#Menu)[open]')
-				let openOverlays = this.base.querySelectorAll(
-					'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #exhaustPile[open]',
-				)
-				openOverlays.forEach((el) => el.removeAttribute('open'))
-				this.toggleOverlay('#Menu')
-			},
 			d: () => this.toggleOverlay('#Deck'),
 			a: () => this.toggleOverlay('#DrawPile'),
 			s: () => this.toggleOverlay('#DiscardPile'),
 			m: () => this.toggleOverlay('#Map'),
 			x: () => this.toggleOverlay('#exhaustPile'),
+			Escape: () => {
+				this.closeOverlays()
+				this.toggleOverlay('#Menu')
+			},
 		}
 		keymap[key] && keymap[key]()
 	}
@@ -244,7 +238,9 @@ stw.dealCards()`)
 	render(props, state) {
 		if (!state.player) return
 		const room = getCurrRoom(state)
-		const isDead = this.state.player.currentHealth < 1
+		const didCompleteRoom = isCurrRoomCompleted(this.state)
+		const didWinEntireGame = isDungeonCompleted(this.state)
+		const isPlayerDead = state.player.currentHealth < 1
 		const {game, onContinue, endTurn, handleCampfireChoice} = this
 
 		// There's a lot here because I did not want to split into too many files.
@@ -252,15 +248,15 @@ stw.dealCards()`)
 			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
 				<figure class="App-background" data-room-index=${state.dungeon.y}></div>
 
-				${isDead && html`<${Overlay}><${DeathRoom} game=${game} gameState=${state} onContinue=${props.onLoss} /><//>`}
+				${isPlayerDead && html`<${Overlay}><${DeathRoom} game=${game} gameState=${state} onContinue=${props.onLoss} /><//>`}
 				${state.won && html`<${Overlay}><${WonRoom} gameState=${game} state=${state} onContinue=${props.onWin} /><//>`}
 
 				${room.type === 'start' && html`<${Overlay}><${StartRoom} onContinue=${onContinue} /><//>`}
 				${room.type === 'monster' && html`<${FightRoom} gameState=${state} onEndTurn=${endTurn} />`}
 				${
 					room.type === 'monster' &&
-					!this.didWinEntireGame &&
-					this.didCompleteRoom &&
+					!didWinEntireGame &&
+					didCompleteRoom &&
 					html`<${Overlay}>
 						<${VictoryRoom} gameState=${state} handlePlayerReward=${this.handlePlayerReward} onContinue=${onContinue} />
 					<//> `

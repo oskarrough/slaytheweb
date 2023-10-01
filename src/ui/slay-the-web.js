@@ -41,8 +41,10 @@ class SlayTheWeb extends Component {
 		this.setState({gameMode: GameModes.splash})
 	}
 	render(props, {gameMode}) {
-		if (gameMode === GameModes.splash) return html`<${SplashScreen} onNewGame=${this.handleNewGame} onContinue=${() => this.handleContinueGame()}><//>`
-		if (gameMode === GameModes.gameplay) return html` <${GameScreen} onWin=${this.handleWin} onLoss=${this.handleLoose}><//>`
+		if (gameMode === GameModes.splash)
+			return html`<${SplashScreen} onNewGame=${this.handleNewGame} onContinue=${() => this.handleContinueGame()}><//>`
+		if (gameMode === GameModes.gameplay)
+			return html`<${GameScreen} onWin=${this.handleWin} onLoss=${this.handleLoose}><//>`
 		if (gameMode === GameModes.win) return html` <${WinScreen} onNewGame=${this.handleNewGame}><//>`
 	}
 }
