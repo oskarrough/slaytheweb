@@ -1,5 +1,5 @@
 import actions from './actions.js'
-import Queue from '../utils.js'
+import {Queue} from '../utils.js'
 
 /** @typedef {import('./actions.js').State} State */
 
