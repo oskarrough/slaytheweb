@@ -39,8 +39,12 @@ export default class CampfireRoom extends Component {
 							  `
 							: html`
 									<li><button onClick=${() => this.rest()}>Rest</button></li>
-									<li><button onClick=${() => this.choose('upgradeCard')}>Upgrade card</button></li>
-									<li><button onClick=${() => this.choose('removeCard')}>Remove card</button></li>
+									<li>
+										<button onClick=${() => this.choose('upgradeCard')}>Upgrade card</button>
+									</li>
+									<li>
+										<button onClick=${() => this.choose('removeCard')}>Remove card</button>
+									</li>
 							  `}
 					</ul>
 				</div>

@@ -1,13 +1,13 @@
-import {html} from '../lib.js'
-import {pick} from '../../utils.js'
-import {getCardRewards} from '../../game/cards.js'
-import CardChooser from './card-chooser.js'
+import {html} from '../../lib.js'
+import {pick} from '../../../utils.js'
+import {getCardRewards} from '../../../game/cards.js'
+import CardChooser from '../card-chooser.js'
 
 /**
- *
+ * The screen you see after completing a monster room
  * @param {object} props
- * @prop {function} props.onSelectCard
- * @prop {object} props.gameState
+ * @param {Function} props.onChoose
+ * @param {object} props.gameState
  * @returns {import('preact').VNode}
  */
 export default function VictoryRoom(props) {
@@ -20,11 +20,11 @@ export default function VictoryRoom(props) {
 				<${CardChooser}
 					animate
 					cards=${getCardRewards(3)}
-					didSelectCard=${(card) => props.handlePlayerReward('addCard', card)}
+					didSelectCard=${(card) => props.onChoose('addCard', card)}
 				/>
 			`}
 			<ul class="Options">
-				<button onClick=${props.onContinue}>Continue to the next room</button>
+				<button onClick=${props.onContinue}>Continue</button>
 			</ul>
 		</div>
 	`

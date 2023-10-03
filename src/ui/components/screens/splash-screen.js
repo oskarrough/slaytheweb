@@ -1,7 +1,6 @@
-import {html, Component} from '../lib.js'
-// import ReloadPrompt from '../components/reload-prompt.js'
-import VersionInfo from '../components/version-info.js'
-import gsap from '../animations.js'
+import {html, Component} from '../../lib.js'
+import VersionInfo from '../version-info.js'
+import gsap from '../../animations.js'
 
 export default class SplashScreen extends Component {
 	componentDidMount() {
@@ -15,7 +14,7 @@ export default class SplashScreen extends Component {
 		// })
 		gsap.to('.Splash-spoder', {delay: 5, x: 420, y: 60, duration: 3})
 	}
-	render(props, state) {
+	render(props) {
 		return html`
 			<article class="Container Splash--fadein">
 				<header class="Header">
@@ -36,7 +35,7 @@ export default class SplashScreen extends Component {
 						<li><a class="Button" href="/manual.html">Manual</a></li>
 					</ul>
 				</div>
-					<${VersionInfo}><//>
+				<${VersionInfo}><//>
 			</article>
 		`
 	}

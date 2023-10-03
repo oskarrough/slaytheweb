@@ -1,26 +1,31 @@
 import Flip from 'gsap/Flip'
-import {html, Component} from '../lib.js'
-import gsap from '../animations.js'
+import {html, Component} from '../../lib.js'
+import gsap from '../../animations.js'
 
 // Game logic
-import createNewGame from '../../game/new-game.js'
-import {createCard} from '../../game/cards.js'
-import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../../game/utils-state.js'
-import {saveToUrl, loadFromUrl} from '../save-load.js'
-import sounds from '../sounds.js'
+import createNewGame from '../../../game/new-game.js'
+import {createCard} from '../../../game/cards.js'
+import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../../../game/utils-state.js'
+import {saveToUrl, loadFromUrl} from '../../save-load.js'
+import sounds from '../../sounds.js'
 
 // UI Components
-import CampfireRoom from '../components/campfire.js'
-import enableDragDrop from '../dragdrop.js'
-import {Overlay} from '../components/overlay.js'
-import {Overlays} from '../components/overlays.js'
-import StartRoom from '../components/start-room.js'
-import VictoryRoom from '../components/victory-room.js'
-import DeathRoom from '../components/death-room.js'
-import WonRoom from '../components/won-room.js'
-import FightRoom from '../components/fight-room.js'
+import CampfireRoom from '../campfire.js'
+import enableDragDrop from '../../dragdrop.js'
+import {Overlay} from '../overlay.js'
+import {Overlays} from '../overlays.js'
 
-// props: onWin && onLoss
+import StartScreen from './start-screen.js'
+import CombatScreen from './combat-screen.js'
+import DeathScreen from './death-screen.js'
+import VictoryScreen from './victory-screen.js'
+import GameOverScreen from './game-over-screen.js'
+
+/**
+ * This is the main component.
+ * It creates a new game, provides a UI to navigate the dungeon,
+ * and routes each room to the right scene.
+ */
 export default class App extends Component {
 	constructor() {
 		super()
@@ -30,13 +35,13 @@ export default class App extends Component {
 
 		// Scope methods called from the UI
 		this.undo = this.undo.bind(this)
-		this.continue = this.onContinue.bind(this)
-		this.handlePlayerReward = this.handlePlayerReward.bind(this)
-		this.handleCampfireChoice = this.handleCampfireChoice.bind(this)
-		this.handleMapMove = this.handleMapMove.bind(this)
 		this.toggleOverlay = this.toggleOverlay.bind(this)
 		this.playCard = this.playCard.bind(this)
 		this.endTurn = this.endTurn.bind(this)
+		this.handleContinue = this.handleContinue.bind(this)
+		this.handleVictoryReward = this.handleVictoryReward.bind(this)
+		this.handleCampfireChoice = this.handleCampfireChoice.bind(this)
+		this.handleMapMove = this.handleMapMove.bind(this)
 	}
 
 	componentDidMount() {
@@ -61,11 +66,6 @@ export default class App extends Component {
 		if (savedGameState) this.restoreGame(savedGameState)
 
 		this.enableConsole()
-	}
-
-	restoreGame(oldState) {
-		this.game.state = oldState
-		this.setState(oldState, this.dealCards)
 	}
 
 	enableConsole() {
@@ -94,6 +94,11 @@ stw.dealCards()`)
 		}
 		// @ts-ignore
 		window.stw.help()
+	}
+
+	restoreGame(oldState) {
+		this.game.state = oldState
+		this.setState(oldState, this.dealCards)
 	}
 
 	update(callback) {
@@ -129,7 +134,7 @@ stw.dealCards()`)
 		// Update state and re-enable dragdrop
 		this.update(() => {
 			enableDragDrop(this.base, this.playCard)
-			sounds.playCard({card, target})
+			sounds.playCard({card})
 
 			// Animate cloned card away
 			gsap.effects.playCard(clone).then(() => {
@@ -173,7 +178,8 @@ stw.dealCards()`)
 	}
 
 	closeOverlays() {
-		const selector = '#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #exhaustPile[open]'
+		const selector =
+			'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #exhaustPile[open]'
 		let openOverlays = this.base.querySelectorAll(selector)
 		openOverlays.forEach((el) => el.removeAttribute('open'))
 	}
@@ -196,11 +202,11 @@ stw.dealCards()`)
 		keymap[key] && keymap[key]()
 	}
 
-	handlePlayerReward(choice, card) {
+	handleVictoryReward(choice, card) {
 		this.game.enqueue({type: 'addCardToDeck', card})
 		this.setState({didPickCard: card})
 		this.update()
-		this.onContinue()
+		this.handleContinue()
 	}
 
 	handleCampfireChoice(choice, reward) {
@@ -219,16 +225,14 @@ stw.dealCards()`)
 		this.game.enqueue({type: 'makeCampfireChoice', choice, reward})
 		// Update twice (because two actions were enqueued)
 		this.update(this.update)
-		this.onContinue()
+		this.handleContinue()
 	}
 
-	onContinue() {
-		console.log('Go to next room, toggling map')
+	handleContinue() {
 		this.toggleOverlay('#Map')
 	}
 
 	handleMapMove(move) {
-		console.log('Made a move')
 		this.toggleOverlay('#Map')
 		this.setState({didPickCard: false})
 		this.game.enqueue({type: 'move', move})
@@ -241,30 +245,51 @@ stw.dealCards()`)
 		const didCompleteRoom = isCurrRoomCompleted(this.state)
 		const didWinEntireGame = isDungeonCompleted(this.state)
 		const isPlayerDead = state.player.currentHealth < 1
-		const {game, onContinue, endTurn, handleCampfireChoice} = this
+		const {game, handleContinue, endTurn} = this
 
 		// There's a lot here because I did not want to split into too many files.
 		return html`
 			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
 				<figure class="App-background" data-room-index=${state.dungeon.y}></div>
 
-				${isPlayerDead && html`<${Overlay}><${DeathRoom} game=${game} gameState=${state} onContinue=${props.onLoss} /><//>`}
-				${state.won && html`<${Overlay}><${WonRoom} gameState=${game} state=${state} onContinue=${props.onWin} /><//>`}
+				${
+					isPlayerDead &&
+					html`<${Overlay}
+						><${DeathScreen} game=${game} gameState=${state} onContinue=${props.onLoss}
+					/><//>`
+				}
 
-				${room.type === 'start' && html`<${Overlay}><${StartRoom} onContinue=${onContinue} /><//>`}
-				${room.type === 'monster' && html`<${FightRoom} gameState=${state} onEndTurn=${endTurn} />`}
+				${
+					state.won &&
+					html`<${Overlay}
+						><${GameOverScreen} gameState=${game} state=${state} onContinue=${props.onWin}
+					/><//>`
+				}
+
+				${room.type === 'start' && html`<${Overlay}><${StartScreen} onContinue=${handleContinue} /><//>`}
+
+				${room.type === 'monster' && html`<${CombatScreen} gameState=${state} onEndTurn=${endTurn} />`}
+
 				${
 					room.type === 'monster' &&
 					!didWinEntireGame &&
 					didCompleteRoom &&
 					html`<${Overlay}>
-						<${VictoryRoom} gameState=${state} handlePlayerReward=${this.handlePlayerReward} onContinue=${onContinue} />
+						<${VictoryScreen}
+							gameState=${state}
+							onChoose=${this.handleVictoryReward}
+							onContinue=${handleContinue}
+						/>
 					<//> `
 				}
+
 				${
 					room.type === 'campfire' &&
 					html`<${Overlay}
-						><${CampfireRoom} gameState=${state} onChoose=${handleCampfireChoice} onContinue=${onContinue}
+						><${CampfireRoom}
+							gameState=${state}
+							onChoose=${this.handleCampfireChoice}
+							onContinue=${handleContinue}
 					/><//>`
 				}
 

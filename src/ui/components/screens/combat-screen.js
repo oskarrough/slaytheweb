@@ -1,9 +1,15 @@
-import {getCurrRoom} from '../../game/utils-state'
-import {html} from '../lib'
-import Cards from './cards.js'
-import {Player, Monster} from './player.js'
+import {getCurrRoom} from '../../../game/utils-state'
+import {html} from '../../lib'
+import Cards from '../cards.js'
+import {Player, Monster} from '../player.js'
 
-export default function FightRoom({gameState: state, onEndTurn}) {
+/**
+ *
+ * @param {object} props
+ * @param {import('../../../game/actions').State} props.gameState
+ * @returns
+ */
+export default function CombatScreen({gameState: state, onEndTurn}) {
 	const noEnergy = !state.player.currentEnergy
 	const room = getCurrRoom(state)
 

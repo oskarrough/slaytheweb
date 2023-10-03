@@ -1,7 +1,7 @@
 import {html, render, Component} from './lib.js'
-import SplashScreen from './pages/splash-screen.js'
-import GameScreen from './pages/game-screen.js'
-import WinScreen from './pages/win-screen.js'
+import SplashScreen from './components/screens/splash-screen.js'
+import GameScreen from './components/screens/game-screen.js'
+import GameOverScreen from './components/screens/game-over-screen.js'
 import {init as initSounds} from '../ui/sounds.js'
 
 /** @enum {string} */
@@ -13,17 +13,19 @@ const GameModes = {
 
 /**
  * Our root component for the game.
- * Controls what to render.
+ * Does nothing else but route between splash, game and game over screens.
  */
 class SlayTheWeb extends Component {
 	constructor() {
 		super()
+		// Append ?debug to the URL to start the game in debug mode.
 		const urlParams = new URLSearchParams(window.location.search)
 		const gameMode = urlParams.has('debug') ? GameModes.gameplay : GameModes.splash
 		this.state = {gameMode}
-		this.handleWin = this.handleWin.bind(this)
 		this.handleNewGame = this.handleNewGame.bind(this)
-		this.handleLoose = this.handleLoose.bind(this)
+		this.handleContinueGame = this.handleContinueGame.bind(this)
+		this.handleWin = this.handleWin.bind(this)
+		this.handleLoss = this.handleLoss.bind(this)
 	}
 	async handleNewGame() {
 		await initSounds()
@@ -37,15 +39,19 @@ class SlayTheWeb extends Component {
 	handleWin() {
 		this.setState({gameMode: GameModes.win})
 	}
-	handleLoose() {
+	handleLoss() {
 		this.setState({gameMode: GameModes.splash})
 	}
 	render(props, {gameMode}) {
 		if (gameMode === GameModes.splash)
-			return html`<${SplashScreen} onNewGame=${this.handleNewGame} onContinue=${() => this.handleContinueGame()}><//>`
+			return html`<${SplashScreen}
+				onNewGame=${this.handleNewGame}
+				onContinue=${() => this.handleContinueGame()}
+			><//>`
 		if (gameMode === GameModes.gameplay)
-			return html`<${GameScreen} onWin=${this.handleWin} onLoss=${this.handleLoose}><//>`
-		if (gameMode === GameModes.win) return html` <${WinScreen} onNewGame=${this.handleNewGame}><//>`
+			return html`<${GameScreen} onWin=${this.handleWin} onLoss=${this.handleLoss}><//>`
+		if (gameMode === GameModes.win)
+			return html` <${GameOverScreen} onNewGame=${this.handleNewGame}><//>`
 	}
 }
 

@@ -1,6 +1,6 @@
-import {html} from '../lib.js'
-import DungeonStats from './dungeon-stats'
-import {PublishRun} from './publish-run.js'
+import {html} from '../../lib.js'
+import DungeonStats from '../dungeon-stats.js'
+import {PublishRun} from '../publish-run.js'
 
 export default function DeathRoom({game, gameState, onContinue}) {
 	return html`
