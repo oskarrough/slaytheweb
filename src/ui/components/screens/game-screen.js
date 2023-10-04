@@ -32,16 +32,6 @@ export default class App extends Component {
 		this.state = undefined
 		this.game = createNewGame()
 		this.overlayIndex = 11
-
-		// Scope methods called from the UI
-		this.undo = this.undo.bind(this)
-		this.toggleOverlay = this.toggleOverlay.bind(this)
-		this.playCard = this.playCard.bind(this)
-		this.endTurn = this.endTurn.bind(this)
-		this.handleContinue = this.handleContinue.bind(this)
-		this.handleVictoryReward = this.handleVictoryReward.bind(this)
-		this.handleCampfireChoice = this.handleCampfireChoice.bind(this)
-		this.handleMapMove = this.handleMapMove.bind(this)
 	}
 
 	componentDidMount() {
@@ -106,7 +96,7 @@ stw.dealCards()`)
 		this.setState(this.game.state, callback)
 	}
 
-	undo() {
+	undo = () => {
 		this.game.undo()
 		this.setState(this.game.state, this.dealCards)
 	}
@@ -117,7 +107,7 @@ stw.dealCards()`)
 	 * @param {string} target
 	 * @param {HTMLElement} cardElement
 	 */
-	playCard(cardId, target, cardElement) {
+	playCard = (cardId, target, cardElement) => {
 		const card = this.state.hand.find((c) => c.id === cardId)
 		this.game.enqueue({type: 'playCard', card, target})
 		const supportsFlip = typeof Flip !== 'undefined'
@@ -152,7 +142,7 @@ stw.dealCards()`)
 		})
 	}
 
-	endTurn() {
+	endTurn = () => {
 		sounds.endTurn()
 		gsap.effects.discardHand('.Hand .Card', {
 			onComplete: reallyEndTurn.bind(this),
@@ -164,13 +154,13 @@ stw.dealCards()`)
 	}
 
 	// Animate the cards in and make sure any new cards are draggable.
-	dealCards() {
+	dealCards = () => {
 		gsap.effects.dealCards('.Hand .Card')
 		sounds.startTurn()
 		enableDragDrop(this.base, this.playCard)
 	}
 
-	toggleOverlay(el) {
+	toggleOverlay = (el) => {
 		if (typeof el === 'string') el = this.base.querySelector(el)
 		el.toggleAttribute('open')
 		el.style.zIndex = this.overlayIndex
@@ -202,14 +192,14 @@ stw.dealCards()`)
 		keymap[key] && keymap[key]()
 	}
 
-	handleVictoryReward(choice, card) {
+	handleVictoryReward = (choice, card) => {
 		this.game.enqueue({type: 'addCardToDeck', card})
 		this.setState({didPickCard: card})
 		this.update()
 		this.handleContinue()
 	}
 
-	handleCampfireChoice(choice, reward) {
+	handleCampfireChoice = (choice, reward) => {
 		// Depending on the choice, run an action.
 		if (choice === 'rest') {
 			reward = Math.floor(this.game.state.player.maxHealth * 0.3)
@@ -228,11 +218,11 @@ stw.dealCards()`)
 		this.handleContinue()
 	}
 
-	handleContinue() {
+	handleContinue = () => {
 		this.toggleOverlay('#Map')
 	}
 
-	handleMapMove(move) {
+	handleMapMove = (move) => {
 		this.toggleOverlay('#Map')
 		this.setState({didPickCard: false})
 		this.game.enqueue({type: 'move', move})

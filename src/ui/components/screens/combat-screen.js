@@ -4,10 +4,11 @@ import Cards from '../cards.js'
 import {Player, Monster} from '../player.js'
 
 /**
- *
+ * The screen to render when you're on a "monster" node.
  * @param {object} props
  * @param {import('../../../game/actions').State} props.gameState
- * @returns
+ * @param {function} props.onEndTurn
+ * @returns {import('preact').VNode}
  */
 export default function CombatScreen({gameState: state, onEndTurn}) {
 	const noEnergy = !state.player.currentEnergy

@@ -22,27 +22,24 @@ class SlayTheWeb extends Component {
 		const urlParams = new URLSearchParams(window.location.search)
 		const gameMode = urlParams.has('debug') ? GameModes.gameplay : GameModes.splash
 		this.state = {gameMode}
-		this.handleNewGame = this.handleNewGame.bind(this)
-		this.handleContinueGame = this.handleContinueGame.bind(this)
-		this.handleWin = this.handleWin.bind(this)
-		this.handleLoss = this.handleLoss.bind(this)
 	}
-	async handleNewGame() {
+	handleNewGame = async () => {
 		await initSounds()
 		this.setState({gameMode: GameModes.gameplay})
 		// Clear any previous saved game.
 		window.history.pushState('', document.title, window.location.pathname)
 	}
-	handleContinueGame() {
+	handleContinueGame = () => {
 		this.setState({gameMode: GameModes.gameplay})
 	}
-	handleWin() {
+	handleWin = () => {
 		this.setState({gameMode: GameModes.win})
 	}
-	handleLoss() {
+	handleLoss = () => {
 		this.setState({gameMode: GameModes.splash})
 	}
-	render(props, {gameMode}) {
+	render() {
+		const {gameMode} = this.state
 		if (gameMode === GameModes.splash)
 			return html`<${SplashScreen}
 				onNewGame=${this.handleNewGame}

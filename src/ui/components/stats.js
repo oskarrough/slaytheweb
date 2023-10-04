@@ -1,6 +1,5 @@
 import {html, render} from '../lib.js'
 import {getRuns} from '../../game/backend.js'
-import '../styles/index.css'
 
 const StatsPage = ({runs}) => html`
 	<article class="Container">
