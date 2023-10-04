@@ -27,14 +27,14 @@
     "eslint-plugin-prettier": "^5.0.0",
     "prettier": "3.0.3",
     "release-it": "^16.2.1",
-    "vite": "^4.4.9",
+    "vite": "^4.4.10",
     "vite-plugin-pwa": "^0.16.5"
   },
   "dependencies": {
     "gsap": "^3.12.2",
     "htm": "^3.1.1",
     "immer": "^10.0.2",
-    "preact": "^10.18.0",
+    "preact": "^10.18.1",
     "superjson": "^1.13.3",
     "tone": "^14.8.49"
   },
