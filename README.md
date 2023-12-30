@@ -1,16 +1,26 @@
 # Slay the Web
 
-Slay the Web is a digital card game for the web based on Slay The Spire, a fantastic video game designed by [MegaCrit](https://www.megacrit.com/). They say:
+A digital card game for the web based on Slay The Spire, a fantastic video game designed by [MegaCrit](https://www.megacrit.com/). They say:
 
 > We fused card games and roguelikes together to make the best single player deckbuilder we could. Craft a unique deck, encounter bizarre creatures, discover relics of immense power, and Slay the Spire!
 
-# 🎴 [Play on slaytheweb.cards](https://slaytheweb.cards/) 
-
-Come chat on https://matrix.to/#/#slaytheweb:matrix.org
+## [Play on slaytheweb.cards](https://slaytheweb.cards/) 
 
 <a href="https://slaytheweb.cards"><img src="https://i.imgur.com/m9CRCsa.png" alt="Screenshot of Slay the Web" width="640"></a>
 
 After many runs in the Spire, I got into the theory behind the game. Inspired by the STS modding community, I thought it'd be fun and a great learning experience to try and implement the core logic of the game in JavaScript for the web. And that is what _Slay the Web_ is: a kind of stable, UI agnostic game engine with an example UI for the web.
+
+## State of the game
+
+December 2023. The core mechanics seem to work. A map you can navigate with different rooms and monsters. Combat with cards and "powers". There are many things that would make it more fun to play:
+
+- more cards
+- more powers
+- more monsters
+- expand the map into multiple "worlds" (or acts)
+- better UI and animations
+
+Come chat on https://matrix.to/#/#slaytheweb:matrix.org!
 
 ## Documentation
 
