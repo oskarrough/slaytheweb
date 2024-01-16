@@ -13,7 +13,7 @@ export default function map({dungeon, onMove}) {
 		<div class="MapContainer">
 			<${SlayMap} dungeon=${dungeon} x=${x} y=${y} scatter=${20} onSelect=${onMove}><//>
 
-			<footer class="MapFooter">
+			<footer hidden class="MapFooter">
 				<h2>History</h2>
 				<p>Current:. Floor ${y}. Node ${x}</p>
 				<ul>

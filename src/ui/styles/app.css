@@ -18,8 +18,6 @@ html {
 	background-position: 50%;
 	background-size: cover;
 	background-repeat: no-repeat;
-	overflow-x: hidden;
-	overflow-y: scroll;
 }
 
 /* Minimum font size */
@@ -46,6 +44,9 @@ input {
 
 body {
 	margin: 0;
+	overflow: hidden;
+	/* overflow-x: hidden; */
+	/* overflow-y: scroll; */
 }
 
 [inverse] {

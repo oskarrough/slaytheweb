@@ -48,6 +48,7 @@
 	bottom: 0;
 	left: 0;
 	width: 100%;
+	overflow-x: hidden;
 	overflow-y: auto;
 	transform: translate3d(0, 4rem, 0);
 	display: block;
