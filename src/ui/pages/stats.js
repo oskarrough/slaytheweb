@@ -41,7 +41,7 @@ const StatsPage = ({runs}) => html`
 								const state = run.gameState
 								const date = new Intl.DateTimeFormat('en', {
 									dateStyle: 'long',
-									timeStyle: 'short',
+									// timeStyle: 'short',
 									hour12: false,
 								}).format(new Date(state.createdAt))
 								const duration = state.endedAt ? (state.endedAt - state.createdAt) / 1000 + 's' : ''
