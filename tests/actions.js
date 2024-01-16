@@ -113,6 +113,7 @@ test('getTargets utility works', (t) => {
 	t.deepEqual(getTargets(state, 'enemy1')[0], room.monsters[1])
 	t.throws(() => getTargets(state, 'doesntexist'))
 	t.deepEqual(getTargets(state, 'player')[0], state.player)
+	t.deepEqual(getTargets(state, 'player0')[0], state.player)
 })
 
 test('can manipulate player hp', (t) => {

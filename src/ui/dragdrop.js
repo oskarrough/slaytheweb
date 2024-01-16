@@ -3,10 +3,10 @@ import {cardHasValidTarget} from '../game/utils-state.js'
 import gsap from './animations.js'
 import sounds from './sounds.js'
 
-// Class to add to the element we are dragging over.
+/** Class to add to the element we are dragging over */
 const overClass = 'is-dragOver'
 
-// Makes the card fly back into the hand.
+/** Makes the card fly back into the hand */
 function animateCardToHand(draggable) {
 	return gsap.to(draggable.target, {x: draggable.startX, y: draggable.startY, zIndex: 0})
 }

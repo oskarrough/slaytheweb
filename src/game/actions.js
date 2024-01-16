@@ -1,10 +1,13 @@
-import {produce} from 'immer'
+import {produce, enableMapSet} from 'immer'
 import {clamp, shuffle} from '../utils.js'
 import {isDungeonCompleted, getTargets, getCurrRoom} from './utils-state.js'
 import powers from './powers.js'
 import {conditionsAreValid} from './conditions.js'
 import {createCard, CardTargets} from './cards.js'
 import {dungeonWithMap} from '../content/dungeon-encounters.js'
+
+// Enable support for Map and Set. See https://immerjs.github.io/immer/installation/
+enableMapSet()
 
 /** @typedef {import('./dungeon.js').Dungeon} Dungeon */
 /** @typedef {import('./cards.js').CARD} CARD */

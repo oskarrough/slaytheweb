@@ -42,21 +42,24 @@ export function getCurrRoom(state) {
 /**
  * Returns an array of targets (player or monsters) in the current room.
  * @param {State} state
- * @param {CardTargets} targetQuery
+ * @param {CardTargets} targetQuery - like player, enemy0, enemy1
  * @returns {Array<MONSTER>}
  */
 export function getTargets(state, targetQuery) {
-	if (!targetQuery || typeof targetQuery !== 'string') {
-		throw new Error('Bad query string')
-	}
-	if (targetQuery === CardTargets.player) return [state.player]
+	if (!targetQuery || typeof targetQuery !== 'string') throw new Error('Bad query string')
 	const room = getCurrRoom(state)
+
+	// Player
+	if (targetQuery.includes(CardTargets.player)) return [state.player]
+	// All enemies
 	if (targetQuery === CardTargets.allEnemies) return room.monsters
+	// Single enemy
 	if (targetQuery.startsWith(CardTargets.enemy)) {
 		const index = Number(targetQuery.split('enemy')[1])
 		const monster = room.monsters[index]
 		if (monster) return [monster]
 	}
+
 	throw new Error(`Could not find target "${targetQuery}" on ${state.dungeon.y}/${state.dungeon.x}`)
 }
 
