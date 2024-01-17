@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="en" class="bg">
 	<head>
 		<meta charset="utf-8" />
 		<title>Slay the Web</title>
@@ -8,7 +8,6 @@
 			name="viewport"
 			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
 		/>
-
 		<meta name="mobile-web-app-capable" content="yes" />
 		<meta name="theme-color" content="#116f54" />
 		<meta name="msapplication-TileColor" content="#116f54" />
@@ -16,10 +15,24 @@
 		<link rel="shortcut icon" href="/images/favicons/favicon.ico" />
 		<link rel="apple-touch-icon" href="/images/favicon-512.png" />
 
-		 <link rel="preload" href="https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_regular.woff2" as="font" type="font/woff2" crossorigin>
-		 <link rel="preload" href="https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_bold.woff2" as="font" type="font/woff2" crossorigin>
+		<link
+			rel="preload"
+			href="https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_regular.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin
+		/>
+		<link
+			rel="preload"
+			href="https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_bold.woff2"
+			as="font"
+			type="font/woff2"
+			crossorigin
+		/>
+		<link rel="stylesheet" href="/src/ui/styles/index.css" />
 
-		<script async src="/src/main.js" type="module"></script>
+		<script async src="/src/ui/error-handling.js" type="module"></script>
+		<script async src="/src/ui/pages/slay-the-web.js" type="module"></script>
 	</head>
 	<body>
 		<slay-the-web></slay-the-web>
@@ -34,6 +47,5 @@
 				<a href="https://github.com/oskarrough/slaytheweb/">github.com/oskarrough/slaytheweb/</a>.
 			</p>
 		</noscript>
-
 	</body>
 </html>

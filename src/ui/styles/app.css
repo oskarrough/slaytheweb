@@ -11,16 +11,16 @@ html {
 	cursor: url(/images/cursors/default.png), auto;
 	min-height: 100%;
 	background-color: var(--bg);
-	background-attachment: fixed;
+}
+
+html.bg {
+	background-image: url('/images/scenes/moonlit-landscape-1904.jpg');
+	/* background-image: url('/images/scenes/dalle5.webp'); */
 	/* background-position: center bottom; */
+	background-attachment: fixed;
 	background-position: 50%;
 	background-size: cover;
 	background-repeat: no-repeat;
-}
-
-html:not(.no-bg) {
-	background-image: url('/images/scenes/moonlit-landscape-1904.jpg');
-	/* background-image: url('/images/scenes/dalle5.webp'); */
 }
 
 /* Minimum font size */

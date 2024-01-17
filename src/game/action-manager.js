@@ -44,7 +44,7 @@ export default function ActionManager(props) {
 	}
 
 	/**
-	 * Deqeueing runs the oldest action (from the `future` queue) on the state.
+	 * Dequeing runs the oldest action (from the `future` queue) on the state.
 	 * The action is then moved to the `past` queue.
 	 * @param {State} state
 	 * @returns {State} new state
