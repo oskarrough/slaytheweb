@@ -22,7 +22,10 @@ export default class SplashScreen extends Component {
 								<li><button autofocus onClick=${props.onContinue}>Continue Game</button></li>
 								<li><button autofocus onClick=${props.onNewGame}>New Game</a></li>
 					`
-							: html`<li><button autofocus onClick=${props.onNewGame}>Play</a></li>`}
+							: html`
+							<li><button autofocus onClick=${props.onNewGame}>Play</a></li>
+							<li><a class="Button" href="/?debug&tutorial">Tutorial</a></li>
+							`}
 						<li><a class="Button" href="/collection.html">Collection</a></li>
 						<li><a class="Button" href="/stats.html">Highscores</a></li>
 						<li><a class="Button" href="/manual.html">Manual</a></li>

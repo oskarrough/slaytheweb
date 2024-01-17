@@ -21,6 +21,7 @@ import {Player, Monster} from './player.js'
 import {PublishRun} from './publish-run.js'
 import StartRoom from './start-room.js'
 import VictoryRoom from './victory-room.js'
+import startTutorial from '../intro-tutorial.js'
 
 export default class App extends Component {
 	get didWin() {
@@ -67,6 +68,10 @@ export default class App extends Component {
 		if (urlParams.has('iddqd')) {
 			this.game.enqueue({type: 'iddqd'})
 			this.game.dequeue()
+		}
+
+		if (urlParams.has('tutorial')) {
+			setTimeout(startTutorial, 800)
 		}
 
 		this.setState(game.state, this.dealCards)
