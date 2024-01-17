@@ -40,7 +40,10 @@ html.bg {
 html,
 button,
 input,
-.introjs-tooltipReferenceLayer * {
+#driver-popover-content,
+.driver-popover .driver-popover-title,
+.driver-popover .driver-popover-description,
+.driver-popover .driver-popover-footer button {
 	font-family: 'heliotrope_4', serif;
 	font-feature-settings: 'kern' 1;
 	font-feature-settings: 'liga' on;
@@ -115,7 +118,7 @@ button + button {
 button:hover,
 button:focus {
 	background: hsl(194.7, 53.3%, 83%);
-	 box-shadow: 0 0.1em var(--text-inverse);
+	box-shadow: 0 0.1em var(--text-inverse);
 }
 .Button:active,
 button:active {
@@ -505,16 +508,14 @@ h2 {
 	}
 }
 
-.introjs-tooltip {
+#driver-popover-content {
 	background-color: var(--bg);
 	color: var(--text);
 	border: 2px solid var(--text);
 	border-radius: 0.5rem;
 }
 
-.introjs-skipbutton {
-	display: none;
-}
-.introjs-tooltipbuttons {
-	border-top: 0;
+.driver-popover .driver-popover-description,
+.driver-popover .driver-popover-footer button {
+	font-size: 1rem;
 }
