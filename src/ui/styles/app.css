@@ -11,13 +11,16 @@ html {
 	cursor: url(/images/cursors/default.png), auto;
 	min-height: 100%;
 	background-color: var(--bg);
-	/* background: url('/images/scenes/dalle5.webp'); */
-	background-image: url('/images/scenes/moonlit-landscape-1904.jpg');
 	background-attachment: fixed;
 	/* background-position: center bottom; */
 	background-position: 50%;
 	background-size: cover;
 	background-repeat: no-repeat;
+}
+
+html:not(.no-bg) {
+	background-image: url('/images/scenes/moonlit-landscape-1904.jpg');
+	background-image: url('/images/scenes/dalle5.webp');
 }
 
 /* Minimum font size */
@@ -459,4 +462,30 @@ h2 {
 	display: flex;
 	flex-flow: row wrap;
 	align-items: baseline;
+}
+
+.Cards--withUpgrades {
+	> div {
+		display: flex;
+		flex-flow: column wrap;
+	}
+
+	.Card {
+		height: 100%;
+	}
+
+	.Card:not([data-card-upgraded]) {
+	}
+	.Card[data-card-upgraded] {
+		display: none;
+	}
+
+	> div:hover {
+		.Card:not([data-card-upgraded]) {
+			display: none;
+		}
+		.Card[data-card-upgraded] {
+			display: flex;
+		}
+	}
 }

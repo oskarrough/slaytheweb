@@ -26,6 +26,7 @@ export function Card(card, gameState) {
 			data-card-target=${card.target}
 			key=${card.id}
 			data-id=${card.id}
+			data-card-upgraded=${card.upgraded}
 			disabled=${isDisabled}
 		>
 			<div class="Card-inner">
