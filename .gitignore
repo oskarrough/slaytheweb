@@ -14,3 +14,5 @@ coverage/
 dist/
 dev-dist/
 docs/
+# Sentry Config File
+.env.sentry-build-plugin
