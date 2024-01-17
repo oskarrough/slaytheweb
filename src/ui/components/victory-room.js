@@ -14,7 +14,7 @@ export default function VictoryRoom(props) {
 	const state = props.gameState
 	return html`
 		<div class="Container Container--center">
-			<h1 center>Victory. Onwards!</h1>
+			<h1 center>Victory!</h1>
 			<h2 center>${pick(victoryRoomIntroTexts)}</h2>
 			${!state.didPickCard &&
 			html`
@@ -41,7 +41,7 @@ const victoryRoomIntroTexts = [
 	"Ah, victory! Don't linger too long; those cards won't pick themselves.",
 	'Where the cards are your oyster',
 	'Choose a card, any card!',
-	"Rewards await. But remember, a deck can't thrive on clutter.",
+	"Rewards await. But remember, a deck can't thrive on clutter. Unless you have corruption. Then it can.",
 	"Ah, the Victory Room, where today's choices are tomorrow's victories or, you know, defeats.",
 	"New cards up for grabs. Don't underestimate the power of fresh cardboard.",
 ]

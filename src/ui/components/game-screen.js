@@ -59,12 +59,13 @@ export default class App extends Component {
 		this.game = game
 
 		if (debugMode) {
-			// this.game.enqueue({type: 'removeHealth', amount: 10, target: 'player'})
-			// this.game.enqueue({type: 'addEnergyToPlayer', amount: 10})
 			const roomIndex = game.state.dungeon.graph[1].findIndex((r) => r.room)
 			this.game.enqueue({type: 'move', move: {y: 1, x: roomIndex}})
-			this.game.enqueue({type: 'iddqd'})
 			this.game.dequeue()
+		}
+
+		if (urlParams.has('iddqd')) {
+			this.game.enqueue({type: 'iddqd'})
 			this.game.dequeue()
 		}
 
@@ -87,29 +88,28 @@ export default class App extends Component {
 		// Enable a "console" in the browser.
 		// @ts-ignore
 		window.stw = {
-			uiComponent: this,
 			game: this.game,
-			update: this.update.bind(this),
+			// Usage: stw.run('drawCards', {amount: 2})
+			run: (actionName, props) => {
+				const action = {type: actionName, ...props}
+				this.game.enqueue(action)
+				this.update()
+			},
 			saveGame: (state) => saveToUrl(state || this.state),
 			createCard,
 			dealCards: this.dealCards.bind(this),
 			drawCards: (amount) => {
 				this.game.enqueue({type: 'drawCards', amount})
 				this.update()
-				this.dealCards()
-				// enableDragDrop(this.base, this.playCard)
 			},
 			iddqd() {
-				// console.log(this.game.state)
 				this.game.enqueue({type: 'iddqd'})
-				this.update(() => {
-					// console.log(this.game.state)
-				})
+				this.update()
 			},
 			help() {
 				console.log(`Welcome to the Slay The Web Console. Some examples:
-stw.game.enqueue({type: 'drawCards', amount: 2})
-stw.update()
+stw.run('removeHealth', {amount: 2, target: 'player'})
+stw.run('drawCards', {amount: 2})
 stw.dealCards()`)
 			},
 		}
@@ -144,13 +144,24 @@ stw.dealCards()`)
 
 		// Create a clone on top of the card to animate.
 		const clone = cardElement.cloneNode(true)
+		clone.style.width = cardElement.offsetWidth + 'px'
+		clone.style.height = cardElement.offsetHeight + 'px'
+		clone.style.position = 'absolute'
+		clone.style.top = cardElement.offsetTop + 'px'
+		clone.style.left = cardElement.offsetLeft + 'px'
 		this.base.appendChild(clone)
-		if (supportsFlip) Flip.fit(clone, cardElement, {absolute: true})
+
+		// if (supportsFlip) Flip.fit(clone, cardElement, {absolute: true, duration: 1})
+
+		// debugger
+		// return
+
 
 		// Update state and re-enable dragdrop
 		this.update(() => {
 			enableDragDrop(this.base, this.playCard)
 			sounds.playCard({card, target})
+
 
 			// Animate cloned card away
 			gsap.effects.playCard(clone).then(() => {
