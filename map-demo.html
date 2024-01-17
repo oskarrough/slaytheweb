@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html class="no-bg" lang="en">
 	<head>
 		<meta charset="utf-8" />
 		<title>Manual for Slay the Web</title>
@@ -14,11 +14,7 @@
 		<link rel="icon" type="image/png" href="/images/favicons/favicon-512.png" sizes="512x512" />
 		<link rel="shortcut icon" href="/images/favicons/favicon.ico" />
 		<link rel="apple-touch-icon" href="/images/favicon-512.png" />
-		<link rel="stylesheet" href="/src/ui/styles/index.css" />
 		<style>
-			html {
-				background-image: none;
-			}
 			slay-map {
 				min-height: calc(100vh - 5rem);
 			}
@@ -26,10 +22,9 @@
 	</head>
 	<body>
 		<div class="Container">
-			<div id="root"></div>
+			<stw-map-demo></stw-map-demo>
 		</div>
 
 		<script async src="/src/ui/pages/map-demo.js" type="module"></script>
-
 	</body>
 </html>

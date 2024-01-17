@@ -1,6 +1,6 @@
 import {html, render} from '../lib.js'
 import {cards} from '../../content/cards.js'
-import {Card} from './cards.js'
+import {Card} from '../components/cards.js'
 import '../styles/index.css'
 import {createCard} from '../../game/cards.js'
 
@@ -24,4 +24,11 @@ const CollectionPage = () => html`
 	</article>
 `
 
-render(html`<${CollectionPage} cards=${cards} />`, document.querySelector('#Cards'))
+customElements.define(
+	'stw-collection',
+	class StwCollection extends HTMLElement {
+		connectedCallback() {
+			render(html`<${CollectionPage} cards=${cards} />`, this)
+		}
+	},
+)

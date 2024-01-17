@@ -19,8 +19,8 @@ const StatsPage = ({runs}) => html`
 		<div class="Box Box--text Box--full">
 			<p>
 				A chronological list of Slay the Web runs.<br />
-				There is quite a bit of statistics that could be gathered from the runs. For now, this is
-				what we have:
+				There is quite a bit of statistics that could be gathered from the runs. For now, this is what we
+				have:
 			</p>
 			<table>
 				<thead>
@@ -55,21 +55,27 @@ const StatsPage = ({runs}) => html`
 									<td align="right">${duration}</td>
 									<td align="right">${date}</td>
 								</tr>`
-						  })
+							})
 						: 'Loading...'}
 				</tbody>
 			</table>
 			<p>
-				Once a run finishes, there is an option to submit it to this list. If you want your run
-				removed, <a href="https://matrix.to/#/#slaytheweb:matrix.org">let me know</a>.
+				Once a run finishes, there is an option to submit it to this list. If you want your run removed,
+				<a href="https://matrix.to/#/#slaytheweb:matrix.org">let me know</a>.
 			</p>
 		</div>
 	</article>
 `
 
-render(html`<${StatsPage} />`, document.querySelector('#root'))
-
-getRuns().then((runs) => {
-	console.log(runs)
-	render(html`<${StatsPage} runs=${runs.reverse()} />`, document.querySelector('#root'))
-})
+customElements.define(
+	'stw-stats',
+	class StwStats extends HTMLElement {
+		connectedCallback() {
+			render(html`<${StatsPage} />`, this)
+			getRuns().then((runs) => {
+				console.log(runs)
+				render(html`<${StatsPage} runs=${runs.reverse()} />`, this)
+			})
+		}
+	},
+)

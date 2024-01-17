@@ -10,17 +10,17 @@ import {saveToUrl, loadFromUrl} from '../save-load.js'
 import sounds from '../sounds.js'
 
 // UI Components
-import CampfireRoom from '../components/campfire.js'
-import Cards from '../components/cards.js'
+import CampfireRoom from './campfire.js'
+import Cards from './cards.js'
 import enableDragDrop from '../dragdrop.js'
-import DungeonStats from '../components/dungeon-stats.js'
-import Map from '../components/map.js'
-import Menu from '../components/menu.js'
-import {Overlay, OverlayWithButton} from '../components/overlays.js'
-import {Player, Monster} from '../components/player.js'
-import {PublishRun} from '../components/publish-run.js'
-import StartRoom from '../components/start-room.js'
-import VictoryRoom from '../components/victory-room.js'
+import DungeonStats from './dungeon-stats.js'
+import Map from './map.js'
+import Menu from './menu.js'
+import {Overlay, OverlayWithButton} from './overlays.js'
+import {Player, Monster} from './player.js'
+import {PublishRun} from './publish-run.js'
+import StartRoom from './start-room.js'
+import VictoryRoom from './victory-room.js'
 
 export default class App extends Component {
 	get didWin() {
@@ -93,6 +93,12 @@ export default class App extends Component {
 			saveGame: (state) => saveToUrl(state || this.state),
 			createCard,
 			dealCards: this.dealCards.bind(this),
+			drawCards: (amount) => {
+				this.game.enqueue({type: 'drawCards', amount})
+				this.update()
+				this.dealCards()
+				// enableDragDrop(this.base, this.playCard)
+			},
 			iddqd() {
 				// console.log(this.game.state)
 				this.game.enqueue({type: 'iddqd'})

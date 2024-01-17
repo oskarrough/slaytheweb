@@ -84,7 +84,7 @@ export class Card {
  * We do this so we can define the cards without using class syntax.
  * @param {string} name - exact name of the Card
  * @param {boolean} [shouldUpgrade] - whether to upgrade the card
- * @returns {CARD}
+ * @returns {CARD} a new card
  */
 export function createCard(name, shouldUpgrade) {
 	let card = cards.find((card) => card.name === name)
@@ -122,13 +122,11 @@ export function getRandomCards(list, amount) {
 /**
  * Returns X random, nicer and unique cards.
  * @param {number} [amount]
- * @returns {Array.<CARD>}
+ * @returns {Array.<CARD>} a list of cards
  */
 export function getCardRewards(amount = 3) {
 	// Remove boring cards from rewards.
-	const niceCards = cards
-		.filter((card) => card.name !== 'Strike')
-		.filter((card) => card.name !== 'Defend')
+	const niceCards = cards.filter((card) => card.name !== 'Strike').filter((card) => card.name !== 'Defend')
 	// List of random card rewards.
 	const rewards = []
 	while (rewards.length < amount) {
