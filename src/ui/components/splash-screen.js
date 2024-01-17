@@ -1,5 +1,4 @@
 import {html, Component} from '../lib.js'
-// import ReloadPrompt from '../components/reload-prompt.js'
 import VersionInfo from './version-info.js'
 import gsap from '../animations.js'
 
