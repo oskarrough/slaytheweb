@@ -31,8 +31,6 @@
     "vite-plugin-pwa": "^0.17.4"
   },
   "dependencies": {
-    "@sentry/browser": "^7.93.0",
-    "@sentry/vite-plugin": "^2.10.2",
     "gsap": "^3.12.4",
     "htm": "^3.1.1",
     "immer": "^10.0.3",
