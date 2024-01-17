@@ -103,6 +103,7 @@ button {
 	color: var(--text-inverse);
 	box-shadow: 0 0.2em var(--text-inverse);
 	text-decoration: none;
+	transition: box-shadow 100ms;
 }
 .Button + .Button,
 button + button {
@@ -113,7 +114,7 @@ button + button {
 button:hover,
 button:focus {
 	background: hsl(194.7, 53.3%, 83%);
-	box-shadow: 0 0.1em var(--text-inverse);
+	 box-shadow: 0 0.1em var(--text-inverse);
 }
 .Button:active,
 button:active {
@@ -314,7 +315,8 @@ h2 {
 }
 
 .EndTurn:hover {
-	box-shadow: 0px 0px 15px 10px var(--yellow);
+	transition-duration: 80ms;
+	box-shadow: 0px 0px 15px 4px var(--yellow);
 }
 .no-energy .EndTurn {
 	animation: pulse 1.5s infinite alternate;
