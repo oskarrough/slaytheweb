@@ -89,32 +89,25 @@ export default class App extends Component {
 		// @ts-ignore
 		window.stw = {
 			game: this.game,
-			// Usage: stw.run('drawCards', {amount: 2})
-			run: (actionName, props) => {
-				const action = {type: actionName, ...props}
-				this.game.enqueue(action)
-				this.update()
-			},
-			saveGame: (state) => saveToUrl(state || this.state),
-			createCard,
+			run: this.runAction.bind(this),
 			dealCards: this.dealCards.bind(this),
-			drawCards: (amount) => {
-				this.game.enqueue({type: 'drawCards', amount})
-				this.update()
-			},
-			iddqd() {
-				this.game.enqueue({type: 'iddqd'})
-				this.update()
-			},
+			createCard,
+			saveGame: (state) => saveToUrl(state || this.state),
 			help() {
 				console.log(`Welcome to the Slay The Web Console. Some examples:
-stw.run('removeHealth', {amount: 2, target: 'player'})
+stw.run('removeHealth', {amount: 6, target: 'player'})
 stw.run('drawCards', {amount: 2})
 stw.dealCards()`)
 			},
 		}
 		// @ts-ignore
 		window.stw.help()
+	}
+
+	runAction(actionName, props) {
+		const action = {type: actionName, ...props}
+		this.game.enqueue(action)
+		this.update()
 	}
 
 	update(callback) {
@@ -151,17 +144,10 @@ stw.dealCards()`)
 		clone.style.left = cardElement.offsetLeft + 'px'
 		this.base.appendChild(clone)
 
-		// if (supportsFlip) Flip.fit(clone, cardElement, {absolute: true, duration: 1})
-
-		// debugger
-		// return
-
-
 		// Update state and re-enable dragdrop
 		this.update(() => {
 			enableDragDrop(this.base, this.playCard)
-			sounds.playCard({card, target})
-
+			sounds.playCard({card})
 
 			// Animate cloned card away
 			gsap.effects.playCard(clone).then(() => {
