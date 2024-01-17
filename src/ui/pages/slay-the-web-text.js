@@ -1,16 +1,16 @@
-import {html, render} from './lib.js'
-import createNewGame from '../game/new-game.js'
-import {getCurrRoom} from '../game/utils-state.js'
-import Cards from './components/cards.js'
-import {SlayMap} from './components/map.js'
-import {Monster, Player} from './components/player.js'
+import {html, render} from '../lib.js'
+import createNewGame from '../../game/new-game.js'
+import {getCurrRoom} from '../../game/utils-state.js'
+import Cards from '../components/cards.js'
+import {SlayMap} from '../components/map.js'
+import {Monster, Player} from '../components/player.js'
 // import CardChooser from './card-chooser.js'
 // import CampfireRoom from './campfire.js'
 // import StartRoom from './start-room.js'
 // import Menu from './menu.js'
-import './styles/map.css'
-import './styles/fct.css'
-import './styles/slay-the-web-text.css'
+import '../styles/map.css'
+import '../styles/fct.css'
+import '../styles/slay-the-web-text.css'
 
 export default class SlayTheWebText extends HTMLElement {
 	constructor() {
@@ -64,21 +64,20 @@ export default class SlayTheWebText extends HTMLElement {
 		console.log('render room', room)
 		const template = html`
 			<h1>slaytheweb</h1>
-			<div>${state.won ? 'won' : 'playing'}</div>
+			<div>status: ${state.won ? 'won' : 'playing'}</div>
 			<div>turn ${state.turn}</div>
-			<p>${this.game.future.list.length} future actions in queue</p>
+			<p>${this.game.future.list.length} future actions</p>
 			<p>${this.game.past.list.length} past actions</p>
 			<menu>
 				<button onClick=${() => this.update()}><u>U</u>pdate</button>
 				<button class="EndTurn" onClick=${() => this.endTurn()}><u>E</u>nd turn</button>
 			</menu>
-			<hr />
+			<h2>Player</h2>
 			<p>block: ${state.player.block}</p>
 			<p>hp: ${state.player.currentHealth}/${state.player.maxHealth}</p>
 			<p class="EnergyBadge">${state.player.currentEnergy}/${state.player.maxEnergy}</p>
 
-			<hr />
-			<h2>${state.dungeon.x}/${state.dungeon.y}: ${room.type}</h2>
+			<h2>Map x${state.dungeon.x}/y${state.dungeon.y} → ${room.type} room</h2>
 			<div class="Targets-group">
 				${room.monsters &&
 				room.monsters.map((monster) => html`<${Monster} model=${monster} gameState=${state} />`)}
@@ -88,6 +87,7 @@ export default class SlayTheWebText extends HTMLElement {
 			<${Cards} type="drawPile" gameState=${state} />
 			<h2>Hand</h2>
 			<${Cards} type="hand" gameState=${state} />
+
 			<menu>
 				<form onsubmit=${this.submitCard.bind(this)}>
 					<select name="card" required>
@@ -99,9 +99,7 @@ export default class SlayTheWebText extends HTMLElement {
 						<option value="player">Player</option>
 						<option value="allEnemies">All enemies</option>
 						${room?.monsters?.length &&
-						room.monsters.map(
-							(monster, i) => html`<option value=${`enemy` + i}>enemy${i}</option>`
-						)}
+						room.monsters.map((monster, i) => html`<option value=${`enemy` + i}>enemy${i}</option>`)}
 					</select>
 					<button type="submit">Play</button>
 				</form>

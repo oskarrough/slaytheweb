@@ -1,8 +1,9 @@
 import {html, render, useState} from '../lib.js'
 import {SlayMap} from '../components/map.js'
 import Dungeon, {defaultOptions as defaultDungeonOptions} from '../../game/dungeon.js'
+import '../styles/index.css'
 
-const Demo = () => {
+const MapDemoPage = () => {
 	const [dungeon, setDungeon] = useState(Dungeon())
 	const [scatter, setScatter] = useState(0)
 
@@ -21,10 +22,8 @@ const Demo = () => {
 		</div>
 
 		${dungeon &&
-		html` <${SlayMap} dungeon=${dungeon} x=${x} y=${y}
-			onSelect=${onSelect}
-			scatter=${scatter}
-			debug=${true}><//>
+		html`
+			<${SlayMap} dungeon=${dungeon} x=${x} y=${y} onSelect=${onSelect} scatter=${scatter} debug=${true}><//>
 		`}
 	`
 }
@@ -73,10 +72,16 @@ const DungeonConfigForm = (props) => {
 			</fieldset>
 			<fieldset>
 				<legend>Map size</legend>
-				<label>Debug styles <input type="checkbox" onInput=${e => toggleDebugStyles()} /></label>
+				<label>Debug styles <input type="checkbox" onInput=${(e) => toggleDebugStyles()} /></label>
 				<label>
 					Height
-					<input type="number" value="70" min="0" step="5" onInput=${(e) => handleStyleInput(e, 'min-height')} />vh
+					<input
+						type="number"
+						value="70"
+						min="0"
+						step="5"
+						onInput=${(e) => handleStyleInput(e, 'min-height')}
+					/>vh
 				</label>
 				<label hidden>
 					Width
@@ -101,8 +106,8 @@ const DungeonConfigForm = (props) => {
 					<input type="text" value=${config.roomTypes} onInput=${(e) => handleInput(e, 'roomTypes')} />
 				</label>
 				<p>
-					M for monster, E for elite, C for camp. Repeat character to increase chance of appearing. There is additional
-					logic in the code as well, which for example increases chance of elites on higher floors.
+					M for monster, E for elite, C for camp. Repeat character to increase chance of appearing. There is
+					additional logic in the code as well, which for example increases chance of elites on higher floors.
 				</p>
 				<label>
 					Paths to draw
@@ -114,7 +119,8 @@ const DungeonConfigForm = (props) => {
 					/>
 				</label>
 				<p>
-					Defaults to draw one path per column. To draw paths on specific columns enter a string of indexes like
+					Defaults to draw one path per column. To draw paths on specific columns enter a string of indexes
+					like
 					<code>034</code>. This would attempt to draw three paths at those indexes.
 				</p>
 			</fieldset>
@@ -122,4 +128,11 @@ const DungeonConfigForm = (props) => {
 	`
 }
 
-render(html`<${Demo} />`, document.querySelector('#root'))
+customElements.define(
+	'stw-map-demo',
+	class StwMapDemo extends HTMLElement {
+		connectedCallback() {
+			render(html`<${MapDemoPage} />`, this)
+		}
+	},
+)

@@ -11,10 +11,13 @@ html {
 	cursor: url(/images/cursors/default.png), auto;
 	min-height: 100%;
 	background-color: var(--bg);
-	/* background: url('/images/scenes/dalle5.webp'); */
+}
+
+html.bg {
 	background-image: url('/images/scenes/moonlit-landscape-1904.jpg');
-	background-attachment: fixed;
+	/* background-image: url('/images/scenes/dalle5.webp'); */
 	/* background-position: center bottom; */
+	background-attachment: fixed;
 	background-position: 50%;
 	background-size: cover;
 	background-repeat: no-repeat;
@@ -64,21 +67,25 @@ body {
 a,
 button,
 summary {
-	cursor: url(/images/cursors/point.png) 10 0, auto;
+	cursor:
+		url(/images/cursors/point.png) 10 0,
+		auto;
 }
 
 input,
 textarea,
 select {
-	cursor: url(/images/cursors/select.png) 10 0, auto;
+	cursor:
+		url(/images/cursors/select.png) 10 0,
+		auto;
 }
 
-input[type="text"],
-input[type="number"] {
+input[type='text'],
+input[type='number'] {
 	font-size: 1em;
 }
 
-.Overlay input[type="text"] {
+.Overlay input[type='text'] {
 	color-scheme: dark;
 }
 
@@ -96,6 +103,7 @@ button {
 	color: var(--text-inverse);
 	box-shadow: 0 0.2em var(--text-inverse);
 	text-decoration: none;
+	transition: box-shadow 100ms;
 }
 .Button + .Button,
 button + button {
@@ -106,7 +114,7 @@ button + button {
 button:hover,
 button:focus {
 	background: hsl(194.7, 53.3%, 83%);
-	box-shadow: 0 0.1em var(--text-inverse);
+	 box-shadow: 0 0.1em var(--text-inverse);
 }
 .Button:active,
 button:active {
@@ -115,8 +123,8 @@ button:active {
 	box-shadow: none;
 }
 
-input[type="text"],
-input[type="number"] {
+input[type='text'],
+input[type='number'] {
 	min-height: 1.5rem;
 }
 
@@ -127,7 +135,6 @@ table {
 tbody {
 	font-size: smaller;
 }
-
 
 h1 {
 	transform: rotate3d(5, 15, 3, -13deg);
@@ -271,7 +278,12 @@ h2 {
 	border: 3px solid hsla(0, 0%, 0%, 0.8);
 	transform: rotate(45deg);
 	background-color: var(--teal);
-	text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+	text-shadow:
+		2px 2px 0 #000,
+		-1px -1px 0 #000,
+		1px -1px 0 #000,
+		-1px 1px 0 #000,
+		1px 1px 0 #000;
 	box-shadow: 0 0 0.1em var(--lightblue);
 	margin-left: 1rem;
 	transition: background 700ms;
@@ -303,7 +315,8 @@ h2 {
 }
 
 .EndTurn:hover {
-	box-shadow: 0px 0px 15px 10px var(--yellow);
+	transition-duration: 80ms;
+	box-shadow: 0px 0px 15px 4px var(--yellow);
 }
 .no-energy .EndTurn {
 	animation: pulse 1.5s infinite alternate;
@@ -323,7 +336,9 @@ h2 {
 	margin-left: -1.5rem;
 	/* margin-bottom: -3rem; */
 	cursor: grab;
-	cursor: url(/images/cursors/grab-open.png) 10 0, auto;
+	cursor:
+		url(/images/cursors/grab-open.png) 10 0,
+		auto;
 }
 .Hand .Card-inner {
 	/* because of negative margin */
@@ -443,7 +458,9 @@ h2 {
 }
 .CardBox {
 	cursor: pointer;
-	cursor: url(/images/cursors/grab-open.png) 10 0, auto;
+	cursor:
+		url(/images/cursors/grab-open.png) 10 0,
+		auto;
 }
 
 .HistoryList {
@@ -459,4 +476,30 @@ h2 {
 	display: flex;
 	flex-flow: row wrap;
 	align-items: baseline;
+}
+
+.Cards--withUpgrades {
+	> div {
+		display: flex;
+		flex-flow: column wrap;
+	}
+
+	.Card {
+		height: 100%;
+	}
+
+	.Card:not([data-card-upgraded]) {
+	}
+	.Card[data-card-upgraded] {
+		display: none;
+	}
+
+	> div:hover {
+		.Card:not([data-card-upgraded]) {
+			display: none;
+		}
+		.Card[data-card-upgraded] {
+			display: flex;
+		}
+	}
 }

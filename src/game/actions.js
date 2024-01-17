@@ -50,8 +50,8 @@ enableMapSet()
  */
 
 /**
- * This is the big object of game state. Everything starts here.
- * @returns {State}
+ * Everything starts here.
+ * @returns {State} the big game state object
  */
 function createNewState() {
 	return {
@@ -80,7 +80,7 @@ function createNewState() {
  * By default a new game doesn't come with a dungeon. You have to set one explicitly. Look in dungeon-encounters.js for inspiration.
  * @param {State} state
  * @param {Dungeon} [dungeon]
- * @returns {State}
+ * @returns {State} .
  */
 function setDungeon(state, dungeon) {
 	if (!dungeon) dungeon = dungeonWithMap()
@@ -94,7 +94,7 @@ function setDungeon(state, dungeon) {
 /**
  * Draws a "starter" deck to your discard pile. Normally you'd run this as you start the game.
  * @param {State} state
- * @returns {State}
+ * @returns {State} .
  */
 function addStarterDeck(state) {
 	const deck = [
@@ -210,8 +210,7 @@ function upgradeCard(state, {card}) {
  */
 function playCard(state, {card, target}) {
 	if (!target) target = card.target
-	if (typeof target !== 'string')
-		throw new Error(`Wrong target to play card: ${target},${card.target}`)
+	if (typeof target !== 'string') throw new Error(`Wrong target to play card: ${target},${card.target}`)
 	if (target === 'enemy') throw new Error('Wrong target, did you mean "enemy0" or "allEnemies"?')
 	if (!card) throw new Error('No card to play')
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')

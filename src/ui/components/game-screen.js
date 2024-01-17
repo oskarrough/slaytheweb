@@ -10,17 +10,17 @@ import {saveToUrl, loadFromUrl} from '../save-load.js'
 import sounds from '../sounds.js'
 
 // UI Components
-import CampfireRoom from '../components/campfire.js'
-import Cards from '../components/cards.js'
+import CampfireRoom from './campfire.js'
+import Cards from './cards.js'
 import enableDragDrop from '../dragdrop.js'
-import DungeonStats from '../components/dungeon-stats.js'
-import Map from '../components/map.js'
-import Menu from '../components/menu.js'
-import {Overlay, OverlayWithButton} from '../components/overlays.js'
-import {Player, Monster} from '../components/player.js'
-import {PublishRun} from '../components/publish-run.js'
-import StartRoom from '../components/start-room.js'
-import VictoryRoom from '../components/victory-room.js'
+import DungeonStats from './dungeon-stats.js'
+import Map from './map.js'
+import Menu from './menu.js'
+import {Overlay, OverlayWithButton} from './overlays.js'
+import {Player, Monster} from './player.js'
+import {PublishRun} from './publish-run.js'
+import StartRoom from './start-room.js'
+import VictoryRoom from './victory-room.js'
 
 export default class App extends Component {
 	get didWin() {
@@ -59,12 +59,13 @@ export default class App extends Component {
 		this.game = game
 
 		if (debugMode) {
-			// this.game.enqueue({type: 'removeHealth', amount: 10, target: 'player'})
-			// this.game.enqueue({type: 'addEnergyToPlayer', amount: 10})
 			const roomIndex = game.state.dungeon.graph[1].findIndex((r) => r.room)
 			this.game.enqueue({type: 'move', move: {y: 1, x: roomIndex}})
-			this.game.enqueue({type: 'iddqd'})
 			this.game.dequeue()
+		}
+
+		if (urlParams.has('iddqd')) {
+			this.game.enqueue({type: 'iddqd'})
 			this.game.dequeue()
 		}
 
@@ -87,28 +88,26 @@ export default class App extends Component {
 		// Enable a "console" in the browser.
 		// @ts-ignore
 		window.stw = {
-			uiComponent: this,
 			game: this.game,
-			update: this.update.bind(this),
-			saveGame: (state) => saveToUrl(state || this.state),
-			createCard,
+			run: this.runAction.bind(this),
 			dealCards: this.dealCards.bind(this),
-			iddqd() {
-				// console.log(this.game.state)
-				this.game.enqueue({type: 'iddqd'})
-				this.update(() => {
-					// console.log(this.game.state)
-				})
-			},
+			createCard,
+			saveGame: (state) => saveToUrl(state || this.state),
 			help() {
 				console.log(`Welcome to the Slay The Web Console. Some examples:
-stw.game.enqueue({type: 'drawCards', amount: 2})
-stw.update()
+stw.run('removeHealth', {amount: 6, target: 'player'})
+stw.run('drawCards', {amount: 2})
 stw.dealCards()`)
 			},
 		}
 		// @ts-ignore
 		window.stw.help()
+	}
+
+	runAction(actionName, props) {
+		const action = {type: actionName, ...props}
+		this.game.enqueue(action)
+		this.update()
 	}
 
 	update(callback) {
@@ -138,13 +137,17 @@ stw.dealCards()`)
 
 		// Create a clone on top of the card to animate.
 		const clone = cardElement.cloneNode(true)
+		clone.style.width = cardElement.offsetWidth + 'px'
+		clone.style.height = cardElement.offsetHeight + 'px'
+		clone.style.position = 'absolute'
+		clone.style.top = cardElement.offsetTop + 'px'
+		clone.style.left = cardElement.offsetLeft + 'px'
 		this.base.appendChild(clone)
-		if (supportsFlip) Flip.fit(clone, cardElement, {absolute: true})
 
 		// Update state and re-enable dragdrop
 		this.update(() => {
 			enableDragDrop(this.base, this.playCard)
-			sounds.playCard({card, target})
+			sounds.playCard({card})
 
 			// Animate cloned card away
 			gsap.effects.playCard(clone).then(() => {
@@ -196,7 +199,7 @@ stw.dealCards()`)
 			Escape: () => {
 				// let openOverlays = this.base.querySelectorAll('.Overlay:not(#Menu)[open]')
 				let openOverlays = this.base.querySelectorAll(
-					'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #exhaustPile[open]',
+					'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #ExhaustPile[open]',
 				)
 				openOverlays.forEach((el) => el.removeAttribute('open'))
 				this.toggleOverlay('#Menu')
@@ -205,7 +208,7 @@ stw.dealCards()`)
 			a: () => this.toggleOverlay('#DrawPile'),
 			s: () => this.toggleOverlay('#DiscardPile'),
 			m: () => this.toggleOverlay('#Map'),
-			x: () => this.toggleOverlay('#exhaustPile'),
+			x: () => this.toggleOverlay('#ExhaustPile'),
 		}
 		keymap[key] && keymap[key]()
 	}
@@ -365,9 +368,9 @@ stw.dealCards()`)
 					</div>
 				<//>
 
-				<${OverlayWithButton} id="exhaustPile" topleft topleft2>
+				<${OverlayWithButton} id="ExhaustPile" topleft topleft2>
 					<button class="tooltipped tooltipped-se" aria-label="The cards you have exhausted in this encounter" onClick=${() =>
-						this.toggleOverlay('#exhaustPile')}>E<u>x</u>haust pile ${state.exhaustPile.length}</button>
+						this.toggleOverlay('#ExhaustPile')}>E<u>x</u>haust pile ${state.exhaustPile.length}</button>
 					<div class="Overlay-content">
 						<${Cards} gameState=${state} type="exhaustPile" />
 					</div>

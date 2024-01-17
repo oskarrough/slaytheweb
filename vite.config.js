@@ -2,7 +2,6 @@ import {resolve} from 'path'
 import {defineConfig} from 'vite'
 import {VitePWA} from 'vite-plugin-pwa'
 import {execSync} from 'child_process'
-import {sentryVitePlugin} from '@sentry/vite-plugin'
 
 export default defineConfig(() => {
 	process.env.VITE_GIT_HASH = execSync('git rev-parse HEAD').toString().trimEnd()
@@ -61,13 +60,6 @@ export default defineConfig(() => {
 						},
 					],
 				},
-			}),
-			// Put the Sentry vite plugin after all other plugins
-			sentryVitePlugin({
-				authToken: process.env.SENTRY_AUTH_TOKEN,
-				org: 'oskarrough',
-				project: 'slaytheweb',
-				telemetry: false,
 			}),
 		],
 	}

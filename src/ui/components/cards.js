@@ -12,8 +12,8 @@ export default class Cards extends Component {
 /**
  * Renders a card
  * @param {import('../../game/cards.js').CARD} card
- * @param {import('../../game/actions.js').State} gameState
- * @returns {?}
+ * @param {import('../../game/actions.js').State} [gameState]
+ * @returns {?} what?
  */
 export function Card(card, gameState) {
 	const isDisabled = !canPlay(gameState, card)
@@ -26,6 +26,7 @@ export function Card(card, gameState) {
 			data-card-target=${card.target}
 			key=${card.id}
 			data-id=${card.id}
+			data-card-upgraded=${card.upgraded}
 			disabled=${isDisabled}
 		>
 			<div class="Card-inner">
