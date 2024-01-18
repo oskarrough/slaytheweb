@@ -51,7 +51,7 @@ input,
 
 body {
 	margin: 0;
-	overflow: hidden;
+	/* overflow: hidden; */
 	/* overflow-x: hidden; */
 	/* overflow-y: scroll; */
 }
@@ -169,7 +169,7 @@ h2 {
 	height: 100vh;
 	display: flex;
 	flex-flow: column;
-	/* overflow: hidden; */
+	overflow: hidden;
 }
 
 .App-background {
@@ -330,7 +330,7 @@ h2 {
 /* In your hand, the cards stack a bit */
 .Hand {
 	margin-top: 1rem;
-	margin-bottom: -1rem;
+	transform: translateY(2rem);
 }
 .Hand .Cards {
 	padding-left: 4rem;
@@ -338,16 +338,10 @@ h2 {
 }
 .Hand .Card {
 	margin-left: -1.5rem;
-	/* margin-bottom: -3rem; */
 	cursor: grab;
-	cursor:
-		url(/images/cursors/grab-open.png) 10 0,
-		auto;
+	cursor: url(/images/cursors/grab-open.png) 10 0, auto;
 }
-.Hand .Card-inner {
-	/* because of negative margin */
-	padding-bottom: 2rem;
-}
+.Hand .Card-inner {}
 .Hand .Card[disabled] {
 	cursor: not-allowed;
 }
@@ -366,7 +360,7 @@ h2 {
 }
 
 .Container {
-	min-height: 100vh;
+	/* min-height: 100vh; */
 	display: flex;
 	margin: auto;
 	flex-flow: column;

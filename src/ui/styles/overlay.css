@@ -65,7 +65,8 @@
 	right: 0;
 	bottom: 0;
 	z-index: 1;
-	transform: translateX(100%);
+	display: none;
+	/* transform: translateX(100%); */
 }
 /* Open overlays */
 .Overlay[open] > button {
@@ -83,6 +84,7 @@
 		transform 400ms 60ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 .Overlay[open] .Overlay-bg {
+	display: block;
 	transform: translateX(0);
 	background: hsla(0, 0%, 0%, 0.9);
 	background: hsla(0, 0%, 0%, 1);
