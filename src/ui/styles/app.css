@@ -98,7 +98,8 @@ a {
 }
 
 .Button,
-button {
+button,
+.driver-popover .driver-popover-footer button {
 	font-size: 1.25rem;
 	padding: 0.4em 1em 0.4em;
 	border: 3px solid var(--text-inverse);
@@ -116,7 +117,9 @@ button + button {
 .Button:hover,
 .Button:focus,
 button:hover,
-button:focus {
+button:focus,
+.driver-popover .driver-popover-footer button:hover,
+.driver-popover .driver-popover-footer button:focus {
 	background: hsl(194.7, 53.3%, 83%);
 	box-shadow: 0 0.1em var(--text-inverse);
 }
@@ -486,8 +489,7 @@ h2 {
 		height: 100%;
 	}
 
-	.Card:not([data-card-upgraded]) {
-	}
+	.Card:not([data-card-upgraded]) {}
 	.Card[data-card-upgraded] {
 		display: none;
 	}
@@ -508,8 +510,15 @@ h2 {
 	border: 2px solid var(--text);
 	border-radius: 0.5rem;
 }
-
+.driver-popover .driver-popover-title {
+	font-size: 1.25rem;
+	margin-top: 0.5rem;
+}
 .driver-popover .driver-popover-description,
 .driver-popover .driver-popover-footer button {
 	font-size: 1rem;
+}
+
+.driver-popover .driver-popover-footer button {
+
 }
