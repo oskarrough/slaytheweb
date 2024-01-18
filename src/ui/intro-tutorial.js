@@ -29,7 +29,7 @@ export default function startTutorial() {
 	enemies.forEach((target) => {
 		steps.push({
 			element: target,
-			popover: {align: 'center', description: 'This is an enemy. Throw cards at it until it dies.'},
+			popover: {align: 'center', position: 'left', description: 'This is an enemy. Throw cards at it until it dies.'},
 		})
 	})
 	steps.push({popover: {description: 'The rest you must figure out yourself. Good luck!'}})
