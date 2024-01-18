@@ -83,15 +83,15 @@
 }
 .Card-energy {
 	position: absolute;
-	top: -1.5em;
-	left: -0.5em;
-	width: 1.3rem;
-	height: 1.3rem;
+	top: -1.3em;
+	left: -0.3em;
+	width: 1.1em;
+	height: 1.1em;
 	margin-left: 0;
 	box-shadow: none;
 	border-width: 0.15rem;
-	font-size: inherit;
 }
 .Hand .Card[disabled] .EnergyBadge {
-	color: red;
+	color: #fb1515;
+	background-color: hsl(0deg 73% 25%);
 }
