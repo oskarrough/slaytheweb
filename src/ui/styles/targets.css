@@ -1,4 +1,5 @@
 .Targets {
+	overflow: hidden;
 	flex: 1;
 }
 .Targets-group {

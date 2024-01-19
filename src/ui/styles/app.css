@@ -39,7 +39,11 @@ html.bg {
 
 html,
 button,
-input {
+input,
+#driver-popover-content,
+.driver-popover .driver-popover-title,
+.driver-popover .driver-popover-description,
+.driver-popover .driver-popover-footer button {
 	font-family: 'heliotrope_4', serif;
 	font-feature-settings: 'kern' 1;
 	font-feature-settings: 'liga' on;
@@ -47,7 +51,7 @@ input {
 
 body {
 	margin: 0;
-	overflow: hidden;
+	/* overflow: hidden; */
 	/* overflow-x: hidden; */
 	/* overflow-y: scroll; */
 }
@@ -94,7 +98,8 @@ a {
 }
 
 .Button,
-button {
+button,
+.driver-popover .driver-popover-footer button {
 	font-size: 1.25rem;
 	padding: 0.4em 1em 0.4em;
 	border: 3px solid var(--text-inverse);
@@ -112,9 +117,11 @@ button + button {
 .Button:hover,
 .Button:focus,
 button:hover,
-button:focus {
+button:focus,
+.driver-popover .driver-popover-footer button:hover,
+.driver-popover .driver-popover-footer button:focus {
 	background: hsl(194.7, 53.3%, 83%);
-	 box-shadow: 0 0.1em var(--text-inverse);
+	box-shadow: 0 0.1em var(--text-inverse);
 }
 .Button:active,
 button:active {
@@ -161,7 +168,7 @@ h2 {
 
 .App {
 	position: relative;
-	/* width: 100%; */
+	width: 100%;
 	height: 100vh;
 	display: flex;
 	flex-flow: column;
@@ -326,7 +333,7 @@ h2 {
 /* In your hand, the cards stack a bit */
 .Hand {
 	margin-top: 1rem;
-	margin-bottom: -1rem;
+	transform: translateY(2rem);
 }
 .Hand .Cards {
 	padding-left: 4rem;
@@ -334,16 +341,10 @@ h2 {
 }
 .Hand .Card {
 	margin-left: -1.5rem;
-	/* margin-bottom: -3rem; */
 	cursor: grab;
-	cursor:
-		url(/images/cursors/grab-open.png) 10 0,
-		auto;
+	cursor: url(/images/cursors/grab-open.png) 10 0, auto;
 }
-.Hand .Card-inner {
-	/* because of negative margin */
-	padding-bottom: 2rem;
-}
+.Hand .Card-inner {}
 .Hand .Card[disabled] {
 	cursor: not-allowed;
 }
@@ -362,7 +363,7 @@ h2 {
 }
 
 .Container {
-	min-height: 100vh;
+	/* min-height: 100vh; */
 	display: flex;
 	margin: auto;
 	flex-flow: column;
@@ -488,8 +489,7 @@ h2 {
 		height: 100%;
 	}
 
-	.Card:not([data-card-upgraded]) {
-	}
+	.Card:not([data-card-upgraded]) {}
 	.Card[data-card-upgraded] {
 		display: none;
 	}
@@ -502,4 +502,23 @@ h2 {
 			display: flex;
 		}
 	}
+}
+
+#driver-popover-content {
+	background-color: var(--bg);
+	color: var(--text);
+	border: 2px solid var(--text);
+	border-radius: 0.5rem;
+}
+.driver-popover .driver-popover-title {
+	font-size: 1.25rem;
+	margin-top: 0.5rem;
+}
+.driver-popover .driver-popover-description,
+.driver-popover .driver-popover-footer button {
+	font-size: 1rem;
+}
+
+.driver-popover .driver-popover-footer button {
+
 }

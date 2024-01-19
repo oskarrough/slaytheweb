@@ -28,7 +28,8 @@ export default function Menu({game, gameState, onUndo}) {
 	return html`
 		<div class="Container">
 			<h1 center>Slay the Web</h1>
-			<h2 center>Menu</p>
+			<br/>
+			<br/>
 			<div class="Box">
 				<ul class="Options">
 					<li>

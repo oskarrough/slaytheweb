@@ -1,6 +1,7 @@
 import {html, Component} from '../lib.js'
 import {Card} from './cards.js'
 import gsap from '../animations.js'
+// import {createCard} from '../../game/cards.js'
 
 export default class CardChooser extends Component {
 	componentDidMount() {
@@ -29,7 +30,7 @@ export default class CardChooser extends Component {
 						(card) =>
 							html`<div class="CardBox" onClick=${() => this.clickedCard(card)}>
 								${Card(card, props.gameState)}
-							</div>`,
+							</div>`
 					)}
 				</div>
 			</article>
