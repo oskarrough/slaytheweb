@@ -7,17 +7,18 @@
   "bugs": "https://github.com/oskarrough/slaytheweb/issues",
   "type": "module",
   "scripts": {
-    "dev": "vite dev",
+    "dev": "astro dev",
     "lint": "eslint src tests --fix",
     "test": "ava",
     "test:watch": "ava --watch",
     "test:coverage": "c8 ava",
-    "build": "vite build",
-    "preview": "vite preview",
+    "build": "astro build",
+    "preview": "astro preview",
     "docs": "rm -rf ./docs; cd src/game; docco *.js; mv docs ../../docs",
     "release": "release-it"
   },
   "devDependencies": {
+    "astro": "^4.2.1",
     "ava": "^6.0.1",
     "c8": "^9.1.0",
     "docco": "^0.9.1",
@@ -26,11 +27,11 @@
     "eslint-plugin-jsdoc": "^48.0.2",
     "eslint-plugin-prettier": "^5.1.3",
     "prettier": "3.2.2",
-    "release-it": "^17.0.1",
-    "vite": "^5.0.11",
-    "vite-plugin-pwa": "^0.17.4"
+    "release-it": "^17.0.1"
   },
   "dependencies": {
+    "@astrojs/preact": "^3.1.0",
+    "@vite-pwa/astro": "^0.2.0",
     "driver.js": "^1.3.1",
     "gsap": "^3.12.4",
     "htm": "^3.1.1",

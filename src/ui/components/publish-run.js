@@ -35,7 +35,7 @@ export function PublishRun({game}) {
 						</label>
 						<button disabled=${loading} type="submit">Submit my run</button>
 						<p>${loading ? 'submitting' : ''}</p>
-						<p><a href="/stats.html">View highscores</a></p>
+						<p><a href="/stats">View highscores</a></p>
 				  `
 				: html`<p>Thank you.</p>`}
 		</form>

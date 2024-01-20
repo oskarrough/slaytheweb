@@ -2,6 +2,7 @@ import {html, render, Component} from '../lib.js'
 import SplashScreen from '../components/splash-screen.js'
 import GameScreen from '../components/game-screen.js'
 import WinScreen from '../components/win-screen.js'
+import '../styles/index.css'
 import {init as initSounds} from '../sounds.js'
 
 /** @enum {string} */
@@ -28,7 +29,7 @@ export default class SlayTheWeb extends Component {
 	}
 
 	async handleNewGame() {
-		await initSounds()
+		// await initSounds()
 		this.setState({gameMode: GameModes.gameplay})
 		// Clear any previous saved game.
 		window.history.pushState('', document.title, window.location.pathname)
@@ -55,11 +56,13 @@ export default class SlayTheWeb extends Component {
 	}
 }
 
-customElements.define(
-	'slay-the-web',
-	class SlayTheWebElement extends HTMLElement {
-		connectedCallback() {
-			render(html` <${SlayTheWeb} /> `, this)
-		}
-	},
-)
+if (!customElements.get('slay-the-web')) {
+	customElements.define(
+		'slay-the-web',
+		class SlayTheWebElement extends HTMLElement {
+			connectedCallback() {
+				render(html` <${SlayTheWeb} /> `, this)
+			}
+		},
+	)
+}

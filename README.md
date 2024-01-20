@@ -13,7 +13,7 @@ After many runs in the Spire, I got into the theory behind the game. Inspired by
 
 ## State of the game
 
-December 2023. The core mechanics seem to work. There is a [dynamic map](https://slaytheweb.cards/map-demo.html) you can navigate with different rooms and monsters. You can fight against them using your cards and their powers.
+December 2023. The core mechanics seem to work. There is a [dynamic map](https://slaytheweb.cards/map-demo) you can navigate with different rooms and monsters. You can fight against them using your cards and their powers.
 
 There are many things that would make it more fun to play:
 

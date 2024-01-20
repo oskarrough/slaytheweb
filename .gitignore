@@ -1,4 +1,4 @@
-# system 
+# system
 *.swp
 .DS_Store
 
@@ -8,11 +8,10 @@ package-lock.json
 yarn-error.log
 yarn.lock
 
-# build 
-.vercel
+# build
 coverage/
 dist/
 dev-dist/
 docs/
-# Sentry Config File
-.env.sentry-build-plugin
+.vercel
+.astro/

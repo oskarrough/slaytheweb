@@ -1,7 +1,6 @@
 import {html, render, useState} from '../lib.js'
 import {SlayMap} from '../components/map.js'
 import Dungeon, {defaultOptions as defaultDungeonOptions} from '../../game/dungeon.js'
-import '../styles/index.css'
 
 const MapDemoPage = () => {
 	const [dungeon, setDungeon] = useState(Dungeon())
