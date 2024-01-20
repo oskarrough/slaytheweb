@@ -1,7 +1,7 @@
 import {Component, html} from '../lib.js'
 import {debounce, random as randomBetween} from '../../utils.js'
 import {isRoomCompleted} from '../../game/utils-state.js'
-import {MapNodeTypes} from '../../game/dungeon.js'
+import {emojiFromNodeType} from '../../game/dungeon.js'
 
 /**
  * A wrapper around the <slay-map>. Why?
@@ -195,17 +195,6 @@ export class SlayMap extends Component {
 			</slay-map>
 		`
 	}
-}
-
-/**
- * Converts the string type of a node to an emoji string.
- * if node type is supplied it'll use ' ' whitespace as type
- * @param {string} [type] - a string key to represent the type of room
- * @returns {string} a single emoji
- */
-export function emojiFromNodeType(type) {
-	if (!type) return ' '
-	return MapNodeTypes[type]
 }
 
 // Since el.offsetLeft doesn't respect CSS transforms,

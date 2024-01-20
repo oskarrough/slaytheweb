@@ -4,7 +4,10 @@ import 'driver.js/dist/driver.css'
 export default function startTutorial() {
 	const steps = [
 		{
-			popover: {title: 'Greetings', description: 'This is a very short introduction to Slay the Web. Follow me...'},
+			popover: {
+				title: 'Greetings',
+				description: 'This is a very short introduction to Slay the Web. Follow me...',
+			},
 		},
 		{
 			element: '.Target[data-type="player"]',

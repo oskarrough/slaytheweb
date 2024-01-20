@@ -1,6 +1,5 @@
 /* eslint-disable complexity */
 import {uuid, shuffle, random as randomBetween, pick} from '../utils.js'
-import {emojiFromNodeType} from '../ui/components/map.js'
 import {easyMonsters, monsters, elites, bosses} from '../content/dungeon-encounters.js'
 import {StartRoom, CampfireRoom} from './rooms.js'
 
@@ -345,6 +344,17 @@ function decideNodeType(nodeTypes, floor) {
 	if (floor < 3) return pick('MC')
 	if (floor > 6) return pick('MMEEC')
 	return pick(nodeTypes)
+}
+
+/**
+ * Converts the string type of a node to an emoji string.
+ * if node type is supplied it'll use ' ' whitespace as type
+ * @param {string} [type] - a string key to represent the type of room
+ * @returns {string} a single emoji
+ */
+export function emojiFromNodeType(type) {
+	if (!type) return ' '
+	return MapNodeTypes[type]
 }
 
 /**

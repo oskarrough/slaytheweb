@@ -66,7 +66,7 @@ export function conditionsAreValid(state, conditions) {
  * @returns {boolean}
  */
 export function canPlay(state, card) {
-	if (!state) return false
+	if (!state?.hand) return false
 	const cardIsInHand = Boolean(state.hand.find((c) => c.id === card.id))
 	const enoughEnergy = state.player.currentEnergy >= card.energy
 	const allowedToPlay = conditionsAreValid(state, card.conditions)
