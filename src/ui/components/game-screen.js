@@ -129,9 +129,9 @@ stw.dealCards()`)
 	 * Plays a card while juggling DOM animations and set state.
 	 * @param {string} cardId
 	 * @param {string} target
-	 * @param {HTMLElement} cardElement
+	 * @param {HTMLElement} cardEl
 	 */
-	playCard(cardId, target, cardElement) {
+	playCard(cardId, target, cardEl) {
 		const card = this.state.hand.find((c) => c.id === cardId)
 		this.game.enqueue({type: 'playCard', card, target})
 		const supportsFlip = typeof Flip !== 'undefined'
@@ -141,12 +141,14 @@ stw.dealCards()`)
 		if (supportsFlip) flip = Flip.getState('.Hand .Card')
 
 		// Create a clone on top of the card to animate.
-		const clone = cardElement.cloneNode(true)
-		clone.style.width = cardElement.offsetWidth + 'px'
-		clone.style.height = cardElement.offsetHeight + 'px'
+		const clone = cardEl.cloneNode(true)
+		const cardRect = cardEl.getBoundingClientRect()
 		clone.style.position = 'absolute'
-		clone.style.top = cardElement.offsetTop + 'px'
-		clone.style.left = cardElement.offsetLeft + 'px'
+		clone.style.width = cardEl.offsetWidth + 'px'
+		clone.style.height = cardEl.offsetHeight + 'px'
+		clone.style.top = window.scrollY + cardRect.top + 'px'
+		clone.style.left = window.scrollX + cardRect.left + 'px'
+		clone.style.transform = ''
 		this.base.appendChild(clone)
 
 		// Update state and re-enable dragdrop

@@ -1,16 +1,12 @@
 import gsap from 'gsap'
-import {Draggable} from 'gsap/Draggable.js'
+import Draggable from 'gsap/Draggable.js'
 import Flip from 'gsap/Flip.js'
 
 // This file contains some resuable animations/effects.
 // https://greensock.com/cheatsheet/
 
 // Don't forget to register plugins.
-gsap.registerPlugin(Draggable)
-
-if (typeof Flip !== 'undefined') {
-	gsap.registerPlugin(Flip)
-}
+gsap.registerPlugin(Draggable, Flip)
 
 // Fly in the cards from the left (draw pile) to your hand.
 gsap.registerEffect({
