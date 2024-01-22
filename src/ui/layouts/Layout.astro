@@ -43,12 +43,12 @@ const {title} = Astro.props
       crossorigin
     />
     <script>
-      // console.log('version', import.meta.env.PUBLIC_VERSION)
-      // window.sentryOnLoad = function() {
-      // 	Sentry.init({
-      // 		release: "slaytheweb@" + process.env.npm_package_version,
-      // 	})
-      // }
+		const version = import.meta.env.PUBLIC_VERSION
+       window.sentryOnLoad = function() {
+       	Sentry.init({
+       		release: "slaytheweb@" + version
+       	})
+       }
     </script>
     <script src="https://js.sentry-cdn.com/8dfaea3ae774cfc8d9a79fdac78b2c5d.min.js" crossorigin="anonymous"
     ></script>
