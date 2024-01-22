@@ -2,6 +2,7 @@ import {defineConfig} from 'astro/config'
 import preact from '@astrojs/preact'
 import AstroPWA from '@vite-pwa/astro'
 import sentry from '@sentry/astro'
+import vercel from '@astrojs/vercel/serverless'
 
 // import {execSync} from 'child_process'
 // process.env.VITE_GIT_HASH = execSync('git rev-parse HEAD').toString().trimEnd()
@@ -9,6 +10,8 @@ import sentry from '@sentry/astro'
 
 // https://astro.build/config
 export default defineConfig({
+	output: 'server',
+	adapter: vercel(),
 	srcDir: './src/ui',
 	vite: {
 		build: {
