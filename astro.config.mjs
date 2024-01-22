@@ -1,8 +1,7 @@
 import {defineConfig} from 'astro/config'
 import preact from '@astrojs/preact'
 import AstroPWA from '@vite-pwa/astro'
-import {sentryVitePlugin} from '@sentry/vite-plugin'
-// import sentry from '@sentry/astro'
+import sentry from '@sentry/astro'
 
 // import {execSync} from 'child_process'
 // process.env.VITE_GIT_HASH = execSync('git rev-parse HEAD').toString().trimEnd()
@@ -20,9 +19,9 @@ export default defineConfig({
 		preact(),
 		AstroPWA({
 			registerType: 'autoUpdate',
-			devOptions: {
-				// enabled: true,
-			},
+			// devOptions: {
+			//   enabled: true,
+			// },
 			// The actual webmanifest
 			manifest: {
 				name: 'Slay the Web',
@@ -48,18 +47,13 @@ export default defineConfig({
 				],
 			},
 		}),
-		sentryVitePlugin({
-			org: 'oskarrough',
-			project: 'slaytheweb',
-			authToken: process.env.SENTRY_AUTH_TOKEN,
+		sentry({
+			dsn: 'https://8dfaea3ae774cfc8d9a79fdac78b2c5d@o4506580528529408.ingest.sentry.io/4506580555268096',
+			sourceMapsUploadOptions: {
+				project: 'slaytheweb',
+				authToken: process.env.SENTRY_AUTH_TOKEN,
+				telemetry: false,
+			},
 		}),
-		// sentry({
-		// 	dsn: 'https://8dfaea3ae774cfc8d9a79fdac78b2c5d@o4506580528529408.ingest.sentry.io/4506580555268096',
-		// 	sourceMapsUploadOptions: {
-		// 		project: 'slaytheweb',
-		// 		authToken: process.env.SENTRY_AUTH_TOKEN,
-		// 		telemetry: false
-		// 	},
-		// }),
 	],
 })
