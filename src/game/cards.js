@@ -1,8 +1,6 @@
 import {uuid} from '../utils.js'
 import {cards, cardUpgrades} from '../content/cards.js'
 
-// console.log(cardUpgrades)
-
 // This file contains the logic to create cards.
 // While cards are described in plain object form, they are always converted to a class equivalent.
 // The actual cards belong in content/cards.js.

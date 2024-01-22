@@ -11,10 +11,6 @@ html {
 	cursor: url(/images/cursors/default.png), auto;
 	min-height: 100%;
 	background-color: var(--bg);
-}
-
-html.bg {
-	background-image: url('/images/scenes/moonlit-landscape-1904.jpg');
 	/* background-image: url('/images/scenes/dalle5.webp'); */
 	/* background-position: center bottom; */
 	background-attachment: fixed;
@@ -26,7 +22,7 @@ html.bg {
 /* Minimum font size */
 @media (max-width: 900px) {
 	html {
-		font-size: 14px;
+		font-size: 15px;
 	}
 }
 
@@ -74,6 +70,10 @@ summary {
 	cursor:
 		url(/images/cursors/point.png) 10 0,
 		auto;
+}
+
+summary {
+	user-select: none;
 }
 
 input,

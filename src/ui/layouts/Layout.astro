@@ -1,0 +1,60 @@
+---
+import {pwaInfo} from 'virtual:pwa-info'
+import ReloadPrompt from '../components/ReloadPrompt.astro'
+// import '../styles/index.css'
+
+interface Props {
+  title: string
+  bg: boolean
+}
+
+const {title} = Astro.props
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{title}</title>
+    <meta name="description" content="A video card game for the web" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#116f54" />
+    <meta name="msapplication-TileColor" content="#116f54" />
+    {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
+    <link rel="icon" type="image/png" href="/images/favicons/favicon-512.png" sizes="512x512" />
+    <link rel="shortcut icon" href="/images/favicons/favicon.ico" />
+    <link rel="apple-touch-icon" href="/images/favicon-512.png" />
+    <link
+      rel="preload"
+      href="https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="https://assets.slaytheweb.cards/fonts/heliotrope/heliotrope_4_bold.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <script>
+		const version = import.meta.env.PUBLIC_VERSION
+       window.sentryOnLoad = function() {
+       	Sentry.init({
+       		release: "slaytheweb@" + version
+       	})
+       }
+    </script>
+    <script src="https://js.sentry-cdn.com/8dfaea3ae774cfc8d9a79fdac78b2c5d.min.js" crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <slot />
+    <ReloadPrompt />
+  </body>
+</html>

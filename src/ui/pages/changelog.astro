@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro'
+import {Content as ChangelogDoc} from '../../../CHANGELOG.md'
+import '../styles/index.css'
+---
+
+<Layout title="Changelog">
+  <div class="Container">
+    <div class="Box">
+      <ul class="Options">
+        <li><a class="Button" href="/">Back</a></li>
+      </ul>
+    </div>
+		<p>
+			This game is open source, see the <a
+			href="https://github.com/oskarrough/slaytheweb" rel="noopener
+			noreferrer" target="_blank">Slay the Web code repository</a>.
+		</p>
+    <ChangelogDoc />
+  </div>
+</Layout>

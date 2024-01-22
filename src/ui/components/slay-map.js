@@ -4,27 +4,6 @@ import {isRoomCompleted} from '../../game/utils-state.js'
 import {emojiFromNodeType} from '../../game/dungeon.js'
 
 /**
- * A wrapper around the <slay-map>. Why?
- */
-export default function map({dungeon, onMove}) {
-	const {x, y, pathTaken} = dungeon
-
-	return html`
-		<div class="MapContainer">
-			<${SlayMap} dungeon=${dungeon} x=${x} y=${y} scatter=${20} onSelect=${onMove}><//>
-
-			<footer hidden class="MapFooter">
-				<h2>History</h2>
-				<p>Current:. Floor ${y}. Node ${x}</p>
-				<ul>
-					${pathTaken.map((path) => html`<li>${path.y}.${path.x}</li>`)}
-				</ul>
-			</footer>
-		</div>
-	`
-}
-
-/**
  * Renders a map of the dungeon.
  * @param {object} props
  * @param {object} props.dungeon
@@ -161,6 +140,12 @@ export class SlayMap extends Component {
 		if (debug) console.groupEnd()
 	}
 
+	nodeSelect({x, y}) {
+		if (this.debug) console.log('nodeSelect', {x, y})
+		this.props.onSelect({x, y})
+		// this.dispatchEvent(new CustomEvent('node-select', {detail: {x, y}}))
+	}
+
 	render(props) {
 		const {dungeon, x, y} = props
 		if (!dungeon.graph) throw new Error('No graph to render. This should not happen?', dungeon)
@@ -184,7 +169,7 @@ export class SlayMap extends Component {
 									current=${isCurrent}
 									can-visit=${Boolean(canVisit)}
 									did-visit=${node.didVisit}
-									onClick=${() => props.onSelect({x: nodeIndex, y: rowIndex})}
+									onClick=${() => this.nodeSelect({x: nodeIndex, y: rowIndex})}
 								>
 									<span>${emojiFromNodeType(node.type)}</span>
 								</slay-map-node>`

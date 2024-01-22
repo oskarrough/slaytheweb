@@ -5,17 +5,21 @@ export default class Cards extends Component {
 	// props = {gameState: {}, type ''}
 	render(props) {
 		const cards = props.gameState[props.type]
-		return html` <div class="Cards">${cards.map((card) => Card(card, props.gameState))}</div> `
+		return html` <div class="Cards">${cards.map((card) => Card({card, gameState: props.gameState}))}</div> `
 	}
 }
 
 /**
  * Renders a card
- * @param {import('../../game/cards.js').CARD} card
- * @param {import('../../game/actions.js').State} [gameState]
+ * @param {object} props
+ * @param {import('../../game/cards.js').CARD} props.card
+ * @param {import('../../game/actions.js').State} [props.gameState]
  * @returns {?} what?
  */
-export function Card(card, gameState) {
+export function Card(props) {
+	// export class Card extends Component {
+	// 	render() {
+	const {card, gameState} = props
 	const isDisabled = !canPlay(gameState, card)
 	const image = card.image ? `/images/cards/${card.image}` : '/images/cards/fallback.jpg'
 
@@ -43,3 +47,4 @@ export function Card(card, gameState) {
 		</stw-card>
 	`
 }
+// }
