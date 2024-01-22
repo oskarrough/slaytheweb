@@ -76,6 +76,10 @@ summary {
 		auto;
 }
 
+summary {
+	user-select: none;
+}
+
 input,
 textarea,
 select {

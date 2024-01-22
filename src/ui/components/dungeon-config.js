@@ -1,14 +1,11 @@
 import {html, useState} from '../lib.js'
 import {defaultOptions as defaultDungeonOptions} from '../../game/dungeon.js'
 
-export const DungeonUIConfig = (props) => {
+export const DungeonConfig = (props) => {
 	const [config, setConfig] = useState(defaultDungeonOptions)
 	const [styles] = useState(defaultDungeonOptions)
 
-	console.log('ui', props)
-
 	const handleInput = (e, field) => {
-		console.log('requested dungeon config update:', field)
 		const newConfig = {...config}
 		newConfig[field] = e.target.type === 'number' ? Number(e.target.value) : e.target.value
 		setConfig(newConfig)

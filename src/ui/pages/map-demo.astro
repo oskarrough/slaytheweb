@@ -1,31 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import '../styles/index.css'
-
-import {DungeonUIConfig} from '../components/dungeon-ui-config.js'
-import {SlayMap} from '../components/slay-map.js'
-import Dungeon from '../../game/dungeon.js'
-
-let dungeon = Dungeon()
-const scatter = 0
-const x = 0
-const y = 0
-
-function onSelect() {
-	console.log('selected')
-}
 ---
+
+<script>
+  import '../components/slay-map-demo.js'
+</script>
 
 <Layout title="Map demo from Slay the Web">
   <div class="Container">
+    <header class="Header">
+      <h1 medium>Map demo</h1>
+      <p>Here you can play around with the function used to generate the map in Slay the Web.</p>
+    </header>
     <div class="Box">
-      <details>
-        <summary>Options</summary>
-        <DungeonUIConfig onUpdate={onSelect} client:load />
-      </details>
+      <ul class="Options">
+        <li><a class="Button" href="/">Back</a></li>
+      </ul>
     </div>
-
-    {dungeon && <SlayMap dungeon={dungeon} x={x} y={y} onSelect={onSelect} scatter={scatter} debug="true" client:only />}
+    <slay-map-demo></slay-map-demo>
   </div>
 </Layout>
 

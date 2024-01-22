@@ -142,8 +142,8 @@ export class SlayMap extends Component {
 
 	nodeSelect({x, y}) {
 		if (this.debug) console.log('nodeSelect', {x, y})
-		// this.props.onSelect({x, y})
-		this.dispatchEvent(new CustomEvent('node-select', {detail: {x, y}}))
+		this.props.onSelect({x, y})
+		// this.dispatchEvent(new CustomEvent('node-select', {detail: {x, y}}))
 	}
 
 	render(props) {
