@@ -5,13 +5,14 @@ import ReloadPrompt from '../components/ReloadPrompt.astro'
 
 interface Props {
   title: string
+  bg: boolean
 }
 
 const {title} = Astro.props
 ---
 
 <!doctype html>
-<html lang="en" class="no-bg">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>{title}</title>
