@@ -1,8 +1,6 @@
 import {defineConfig} from 'astro/config'
 import preact from '@astrojs/preact'
 import AstroPWA from '@vite-pwa/astro'
-import sentry from '@sentry/astro'
-import vercel from '@astrojs/vercel/serverless'
 
 // import {execSync} from 'child_process'
 // process.env.VITE_GIT_HASH = execSync('git rev-parse HEAD').toString().trimEnd()
@@ -10,8 +8,6 @@ import vercel from '@astrojs/vercel/serverless'
 
 // https://astro.build/config
 export default defineConfig({
-	output: 'server',
-	adapter: vercel(),
 	srcDir: './src/ui',
 	vite: {
 		build: {
@@ -50,13 +46,13 @@ export default defineConfig({
 				],
 			},
 		}),
-		sentry({
-			dsn: 'https://8dfaea3ae774cfc8d9a79fdac78b2c5d@o4506580528529408.ingest.sentry.io/4506580555268096',
-			sourceMapsUploadOptions: {
-				project: 'slaytheweb',
-				authToken: process.env.SENTRY_AUTH_TOKEN,
-				telemetry: false,
-			},
-		}),
+		// sentry({
+		// 	dsn: 'https://8dfaea3ae774cfc8d9a79fdac78b2c5d@o4506580528529408.ingest.sentry.io/4506580555268096',
+		// 	sourceMapsUploadOptions: {
+		// 		project: 'slaytheweb',
+		// 		authToken: process.env.SENTRY_AUTH_TOKEN,
+		// 		telemetry: false,
+		// 	},
+		// }),
 	],
 })
