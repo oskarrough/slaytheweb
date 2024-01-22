@@ -1,6 +1,5 @@
 import {html, Component} from '../lib.js'
 import gsap from '../animations.js'
-import VersionInfo from './version-info.js'
 
 export default class SplashScreen extends Component {
 	componentDidMount() {
@@ -24,14 +23,16 @@ export default class SplashScreen extends Component {
 					`
 							: html`
 							<li><button autofocus onClick=${props.onNewGame}>Play</a></li>
-							<li><a class="Button" href="/?debug&tutorial">Play with tutorial</a></li>
+							<li><a class="Button" href="/?debug&tutorial">Tutorial</a></li>
 							`}
 						<li><a class="Button" href="/collection">Collection</a></li>
 						<li><a class="Button" href="/stats">Highscores</a></li>
 						<li><a class="Button" href="/manual">Manual</a></li>
 					</ul>
+					<p center>
+						<small><a href="/changelog">Changelog</a></small>
+					</p>
 				</div>
-				<${VersionInfo}><//>
 			</article>
 		`
 	}

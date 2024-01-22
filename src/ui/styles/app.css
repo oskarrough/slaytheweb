@@ -22,7 +22,7 @@ html {
 /* Minimum font size */
 @media (max-width: 900px) {
 	html {
-		font-size: 14px;
+		font-size: 15px;
 	}
 }
 
