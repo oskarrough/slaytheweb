@@ -1,0 +1,16 @@
+---
+import Layout from '../layouts/Layout.astro'
+import {Content as ChangelogDoc} from '../../../CHANGELOG.md'
+import '../styles/index.css'
+---
+
+<Layout title="Changelog">
+  <div class="Container">
+    <div class="Box">
+      <ul class="Options">
+        <li><a class="Button" href="/">Back</a></li>
+      </ul>
+    </div>
+    <ChangelogDoc />
+  </div>
+</Layout>
