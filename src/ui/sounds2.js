@@ -29,6 +29,10 @@ export function beep(
 
 	oscillator.start()
 	oscillator.stop(audioContext.currentTime + duration)
+
+	// var compressor = audioContext.createDynamicsCompressor()
+	// mix.connect(compressor)
+	// compressor.connect(context.destination)
 }
 
 const majorScale = [523.25, 587.33, 659.25, 698.46, 783.99, 880.0, 987.77, 1046.5] // C5, D5, E5, F5, G5, A5, B5, C6
