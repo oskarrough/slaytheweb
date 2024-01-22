@@ -1,35 +1,11 @@
-import {html, render, useState} from '../lib.js'
-import {SlayMap} from '../components/map.js'
-import Dungeon, {defaultOptions as defaultDungeonOptions} from '../../game/dungeon.js'
+import {html, useState} from '../lib.js'
+import {defaultOptions as defaultDungeonOptions} from '../../game/dungeon.js'
 
-const MapDemoPage = () => {
-	const [dungeon, setDungeon] = useState(Dungeon())
-	const [scatter, setScatter] = useState(0)
-
-	const x = 0
-	const y = 0
-	const onSelect = (move) => {
-		console.log('move', move)
-	}
-
-	return html`
-		<div class="Box">
-			<details>
-				<summary>Options</summary>
-				<${DungeonConfigForm} onUpdate=${(config) => setDungeon(Dungeon(config))} />
-			</details>
-		</div>
-
-		${dungeon &&
-		html`
-			<${SlayMap} dungeon=${dungeon} x=${x} y=${y} onSelect=${onSelect} scatter=${scatter} debug=${true}><//>
-		`}
-	`
-}
-
-const DungeonConfigForm = (props) => {
+export const DungeonUIConfig = (props) => {
 	const [config, setConfig] = useState(defaultDungeonOptions)
-	const [styles, setStyles] = useState(defaultDungeonOptions)
+	const [styles] = useState(defaultDungeonOptions)
+
+	console.log('ui', props)
 
 	const handleInput = (e, field) => {
 		console.log('requested dungeon config update:', field)
@@ -51,7 +27,7 @@ const DungeonConfigForm = (props) => {
 		}
 	}
 
-	const toggleDebugStyles = (e) => {
+	const toggleDebugStyles = () => {
 		const el = document.querySelector('slay-map')
 		el.classList.toggle('debug')
 	}
@@ -71,7 +47,7 @@ const DungeonConfigForm = (props) => {
 			</fieldset>
 			<fieldset>
 				<legend>Map size</legend>
-				<label>Debug styles <input type="checkbox" onInput=${(e) => toggleDebugStyles()} /></label>
+				<label>Debug styles <input type="checkbox" onInput=${() => toggleDebugStyles()} /></label>
 				<label>
 					Height
 					<input
@@ -126,12 +102,3 @@ const DungeonConfigForm = (props) => {
 		</form>
 	`
 }
-
-customElements.define(
-	'stw-map-demo',
-	class StwMapDemo extends HTMLElement {
-		connectedCallback() {
-			render(html`<${MapDemoPage} />`, this)
-		}
-	},
-)

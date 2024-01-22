@@ -1,7 +1,7 @@
 import {html, render, Component} from '../lib.js'
-import SplashScreen from '../components/splash-screen.js'
-import GameScreen from '../components/game-screen.js'
-import WinScreen from '../components/win-screen.js'
+import SplashScreen from './splash-screen.js'
+import GameScreen from './game-screen.js'
+import WinScreen from './win-screen.js'
 import '../styles/index.css'
 import {init as initSounds} from '../sounds.js'
 

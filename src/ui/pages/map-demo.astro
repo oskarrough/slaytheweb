@@ -1,13 +1,31 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import '../styles/index.css'
----
 
-<script src="../elements/map-demo.js"></script>
+import {DungeonUIConfig} from '../components/dungeon-ui-config.js'
+import {SlayMap} from '../components/slay-map.js'
+import Dungeon from '../../game/dungeon.js'
+
+let dungeon = Dungeon()
+const scatter = 0
+const x = 0
+const y = 0
+
+function onSelect() {
+	console.log('selected')
+}
+---
 
 <Layout title="Map demo from Slay the Web">
   <div class="Container">
-    <stw-map-demo></stw-map-demo>
+    <div class="Box">
+      <details>
+        <summary>Options</summary>
+        <DungeonUIConfig onUpdate={onSelect} client:load />
+      </details>
+    </div>
+
+    {dungeon && <SlayMap dungeon={dungeon} x={x} y={y} onSelect={onSelect} scatter={scatter} debug="true" client:only />}
   </div>
 </Layout>
 

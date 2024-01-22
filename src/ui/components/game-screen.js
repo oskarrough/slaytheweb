@@ -14,7 +14,7 @@ import CampfireRoom from './campfire.js'
 import Cards from './cards.js'
 import enableDragDrop from '../dragdrop.js'
 import DungeonStats from './dungeon-stats.js'
-import Map from './map.js'
+import {SlayMap} from './slay-map.js'
 import Menu from './menu.js'
 import {Overlay, OverlayWithButton} from './overlays.js'
 import {Player, Monster} from './player.js'
@@ -206,7 +206,7 @@ stw.dealCards()`)
 			Escape: () => {
 				// let openOverlays = this.base.querySelectorAll('.Overlay:not(#Menu)[open]')
 				let openOverlays = this.base.querySelectorAll(
-					'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #ExhaustPile[open]',
+					'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #ExhaustPile[open]'
 				)
 				openOverlays.forEach((el) => el.removeAttribute('open'))
 				this.toggleOverlay('#Menu')
@@ -355,7 +355,7 @@ stw.dealCards()`)
 				<${OverlayWithButton} id="Map" topright key=${1}>
 					<button align-right onClick=${() => this.toggleOverlay('#Map')}><u>M</u>ap</button>
 					<div class="Overlay-content">
-						<${Map} dungeon=${state.dungeon} onMove=${this.handleMapMove} />
+						<${SlayMap} dungeon=${state.dungeon} x=${state.dungeon.x} y=${state.dungeon.y} scatter=${20} onSelect=${this.handleMapMove}><//>
 					</div>
 				<//>
 
@@ -386,7 +386,7 @@ stw.dealCards()`)
 				<${OverlayWithButton} id="DiscardPile" bottomright>
 					<button onClick=${() =>
 						this.toggleOverlay(
-							'#DiscardPile',
+							'#DiscardPile'
 						)} align-right class="tooltipped tooltipped-nw tooltipped-multiline" aria-label="Cards you've already played. Once the draw pile is empty, these cards are shuffled into your draw pile.">Di<u>s</u>card pile ${
 						state.discardPile.length
 					}</button>
