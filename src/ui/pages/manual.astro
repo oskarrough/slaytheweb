@@ -1,14 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro'
 ---
-<script>
-	unhandled()
-</script>
-
 <Layout title="Manual - Slay the Web">
   <div class="Container">
     <header class="Header">
       <h1 medium>Slay the Web Manual</h1>
+			<button onclick="throw new Error('This is a test error')">Throw test error</button>
     </header>
     <div class="Box">
       <ul class="Options">
