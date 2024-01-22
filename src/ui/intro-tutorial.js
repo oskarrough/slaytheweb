@@ -6,7 +6,7 @@ export default function startTutorial() {
 		{
 			popover: {
 				title: 'Greetings',
-				description: 'This is a very short introduction to Slay the Web. Follow me...',
+				description: 'This is a very short introduction to Slay the Web. Follow me... (press enter)',
 			},
 		},
 		{

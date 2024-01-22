@@ -5,7 +5,7 @@
 }
 
 html {
-	font-size: 2.2vw;
+	font-size: max(16px, min(1.7vmin, 24px));
 	line-height: 1.4;
 	color: var(--text);
 	cursor: url(/images/cursors/default.png), auto;
@@ -17,20 +17,6 @@ html {
 	background-position: 50%;
 	background-size: cover;
 	background-repeat: no-repeat;
-}
-
-/* Minimum font size */
-@media (max-width: 900px) {
-	html {
-		font-size: 15px;
-	}
-}
-
-/* Maximum font size */
-@media (min-width: 1000px) {
-	html {
-		font-size: 20px;
-	}
 }
 
 html,
@@ -342,9 +328,12 @@ h2 {
 .Hand .Card {
 	margin-left: -1.5rem;
 	cursor: grab;
-	cursor: url(/images/cursors/grab-open.png) 10 0, auto;
+	cursor:
+		url(/images/cursors/grab-open.png) 10 0,
+		auto;
 }
-.Hand .Card-inner {}
+.Hand .Card-inner {
+}
 .Hand .Card[disabled] {
 	cursor: not-allowed;
 }
@@ -489,7 +478,8 @@ h2 {
 		height: 100%;
 	}
 
-	.Card:not([data-card-upgraded]) {}
+	.Card:not([data-card-upgraded]) {
+	}
 	.Card[data-card-upgraded] {
 		display: none;
 	}
@@ -520,5 +510,4 @@ h2 {
 }
 
 .driver-popover .driver-popover-footer button {
-
 }
