@@ -14,39 +14,36 @@ function startGame() {
 	polySynth.triggerAttackRelease(['D4', 'F4', 'A4', 'C5', 'E5'], 0.7)
 }
 
+const brownNoise = new Tone.Noise({
+	type: 'brown',
+	fadeOut: 0.07,
+	volume: -33,
+})
+
+const autoFilter = new Tone.AutoFilter({
+	frequency: '5n',
+	baseFrequency: 3000,
+	octaves: 2,
+}).toDestination()
+
 const selectCard = () => {
-	// initialize the noise and start
-	const noise = new Tone.Noise({
-		type: 'brown',
-		fadeOut: 0.07,
-		volume: -33,
-	}).start()
-
+	brownNoise.start()
 	// make an autofilter to shape the noise
-	const autoFilter = new Tone.AutoFilter({
-		frequency: '5n',
-		baseFrequency: 3000,
-		octaves: 2,
-	})
-		.toDestination()
-		.start()
-	autoFilter.stop('+0.1')
-
-	// connect the noise
-	noise.connect(autoFilter)
+	autoFilter.start().stop('+0.1')
+	brownNoise.connect(autoFilter)
 	// start the autofilter LFO
-	noise.stop('+0.04')
+	brownNoise.stop('+0.04')
 }
 
-function endTurn() {
-	// initialize the noise and start
-	const noise = new Tone.Noise({
-		type: 'pink',
-		fadeOut: 0.2,
-		volume: -28,
-	}).start()
+const pinkNoise = new Tone.Noise({
+	type: 'pink',
+	fadeOut: 0.2,
+	volume: -28,
+})
 
-	// make an autofilter to shape the noise
+function endTurn() {
+	pinkNoise.start()
+
 	const autoFilter = new Tone.AutoFilter({
 		frequency: '2n',
 		baseFrequency: 200,
@@ -54,12 +51,9 @@ function endTurn() {
 	})
 		.toDestination()
 		.start()
-	autoFilter.stop('+0.4')
+		.stop('+0.4')
 
-	// connect the noise
-	noise.connect(autoFilter)
-	// start the autofilter LFO
-	noise.stop('+0.2')
+	pinkNoise.connect(autoFilter).stop('+0.2')
 }
 
 function startTurn() {
@@ -104,22 +98,28 @@ function cardToHand() {
 	})
 		.toDestination()
 		.start()
-	autoFilter.stop('+0.08')
+		.stop('+0.08')
 
 	// connect the noise
-	noise.connect(autoFilter)
-	// start the autofilter LFO
-	noise.stop('+0.1')
+	noise
+		.connect(autoFilter)
+		// start the autofilter LFO
+		.stop('+0.1')
 }
 
-function playCard({card}) {
-	const cardType = card.damage ? 'attack' : 'defense'
-	if (cardType === 'attack') {
-		playAttackCard()
-	}
-	if (cardType === 'defense') {
-		playDefenseCard()
-	}
+function playCard(card) {
+	// const cardType = card.damage ? 'attack' : 'defense'
+	// if (cardType === 'attack') {
+	// 	playAttackCard()
+	// }
+	// if (cardType === 'defense') {
+	// 	playDefenseCard()
+	// }
+	playGenericCard()
+}
+
+const playGenericCard = () => {
+	amSynth.triggerAttackRelease('G#3', 0.1)
 }
 
 const playAttackCard = () => {
