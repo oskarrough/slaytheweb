@@ -15,7 +15,7 @@ export default defineConfig({
 			registerType: 'autoUpdate',
 
 			devOptions: {
-				enabled: true,
+				// enabled: true,
 			},
 
 			// The actual webmanifest
