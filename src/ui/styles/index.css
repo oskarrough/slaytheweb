@@ -8,7 +8,7 @@
 @import './tooltipped.css';
 
 :root {
-	--card-width: 11em;
+	--card-width: 10em;
 	--card-height: 17em;
 	--yellow: #ffc107;
 	--teal: #116f54;

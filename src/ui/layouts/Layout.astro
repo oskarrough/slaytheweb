@@ -45,7 +45,6 @@ const {title} = Astro.props
     <script>
 			 const environment = import.meta.env.PROD ? 'production' : 'development'
 			 const pkgVersion = import.meta.env.PUBLIC_VERSION
-			 console.log({environment, pkgVersion})
        window.sentryOnLoad = function() {
        	Sentry.init({
 					environment,
