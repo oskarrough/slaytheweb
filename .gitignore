@@ -15,4 +15,4 @@ dev-dist/
 docs/
 .vercel
 .astro/
-.env
+.env.local
