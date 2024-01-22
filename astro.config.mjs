@@ -2,10 +2,6 @@ import {defineConfig} from 'astro/config'
 import preact from '@astrojs/preact'
 import AstroPWA from '@vite-pwa/astro'
 
-// import {execSync} from 'child_process'
-// process.env.VITE_GIT_HASH = execSync('git rev-parse HEAD').toString().trimEnd()
-// process.env.VITE_GIT_MESSAGE = execSync('git show -s --format=%s').toString().trimEnd()
-
 // https://astro.build/config
 export default defineConfig({
 	srcDir: './src/ui',

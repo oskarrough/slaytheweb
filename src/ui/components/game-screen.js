@@ -252,7 +252,6 @@ stw.dealCards()`)
 	}
 
 	handleMapMove(move) {
-		console.log('Made a move')
 		this.toggleOverlay('#Map')
 		this.setState({didPickCard: false})
 		this.game.enqueue({type: 'move', move})

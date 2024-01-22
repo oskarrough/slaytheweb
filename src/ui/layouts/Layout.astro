@@ -24,6 +24,7 @@ const {title} = Astro.props
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="theme-color" content="#116f54" />
     <meta name="msapplication-TileColor" content="#116f54" />
+    {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
     <link rel="icon" type="image/png" href="/images/favicons/favicon-512.png" sizes="512x512" />
     <link rel="shortcut icon" href="/images/favicons/favicon.ico" />
     <link rel="apple-touch-icon" href="/images/favicon-512.png" />
@@ -41,7 +42,14 @@ const {title} = Astro.props
       type="font/woff2"
       crossorigin
     />
-    {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
+    <script>
+      // console.log('version', import.meta.env.PUBLIC_VERSION)
+      // window.sentryOnLoad = function() {
+      // 	Sentry.init({
+      // 		release: "slaytheweb@" + process.env.npm_package_version,
+      // 	})
+      // }
+    </script>
     <script src="https://js.sentry-cdn.com/8dfaea3ae774cfc8d9a79fdac78b2c5d.min.js" crossorigin="anonymous"
     ></script>
   </head>
