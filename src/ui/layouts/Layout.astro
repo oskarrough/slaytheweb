@@ -46,6 +46,7 @@ const {title} = Astro.props
 		const version = import.meta.env.PUBLIC_VERSION
        window.sentryOnLoad = function() {
        	Sentry.init({
+					environment: import.meta.env.PROD ? 'production' : 'development'
        		release: "slaytheweb@" + version
        	})
        }
