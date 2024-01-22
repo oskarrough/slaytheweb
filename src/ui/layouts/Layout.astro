@@ -42,6 +42,8 @@ const {title} = Astro.props
       crossorigin
     />
     {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
+    <script src="https://js.sentry-cdn.com/8dfaea3ae774cfc8d9a79fdac78b2c5d.min.js" crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <slot />
