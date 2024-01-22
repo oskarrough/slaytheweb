@@ -27,10 +27,9 @@ export default class SplashScreen extends Component {
 							`}
 						<li><a class="Button" href="/collection">Collection</a></li>
 						<li><a class="Button" href="/stats">Highscores</a></li>
-						<li><a class="Button" href="/manual">Manual</a></li>
 					</ul>
 					<p center>
-						<small><a href="/changelog">Changelog</a></small>
+						<small><a href="/changelog">Changelog</a> & <a href="/manual">Manual</a></small>
 					</p>
 				</div>
 			</article>
