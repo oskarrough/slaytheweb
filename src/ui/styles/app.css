@@ -11,8 +11,6 @@ html {
 	cursor: url(/images/cursors/default.png), auto;
 	min-height: 100%;
 	background-color: var(--bg);
-	/* background-image: url('/images/scenes/dalle5.webp'); */
-	/* background-position: center bottom; */
 	background-attachment: fixed;
 	background-position: 50%;
 	background-size: cover;
@@ -33,13 +31,6 @@ input,
 
 body {
 	margin: 0;
-	/* overflow: hidden; */
-	/* overflow-x: hidden; */
-	/* overflow-y: scroll; */
-}
-
-[inverse] {
-	color: var(--text-inverse);
 }
 
 [center] {
