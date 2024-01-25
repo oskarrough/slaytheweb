@@ -1,27 +1,25 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import {getRuns} from '../../game/backend.js'
+import '../styles/typography.css'
 
 const runs = (await getRuns()).reverse()
 ---
 
 <Layout title="Statistics & Highscores">
   <article class="Container">
-    <header class="Header">
-      <h1 medium>Slay the Web</h1>
-      <h2>Highscores & Statistics</h2>
-    </header>
-
     <div class="Box">
       <ul class="Options">
         <li><a class="Button" href="/">Back</a></li>
       </ul>
     </div>
 
+    <h1>Statistics & Highscores for Slay the Web</h1>
+
     <div class="Box Box--text Box--full">
       <p>
         A chronological list of Slay the Web runs.<br />
-        There is quite a bit of statistics that could be gathered from the runs. For now, this is what we have:
+				There is quite a bit of statistics that could be gathered from the runs, and isn't yet shown here. <a href="https://matrix.to/#/#slaytheweb:matrix.org" rel="nofollow">Chat on #slaytheweb:matrix.org</a></p>
       </p>
       <table>
         <thead>
@@ -45,7 +43,16 @@ const runs = (await getRuns()).reverse()
                     // timeStyle: 'short',
                     hour12: false,
                   }).format(new Date(state.createdAt))
-                  const duration = state.endedAt ? (state.endedAt - state.createdAt) / 1000 + 's' : ''
+
+									let duration = 0
+									if (state.endedAt) {
+										const ms = state.endedAt - state.createdAt
+										const hours = Math.floor(ms / (1000 * 60 * 60))
+										const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60))
+										const seconds = Math.floor((ms / 1000) % 60)
+										duration = `${hours > 0 ? hours + 'h ' : ''}${minutes}m ${seconds}s`
+										}
+
                   return (
                     <tr>
                       <td>{run.player}</td>
@@ -71,5 +78,12 @@ const runs = (await getRuns()).reverse()
 
 
 <style>
-	table {width: 100%;}
+	table {width: 100%; border-spacing: 0;}
+	tbody tr:nth-child(odd) {
+		background-color: #eee;
+	}
+	th,
+	td {
+		text-align: left;
+	}
 </style>
