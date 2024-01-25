@@ -23,8 +23,9 @@ export default class SlayTheWeb extends Component {
 		const initialGameMode = urlParams.has('debug') ? GameModes.gameplay : GameModes.splash
 		this.state = {gameMode: initialGameMode}
 
-		this.handleWin = this.handleWin.bind(this)
 		this.handleNewGame = this.handleNewGame.bind(this)
+		this.handleContinue = this.handleContinue.bind(this)
+		this.handleWin = this.handleWin.bind(this)
 		this.handleLoose = this.handleLoose.bind(this)
 	}
 
@@ -47,12 +48,17 @@ export default class SlayTheWeb extends Component {
 		this.setState({gameMode: GameModes.splash})
 	}
 
-	render(props, {gameMode}) {
-		if (gameMode === GameModes.splash)
+	render() {
+		const {gameMode} = this.state
+		if (gameMode === GameModes.splash) {
 			return html`<${SplashScreen} onNewGame=${this.handleNewGame} onContinue=${this.handleContinue} />`
-		if (gameMode === GameModes.gameplay)
-			return html` <${GameScreen} onWin=${this.handleWin} onLoose=${this.handleLoose} /> `
-		if (gameMode === GameModes.win) return html` <${WinScreen} onNewGame=${this.handleNewGame} /> `
+		}
+		if (gameMode === GameModes.gameplay) {
+			return html`<${GameScreen} onWin=${this.handleWin} onLoose=${this.handleLoose} /> `
+		}
+		if (gameMode === GameModes.win) {
+			return html`<${WinScreen} onNewGame=${this.handleNewGame} /> `
+		}
 	}
 }
 
