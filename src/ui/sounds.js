@@ -2,74 +2,24 @@
 import * as Tone from 'tone'
 
 // Create synths and connect it to the main output (your speakers).
-const polySynth = new Tone.PolySynth(Tone.AMSynth, {volume: -36}).toDestination()
-const amSynth = new Tone.AMSynth({volume: -14}).toDestination()
+const polySynth = new Tone.PolySynth(Tone.AMSynth, {volume: -20}).toDestination()
+const amSynth = new Tone.AMSynth({volume: -10}).toDestination()
 
 export async function init() {
 	await Tone.start()
-	console.log('audio is ready')
+	console.log('Sound initialized')
 }
 
 function startGame() {
-	polySynth.triggerAttackRelease(['D4', 'F4', 'A4', 'C5', 'E5'], 0.7)
-}
-
-const selectCard = () => {
-	// initialize the noise and start
-	const noise = new Tone.Noise({
-		type: 'brown',
-		fadeOut: 0.07,
-		volume: -33,
-	}).start()
-
-	// make an autofilter to shape the noise
-	const autoFilter = new Tone.AutoFilter({
-		frequency: '5n',
-		baseFrequency: 3000,
-		octaves: 2,
-	})
-		.toDestination()
-		.start()
-	autoFilter.stop('+0.1')
-
-	// connect the noise
-	noise.connect(autoFilter)
-	// start the autofilter LFO
-	noise.stop('+0.04')
-}
-
-function endTurn() {
-	// initialize the noise and start
-	const noise = new Tone.Noise({
-		type: 'pink',
-		fadeOut: 0.2,
-		volume: -28,
-	}).start()
-
-	// make an autofilter to shape the noise
-	const autoFilter = new Tone.AutoFilter({
-		frequency: '2n',
-		baseFrequency: 200,
-		octaves: 2,
-	})
-		.toDestination()
-		.start()
-	autoFilter.stop('+0.4')
-
-	// connect the noise
-	noise.connect(autoFilter)
-	// start the autofilter LFO
-	noise.stop('+0.2')
+	polySynth.triggerAttackRelease(['D4', 'F4', 'A4', 'C5', 'E5'], '4n')
 }
 
 function startTurn() {
-	/* synth.triggerAttackRelease('C4', '8n') */
-
 	// initialize the noise and start
 	const noise = new Tone.Noise({
 		type: 'pink',
 		fadeOut: 0.4,
-		volume: -33,
+		volume: -20,
 	}).start()
 
 	// make an autofilter to shape the noise
@@ -88,12 +38,32 @@ function startTurn() {
 	noise.stop('+0.3')
 }
 
+function endTurn() {
+	const pinkNoise = new Tone.Noise({
+		type: 'pink',
+		fadeOut: 0.2,
+		volume: -28,
+	})
+
+	pinkNoise.start()
+	const autoFilter = new Tone.AutoFilter({
+		frequency: '2n',
+		// baseFrequency: 200,
+		octaves: 4,
+		volume: -10,
+	})
+		.toDestination()
+		.start()
+		.stop('+0.4')
+	pinkNoise.connect(autoFilter).stop('+0.3')
+}
+
 function cardToHand() {
 	// initialize the noise and start
 	const noise = new Tone.Noise({
 		type: 'pink',
 		fadeOut: 0.1,
-		volume: -35,
+		volume: -20,
 	}).start()
 
 	// make an autofilter to shape the noise
@@ -104,34 +74,25 @@ function cardToHand() {
 	})
 		.toDestination()
 		.start()
-	autoFilter.stop('+0.08')
+		.stop('+0.08')
 
 	// connect the noise
-	noise.connect(autoFilter)
-	// start the autofilter LFO
-	noise.stop('+0.1')
+	noise
+		.connect(autoFilter)
+		// start the autofilter LFO
+		.stop('+0.1')
 }
 
-function playCard({card}) {
-	const cardType = card.damage ? 'attack' : 'defense'
-	if (cardType === 'attack') {
-		playAttackCard()
-	}
-	if (cardType === 'defense') {
-		playDefenseCard()
-	}
+const selectCard = () => {
+	amSynth.triggerAttackRelease('C4', '8n')
 }
 
-const playAttackCard = () => {
-	amSynth.triggerAttackRelease('G#3', 0.2)
-}
-
-const playDefenseCard = () => {
-	amSynth.triggerAttackRelease('G#2', 0.02)
+function playCard(card) {
+	amSynth.triggerAttackRelease('G#3', '16n')
 }
 
 export const toggleMute = (shouldMute) => {
-	Tone.Master.mute = shouldMute
+	Tone.Destination.mute = shouldMute
 }
 
 export default {
