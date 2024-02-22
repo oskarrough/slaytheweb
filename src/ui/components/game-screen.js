@@ -211,8 +211,9 @@ stw.dealCards()`)
 				let openOverlays = this.base.querySelectorAll(
 					'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #ExhaustPile[open]'
 				)
+				const mapOpened = document.querySelector('#Map').hasAttribute('open')
 				openOverlays.forEach((el) => el.removeAttribute('open'))
-				this.toggleOverlay('#Menu')
+				if (!mapOpened) this.toggleOverlay('#Menu')
 			},
 			d: () => this.toggleOverlay('#Deck'),
 			a: () => this.toggleOverlay('#DrawPile'),
