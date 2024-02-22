@@ -4,23 +4,22 @@ import {getRuns, getRun} from '../../../game/backend.js'
 import {getEnemiesStats} from '../../components/dungeon-stats.js'
 import '../../styles/typography.css'
 
-export const getStaticPaths = (async () => {
-	const runs = await getRuns()
-	return runs.map(run => {
-		return {
-			params: {id: run.id}
-		}
-	})
-})
+export const getStaticPaths = async () => {
+  const runs = await getRuns()
+  return runs.map((run) => {
+    return {
+      params: {id: run.id},
+    }
+  })
+}
 
 const {id} = Astro.params
 const run = await getRun(id)
 const state = run.gameState
 
 const date = new Intl.DateTimeFormat('en', {
-	dateStyle: 'long',
-	// timeStyle: 'short',
-	hour12: false,
+  dateStyle: 'long',
+  hour12: false,
 }).format(new Date(state.createdAt))
 
 const ms = state.endedAt - state.createdAt
@@ -32,24 +31,37 @@ const duration = `${hours > 0 ? hours + 'h ' : ''}${minutes}m ${seconds}s`
 // Not all runs have this data in the backend.
 let extraStats = false
 if (state.dungeon.graph) {
-	extraStats = getEnemiesStats(state.dungeon)
-	console.log(extraStats)
+  extraStats = getEnemiesStats(state.dungeon)
+  console.log(extraStats)
 }
 ---
 
 <Layout title="Statistics & Highscores">
   <article class="Container">
-		<p><a class="Button" href="/stats">&larr; Back to all runs</a></p>
-		<h1>Slay the Web run no. {run.id}</h1>
+    <p><a class="Button" href="/stats">&larr; Back to all runs</a></p>
+    <h1>Slay the Web run no. {run.id}</h1>
     <div class="Box Box--text Box--full">
-			<p><em>{run.player}</em> made it to floor {state.dungeon.y} and {state.won ? 'won' : 'lost'} in {duration} on {date} with {state.player.currentHealth}/{state.player.maxHealth} health.</p>
-			{extraStats && <p>You encountered {extraStats.encountered} monsters. And killed {extraStats.killed} of them.</p>}
-			<p>Final deck had {state.deck.length} cards:</p>
-			<ul>
-				{state.deck.map(card => <li>{card}</li>)}
-			</ul>
-
+      <p>
+        <em>{run.player}</em> made it to floor {state.dungeon.y} and {state.won ? 'won' : 'lost'} in {
+          duration
+        } on {date} with {state.player.currentHealth}/{state.player.maxHealth} health.
+      </p>
+      {
+        extraStats && (
+          <p>
+            You encountered {extraStats.encountered} monsters. And killed {extraStats.killed} of them.
+          </p>
+        )
+      }
+      <p>Final deck had {state.deck.length} cards:</p>
+      <ul>
+        {state.deck.map((card) => <li>{card}</li>)}
+      </ul>
+      <p>
+        Feel free to inspect the data yourself: <a href={'https://api.slaytheweb.cards/runs/' + run.id}
+          >api.slaytheweb.cards/runs/{run.id}</a
+        >.
+      </p>
     </div>
   </article>
 </Layout>
-

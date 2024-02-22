@@ -30,8 +30,6 @@ const runs = (await getRuns()).reverse()
           <th>Player</th>
           <th>Win?</th>
           <th>Floor</th>
-          <th>Health</th>
-          <th>Cards</th>
           <th align="right">Time</th>
           <th align="right">Date</th>
         </tr>
@@ -45,11 +43,11 @@ const runs = (await getRuns()).reverse()
                   dateStyle: 'long',
                   // timeStyle: 'short',
                   hour12: false,
-                }).format(new Date(state.createdAt))
+                }).format(new Date(run.createdAt))
 
                 let duration = 0
-                if (state.endedAt) {
-                  const ms = state.endedAt - state.createdAt
+                if (run.endedAt) {
+                  const ms = run.endedAt - run.createdAt
                   const hours = Math.floor(ms / (1000 * 60 * 60))
                   const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60))
                   const seconds = Math.floor((ms / 1000) % 60)
@@ -63,12 +61,8 @@ const runs = (await getRuns()).reverse()
                         {run.id}. {run.player}
                       </a>
                     </td>
-                    <td>{state.won ? 'WIN' : 'LOSS'}</td>
-                    <td>{state.dungeon.y}</td>
-                    <td>
-                      {state.player.currentHealth}/{state.player.maxHealth}
-                    </td>
-                    <td>{run.gameState.deck.length}</td>
+                    <td>{run.won ? 'WIN' : 'LOSS'}</td>
+                    <td>{run.floor}</td>
                     <td align="right">{duration}</td>
                     <td align="right">{date}</td>
                   </tr>
