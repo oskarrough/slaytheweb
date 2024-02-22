@@ -173,6 +173,9 @@ stw.dealCards()`)
 	}
 
 	endTurn() {
+		const room = getCurrRoom(this.state)
+		if (!this.didWinEntireGame && this.didWin && room.type === 'monster') return
+
 		sounds.endTurn()
 		gsap.effects.discardHand('.Hand .Card', {
 			onComplete: reallyEndTurn.bind(this),
