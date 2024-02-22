@@ -262,17 +262,27 @@ stw.dealCards()`)
 		this.update(this.dealCards)
 	}
 
+	/**
+	 * There's a lot here because I did not want to split into too many files.
+	 * We render most things on top of each other,
+	 * and hide them with css, for easier animations.
+	 *
+	 * .App>App-background
+	 * 	room.type === start
+	 * 	this.isDead
+	 * 	state.won
+	 * 	room.type === monster --> targets, energy, cards, actions/endturn
+	 * 	!this.didWinEntireGame && this.didWin && room.type === 'monster' --> room victory screen
+	 * 	room.type === campfire
+	 */
 	render(props, state) {
 		if (!state.player) return
 		const room = getCurrRoom(state)
-		const noEnergy = !state.player.currentEnergy
+		const showCombat = room.type === 'monster'
 
-		// There's a lot here because I did not want to split into too many files.
 		return html`
 			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
 				<figure class="App-background" data-room-index=${state.dungeon.y}></div>
-
-				${room.type === 'start' && html`<${Overlay}><${StartRoom} onContinue=${this.goToNextRoom} /><//>`}
 
 				${
 					this.isDead &&
@@ -298,6 +308,19 @@ stw.dealCards()`)
 					<//> `
 				}
 
+				${room.type === 'start' && html`<${Overlay}><${StartRoom} onContinue=${this.goToNextRoom} /><//>`}
+
+				${
+					room.type === 'campfire' &&
+					html`<${Overlay}>
+						<${CampfireRoom}
+							gameState=${state}
+							onChoose=${this.handleCampfireChoice}
+							onContinue=${this.goToNextRoom}
+						><//>
+					<//>`
+				}
+
 				${
 					!this.didWinEntireGame &&
 					this.didWin &&
@@ -312,41 +335,36 @@ stw.dealCards()`)
 				}
 
 				${
-					room.type === 'campfire' &&
-					html`<${Overlay}>
-						<${CampfireRoom}
-							gameState=${state}
-							onChoose=${this.handleCampfireChoice}
-							onContinue=${this.goToNextRoom}
-						><//>
-					<//>`
+					showCombat &&
+					html`
+						<div class="Targets Split">
+							<div class="Targets-group">
+								<${Player} model=${state.player} name="Player" />
+							</div>
+							<div class="Targets-group">
+								${room.monsters &&
+								room.monsters.map((monster) => html`<${Monster} model=${monster} gameState=${state} />`)}
+							</div>
+						</div>
+
+						<div class="Split ${!state.player.currentEnergy ? 'no-energy' : ''}">
+							<div class="EnergyBadge">
+								<span
+									class="tooltipped tooltipped-e tooltipped-multiline"
+									aria-label="Cards costs energy and this badge shows how much you have left this turn. Next turn your energy is refilled."
+									>${state.player.currentEnergy}/${state.player.maxEnergy}</span
+								>
+							</div>
+							<p class="Actions">
+								<button class="EndTurn" onClick=${() => this.endTurn()}><u>E</u>nd turn</button>
+							</p>
+						</div>
+
+						<div class="Hand">
+							<${Cards} gameState=${state} type="hand" />
+						</div>
+					`
 				}
-
-				<div class="Targets Split">
-					<div class="Targets-group">
-						<${Player} model=${state.player} name="Player" />
-					</div>
-					<div class="Targets-group">
-						${room.monsters && room.monsters.map((monster) => html`<${Monster} model=${monster} gameState=${state} />`)}
-					</div>
-				</div>
-
-				<div class="Split ${noEnergy ? 'no-energy' : ''}">
-					<div class="EnergyBadge">
-							<span class="tooltipped tooltipped-e tooltipped-multiline" aria-label="Cards costs energy and this badge shows how much you have left this turn. Next turn your energy is refilled.">${
-								state.player.currentEnergy
-							}/${state.player.maxEnergy}</span>
-					</div>
-					<p class="Actions">
-						<button class="EndTurn" onClick=${() => this.endTurn()}>
-							<u>E</u>nd turn
-						</button>
-					</p>
-				</div>
-
-				<div class="Hand">
-					<${Cards} gameState=${state} type="hand" />
-				</div>
 
 				<${OverlayWithButton} id="Menu" topleft>
 					<button onClick=${() => this.toggleOverlay('#Menu')}><u>Esc</u>ape</button>
