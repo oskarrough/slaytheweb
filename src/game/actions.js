@@ -567,7 +567,7 @@ function move(state, {move}) {
 		draft.player.currentEnergy = 3
 		draft.player.block = 0
 		draft.dungeon.graph[move.y][move.x].didVisit = true
-		draft.dungeon.pathTaken.push({x: move.x, y: move.y})
+		draft.dungeon.pathTaken.push([move.x, move.y])
 		draft.dungeon.x = move.x
 		draft.dungeon.y = move.y
 		// if (number === state.dungeon.rooms.length - 1) {

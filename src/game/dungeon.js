@@ -56,9 +56,9 @@ export const defaultOptions = {
  * @prop {string} id a unique id
  * @prop {Graph} graph
  * @prop {Array<Path>} paths
- * @prop {number} x current x position
- * @prop {number} y current y position
- * @prop {Array<Position>} pathTaken a list of moves we've taken
+ * @prop {number} x current x position (which path)
+ * @prop {number} y current y position (where on the path)
+ * @prop {Array<Move>} pathTaken a list of moves we've taken
  */
 
 /**
@@ -87,7 +87,7 @@ export default function Dungeon(options) {
 		paths,
 		x: 0,
 		y: 0,
-		pathTaken: [{x: 0, y: 0}],
+		pathTaken: [[0, 0]],
 	}
 }
 

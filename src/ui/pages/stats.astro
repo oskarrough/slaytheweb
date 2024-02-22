@@ -19,71 +19,75 @@ const runs = (await getRuns()).reverse()
     <div class="Box Box--text Box--full">
       <p>
         A chronological list of Slay the Web runs.<br />
-				There is quite a bit of statistics that could be gathered from the runs, and isn't yet shown here. <a href="https://matrix.to/#/#slaytheweb:matrix.org" rel="nofollow">Chat on #slaytheweb:matrix.org</a></p>
-      </p>
-      <table>
-        <thead>
-          <tr>
-            <th>Player</th>
-            <th>Win?</th>
-            <th>Floor</th>
-            <th>Health</th>
-            <th>Cards</th>
-            <th align="right">Time</th>
-            <th align="right">Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            runs?.length
-              ? runs.map((run) => {
-                  const state = run.gameState
-                  const date = new Intl.DateTimeFormat('en', {
-                    dateStyle: 'long',
-                    // timeStyle: 'short',
-                    hour12: false,
-                  }).format(new Date(state.createdAt))
-
-									let duration = 0
-									if (state.endedAt) {
-										const ms = state.endedAt - state.createdAt
-										const hours = Math.floor(ms / (1000 * 60 * 60))
-										const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60))
-										const seconds = Math.floor((ms / 1000) % 60)
-										duration = `${hours > 0 ? hours + 'h ' : ''}${minutes}m ${seconds}s`
-										}
-
-                  return (
-                    <tr>
-                      <td>{run.player}</td>
-                      <td>{state.won ? 'WIN' : 'LOSS'}</td>
-                      <td>{state.dungeon.y}</td>
-                      <td>{state.player.currentHealth}</td>
-                      <td>{run.gameState.deck.length}</td>
-                      <td align="right">{duration}</td>
-                      <td align="right">{date}</td>
-                    </tr>
-                  )
-                })
-              : 'Loading...'
-          }
-        </tbody>
-      </table>
-      <p>
-        If you want your run removed, <a href="https://matrix.to/#/#slaytheweb:matrix.org">let me know</a>.
+        There is quite a bit of statistics that could be gathered from the runs, and isn't yet shown here. <a
+          href="https://matrix.to/#/#slaytheweb:matrix.org"
+          rel="nofollow">Chat on #slaytheweb:matrix.org</a>
       </p>
     </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Win?</th>
+          <th>Floor</th>
+          <th align="right">Time</th>
+          <th align="right">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          runs?.length
+            ? runs.map((run) => {
+                const state = run.gameState
+                const date = new Intl.DateTimeFormat('en', {
+                  dateStyle: 'long',
+                  // timeStyle: 'short',
+                  hour12: false,
+                }).format(new Date(run.createdAt))
+
+                let duration = 0
+                if (run.endedAt) {
+                  const ms = run.endedAt - run.createdAt
+                  const hours = Math.floor(ms / (1000 * 60 * 60))
+                  const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60))
+                  const seconds = Math.floor((ms / 1000) % 60)
+                  duration = `${hours > 0 ? hours + 'h ' : ''}${minutes}m ${seconds}s`
+                }
+
+                return (
+                  <tr>
+                    <td>
+                      <a href={`/stats/` + run.id}>
+                        {run.id}. {run.player}
+                      </a>
+                    </td>
+                    <td>{run.won ? 'WIN' : 'LOSS'}</td>
+                    <td>{run.floor}</td>
+                    <td align="right">{duration}</td>
+                    <td align="right">{date}</td>
+                  </tr>
+                )
+              })
+            : 'Loading...'
+        }
+      </tbody>
+    </table>
+    <p>
+      If you want your run removed, <a href="https://matrix.to/#/#slaytheweb:matrix.org">let me know</a>.
+    </p>
   </article>
 </Layout>
 
-
 <style>
-	table {width: 100%; border-spacing: 0;}
-	tbody tr:nth-child(odd) {
-		background-color: #eee;
-	}
-	th,
-	td {
-		text-align: left;
-	}
+  table {
+    width: 100%;
+    border-spacing: 0;
+  }
+  tbody tr:nth-child(odd) {
+    background-color: #eee;
+  }
+  th,
+  td {
+    text-align: left;
+  }
 </style>

@@ -13,16 +13,17 @@ export default function DungeonStats({dungeon}) {
 	`
 }
 
-const getEnemiesStats = (dungeon) => {
+export const getEnemiesStats = (dungeon) => {
 	const stats = {
 		killed: 0,
 		encountered: 0,
 		maxHealth: 0,
 		finalHealth: 0,
 	}
+	if (!dungeon.graph) throw new Error('Missing dungeon graph')
 	/* for each path taken (room) in the dungeon, get some stats */
-	dungeon.pathTaken.forEach((usedNode) => {
-		const nodeData = dungeon.graph[usedNode.y][usedNode.x]
+	dungeon.pathTaken.forEach(([x, y]) => {
+		const nodeData = dungeon.graph[y][x]
 		/* find some stats about the enemies encountered */
 		if (nodeData.room?.monsters) {
 			/* how many encountered monsters */
