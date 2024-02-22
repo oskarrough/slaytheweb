@@ -34,7 +34,7 @@ export function PublishRun({game}) {
 							<input type="text" name="playername" required placeholder="Know thyself" />
 						</label>
 						<button disabled=${loading} type="submit">Submit my run</button>
-						<p>${loading ? 'submitting' : ''}</p>
+						<p>${loading ? 'Submitting…' : ''}</p>
 						<p><a href="/stats">View highscores</a></p>
 				  `
 				: html`<p>Thank you.</p>`}

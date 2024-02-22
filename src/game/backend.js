@@ -7,7 +7,15 @@ const apiUrl = 'https://api.slaytheweb.cards/api/runs'
  * @typedef {object} Run
  * @prop {string} player - user inputted player name
  * @prop {object} gameState - the final state
- * @prop {Array<object>} gamePast - a list of past states
+ * @prop {PastEntry[]} gamePast - a list of past states
+ */
+
+/**
+ * A simplified version of the game.past entries
+ * @typedef {object} PastEntry
+ * @prop {number} turn
+ * @prop {object} action
+ * @prop {object} player
  */
 
 /**
@@ -17,8 +25,6 @@ const apiUrl = 'https://api.slaytheweb.cards/api/runs'
  * @returns {Promise}
  */
 export async function postRun(game, playerName) {
-	console.log('postRun', game.past.list)
-
 	/** @type {Run} */
 	const run = {
 		player: playerName || 'Unknown entity',
@@ -28,11 +34,15 @@ export async function postRun(game, playerName) {
 		gamePast: game.past.list.map((item) => {
 			return {
 				action: item.action,
+				// we're not including the entire state, it's too much data
+				// but we do want to know which turn and the player's state at the time
 				turn: item.state.turn,
 				player: item.state.player,
 			}
 		}),
 	}
+
+	console.log('Posting run', run)
 
 	return fetch(apiUrl, {
 		method: 'POST',
@@ -51,4 +61,12 @@ export async function getRuns() {
 	const res = await fetch(apiUrl)
 	const {runs} = await res.json()
 	return runs
+}
+
+/**
+ * @returns {Promise<Run>} a single run
+ */
+export async function getRun(id) {
+	const res = await fetch(apiUrl + `/${id}`)
+	return res.json()
 }
