@@ -11,5 +11,5 @@ export default {
 export const upgrade = (card) => ({
 	...card,
 	damage: 11,
-	description: 'Deal 11 Damage to all enemies.',
+	description: 'Deal 11 damage to all enemies.',
 })

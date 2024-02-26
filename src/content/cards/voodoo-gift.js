@@ -1,9 +1,9 @@
 export default {
-	name: 'Voodoo Education',
+	name: 'Voodoo Gift',
 	energy: 0,
 	type: 'attack',
 	target: 'enemy',
-	description: "Deal Damage equal to target's Vulnerable and Weak and remove the debuffs.",
+	description: "Deal damage equal to target's Vulnerable and Weak and remove the debuffs.",
 	image: 'voodoo-education.png',
 	actions: [
 		{
@@ -42,7 +42,6 @@ export const upgrade = (card) => {
 	return {
 		...card,
 		damage: 9,
-		name: 'Voodoo Gift',
 		description: card.description + ' but without resets.',
 	}
 }

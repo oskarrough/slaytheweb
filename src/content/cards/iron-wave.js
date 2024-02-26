@@ -13,5 +13,5 @@ export const upgrade = (card) => ({
 	...card,
 	damage: 7,
 	block: 7,
-	description: 'Deal 7 Damage. Gain 7 Block.',
+	description: 'Deal 7 damage. Gain 7 Block.',
 })

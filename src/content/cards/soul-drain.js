@@ -4,7 +4,7 @@ export default {
 	type: 'attack',
 	energy: 1,
 	target: 'allEnemies',
-	description: 'Drain 3 Health into Weakness and Vulnerability.',
+	description: 'Apply 3 Weak and Vulnerability to ALL enemies. Drains 3 Health from you.',
 	image: 'soul-drain.png',
 	damage: 0,
 	powers: {
@@ -27,11 +27,10 @@ export const upgrade = (card) => {
 	a.parameter.amount = 4
 	return {
 		...card,
-		name: 'Lower Soul Drain',
 		powers: {
 			weak: 4,
 			vulnerable: 4,
 		},
-		description: 'Drain 4 Health into Weakness and Vulnerability.',
+		description: 'Apply 4 Weak and Vulnerability to ALL enemies. Drains 3 Health from you.',
 	}
 }

@@ -3,7 +3,7 @@ export default {
 	energy: 1,
 	type: 'attack',
 	target: 'enemy',
-	description: 'Deal Damage equal to your Block.',
+	description: 'Deal damage equal to your Block.',
 	image: 'fallback.jpg',
 	actions: [
 		{

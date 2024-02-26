@@ -3,7 +3,7 @@ export default {
 	type: 'skill',
 	energy: 1,
 	target: 'player',
-	description: 'Gain 1 Health. Draw 2 Cards if your health is below 50%.',
+	description: 'Gain 1 Health. If your health is below 50% draw 2 cards.',
 	image: 'bare-feet-of-god.jpg',
 	actions: [
 		{
@@ -33,6 +33,6 @@ export const upgrade = (card) => {
 	a.parameter.amount = 2
 	return {
 		...card,
-		description: 'Gain 2 Health. Draw 2 Cards if your health is below 50%.',
+		description: 'Gain 2 Health. If your health is below 50% draw 2 cards.',
 	}
 }
