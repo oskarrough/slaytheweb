@@ -50,7 +50,7 @@
 	width: 100%;
 	overflow-x: hidden;
 	overflow-y: auto;
-	transform: translate3d(0, 4rem, 0);
+	transform: translate3d(0, 1rem, 0);
 	display: block;
 	opacity: 0;
 	visibility: hidden;
@@ -80,8 +80,8 @@
 	opacity: 1;
 	transform: translate3d(0, 0, 0);
 	transition:
-		opacity 400ms 60ms var(--easing),
-		transform 400ms 60ms var(--easing);
+		opacity 600ms 60ms var(--easing),
+		transform 600ms 60ms var(--easing);
 }
 .Overlay[open] .Overlay-bg {
 	display: block;
