@@ -188,6 +188,8 @@ stw.dealCards()`)
 
 	// Animate the cards in and make sure any new cards are draggable.
 	dealCards() {
+		const cards = this.base.querySelectorAll('.Hand .Card')
+		if (!cards?.length) return
 		gsap.effects.dealCards('.Hand .Card')
 		sounds.startTurn()
 		enableDragDrop(this.base, this.playCard)
@@ -209,7 +211,7 @@ stw.dealCards()`)
 			Escape: () => {
 				// let openOverlays = this.base.querySelectorAll('.Overlay:not(#Menu)[open]')
 				let openOverlays = this.base.querySelectorAll(
-					'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #ExhaustPile[open]'
+					'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #ExhaustPile[open]',
 				)
 				const mapOpened = document.querySelector('#Map').hasAttribute('open')
 				openOverlays.forEach((el) => el.removeAttribute('open'))
@@ -407,7 +409,7 @@ stw.dealCards()`)
 				<${OverlayWithButton} id="DiscardPile" bottomright>
 					<button onClick=${() =>
 						this.toggleOverlay(
-							'#DiscardPile'
+							'#DiscardPile',
 						)} align-right class="tooltipped tooltipped-nw tooltipped-multiline" aria-label="Cards you've already played. Once the draw pile is empty, these cards are shuffled into your draw pile.">Di<u>s</u>card pile ${
 						state.discardPile.length
 					}</button>
