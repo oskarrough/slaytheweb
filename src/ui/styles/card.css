@@ -95,3 +95,35 @@
 	color: #fb1515;
 	background-color: hsl(0deg 73% 25%);
 }
+
+.Card:hover {
+  --wiggle-distance: 1px;
+	/* animation: wiggle 100ms ease-in-out; */
+}
+
+@keyframes wiggle {
+  0%, 100% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(calc(var(--wiggle-distance) * -1), calc(var(--wiggle-distance) * 1));
+  }
+  40% {
+    transform: translate(calc(var(--wiggle-distance) * 1), calc(var(--wiggle-distance) * -1));
+  }
+  60% {
+    transform: translate(calc(var(--wiggle-distance) * -1), calc(var(--wiggle-distance) * 1));
+  }
+  80% {
+    transform: translate(calc(var(--wiggle-distance) * 1), calc(var(--wiggle-distance) * -1));
+  }
+}
+
+.Card.is-releasable {
+	/* transition: box-shadow 300ms var(--easing); */
+	/* transform: scale(1.1) rotate(6deg); */
+	box-shadow: 1em 0 3em var(--yellow);
+}
+.Card.is-releasable .Card-name {
+	color: red;
+}

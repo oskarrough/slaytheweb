@@ -36,24 +36,35 @@ export default function enableDragDrop(container, afterRelease) {
 			},
 			// While dragging, highlight any targets we are dragging over.
 			onDrag() {
-				if (this.target.attributes.disabled) {
+				const cardEl = this.target
+
+				if (cardEl.attributes.disabled) {
 					this.endDrag()
 				}
 				let i = targets.length
+				const validTargets = new Set()
 				while (--i > -1) {
 					// Highlight only if valid target.
 					if (this.hitTest(targets[i], '40%')) {
 						if (
 							cardHasValidTarget(
-								this.target.getAttribute('data-card-target'),
-								getTargetStringFromElement(targets[i]),
+								cardEl.getAttribute('data-card-target'),
+								getTargetStringFromElement(targets[i])
 							)
 						) {
+							validTargets.add(targets[i])
 							targets[i].classList.add(overClass)
+						} else {
+							validTargets.delete(targets[i])
 						}
 					} else {
 						targets[i].classList.remove(overClass)
 					}
+				}
+				if (validTargets.size > 0) {
+					cardEl.classList.add('is-releasable')
+				} else {
+					cardEl.classList.remove('is-releasable')
 				}
 			},
 			onRelease() {
@@ -68,6 +79,8 @@ export default function enableDragDrop(container, afterRelease) {
 						break
 					}
 				}
+
+				cardEl.classList.remove('is-releasable')
 
 				if (!targetEl) return animateCardToHand(this)
 
