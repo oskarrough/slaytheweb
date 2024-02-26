@@ -16,6 +16,6 @@ export const upgrade = (card) => {
 	card.powers.weak = 2
 	return {
 		...card,
-		description: 'Apply 2 Weak to all enemies. Exhaust.',
+		description: 'Apply 2 Weak to ALL enemies. Exhaust.',
 	}
 }

@@ -28,6 +28,6 @@ export const upgrade = (card) => {
 	a.parameter.amount = 2
 	return {
 		...card,
-		description: 'Gain 2 Energy. Draw 2 Cards. Exhaust.',
+		description: 'Gain 2 Energy. Draw 2 cards. Exhaust.',
 	}
 }

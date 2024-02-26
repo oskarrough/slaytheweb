@@ -7,7 +7,7 @@ export default {
 	powers: {
 		vulnerable: 1,
 	},
-	description: 'Deal 4 Damage. Apply 1 Vulnerable to all enemies.',
+	description: 'Deal 4 damage. Apply 1 Vulnerable to ALL enemies.',
 	image: '4.jpg',
 }
 
@@ -15,6 +15,6 @@ export const upgrade = (card) => {
 	return {
 		...card,
 		damage: 6,
-		description: 'Deal 6 Damage. Apply 1 Vulnerable to all enemies.',
+		description: 'Deal 6 damage. Apply 1 Vulnerable to ALL enemies.',
 	}
 }

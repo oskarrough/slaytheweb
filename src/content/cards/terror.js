@@ -7,7 +7,7 @@ export default {
 	powers: {
 		vulnerable: 99,
 	},
-	description: 'Apply 99 vulnerable. Exhaust.',
+	description: 'Apply 99 Vulnerable. Exhaust.',
 	image: '2.jpg',
 	exhaust: true,
 }

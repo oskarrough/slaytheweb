@@ -8,7 +8,7 @@ export default {
 	powers: {
 		weak: 1,
 	},
-	description: 'Deal 7 Damage. Apply 1 Weak.',
+	description: 'Deal 7 damage. Apply 1 Weak.',
 	image: 'manicule.jpg',
 }
 
@@ -18,5 +18,5 @@ export const upgrade = (card) => ({
 	powers: {
 		weak: 2,
 	},
-	description: 'Deal 8 Damage. Apply 2 Weak',
+	description: 'Deal 8 damage. Apply 2 Weak.',
 })

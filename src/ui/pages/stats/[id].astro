@@ -42,9 +42,9 @@ if (state.dungeon.graph) {
     <h1>Slay the Web run no. {run.id}</h1>
     <div class="Box Box--text Box--full">
       <p>
-        <em>{run.player}</em> made it to floor {state.dungeon.y} and {state.won ? 'won' : 'lost'} in {
-          duration
-        } on {date} with {state.player.currentHealth}/{state.player.maxHealth} health.
+        <em>{run.player}</em> made it to floor {state.dungeon.y} and <strong
+          >{state.won ? 'won' : 'lost'}</strong
+        > in {duration} on {date} with {state.player.currentHealth}/{state.player.maxHealth} health.
       </p>
       {
         extraStats && (

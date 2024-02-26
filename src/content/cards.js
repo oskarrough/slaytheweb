@@ -20,7 +20,7 @@ const cardIndex = [
 	'summer-of-sam',
 	'terror',
 	'thunderclap',
-	'voodoo-education',
+	'voodoo-gift',
 ]
 
 /**
