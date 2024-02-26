@@ -27,11 +27,11 @@ export default class App extends Component {
 	get didWin() {
 		return isCurrRoomCompleted(this.state)
 	}
-	get isDead() {
-		return this.state.player.currentHealth < 1
-	}
 	get didWinEntireGame() {
 		return isDungeonCompleted(this.state)
+	}
+	get isDead() {
+		return this.state.player.currentHealth < 1
 	}
 
 	constructor() {
@@ -46,7 +46,7 @@ export default class App extends Component {
 		this.playCard = this.playCard.bind(this)
 		this.handlePlayerReward = this.handlePlayerReward.bind(this)
 		this.handleCampfireChoice = this.handleCampfireChoice.bind(this)
-		this.goToNextRoom = this.goToNextRoom.bind(this)
+		this.continueRoom = this.continueRoom.bind(this)
 		this.toggleOverlay = this.toggleOverlay.bind(this)
 		this.handleMapMove = this.handleMapMove.bind(this)
 	}
@@ -228,7 +228,7 @@ stw.dealCards()`)
 		this.game.enqueue({type: 'addCardToDeck', card})
 		this.setState({didPickCard: card})
 		this.update()
-		this.goToNextRoom()
+		this.continueRoom()
 	}
 
 	handleCampfireChoice(choice, reward) {
@@ -247,15 +247,16 @@ stw.dealCards()`)
 		this.game.enqueue({type: 'makeCampfireChoice', choice, reward})
 		// Update twice (because two actions were enqueued)
 		this.update(this.update)
-		this.goToNextRoom()
+		this.continueRoom()
 	}
 
-	goToNextRoom() {
+	continueRoom() {
 		console.log('Go to next room, toggling map')
 		this.toggleOverlay('#Map')
 	}
 
 	handleMapMove(move) {
+		console.log('handleMapMove', move)
 		this.toggleOverlay('#Map')
 		this.setState({didPickCard: false})
 		this.game.enqueue({type: 'move', move})
@@ -279,6 +280,7 @@ stw.dealCards()`)
 		if (!state.player) return
 		const room = getCurrRoom(state)
 		const showCombat = room.type === 'monster'
+		const showVictory = room.type === 'monster' && this.didWin && !this.didWinEntireGame
 
 		return html`
 			<div class="App" tabindex="0" onKeyDown=${(e) => this.handleShortcuts(e)}>
@@ -299,7 +301,7 @@ stw.dealCards()`)
 				${
 					state.won &&
 					html`<${Overlay}>
-						<div class="Container CContainer--center">
+						<div class="Container">
 							<h1 center>You won!</h1>
 							<${PublishRun} game=${this.game}><//>
 							<${DungeonStats} dungeon=${state.dungeon}><//>
@@ -308,7 +310,7 @@ stw.dealCards()`)
 					<//> `
 				}
 
-				${room.type === 'start' && html`<${Overlay}><${StartRoom} onContinue=${this.goToNextRoom} /><//>`}
+				${room.type === 'start' && html`<${Overlay}><${StartRoom} onContinue=${this.continueRoom} /><//>`}
 
 				${
 					room.type === 'campfire' &&
@@ -316,26 +318,22 @@ stw.dealCards()`)
 						<${CampfireRoom}
 							gameState=${state}
 							onChoose=${this.handleCampfireChoice}
-							onContinue=${this.goToNextRoom}
+							onContinue=${this.continueRoom}
 						><//>
 					<//>`
 				}
 
-				${
-					!this.didWinEntireGame &&
-					this.didWin &&
-					room.type === 'monster' &&
+				${showVictory &&
 					html`<${Overlay}>
 						<${VictoryRoom}
 							gameState=${state}
 							onSelectCard=${(card) => this.handlePlayerReward('addCard', card)}
-							onContinue=${() => this.goToNextRoom()}
+							onContinue=${() => this.continueRoom()}
 						><//>
 					<//> `
 				}
 
-				${
-					showCombat &&
+				${showCombat &&
 					html`
 						<div class="Targets Split">
 							<div class="Targets-group">
@@ -343,7 +341,7 @@ stw.dealCards()`)
 							</div>
 							<div class="Targets-group">
 								${room.monsters &&
-								room.monsters.map((monster) => html`<${Monster} model=${monster} gameState=${state} />`)}
+								room.monsters.map((monster) => html`<${Monster} key=${monster.id} model=${monster} gameState=${state} />`)}
 							</div>
 						</div>
 
