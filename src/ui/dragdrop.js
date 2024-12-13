@@ -1,5 +1,5 @@
-import {Draggable} from 'gsap/Draggable.js'
-import {cardHasValidTarget} from '../game/utils-state.js'
+import { Draggable } from 'gsap/Draggable.js'
+import { cardHasValidTarget, getTargetStringFromElement } from '../game/utils-state.js'
 import gsap from './animations.js'
 import sounds from './sounds.js'
 
@@ -8,16 +8,21 @@ const overClass = 'is-dragOver'
 
 /** Makes the card fly back into the hand */
 function animateCardToHand(draggable) {
-	return gsap.to(draggable.target, {x: draggable.startX, y: draggable.startY, zIndex: 0})
+	return gsap.to(draggable.target, { x: draggable.startX, y: draggable.startY, zIndex: 0 })
 }
 
 /**
- * @param {HTMLElement} el
- * @returns {string}
+ * 
+ * @param {HTMLElement} target 
+ * @param {HTMLElement} targetEl 
  */
-function getTargetStringFromElement(el) {
-	const targetIndex = Array.from(el.parentNode.children).indexOf(el)
-	return el.dataset.type + targetIndex
+function canDropOnTarget(target, targetEl) {
+	const hasValidTarget = cardHasValidTarget(
+		target.getAttribute('data-card-target'),
+		getTargetStringFromElement(targetEl),
+	)
+	const targetIsDead = targetEl.classList.contains('Target--isDead')
+	return hasValidTarget && !targetIsDead
 }
 
 /**
@@ -26,57 +31,48 @@ function getTargetStringFromElement(el) {
  * @param {Function} afterRelease
  */
 export default function enableDragDrop(container, afterRelease) {
+	/** @type {NodeListOf<HTMLElement>} */
 	const targets = container.querySelectorAll('.Target')
 	const cards = container.querySelectorAll('.Hand .Card')
 
 	cards.forEach((card) => {
 		Draggable.create(card, {
+
 			onDragStart() {
 				sounds.selectCard()
 			},
-			// While dragging, highlight any targets we are dragging over.
+
 			onDrag() {
-				// this.target is the card's DOM element
-				if (this.target.attributes.disabled) {
+				const cardEl = this.target
+
+				if (cardEl.attributes.disabled) {
 					this.endDrag()
 				}
-				let i = targets.length
-				while (--i > -1) {
-					const targetEl = targets[i]
-					if (this.hitTest(targetEl, '40%')) {
-						const hasValidTarget = cardHasValidTarget(
-							this.target.getAttribute('data-card-target'),
-							getTargetStringFromElement(targetEl),
-						)
-						const targetIsDead = targetEl.classList.contains('Target--isDead')
-						console.log({hasValidTarget, targetIsDead}, targetEl)
-						if (hasValidTarget && !targetIsDead) {
-							targetEl.classList.add(overClass)
-						}
+
+				for (const targetEl of targets) {
+					if (this.hitTest(targetEl, '40%') && canDropOnTarget(cardEl, targetEl)) {
+						targetEl.classList.add(overClass)
 					} else {
 						targetEl.classList.remove(overClass)
 					}
 				}
 			},
+
 			onRelease() {
 				const cardEl = this.target
 
-				// Which element are we dropping on?
+				// Find the (first) DOM element we dropped the card on.
 				let targetEl
-				let i = targets.length
-				while (--i > -1) {
-					if (this.hitTest(targets[i], '40%')) {
-						targetEl = targets[i]
+				for (const t of targets) {
+					if (this.hitTest(t, '40%')) {
+						targetEl = t
 						break
 					}
 				}
 
-				if (!targetEl) return animateCardToHand(this)
-
-				// If card is allowed here, trigger the callback with target, else animate back.
-				const targetString = getTargetStringFromElement(targetEl)
-				const targetIsDead = targetEl.classList.contains('Target--isDead')
-				if (cardHasValidTarget(cardEl.getAttribute('data-card-target'), targetString) && !targetIsDead) {
+				// Either trigger the callback with valid target, or animate the card back in back.
+				if (canDropOnTarget(cardEl, targetEl)) {
+					const targetString = getTargetStringFromElement(targetEl)
 					afterRelease(cardEl.dataset.id, targetString, cardEl)
 				} else {
 					animateCardToHand(this)
