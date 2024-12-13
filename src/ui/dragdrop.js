@@ -36,23 +36,25 @@ export default function enableDragDrop(container, afterRelease) {
 			},
 			// While dragging, highlight any targets we are dragging over.
 			onDrag() {
+				// this.target is the card's DOM element
 				if (this.target.attributes.disabled) {
 					this.endDrag()
 				}
 				let i = targets.length
 				while (--i > -1) {
-					// Highlight only if valid target.
-					if (this.hitTest(targets[i], '40%')) {
-						if (
-							cardHasValidTarget(
-								this.target.getAttribute('data-card-target'),
-								getTargetStringFromElement(targets[i]),
-							)
-						) {
-							targets[i].classList.add(overClass)
+					const targetEl = targets[i]
+					if (this.hitTest(targetEl, '40%')) {
+						const hasValidTarget = cardHasValidTarget(
+							this.target.getAttribute('data-card-target'),
+							getTargetStringFromElement(targetEl),
+						)
+						const targetIsDead = targetEl.classList.contains('Target--isDead')
+						console.log({hasValidTarget, targetIsDead}, targetEl)
+						if (hasValidTarget && !targetIsDead) {
+							targetEl.classList.add(overClass)
 						}
 					} else {
-						targets[i].classList.remove(overClass)
+						targetEl.classList.remove(overClass)
 					}
 				}
 			},
@@ -73,7 +75,8 @@ export default function enableDragDrop(container, afterRelease) {
 
 				// If card is allowed here, trigger the callback with target, else animate back.
 				const targetString = getTargetStringFromElement(targetEl)
-				if (cardHasValidTarget(cardEl.getAttribute('data-card-target'), targetString)) {
+				const targetIsDead = targetEl.classList.contains('Target--isDead')
+				if (cardHasValidTarget(cardEl.getAttribute('data-card-target'), targetString) && !targetIsDead) {
 					afterRelease(cardEl.dataset.id, targetString, cardEl)
 				} else {
 					animateCardToHand(this)
