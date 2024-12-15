@@ -59,12 +59,11 @@ export async function postRun(game, playerName) {
 }
 
 /**
- * @returns {Promise<Run[]>} list of game runs
+ * @returns {Promise<{runs: Run[], total: number}>} list of game runs
  */
 export async function getRuns() {
 	const res = await fetch(apiUrl)
-	const {runs} = await res.json()
-	return runs
+	return await res.json()
 }
 
 /**
