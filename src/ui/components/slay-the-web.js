@@ -1,9 +1,9 @@
 import {html, render, Component} from '../lib.js'
 import SplashScreen from './splash-screen.js'
-import GameScreen from './game-screen.js'
 import WinScreen from './win-screen.js'
+import GameScreen from './game-screen.js'
 import '../styles/index.css'
-import {init as initSounds} from '../sounds.js'
+// import {init as initSounds} from '../sounds.js'
 
 /** @enum {string} */
 const GameModes = {
@@ -21,6 +21,7 @@ export default class SlayTheWeb extends Component {
 		super()
 		const urlParams = new URLSearchParams(window.location.search)
 		const initialGameMode = urlParams.has('debug') ? GameModes.gameplay : GameModes.splash
+
 		this.state = {gameMode: initialGameMode}
 
 		this.handleNewGame = this.handleNewGame.bind(this)
@@ -67,6 +68,7 @@ if (!customElements.get('slay-the-web')) {
 		'slay-the-web',
 		class SlayTheWebElement extends HTMLElement {
 			connectedCallback() {
+				console.timeEnd('start')
 				render(html` <${SlayTheWeb} /> `, this)
 			}
 		},

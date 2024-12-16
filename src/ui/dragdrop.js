@@ -12,11 +12,12 @@ function animateCardToHand(draggable) {
 }
 
 /**
- * 
- * @param {HTMLElement} target 
- * @param {HTMLElement} targetEl 
+ * This gets called continously while dragging a card
+ * @param {HTMLElement} target - element being dragged
+ * @param {HTMLElement} targetEl - element below the target
  */
 function canDropOnTarget(target, targetEl) {
+	if (!targetEl) return false
 	const hasValidTarget = cardHasValidTarget(
 		target.getAttribute('data-card-target'),
 		getTargetStringFromElement(targetEl),
