@@ -12,15 +12,15 @@ export default class SplashScreen extends Component {
 	componentDidMount() {
 		getRuns().then(({runs}) => this.setState({runs}))
 
-		gsap.from(this.base, {duration: 0.4, autoAlpha: 0, scale: 0.98})
+		gsap.from(this.base, {duration: 0.3, autoAlpha: 0, scale: 0.98})
 		gsap.to(this.base.querySelector('.Splash-spoder'), {delay: 5, x: 420, y: 60, duration: 3})
 	}
 
 	render(props, state) {
-		const run = this.state.runs[0]
+		const run = state.runs[0]
 
 		return html`
-			<article class="Container Splash--fadein">
+			<article class="Splash Container">
 				<header class="Header">
 					<h1>Slay the Web</h1>
 					<h2>A card crawl adventure for you and your browser</h2>

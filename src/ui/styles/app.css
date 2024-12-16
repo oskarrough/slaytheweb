@@ -310,7 +310,6 @@ h2 {
 		url(/images/cursors/grab-open.png) 10 0,
 		auto;
 }
-.Hand .Card-inner {}
 .Hand .Card[disabled] {
 	cursor: not-allowed;
 }
@@ -338,6 +337,12 @@ h2 {
 
 .Container--center {
 	justify-content: center;
+}
+
+.Splash {
+	min-height: 100dvh;
+	justify-content: flex-end;
+	padding-bottom: 5vh;
 }
 
 .Splash-spoder {
@@ -467,6 +472,4 @@ h2 {
 .driver-popover .driver-popover-footer button {
 	font-size: 1rem;
 }
-
-.driver-popover .driver-popover-footer button {
-}
+/* .driver-popover .driver-popover-footer button { } */

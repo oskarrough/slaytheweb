@@ -70,6 +70,14 @@ export default function RunStats() {
 		</div>
 
 		<div class="Box">
+			<p>
+				Inspect the raw JSON data for the run  <a href=${'https://api.slaytheweb.cards/api/runs/' + run.id}
+					>api.slaytheweb.cards/api/runs/${run.id}</a
+				>.
+			</p>
+		</div>
+
+		<div class="Box">
 			<p>Final deck had ${state.deck.length} cards:</p>
 			<div class="Cards Cards--grid Cards--mini">
 				${state.deck.map((card) =>
@@ -78,15 +86,6 @@ export default function RunStats() {
 					}),
 				)}
 			</div>
-		</div>
-
-		<div class="Box">
-			<p>
-				Inspect the raw data here:
-				<a href=${'https://api.slaytheweb.cards/api/runs/' + run.id}
-					>api.slaytheweb.cards/api/runs/${run.id}</a
-				>.
-			</p>
 		</div>
 
 		<${SlayMap}

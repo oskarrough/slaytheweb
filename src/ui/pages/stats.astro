@@ -28,6 +28,7 @@ let {runs, total} = await getRuns()
 		<table>
 			<thead>
 				<tr>
+					<th>Id</th>
 					<th>Player</th>
 					<th>Win?</th>
 					<th>Floor</th>
@@ -58,11 +59,8 @@ let {runs, total} = await getRuns()
 
 								return (
 									<tr>
-										<td>
-											<a href={`/stats/run?id=` + run.id}>
-												{run.id}. {run.player}
-											</a>
-										</td>
+										<td>{run.id}</td>
+										<td><a href={`/stats/run?id=` + run.id}>{run.player}</a></td>
 										<td>{run.won ? 'WIN' : 'LOSS'}</td>
 										<td>{run.floor}</td>
 										<td align="right">{duration}</td>
