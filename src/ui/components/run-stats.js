@@ -1,9 +1,12 @@
+import {html, useState, useEffect} from '../lib.js'
 import {getRun} from '../../game/backend.js'
 import {getEnemiesStats} from './dungeon-stats.js'
-import {html, useState, useEffect} from '../lib.js'
+import { SlayMap } from './slay-map.js'
 
 export default function RunStats() {
+	/** @type {ReturnType<typeof useState<import('../../game/backend.js').Run>>} */
 	const [run, setRun] = useState()
+	/** @type {ReturnType<typeof useState<string>>} */
 	const [id, setId] = useState()
 
 	useEffect(() => {
@@ -39,13 +42,14 @@ export default function RunStats() {
 	return html`
 		<h1>Slay the Web run no. ${run.id}</h1>
 
-		<div className="Box Box--text Box--full">
-			<p>
-				<em>${run.player}</em> made it to floor ${state.dungeon.y} and
-				<strong> ${state.won ? 'won' : 'lost'}</strong> in ${duration} on ${date} with
-				${state.player.currentHealth}/${state.player.maxHealth} health.
-			</p>
-		</div>
+		<p>
+			<em>${run.player}</em> made it to floor ${state.dungeon.y} and
+			<strong> ${state.won ? 'won' : 'lost'}</strong>.
+		</p>
+		<p>
+			The run took ${duration} on ${date} with ${state.player.currentHealth}/${state.player.maxHealth} health
+			and ${run.gamePast.length} actions taken over ${run.gameState.turn} turns.
+		</p>
 
 		${extraStats && (
 			<p>
@@ -58,9 +62,11 @@ export default function RunStats() {
 			${state.deck.map((card) => <li>{card}</li>)}
 		</ul>
 		<p>
-			Feel free to inspect the data yourself:
+			Inspect the raw data here:
 			<a href=${'https://api.slaytheweb.cards/api/runs/' + run.id}>api.slaytheweb.cards/api/runs/${run.id}</a
 			>.
 		</p>
+		
+		<${SlayMap} dungeon=${run.gameState.dungeon} x=${state.dungeon.x} y=${state.dungeon.y} scatter=${20} debug=${true}><//>
 	`
 }

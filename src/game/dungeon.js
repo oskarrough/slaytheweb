@@ -147,7 +147,7 @@ export function generateGraph(options) {
 /**
  * Returns an array of possible paths from start to finish.
  * @param {Graph} graph - dungeon graph
- * @param {string} customPaths
+ * @param {string} [customPaths]
  * @returns {Array<Path>} customPaths a list of paths
  */
 export function generatePaths(graph, customPaths) {
@@ -290,9 +290,19 @@ export function graphToString(graph) {
  * @returns {Graph}
  */
 function storePathOnGraph(graph, path) {
+	console.log('storePathOnGraph', {graph, path})
 	path.forEach((move) => {
 		const a = nodeFromMove(graph, move[0])
 		const b = nodeFromMove(graph, move[1])
+
+		// @todo refactor so we don't have to do this. Depending on how the dungeon (and graph) was generated, the edges might not be set.
+		if (typeof a.edges?.has !== 'function') {
+			a.edges = new Set()
+		}
+		if (typeof b.edges?.has !== 'function') {
+			b.edges = new Set()
+		}
+
 		a.edges.add(b.id)
 	})
 	return graph

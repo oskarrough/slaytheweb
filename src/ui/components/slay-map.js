@@ -1,7 +1,7 @@
 import {Component, html} from '../lib.js'
 import {debounce, random as randomBetween} from '../../utils.js'
 import {isRoomCompleted} from '../../game/utils-state.js'
-import {emojiFromNodeType} from '../../game/dungeon.js'
+import {emojiFromNodeType, generatePaths} from '../../game/dungeon.js'
 
 /**
  * Renders a map of the dungeon.
@@ -149,8 +149,16 @@ export class SlayMap extends Component {
 	render(props) {
 		const {dungeon, x, y} = props
 		if (!dungeon.graph) throw new Error('No graph to render. This should not happen?', dungeon)
-		const edgesFromCurrentNode = dungeon.graph[y][x].edges
-		// console.log('edges from current map node', edgesFromCurrentNode)
+
+		const currentNode = dungeon.graph[y][x]
+		
+		if (isEmpty(currentNode.edges)) {
+			dungeon.paths = generatePaths(dungeon.graph)
+			console.log('genereated new dungeon paths', {dungeon})
+			// debugger
+		}
+
+		console.log('edges from current map node', currentNode)
 
 		return html`
 			<slay-map>
@@ -159,7 +167,7 @@ export class SlayMap extends Component {
 						<slay-map-row current=${rowIndex === y}>
 							${row.map((node, nodeIndex) => {
 								const isCurrent = rowIndex === y && nodeIndex === x
-								const isConnected = edgesFromCurrentNode.has(node.id)
+								const isConnected = currentNode.edges.has(node.id)
 								const completedCurrentRoom = isRoomCompleted(dungeon.graph[y][x].room)
 								const canVisit = isConnected && completedCurrentRoom
 								return html`<slay-map-node
@@ -180,6 +188,16 @@ export class SlayMap extends Component {
 			</slay-map>
 		`
 	}
+}
+
+function isEmpty(obj) {
+  for (const prop in obj) {
+    if (Object.hasOwn(obj, prop)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 // Since el.offsetLeft doesn't respect CSS transforms,
