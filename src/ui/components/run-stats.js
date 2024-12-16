@@ -1,7 +1,9 @@
 import {html, useState, useEffect} from '../lib.js'
 import {getRun} from '../../game/backend.js'
 import {getEnemiesStats} from './dungeon-stats.js'
-import { SlayMap } from './slay-map.js'
+import {SlayMap} from './slay-map.js'
+import {Card} from './cards.js'
+import {createCard} from '../../game/cards.js'
 
 export default function RunStats() {
 	/** @type {ReturnType<typeof useState<import('../../game/backend.js').Run>>} */
@@ -45,35 +47,54 @@ export default function RunStats() {
 	console.log('extraStats', extraStats)
 
 	return html`
-		<h1>Slay the Web run no. ${run.id}</h1>
+		<header class="Header">
+			<h1>Slay the Web run no. ${run.id}</h1>
+		</header>
 
-		<p>
-			<em>${run.player}</em> made it to floor ${state.dungeon.y} and
-			<strong> ${state.won ? 'won' : 'lost'}</strong>.
-		</p>
-		<p>
-			The run took ${duration} on ${date}.</p>
-		<p>
-			Player made ${run.gamePast.length} moves over ${run.gameState.turn} turns,<br/>
-		 and ended with ${state.player.currentHealth}/${state.player.maxHealth} health.
-		</p>
-
-		${extraStats && (
+		<div class="Box Box--text">
 			<p>
-				You encountered {extraStats.encountered} monsters. And killed {extraStats.killed} of them.
+				<em>${run.player}</em> made it to floor ${state.dungeon.y} and
+				<strong> ${state.won ? 'won' : 'lost'}</strong>.
 			</p>
-		)}
+			<p>The run took ${duration} on ${date}.</p>
+			<p>
+				Player made ${run.gamePast.length} moves over ${run.gameState.turn} turns,<br />
+				and ended with ${state.player.currentHealth}/${state.player.maxHealth} health.
+			</p>
 
-		<p>Final deck had ${state.deck.length} cards:</p>
-		<ul>
-			${state.deck.map((card) => <li>{card}</li>)}
-		</ul>
-		<p>
-			Inspect the raw data here:
-			<a href=${'https://api.slaytheweb.cards/api/runs/' + run.id}>api.slaytheweb.cards/api/runs/${run.id}</a
-			>.
-		</p>
-		
-		<${SlayMap} dungeon=${run.gameState.dungeon} x=${state.dungeon.x} y=${state.dungeon.y} scatter=${20} debug=${true}><//>
+			${extraStats && (
+				<p>
+					You encountered {extraStats.encountered} monsters. And killed {extraStats.killed} of them.
+				</p>
+			)}
+		</div>
+
+		<div class="Box">
+			<p>Final deck had ${state.deck.length} cards:</p>
+			<div class="Cards Cards--grid Cards--mini">
+				${state.deck.map((card) =>
+					Card({
+						card: createCard(card.replace('+', ''), card.includes('+') ? true : false),
+					}),
+				)}
+			</div>
+		</div>
+
+		<div class="Box">
+			<p>
+				Inspect the raw data here:
+				<a href=${'https://api.slaytheweb.cards/api/runs/' + run.id}
+					>api.slaytheweb.cards/api/runs/${run.id}</a
+				>.
+			</p>
+		</div>
+
+		<${SlayMap}
+			dungeon=${run.gameState.dungeon}
+			x=${state.dungeon.x}
+			y=${state.dungeon.y}
+			scatter=${20}
+			debug=${true}
+		><//>
 	`
 }

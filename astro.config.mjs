@@ -14,9 +14,9 @@ export default defineConfig({
 		preact(),
 		AstroPWA({
 			registerType: 'autoUpdate',
-			// devOptions: {
-			//   enabled: true,
-			// },
+			devOptions: {
+			  enabled: false,
+			},
 			// The actual webmanifest
 			manifest: {
 				name: 'Slay the Web',
