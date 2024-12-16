@@ -78,6 +78,17 @@ export function cardHasValidTarget(cardTarget, targetQuery) {
 }
 
 /**
+ * Can't even begin to explain this one. Needs refactor.
+ * @param {HTMLElement} el
+ * @returns {string}
+ */
+export function getTargetStringFromElement(el) {
+	const targetIndex = Array.from(el.parentNode.children).indexOf(el)
+	return el.dataset.type + targetIndex
+}
+
+
+/**
  * @param {Room} room
  * @returns {boolean} true if the room has been cleared.
  */
