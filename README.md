@@ -45,10 +45,13 @@ The `src/game` folder contains the actual game logic.
 The `src/ui` folder is the website UI where you can actually play the game.  
 The `src/content` folder builds content for the game.
 
-## How to deploy it
+## How to release a new version (aka deploy)
 
-The `main` branch automatically deploys to https://slaytheweb.cards, via the Vercel service.  
+Every commit to the  `main` branch automatically deploys to https://slaytheweb.cards via the Vercel service.  
+
 If you open a PR, it'll give you a preview URL as well for testing.
+
+To update `CHANGELOG.md`, run `bunx release-it` and follow the prompts. We do not use GitHub releases.
 
 ## References
 
