@@ -3,91 +3,93 @@ import Layout from '../layouts/Layout.astro'
 import {getRuns} from '../../game/backend.js'
 import '../styles/typography.css'
 
-let {runs, total} = (await getRuns())
+let {runs, total} = await getRuns()
 ---
 
 <Layout title="Statistics & Highscores">
-  <article class="Container">
-    <div class="Box">
-      <ul class="Options">
-        <li><a class="Button" href="/">Back</a></li>
-      </ul>
-    </div>
+	<article class="Container">
+		<div class="Box">
+			<ul class="Options">
+				<li><a class="Button" href="/">Back</a></li>
+			</ul>
+		</div>
 
-    <h1>Statistics & Highscores for Slay the Web</h1>
+		<h1>Statistics & Highscores for Slay the Web</h1>
 
-    <div class="Box Box--text Box--full">
-      <p>
-        A chronological list of <strong>{total}</strong> Slay the Web runs. Although we only show 200 latest here because I did not implement pagination and else the server timeouts..<br />
-        There is quite a bit of statistics that could be gathered from the runs, and isn't yet shown here. <a
-          href="https://matrix.to/#/#slaytheweb:matrix.org"
-          rel="nofollow">Chat on #slaytheweb:matrix.org</a>
-      </p>
-    </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Player</th>
-          <th>Win?</th>
-          <th>Floor</th>
-          <th align="right">Time</th>
-          <th align="right">Date</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          runs?.length
-            ? runs.map((run) => {
-                const state = run.gameState
-                const date = new Intl.DateTimeFormat('en', {
-                  dateStyle: 'long',
-                  // timeStyle: 'short',
-                  hour12: false,
-                }).format(new Date(run.createdAt))
+		<div class="Box Box--text Box--full">
+			<p>
+				A chronological list of <strong>{total}</strong> Slay the Web runs. Although we only show 200 latest here
+				because I did not implement pagination and else the server timeouts..<br />
+				There is quite a bit of statistics that could be gathered from the runs, and isn't yet shown here. <a
+					href="https://matrix.to/#/#slaytheweb:matrix.org"
+					rel="nofollow">Chat on #slaytheweb:matrix.org</a
+				>
+			</p>
+		</div>
+		<table>
+			<thead>
+				<tr>
+					<th>Player</th>
+					<th>Win?</th>
+					<th>Floor</th>
+					<th align="right">Time</th>
+					<th align="right">Date</th>
+				</tr>
+			</thead>
+			<tbody>
+				{
+					runs?.length
+						? runs.map((run) => {
+								const state = run.gameState
+								const date = new Intl.DateTimeFormat('en', {
+									dateStyle: 'long',
+									// timeStyle: 'short',
+									hour12: false,
+								}).format(new Date(run.createdAt))
 
-                let duration = 0
-                if (run.endedAt) {
-                  const ms = run.endedAt - run.createdAt
-                  const hours = Math.floor(ms / (1000 * 60 * 60))
-                  const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60))
-                  const seconds = Math.floor((ms / 1000) % 60)
-                  duration = `${hours > 0 ? hours + 'h ' : ''}${minutes}m ${seconds}s`
-                }
+								let duration = 0
+								if (run.endedAt) {
+									const ms = run.endedAt - run.createdAt
+									const hours = Math.floor(ms / (1000 * 60 * 60))
+									const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60))
+									const seconds = Math.floor((ms / 1000) % 60)
+									duration = `${hours > 0 ? hours + 'h ' : ''}${minutes}m ${seconds}s`
+								}
 
-                return (
-                  <tr>
-                    <td>
-                      <a href={`/stats/` + run.id}>
-                        {run.id}. {run.player}
-                      </a>
-                    </td>
-                    <td>{run.won ? 'WIN' : 'LOSS'}</td>
-                    <td>{run.floor}</td>
-                    <td align="right">{duration}</td>
-                    <td align="right">{date}</td>
-                  </tr>
-                )
-              })
-            : 'Loading...'
-        }
-      </tbody>
-    </table>
-    <p>
-      If you want your run removed, <a href="https://matrix.to/#/#slaytheweb:matrix.org">let me know</a>.
-    </p>
-  </article>
+								return (
+									<tr>
+										<td>
+											<a href={`/stats/run?id=` + run.id}>
+												{run.id}. {run.player}
+											</a>
+										</td>
+										<td>{run.won ? 'WIN' : 'LOSS'}</td>
+										<td>{run.floor}</td>
+										<td align="right">{duration}</td>
+										<td align="right">{date}</td>
+									</tr>
+								)
+							})
+						: 'Loading...'
+				}
+			</tbody>
+		</table>
+		<p>
+			If you want your run removed, <a href="https://matrix.to/#/#slaytheweb:matrix.org">let me know</a>.
+		</p>
+	</article>
 </Layout>
 
 <style>
-  table {
-    width: 100%;
-    border-spacing: 0;
-  }
-  tbody tr:nth-child(odd) {
-    background-color: #eee;
-  }
-  th,
-  td {
-    text-align: left;
-  }
+	table {
+		width: 100%;
+		border-spacing: 0;
+	}
+	tbody tr:nth-child(odd) {
+		background-color: #eee;
+	}
+	th,
+	td {
+		text-align: left;
+	}
 </style>

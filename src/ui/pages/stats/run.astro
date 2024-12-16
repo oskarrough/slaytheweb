@@ -1,0 +1,13 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import '../../styles/typography.css'
+import Run from '../../components/run-stats'
+---
+
+<Layout title="Statistics & Highscores">
+	<article class="Container">
+		<p><a class="Button" href="/stats">&larr; Back to all runs</a></p>
+
+		<Run client:only />
+	</article>
+</Layout>
