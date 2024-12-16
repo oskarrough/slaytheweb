@@ -349,6 +349,12 @@ h2 {
 	transform: rotate(130deg);
 }
 
+.LastRun {
+	background: var(--yellow);
+	padding: 1px 3px;
+	font-size: small;
+}
+
 .Box,
 .Box--text {
 	background: hsla(17, 6%, 53%, 1);

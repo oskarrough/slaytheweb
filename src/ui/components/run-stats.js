@@ -15,12 +15,17 @@ export default function RunStats() {
 	}, [])
 
 	useEffect(() => {
+		if (!id) {
+			setRun(null)
+			return
+		}
 		getRun(id).then((what) => {
 			setRun(what)
 			console.log(what)
 		})
 	}, [id])
 
+	if (!id) return html`<p>Add ?id=1234 (and use a real ID) to the URL to see a specific run.</p>`
 	if (!run) return html`<h1>Loading statistics for run no. ${id}...</h1>`
 
 	const state = run.gameState
@@ -47,8 +52,10 @@ export default function RunStats() {
 			<strong> ${state.won ? 'won' : 'lost'}</strong>.
 		</p>
 		<p>
-			The run took ${duration} on ${date} with ${state.player.currentHealth}/${state.player.maxHealth} health
-			and ${run.gamePast.length} actions taken over ${run.gameState.turn} turns.
+			The run took ${duration} on ${date}.</p>
+		<p>
+			Player made ${run.gamePast.length} moves over ${run.gameState.turn} turns,<br/>
+		 and ended with ${state.player.currentHealth}/${state.player.maxHealth} health.
 		</p>
 
 		${extraStats && (

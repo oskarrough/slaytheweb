@@ -290,7 +290,6 @@ export function graphToString(graph) {
  * @returns {Graph}
  */
 function storePathOnGraph(graph, path) {
-	console.log('storePathOnGraph', {graph, path})
 	path.forEach((move) => {
 		const a = nodeFromMove(graph, move[0])
 		const b = nodeFromMove(graph, move[1])

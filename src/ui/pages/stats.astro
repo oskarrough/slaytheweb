@@ -8,21 +8,15 @@ let {runs, total} = await getRuns()
 
 <Layout title="Statistics & Highscores">
 	<article class="Container">
-		<div class="Box">
-			<ul class="Options">
-				<li><a class="Button" href="/">Back</a></li>
-			</ul>
-		</div>
+		<p><a class="Button" href="/">&larr; Back to game</a></p>
 
 		<h1>Statistics & Highscores for Slay the Web</h1>
 
 		<div class="Box Box--text Box--full">
 			<p>
-				A chronological list of <strong>{total}</strong> Slay the Web runs. Although we only show 200 latest here
-				because I did not implement pagination and else the server timeouts..<br />
-				There is quite a bit of statistics that could be gathered from the runs, and isn't yet shown here. <a
+				A chronological list of <strong>{total}</strong> Slay the Web runs to explore.<br>Come <a
 					href="https://matrix.to/#/#slaytheweb:matrix.org"
-					rel="nofollow">Chat on #slaytheweb:matrix.org</a
+					rel="nofollow">chat on #slaytheweb:matrix.org</a
 				>
 			</p>
 		</div>
@@ -32,17 +26,18 @@ let {runs, total} = await getRuns()
 					<th>Player</th>
 					<th>Win?</th>
 					<th>Floor</th>
-					<th align="right">Time</th>
-					<th align="right">Date</th>
+					<th align="right" style="min-width: 4em">Time</th>
+					<th align="right" style="min-width: 6em">Date</th>
 				</tr>
 			</thead>
 			<tbody>
 				{
 					runs?.length
 						? runs.map((run) => {
-								const state = run.gameState
+								// const state = run.gameState
 								const date = new Intl.DateTimeFormat('en', {
-									dateStyle: 'long',
+									dateStyle: 'medium',
+									// month: 'short',
 									// timeStyle: 'short',
 									hour12: false,
 								}).format(new Date(run.createdAt))
