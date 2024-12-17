@@ -93,4 +93,5 @@
 .Overlay[open] .Cards {
 	margin-top: 2rem;
 	gap: 1rem;
+	flex-wrap: wrap;
 }
