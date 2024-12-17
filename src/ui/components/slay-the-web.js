@@ -68,7 +68,6 @@ if (!customElements.get('slay-the-web')) {
 		'slay-the-web',
 		class SlayTheWebElement extends HTMLElement {
 			connectedCallback() {
-				console.timeEnd('start')
 				render(html` <${SlayTheWeb} /> `, this)
 			}
 		},

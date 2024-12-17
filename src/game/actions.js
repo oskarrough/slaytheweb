@@ -1,6 +1,6 @@
 import {produce, enableMapSet} from 'immer'
 import {clamp, shuffle} from '../utils.js'
-import {isDungeonCompleted, getTargets, getCurrRoom} from './utils-state.js'
+import {isDungeonCompleted, getRoomTargets, getCurrRoom} from './utils-state.js'
 import powers from './powers.js'
 import {conditionsAreValid} from './conditions.js'
 import {createCard, CardTargets} from './cards.js'
@@ -209,10 +209,10 @@ function upgradeCard(state, {card}) {
  * @type {ActionFn<{card: object, target?: string}>}
  */
 function playCard(state, {card, target}) {
+	if (!card) throw new Error('No card to play')
 	if (!target) target = card.target
 	if (typeof target !== 'string') throw new Error(`Wrong target to play card: ${target},${card.target}`)
 	if (target === 'enemy') throw new Error('Wrong target, did you mean "enemy0" or "allEnemies"?')
-	if (!card) throw new Error('No card to play')
 	if (state.player.currentEnergy < card.energy) throw new Error('Not enough energy to play card')
 	let newState = discardCard(state, {card})
 	newState = produce(newState, (draft) => {
@@ -273,7 +273,7 @@ export function useCardActions(state, {target, card}) {
  */
 function addHealth(state, {target, amount}) {
 	return produce(state, (draft) => {
-		const targets = getTargets(draft, target)
+		const targets = getRoomTargets(draft, target)
 		targets.forEach((t) => {
 			t.currentHealth = clamp(t.currentHealth + amount, 0, t.maxHealth)
 		})
@@ -323,7 +323,7 @@ function addEnergyToPlayer(state, props) {
  */
 const removeHealth = (state, {target, amount}) => {
 	return produce(state, (draft) => {
-		getTargets(draft, target).forEach((t) => {
+		getRoomTargets(draft, target).forEach((t) => {
 			if (t.powers.vulnerable) amount = powers.vulnerable.use(amount)
 			let amountAfterBlock = t.block - amount
 			if (amountAfterBlock < 0) {
@@ -345,7 +345,7 @@ const removeHealth = (state, {target, amount}) => {
  */
 const setHealth = (state, {target, amount}) => {
 	return produce(state, (draft) => {
-		getTargets(draft, target).forEach((t) => {
+		getRoomTargets(draft, target).forEach((t) => {
 			t.currentHealth = amount
 		})
 	})
@@ -593,7 +593,7 @@ function dealDamageEqualToBlock(state, {target}) {
  */
 function dealDamageEqualToVulnerable(state, {target}) {
 	return produce(state, (draft) => {
-		getTargets(draft, target).forEach((t) => {
+		getRoomTargets(draft, target).forEach((t) => {
 			if (t.powers.vulnerable) {
 				const amount = t.currentHealth - t.powers.vulnerable
 				t.currentHealth = amount
@@ -609,7 +609,7 @@ function dealDamageEqualToVulnerable(state, {target}) {
  */
 function dealDamageEqualToWeak(state, {target}) {
 	return produce(state, (draft) => {
-		getTargets(draft, target).forEach((t) => {
+		getRoomTargets(draft, target).forEach((t) => {
 			if (t.powers.weak) {
 				const amount = t.currentHealth - t.powers.weak
 				t.currentHealth = amount
@@ -625,7 +625,7 @@ function dealDamageEqualToWeak(state, {target}) {
  */
 function setPower(state, {target, power, amount}) {
 	return produce(state, (draft) => {
-		getTargets(draft, target).forEach((target) => {
+		getRoomTargets(draft, target).forEach((target) => {
 			target.powers[power] = amount
 		})
 	})
