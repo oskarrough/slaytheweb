@@ -587,9 +587,6 @@ function dealDamageEqualToBlock(state, {target}) {
 	if (state.player.block) {
 		const block = state.player.block
 		return removeHealth(state, {target, amount: block})
-		getRoomTargets(state, target).forEach((t) => {
-
-		})
 	}
 }
 
