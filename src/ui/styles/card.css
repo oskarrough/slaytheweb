@@ -14,6 +14,35 @@
 	flex-wrap: wrap;
 	gap: 0.5rem;
 }
+.Cards--mini {
+}
+.Cards--withUpgrades {
+	> div {
+		display: flex;
+		flex-flow: column wrap;
+	}
+
+	.Card {
+		height: 100%;
+	}
+
+	.Card:not([data-card-upgraded]) {
+	}
+	.Card[data-card-upgraded] {
+		display: none;
+	}
+
+	> div:hover {
+		.Card:not([data-card-upgraded]) {
+			display: none;
+		}
+		.Card[data-card-upgraded] {
+			display: flex;
+		}
+	}
+}
+
+
 .Card {
 	position: relative;
 	display: flex;
@@ -33,6 +62,7 @@
 	display: flex;
 	flex-flow: column nowrap;
 	background: #2a3335;
+	color: var(--text);
 	text-align: center;
 }
 .Card-media {

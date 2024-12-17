@@ -128,3 +128,25 @@ export function debounce(func, wait, options = {}) {
     if (callNow) func.apply(context, args)
   }
 }
+
+/** Turns a timestamp into a string like "16. Dec 2024" */
+export function formatDate(timestamp) {
+	return new Intl.DateTimeFormat('en', {
+		dateStyle: 'medium',
+		// month: 'short',
+		// timeStyle: 'short',
+		hour12: false,
+	}).format(new Date(timestamp))
+}
+
+/** Turns a timestamp into a "X days ago" string */
+export function timeSince(timestamp) {
+	const seconds = Math.floor((Date.now() - timestamp) / 1000)
+	if (seconds < 60) return 'just now'
+	if (seconds < 120) return 'a minute ago'
+	if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`
+	if (seconds < 7200) return 'an hour ago'
+	if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`
+	if (seconds < 172800) return 'yesterday'
+	return `${Math.floor(seconds / 86400)} days ago`
+}

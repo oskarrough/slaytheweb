@@ -45,6 +45,11 @@ The `src/game` folder contains the actual game logic.
 The `src/ui` folder is the website UI where you can actually play the game.  
 The `src/content` folder builds content for the game.
 
+## Testing
+
+To test everything, run `npm run test` or `npm run test:watch`.
+To test certain files, use `npm run test -- tests/actions.js` syntax.
+
 ## How to release a new version (aka deploy)
 
 Every commit to the  `main` branch automatically deploys to https://slaytheweb.cards via the Vercel service.  

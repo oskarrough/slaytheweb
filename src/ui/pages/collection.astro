@@ -6,31 +6,43 @@ import {cards} from '../../content/cards.js'
 import {Card} from '../components/cards.js'
 import {createCard} from '../../game/cards'
 ---
+
 <Layout title="Slay the Web">
-  <article class="Container">
-    <header class="Header">
-      <h1 medium>Slay the Web</h1>
-      <h2>{cards.length} Card Collection</h2>
-      <p>Hover each card to see its upgraded version.</p>
-    </header>
+	<article class="Container">
+		<p><a class="Button" href="/stats">&larr; Highscores</a></p>
 
-    <div class="Box">
-      <ul class="Options">
-        <li><a class="Button" href="/">Back</a></li>
-      </ul>
-    </div>
+		<header class="Header">
+			<h1 medium>Slay the Web</h1>
+			<h2>{cards.length} Card Collection</h2>
+		</header>
 
-    <div class="Box Box--text Box--full">
-      <div class="Cards Cards--grid Cards--withUpgrades">
-        {
-          cards.map((card) => (
-            <div>
-              <Card card={card} />
-              <Card card={createCard(card.name, true)} />
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </article>
+		<div class="Box Box--text">
+			<p>Would you like to create your own card? Or tune an existing one?</p>
+			<p>
+				This game is <a href="https://github.com/oskarrough/slaytheweb" rel="noreferrer" target="_blank"
+					>is open source</a
+				>. You can change any part of the game. If you like, there's a chat on <a
+					href="https://matrix.to/#/#slaytheweb:matrix.org"
+					rel="noreferrer"
+					target="_blank"
+				>
+					#slaytheweb:matrix.org
+				</a> and I'll help you get started.
+			</p>
+			<p></p>
+		</div>
+
+		<div class="Box Box--text Box--full">
+			<div class="Cards Cards--grid Cards--withUpgrades">
+				{
+					cards.map((card) => (
+						<div>
+							<Card card={card} />
+							<Card card={createCard(card.name, true)} />
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</article>
 </Layout>

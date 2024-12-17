@@ -40,12 +40,12 @@ export function getCurrRoom(state) {
 }
 
 /**
- * Returns an array of targets (player or monsters) in the current room.
+ * Returns a list of "targets" (player or monsters) in the current room. 
  * @param {State} state
- * @param {CardTargets} targetQuery - like player, enemy0, enemy1
+ * @param {CardTargets} targetQuery - like player, enemy0, enemy1, enemy2, allEnemies
  * @returns {Array<MONSTER>}
  */
-export function getTargets(state, targetQuery) {
+export function getRoomTargets(state, targetQuery) {
 	if (!targetQuery || typeof targetQuery !== 'string') throw new Error('Bad query string')
 	const room = getCurrRoom(state)
 

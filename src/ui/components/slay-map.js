@@ -28,7 +28,7 @@ export class SlayMap extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const newDungeon = this.props.dungeon.id !== prevProps.dungeon.id
+		const newDungeon = this.props.dungeon.id !== prevProps?.dungeon.id
 
 		// Let CSS know about the amount of rows and cols we have.
 		this.base.style.setProperty('--rows', Number(this.props.dungeon.graph.length))
@@ -154,11 +154,8 @@ export class SlayMap extends Component {
 		
 		if (isEmpty(currentNode.edges)) {
 			dungeon.paths = generatePaths(dungeon.graph)
-			console.log('genereated new dungeon paths', {dungeon})
-			// debugger
+			if (this.debug) console.log('generated new dungeon paths', {dungeon})
 		}
-
-		console.log('edges from current map node', currentNode)
 
 		return html`
 			<slay-map>

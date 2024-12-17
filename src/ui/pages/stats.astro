@@ -2,31 +2,37 @@
 import Layout from '../layouts/Layout.astro'
 import {getRuns} from '../../game/backend.js'
 import '../styles/typography.css'
+import '../styles/index.css'
 
 let {runs, total} = await getRuns()
 ---
 
 <Layout title="Statistics & Highscores">
 	<article class="Container">
-		<p><a class="Button" href="/">&larr; Back to game</a></p>
+		<p><a class="Button" href="/">&larr; Menu</a></p>
 
-		<h1>Statistics & Highscores for Slay the Web</h1>
+		<header class="Header">
+			<h1 medium>Statistics & Highscores</h1>
+		</header>
+
 
 		<div class="Box Box--text Box--full">
 			<p>
-				A chronological list of <strong>{total}</strong> Slay the Web runs to explore.<br>Come <a
+				A chronological list of <strong>{total}</strong> Slay the Web runs to explore.<br />Come <a
 					href="https://matrix.to/#/#slaytheweb:matrix.org"
 					rel="nofollow">chat on #slaytheweb:matrix.org</a
 				>
 			</p>
 		</div>
+
 		<table>
 			<thead>
 				<tr>
+					<th>Id</th>
 					<th>Player</th>
 					<th>Win?</th>
 					<th>Floor</th>
-					<th align="right" style="min-width: 4em">Time</th>
+					<th align="right" style="min-width: 5.5em">Time</th>
 					<th align="right" style="min-width: 6em">Date</th>
 				</tr>
 			</thead>
@@ -53,11 +59,8 @@ let {runs, total} = await getRuns()
 
 								return (
 									<tr>
-										<td>
-											<a href={`/stats/run?id=` + run.id}>
-												{run.id}. {run.player}
-											</a>
-										</td>
+										<td>{run.id}</td>
+										<td><a href={`/stats/run?id=` + run.id}>{run.player}</a></td>
 										<td>{run.won ? 'WIN' : 'LOSS'}</td>
 										<td>{run.floor}</td>
 										<td align="right">{duration}</td>
@@ -80,8 +83,11 @@ let {runs, total} = await getRuns()
 		width: 100%;
 		border-spacing: 0;
 	}
+	tbody {
+		font-size: initial
+	}
 	tbody tr:nth-child(odd) {
-		background-color: #eee;
+		background-color: hsla(0, 0%, 0%, 0.1);
 	}
 	th,
 	td {

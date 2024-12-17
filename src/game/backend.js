@@ -5,6 +5,7 @@ const apiUrl = 'https://api.slaytheweb.cards/api/runs'
 
 /**
  * @typedef {object} Run
+ * @prop {string} id
  * @prop {string} player - user inputted player name
  * @prop {object} gameState - the final state
  * @prop {PastEntry[]} gamePast - a list of past states

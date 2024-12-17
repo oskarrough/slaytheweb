@@ -310,8 +310,6 @@ h2 {
 		url(/images/cursors/grab-open.png) 10 0,
 		auto;
 }
-.Hand .Card-inner {
-}
 .Hand .Card[disabled] {
 	cursor: not-allowed;
 }
@@ -341,6 +339,12 @@ h2 {
 	justify-content: center;
 }
 
+.Splash {
+	min-height: 100dvh;
+	justify-content: flex-end;
+	padding-bottom: 5vh;
+}
+
 .Splash-spoder {
 	width: 10%;
 	position: absolute;
@@ -349,6 +353,7 @@ h2 {
 	transform: rotate(130deg);
 }
 
+/* Used in the main menu */
 .LastRun {
 	background: var(--yellow);
 	padding: 1px 3px;
@@ -375,7 +380,8 @@ h2 {
 }
 
 .Box--text a {
-	color: var(--teal);
+	color: var(--yellow);
+	/* color: hsl(50.4, 70%, 56%); */
 	text-decoration-thickness: from-font;
 }
 
@@ -452,32 +458,6 @@ h2 {
 	align-items: baseline;
 }
 
-.Cards--withUpgrades {
-	> div {
-		display: flex;
-		flex-flow: column wrap;
-	}
-
-	.Card {
-		height: 100%;
-	}
-
-	.Card:not([data-card-upgraded]) {
-	}
-	.Card[data-card-upgraded] {
-		display: none;
-	}
-
-	> div:hover {
-		.Card:not([data-card-upgraded]) {
-			display: none;
-		}
-		.Card[data-card-upgraded] {
-			display: flex;
-		}
-	}
-}
-
 #driver-popover-content {
 	background-color: var(--bg);
 	color: var(--text);
@@ -492,6 +472,4 @@ h2 {
 .driver-popover .driver-popover-footer button {
 	font-size: 1rem;
 }
-
-.driver-popover .driver-popover-footer button {
-}
+/* .driver-popover .driver-popover-footer button { } */
