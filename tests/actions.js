@@ -491,6 +491,17 @@ test('Clash can only be played if it is the only attack', (t) => {
 	t.is(canPlay(state, clash), false, 'can not play because non-attack card in hand')
 })
 
+test('"Deal damage equal to block" mechanic works', (t) => {
+	const {state} = t.context
+	t.is(state.player.block, 0)
+	const state2 = a.playCard(state, {card: createCard('Defend'), target: 'player'})
+	t.is(state2.player.block, 5)
+	t.is(getRoomTargets(state, 'enemy0')[0].currentHealth, 42)
+	const state3 = a.playCard(state2, {card: createCard('Body Slam'), target: 'enemy0'})
+	console.log(getRoomTargets(state3, 'enemy0'))
+	t.is(getRoomTargets(state3, 'enemy0')[0].currentHealth, 42 - 5)
+})
+
 test('Succube card applies regen', (t) => {
 	const {state} = t.context
 	const succube = createCard('Succube')
