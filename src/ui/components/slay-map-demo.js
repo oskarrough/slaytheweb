@@ -14,7 +14,7 @@ const MapDemo = () => {
 
 	return html`
 		<div class="Box">
-			<details>
+			<details open>
 				<summary>Options</summary>
 				<${DungeonConfig} onUpdate=${(config) => setDungeon(Dungeon(config))} />
 			</details>
