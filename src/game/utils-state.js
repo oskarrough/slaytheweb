@@ -47,16 +47,17 @@ export function getCurrRoom(state) {
  */
 export function getRoomTargets(state, targetQuery) {
 	if (!targetQuery || typeof targetQuery !== 'string') throw new Error('Bad query string')
-	const room = getCurrRoom(state)
 
 	// Player
 	if (targetQuery.includes(CardTargets.player)) return [state.player]
+
 	// All enemies
-	if (targetQuery === CardTargets.allEnemies) return room.monsters
+	if (targetQuery === CardTargets.allEnemies) return getCurrRoom(state).monsters
+
 	// Single enemy
 	if (targetQuery.startsWith(CardTargets.enemy)) {
 		const index = Number(targetQuery.split('enemy')[1])
-		const monster = room.monsters[index]
+		const monster = getCurrRoom(state).monsters[index]
 		if (monster) return [monster]
 	}
 

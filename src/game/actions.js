@@ -250,21 +250,24 @@ function playCard(state, {card, target}) {
  */
 export function useCardActions(state, {target, card}) {
 	if (!card.actions) return state
-	let newState = state
+
+	let nextState = state
+
 	card.actions.forEach((action) => {
 		// Don't run action if it has an invalid condition.
 		if (action.conditions && !conditionsAreValid(state, action.conditions)) {
-			return newState
+			return
 		}
-		if (!action.parameter) action.parameter = {}
 
 		// Make sure the action is called with a target, preferably the target you dropped the card on.
+		if (!action.parameter) action.parameter = {}
 		action.parameter.target = target
 
 		// Run the action (and add the `card` to the parameters
-		newState = allActions[action.type](newState, {...action.parameter, card})
+		nextState = allActions[action.type](nextState, {...action.parameter, card})
 	})
-	return newState
+
+	return nextState
 }
 
 /**
@@ -321,7 +324,7 @@ function addEnergyToPlayer(state, props) {
  * Removes health from a target, respecting vulnerable and block.
  * @type {ActionFn<{target: string, amount: number}>}
  */
-const removeHealth = (state, {target, amount}) => {
+const removeHealth = (state, {target, amount = 0}) => {
 	return produce(state, (draft) => {
 		getRoomTargets(draft, target).forEach((t) => {
 			if (t.powers.vulnerable) amount = powers.vulnerable.use(amount)
