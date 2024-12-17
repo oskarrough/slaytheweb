@@ -373,12 +373,6 @@ test('Flourish card adds a healing "regen" buff', (t) => {
 	t.is(state.player.currentHealth, 72)
 	let state2 = a.playCard(state, {target: 'player', card: flourish})
 
-	// Pacify the monster...
-	// produce(state2, (draft) => {
-	// getCurrRoom(draft).monsters[0].intents = []
-	// getTargets(state, 'enemy0').intents = []
-	// })
-
 	t.is(state2.player.powers.regen, flourish.powers.regen, 'regen is applied to player')
 	state2 = a.endTurn(state2)
 	t.is(state2.player.currentHealth, 72, 'it doesnt go above max hp')
@@ -409,10 +403,7 @@ test('target "allEnemies" works for damage as well as power', (t) => {
 	t.is(room.monsters.length, 2, 'we have two enemies')
 	t.is(room.monsters[0].currentHealth, 24)
 	t.is(room.monsters[1].currentHealth, 13)
-	t.falsy(
-		room.monsters[0].powers.vulnerable && room.monsters[1].powers.vulnerable,
-		'none are vulnerable',
-	)
+	t.falsy(room.monsters[0].powers.vulnerable && room.monsters[1].powers.vulnerable, 'none are vulnerable')
 	const card = createCard('Thunderclap')
 	const nextState = a.playCard(state, {card})
 	t.is(getRoomTargets(nextState, 'enemy0')[0].currentHealth, 24 - card.damage)
@@ -491,17 +482,6 @@ test('Clash can only be played if it is the only attack', (t) => {
 	t.is(canPlay(state, clash), false, 'can not play because non-attack card in hand')
 })
 
-test('"Deal damage equal to block" mechanic works', (t) => {
-	const {state} = t.context
-	t.is(state.player.block, 0)
-	const state2 = a.playCard(state, {card: createCard('Defend'), target: 'player'})
-	t.is(state2.player.block, 5)
-	t.is(getRoomTargets(state, 'enemy0')[0].currentHealth, 42)
-	const state3 = a.playCard(state2, {card: createCard('Body Slam'), target: 'enemy0'})
-	console.log(getRoomTargets(state3, 'enemy0'))
-	t.is(getRoomTargets(state3, 'enemy0')[0].currentHealth, 42 - 5)
-})
-
 test('Succube card applies regen', (t) => {
 	const {state} = t.context
 	const succube = createCard('Succube')
@@ -519,3 +499,13 @@ test('upgraded cards are really upgraded', (t) => {
 
 test.todo('playing defend on an enemy ?')
 test.todo('can apply a power to a specific monster')
+
+test('"Deal damage equal to block" mechanic works', (t) => {
+	const {state} = t.context
+	t.is(state.player.currentHealth, 72)
+	t.is(getRoomTargets(state, 'enemy0')[0].currentHealth, 42)
+	const state2 = a.playCard(state, {card: createCard('Defend'), target: 'player'})
+	t.is(state2.player.block, 5)
+	const state3 = a.playCard(state2, {card: createCard('Body Slam'), target: 'enemy0'})
+	t.is(getRoomTargets(state3, 'enemy0')[0].currentHealth, 42 - 5)
+})
