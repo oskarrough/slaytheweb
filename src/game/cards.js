@@ -64,15 +64,15 @@ export class Card {
 		this.type = CardTypes[props.type]
 		this.energy = props.energy
 		this.target = CardTargets[props.target]
-		this.damage = props.damage
-		this.block = props.block
+		this.damage = props.damage || 0
+		this.block = props.block || 0
 		this.powers = props.powers
 		this.description = props.description
 		this.conditions = props.conditions
 		this.actions = props.actions
 		this.image = props.image
-		this.upgraded = props.upgraded
-		this.exhaust = props.exhaust
+		this.upgraded = props.upgraded || false
+		this.exhaust = props.exhaust || false
 	}
 }
 

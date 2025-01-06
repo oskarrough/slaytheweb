@@ -446,9 +446,14 @@ test('summer of sam card gains 1 life', (t) => {
 	const {state} = t.context
 	const card = createCard('Summer of Sam')
 	t.is(card.actions.length, 2, 'card has "actions"')
-	state.player.currentHealth = 50
-	const newState = a.playCard(state, {target: 'player', card})
-	t.is(newState.player.currentHealth, 51, 'gain 1 life')
+	t.is(state.player.maxHealth, 72)
+	const state2 = a.playCard(state, {target: 'player', card})
+	t.is(state2.player.currentHealth, 72, 'gain 1 life')
+
+	const test3 = a.removeHealth(state2, {target: 'player', amount: 72 / 2 + 5})
+	t.is(test3.player.currentHealth, 31)
+	const test4 = a.playCard(test3, {target: 'player', card})
+	t.is(test4.player.currentHealth, 33, 'gain 2 life, because hp was below 50%')
 })
 
 test('vulnerable is working', (t) => {
