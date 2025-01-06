@@ -82,7 +82,7 @@ export default function RunStats() {
 			<div class="Cards Cards--grid Cards--mini">
 				${state.deck.map((card) =>
 					Card({
-						card: createCard(card.replace('+', ''), card.includes('+') ? true : false),
+						card: createCard(card, card.includes('+') ? true : false),
 					}),
 				)}
 			</div>

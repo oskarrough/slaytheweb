@@ -16,7 +16,7 @@ export default {
 
 export const upgrade = (card) => ({
 	...card,
-	name: 'High Succube+',
 	damage: 3,
+	name: 'High Succube+',
 	description: 'Deal 3 damage to ALL enemies and suck it into life.',
 })

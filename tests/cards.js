@@ -38,3 +38,10 @@ test('can upgrade all cards', (t) => {
 		t.true(upgraded.name.includes('+'), upgraded.name)
 	}
 })
+
+test('card names with plus always upgrade', (t) => {
+	t.is(createCard('Succube').name, 'Succube')
+	t.is(createCard('Succube', true).name, 'High Succube+', 'different upgraded name')
+	t.is(createCard('High Succube+', true).name, 'High Succube+', 'if name contains + we always upgrade')
+	t.is(createCard('High Succube+', false).name, 'High Succube+', 'if name contains + we always upgrade')
+})

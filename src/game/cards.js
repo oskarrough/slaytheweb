@@ -85,8 +85,14 @@ export class Card {
  * @returns {CARD} a new card
  */
 export function createCard(name, shouldUpgrade) {
+	// This is a bit wacky, but it allows us to upgrade cards by their original name.
+	if (name.includes('+')) {
+		return createCard(upgradeNameMap[name], true)
+	}
+
 	let card = cards.find((card) => card.name === name)
 	if (!card) throw new Error(`Card not found: ${name}`)
+
 	if (shouldUpgrade) {
 		const upgradeFn = cardUpgrades[name]
 		card = upgradeFn(card)
@@ -98,6 +104,19 @@ export function createCard(name, shouldUpgrade) {
 	}
 	return new Card(card)
 }
+
+const upgradeNameMap = {}
+
+// Build the map automatically from cards and their upgrade functions
+cards.forEach((card) => {
+	const upgradeFn = cardUpgrades[card.name]
+	if (upgradeFn) {
+		const upgradedCard = upgradeFn(card)
+		if (upgradedCard.name !== card.name + '+') {
+			upgradeNameMap[upgradedCard.name] = card.name
+		}
+	}
+})
 
 /**
  * Returns X random cards from a list of cards.
