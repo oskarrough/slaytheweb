@@ -80,11 +80,12 @@ export default function RunStats() {
 		<div class="Box">
 			<p>Final deck had ${state.deck.length} cards:</p>
 			<div class="Cards Cards--grid Cards--mini">
-				${state.deck.map((card) =>
-					Card({
-						card: createCard(card, card.includes('+') ? true : false),
-					}),
-				)}
+				${state.deck
+					.map((cardName) =>
+						Card({
+							card: createCard(cardName),
+						}),
+					)}
 			</div>
 		</div>
 
