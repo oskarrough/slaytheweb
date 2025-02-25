@@ -4,10 +4,21 @@ const apiUrl = 'https://api.slaytheweb.cards/api/runs'
 // const apiUrl = 'http://localhost:3000/api/runs'
 
 /**
+ * @typedef {object} MinifiedState
+ * @prop {number} createdAt
+ * @prop {number} endedAt
+ * @prop {boolean} won
+ * @prop {number} turn
+ * @prop {string[]} deck - List of card names (not full card objects)
+ * @prop {import('./actions.js').Player} player
+ * @prop {import('./dungeon.js').Dungeon} [dungeon] - Like full dungeon but without paths
+ */
+
+/**
  * @typedef {object} Run
- * @prop {string} id
+ * @prop {string} [id]
  * @prop {string} player - user inputted player name
- * @prop {object} gameState - the final state
+ * @prop {MinifiedState} gameState - A minimized version of the game state. See minimizeGameState()
  * @prop {PastEntry[]} gamePast - a list of past states
  */
 
@@ -16,8 +27,27 @@ const apiUrl = 'https://api.slaytheweb.cards/api/runs'
  * @typedef {object} PastEntry
  * @prop {number} turn
  * @prop {object} action
- * @prop {object} player
+ * @prop {import('./actions.js').Player} player
  */
+
+/** Apparently it's too much data to send around, so I try to remove a bit
+ * @param {import('./actions.js').State} state
+ * @returns {MinifiedState}
+ */
+function minimizeGameState(state) {
+	return produce(state, (draft) => {
+		if (!draft.endedAt) draft.endedAt = new Date().getTime()
+		// delete mini.dungeon?.graph
+		delete draft.dungeon?.paths
+		delete draft.drawPile
+		delete draft.hand
+		delete draft.discardPile
+		delete draft.exhaustPile
+		draft.deck = draft.deck.map(card => {
+			return card.name
+		})
+	})
+}
 
 /**
  * Saves a "game" object into a remote database for highscores.
@@ -29,9 +59,7 @@ export async function postRun(game, playerName) {
 	/** @type {Run} */
 	const run = {
 		player: playerName || 'Unknown entity',
-		gameState: produce(game.state, (draft) => {
-			if (!draft.endedAt) draft.endedAt = new Date().getTime()
-		}),
+		gameState: minimizeGameState(game.state),
 		gamePast: game.past.list.map((item) => {
 			return {
 				action: item.action,

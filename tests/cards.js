@@ -45,3 +45,43 @@ test('card names with plus always upgrade', (t) => {
 	t.is(createCard('High Succube+', true).name, 'High Succube+', 'if name contains + we always upgrade')
 	t.is(createCard('High Succube+', false).name, 'High Succube+', 'if name contains + we always upgrade')
 })
+
+test('createCard handles already-upgraded card names', (t) => {
+	// Regular cards with + suffix
+	const bashPlus = createCard('Bash+')
+	t.true(bashPlus.upgraded)
+	t.is(bashPlus.name, 'Bash+')
+
+	// Special cards with different upgrade names
+	const highSuccube = createCard('High Succube+')
+	t.true(highSuccube.upgraded)
+	t.is(highSuccube.name, 'High Succube+')
+})
+
+test('upgrading is consistent', (t) => {
+	// Regular upgrade path
+	const bashPath1 = createCard('Bash', true)
+	const bashPath2 = createCard('Bash+')
+	t.deepEqual(bashPath1, bashPath2, 'Both upgrade paths should create identical cards')
+
+	// Special upgrade name path
+	const succubePath1 = createCard('Succube', true)
+	const succubePath2 = createCard('High Succube+')
+	t.deepEqual(succubePath1, succubePath2, 'Special upgrade paths should be consistent')
+})
+
+test('all upgraded card names follow conventions', (t) => {
+	const specialUpgradeCards = new Set(['Succube']) // Add any cards with special upgrade names here
+	
+	for (const card of cards) {
+		const upgraded = createCard(card.name, true)
+		
+		if (specialUpgradeCards.has(card.name)) {
+			t.true(upgraded.name.endsWith('+'), 
+				`Special upgrade ${upgraded.name} should still end with +`)
+		} else {
+			t.is(upgraded.name, card.name + '+',
+				`Regular upgrade of ${card.name} should be ${card.name}+`)
+		}
+	}
+})

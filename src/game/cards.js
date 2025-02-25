@@ -85,9 +85,10 @@ export class Card {
  * @returns {CARD} a new card
  */
 export function createCard(name, shouldUpgrade) {
-	// This is a bit wacky, but it allows us to upgrade cards by their original name.
 	if (name.includes('+')) {
-		return createCard(upgradeNameMap[name], true)
+		// If it's in the map, use that, otherwise remove the + and set shouldUpgrade
+		const baseName = upgradeNameMap[name] || name.replace('+', '')
+		return createCard(baseName, true)
 	}
 
 	let card = cards.find((card) => card.name === name)
