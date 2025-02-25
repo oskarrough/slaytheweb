@@ -1,0 +1,6 @@
+Key Directories:
+
+src/game/: Contains the core game logic
+src/ui/: Contains the web interface implementation
+src/content/: Holds game content like cards, monsters, etc.
+tests/: Contains the test suite
