@@ -60,24 +60,28 @@ test('createCard handles already-upgraded card names', (t) => {
 
 test('upgrading is consistent', (t) => {
 	// Regular upgrade path
-	const bashPath1 = createCard('Bash', true)
-	const bashPath2 = createCard('Bash+')
-	t.deepEqual(bashPath1, bashPath2, 'Both upgrade paths should create identical cards')
+	const card1 = createCard('Bash', true)
+	const card2 = createCard('Bash+')
+	delete card1.id
+	delete card2.id
+	t.deepEqual(card1, card2, 'Both upgrade paths should create identical cards')
 
 	// Special upgrade name path
 	const succubePath1 = createCard('Succube', true)
 	const succubePath2 = createCard('High Succube+')
+	delete succubePath1.id
+	delete succubePath2.id
 	t.deepEqual(succubePath1, succubePath2, 'Special upgrade paths should be consistent')
 })
 
 test('all upgraded card names follow conventions', (t) => {
 	const specialUpgradeCards = new Set(['Succube']) // Add any cards with special upgrade names here
-	
+
 	for (const card of cards) {
 		const upgraded = createCard(card.name, true)
-		
+
 		if (specialUpgradeCards.has(card.name)) {
-			t.true(upgraded.name.endsWith('+'), 
+			t.true(upgraded.name.endsWith('+'),
 				`Special upgrade ${upgraded.name} should still end with +`)
 		} else {
 			t.is(upgraded.name, card.name + '+',

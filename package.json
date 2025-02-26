@@ -1,6 +1,6 @@
 {
   "name": "slaytheweb",
-  "version": "0.22.2",
+  "version": "0.22.3",
   "license": "AGPL-3.0-or-later",
   "homepage": "https://slaytheweb.cards",
   "repository": "https://github.com/oskarrough/slaytheweb",
@@ -36,8 +36,7 @@
     "htm": "^3.1.1",
     "immer": "^10.1.1",
     "preact": "^10.26.2",
-    "superjson": "^2.2.2",
-    "tone": "^15.0.4"
+    "superjson": "^2.2.2"
   },
   "release-it": {
     "git": {
