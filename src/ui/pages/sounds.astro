@@ -6,72 +6,73 @@ const sounds = ['startGame', 'startTurn', 'endTurn', 'selectCard', 'cardToHand',
 ---
 
 <script>
-  import sounds from '../sounds.js'
-  import {beep, playCoin, playWhoosh} from '../sounds2.js'
+	import * as sounds from '../sounds.js'
 
-  const buttons = document.querySelectorAll('menu.sounds button')
-  buttons.forEach((button) => {
-    button.addEventListener('click', (event) => {
-      const sound = event.currentTarget.dataset.sound
-      console.log('playing', sound)
-      sounds[sound]()
-    })
-  })
+	const buttons = document.querySelectorAll('menu.sounds button')
+	buttons.forEach((button) => {
+		button.addEventListener('click', (event) => {
+			const target = event.currentTarget
+			const sound = target.dataset.sound
+			console.log('playing', sound)
+			sounds[sound]()
+		})
+	})
 
-  document.querySelectorAll('[data-sfx]').forEach((el) => {
-    el.addEventListener('click', () => {
-      const {sfx, coin} = el.dataset
-      if (sfx === 'whoosh') {
-        playWhoosh(0.6)
-      } else if (coin) {
-        playCoin(coin)
-      } else {
-        beep(sfx, sfx * 2, 0.3)
-      }
-    })
-  })
+	document.querySelectorAll('[data-sfx]').forEach((el) => {
+		el.addEventListener('click', () => {
+			const {sfx, coin} = el.dataset
+			if (sfx === 'whoosh') {
+				sounds.playWhoosh(0.6)
+			} else if (coin) {
+				sounds.playCoin(coin)
+			} else if (sfx) {
+				const frequency = parseFloat(sfx)
+				sounds.beep(frequency, frequency * 2, 0.3)
+			}
+		})
+	})
 </script>
 
 <Layout title="Slay the Web">
-  <div class="Container">
-    <h1>Sounds</h1>
-    <p>Play any of the sound effects used in the game.</p>
+	<div class="Container">
+		<h1>Sounds</h1>
+		<p>Play any of the sound effects used in the game.</p>
 
-    <menu>
-      <button type="button" data-sfx="220">220</button>
-      <button type="button" data-sfx="440">440</button>
-      <button type="button" data-sfx="880">880</button>
-      <button type="button" data-sfx data-coin="minor">Coin minor</button>
-      <button type="button" data-sfx data-coin="major">Coin major</button>
-      <button type="button" data-sfx data-coin="pentatonic">Coin penta</button>
-      <button type="button" data-sfx="whoosh">Whoosh</button>
-    </menu>
+		<menu>
+			<button type="button" data-sfx="220">220</button>
+			<button type="button" data-sfx="440">440</button>
+			<button type="button" data-sfx="880">880</button>
+			<button type="button" data-sfx data-coin="minor">Coin minor</button>
+			<button type="button" data-sfx data-coin="major">Coin major</button>
+			<button type="button" data-sfx data-coin="pentatonic">Coin penta</button>
+			<button type="button" data-sfx="whoosh">Whoosh</button>
+		</menu>
 
-    <menu class="sounds">
-      {
-        sounds.map((s) => (
-          <button type="button" data-sound={s}>
-            {s}
-          </button>
-        ))
-      }
-    </menu>
-  </div>
+		<menu class="sounds">
+			{
+				sounds.map((s) => (
+					<button type="button" data-sound={s}>
+						{s}
+					</button>
+				))
+			}
+		</menu>
+	</div>
 </Layout>
 
 <style>
-  h1 + p {
-    margin-left: 0.8em;
-    margin-bottom: 2rem;
-  }
-  menu {
-    margin: 0 0 1rem;
-    display: flex;
-    flex-flow: column wrap;
-    gap: 0.5em;
-    max-width: 14em;
-  }
-  button {
-    margin: 0;
-  }
+	h1 + p {
+		margin-left: 0.8em;
+		margin-bottom: 2rem;
+	}
+	menu {
+		margin: 0 0 1rem;
+		display: flex;
+		flex-flow: column wrap;
+		gap: 0.5em;
+		max-width: 14em;
+	}
+	button {
+		margin: 0;
+	}
 </style>
