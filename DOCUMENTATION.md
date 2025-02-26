@@ -101,7 +101,7 @@ See [animations.js](src/ui/animations.js). Most are made with gsap.
 
 #### Sounds
 
-See [sounds.js](src/ui/sounds.js) using Tone.js.
+See [sounds.js](src/ui/sounds.js) using the Web Audio API.
 
 ## Tests
 

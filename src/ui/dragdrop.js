@@ -1,7 +1,7 @@
 import { Draggable } from 'gsap/Draggable.js'
 import { cardHasValidTarget, getTargetStringFromElement } from '../game/utils-state.js'
 import gsap from './animations.js'
-import sounds from './sounds.js'
+import * as sounds from './sounds.js'
 
 /** Class to add to the element we are dragging over */
 const overClass = 'is-dragOver'

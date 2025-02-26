@@ -19,10 +19,10 @@ export class SlayMap extends Component {
 		this.didDrawPaths = false
 		this.debug = props.debug
 		// this.drawPathsThrottled = throttle(this.drawPaths.bind(this), 500)
-		this.drawPathsDebounced = debounce(this.drawPaths.bind(this), 300, {leading: true, trailing: true})
 	}
 
 	componentDidMount() {
+		this.drawPathsDebounced = debounce(this.drawPaths.bind(this), 300, {leading: true, trailing: true})
 		// trigger update..
 		this.setState({universe: 42})
 	}
