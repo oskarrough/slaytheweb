@@ -5,8 +5,7 @@
 1. **State-Based Architecture**
 - Every action operates on the full game state
 - Actions are pure functions: `(state, props) => newState`
-- This gives us great flexibility and predictability
-- Makes debugging, testing, and undo/redo trivial
+- This gives us great flexibility and predictability. Makes debugging, testing, and undo/redo trivial
 
 ```js
 // Current implementation
