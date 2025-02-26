@@ -36,17 +36,7 @@ const sounds = ['startGame', 'startTurn', 'endTurn', 'selectCard', 'cardToHand',
 <Layout title="Slay the Web">
 	<div class="Container">
 		<h1>Sounds</h1>
-		<p>Play any of the sound effects used in the game.</p>
-
-		<menu>
-			<button type="button" data-sfx="220">220</button>
-			<button type="button" data-sfx="440">440</button>
-			<button type="button" data-sfx="880">880</button>
-			<button type="button" data-sfx data-coin="minor">Coin minor</button>
-			<button type="button" data-sfx data-coin="major">Coin major</button>
-			<button type="button" data-sfx data-coin="pentatonic">Coin penta</button>
-			<button type="button" data-sfx="whoosh">Whoosh</button>
-		</menu>
+		<p>Play any of the sound effects used in the game.</p>	
 
 		<menu class="sounds">
 			{
@@ -56,6 +46,15 @@ const sounds = ['startGame', 'startTurn', 'endTurn', 'selectCard', 'cardToHand',
 					</button>
 				))
 			}
+		</menu>
+    <menu>
+			<button type="button" data-sfx="220">220</button>
+			<button type="button" data-sfx="440">440</button>
+			<button type="button" data-sfx="880">880</button>
+			<button type="button" data-sfx data-coin="minor">Coin minor</button>
+			<button type="button" data-sfx data-coin="major">Coin major</button>
+			<button type="button" data-sfx data-coin="pentatonic">Coin penta</button>
+			<button type="button" data-sfx="whoosh">Whoosh</button>
 		</menu>
 	</div>
 </Layout>
