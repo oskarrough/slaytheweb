@@ -7,7 +7,7 @@ import createNewGame from '../../game/new-game.js'
 import {createCard} from '../../game/cards.js'
 import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../../game/utils-state.js'
 import {saveToUrl, loadFromUrl} from '../save-load.js'
-import sounds from '../sounds.js'
+import * as sounds from '../sounds.js'
 
 // UI Components
 import CampfireRoom from './campfire.js'
