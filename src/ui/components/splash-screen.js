@@ -42,7 +42,7 @@ export default class SplashScreen extends Component {
 							<a class="Button" href="/stats">Highscores</a>
 							${this.state.runs.length > 0
 								? html` <a class="LastRun" href=${`/stats/run?id=${run.id}`}>
-										${timeSince(run.createdAt)} someone ${run.won ? 'won' : 'lost'}
+										Someone ${run.won ? 'won' : 'lost'} ${timeSince(run.createdAt)}
 									</a>`
 								: ''}
 						</li>
