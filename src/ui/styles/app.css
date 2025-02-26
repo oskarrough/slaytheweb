@@ -40,6 +40,11 @@ summary {
 	user-select: none;
 }
 
+pre {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
 input,
 textarea,
 select {
@@ -49,7 +54,8 @@ select {
 }
 
 input[type='text'],
-input[type='number'] {
+input[type='number'],
+textarea {
 	font-size: 1em;
 }
 
@@ -368,6 +374,7 @@ h2 {
 	border-radius: 0.75rem;
 	border: 2px solid hsla(17, 6%, 3%, 1);
 	min-width: 15rem;
+	max-width: 100%;
 	margin: 0.5rem auto;
 }
 
