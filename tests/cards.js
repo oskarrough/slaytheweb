@@ -89,3 +89,11 @@ test('all upgraded card names follow conventions', (t) => {
 		}
 	}
 })
+
+test('Non-existing, old cards can still be referenced?!', (t) => {
+	const a = createCard('High Succube')
+	t.is(a.name, 'High Succube+')
+	const b = createCard('Lower Soul Drain')
+	t.is(b.name, 'Soul Drain+')
+})
+
