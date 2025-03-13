@@ -1,11 +1,11 @@
 // List of filenames from /src/content/cards/*.js
 const cardIndex = [
 	'adrenaline',
-	'bash',
+	'neutralize',
 	'bludgeon',
 	'body-slam',
 	'clash',
-	'cleave',
+	'dagger-spray',
 	'defend',
 	'flourish',
 	'intimidate',
