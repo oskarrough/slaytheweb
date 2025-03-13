@@ -1,23 +1,23 @@
 export default {
-	name: 'Bash',
+	name: 'Neutralize',
 	type: 'attack',
-	energy: 2,
-	damage: 8,
+	energy: 0,
+	damage: 3,
 	target: 'enemy',
 	image: 'apteryx-mantelli.jpg',
 	powers: {
-		vulnerable: 2,
+		weak: 1,
 	},
-	description: 'Deal 8 damage. Apply 2 Vulnerable.',
+	description: 'Deal 3 damage. Apply 1 Weak.',
 }
 
 export const upgrade = (card) => {
 	return {
 		...card,
-		damage: 10,
+		damage: 4,
 		description: 'Deal 10 damage. Apply 3 Vulnerable',
 		powers: {
-			vulnerable: 3,
+			weak: 2,
 		},
 	}
 }
