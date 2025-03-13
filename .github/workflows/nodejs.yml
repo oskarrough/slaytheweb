@@ -12,5 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - uses: oven-sh/setup-bun@v1
+    - run: npm install -g npm@latest
     - run: npm install
     - run: npm run dev
