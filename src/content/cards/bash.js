@@ -15,7 +15,7 @@ export const upgrade = (card) => {
 	return {
 		...card,
 		damage: 4,
-		description: 'Deal 10 damage. Apply 3 Vulnerable',
+		description: 'Deal 4 damage. Apply 2 Weak',
 		powers: {
 			weak: 2,
 		},
