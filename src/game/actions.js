@@ -108,6 +108,7 @@ function addStarterDeck(state) {
 		createCard('Strike'),
 		createCard('Strike'),
 		createCard('Neutralize'),
+		createCard('Survivor'),
 	]
 	return produce(state, (draft) => {
 		draft.deck = deck
