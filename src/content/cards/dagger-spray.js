@@ -3,7 +3,7 @@ export default {
 	type: 'attack',
 	energy: 1,
 	damage: 4,
-	target: 'allEnemies',
+	damage: 4,
 	target: 'allEnemies',
 	description: 'Deal 4 damage to all enemies, TWICE.',
 	image: 'vernal-equinox.jpg',
