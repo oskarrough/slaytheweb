@@ -4,7 +4,11 @@ const cardIndex = [
 	'backflip',
 	'backstab',
 	'bludgeon',
+	'blue-defend',
+	'blue-strike',
 	'clash',
+	'color-clash',
+	'color-spray',
 	'dagger-spray',
 	'dash',
 	'defend',
@@ -15,6 +19,8 @@ const cardIndex = [
 	'mask-of-the-faceless',
 	'neutralize',
 	'quick-slash',
+	'red-defend',
+	'red-strike',
 	'slice',
 	'soul-drain',
 	'strike',
@@ -43,6 +49,7 @@ export const cardUpgrades = {}
 
 // Fill out the cards and upgrades maps.
 for (const fileName of cardIndex) {
+	// @ts-ignore
 	const module = await import(`./cards/${fileName}.js`)
 	cards.push(module.default)
 	cardUpgrades[module.default.name] = module.upgrade

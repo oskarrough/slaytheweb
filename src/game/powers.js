@@ -59,5 +59,17 @@ export const strength = new Power({
 	use: (stacks) => stacks,
 })
 
+export const red = new Power({
+	type: 'debuff',
+	name: 'red',
+	description: 'red',
+	use: (stacks) => stacks,
+})
+export const blue = new Power({
+	type: 'debuff',
+	name: 'blue',
+	description: 'blue',
+	use: (stacks) => stacks,
+})
 /**tried to add strength, but can't figure out how to give the +1 dmg per stack and stack doesn't reduce*/
-export default {regen, vulnerable, weak, strength}
+export default {regen, vulnerable, weak, strength, red, blue}
