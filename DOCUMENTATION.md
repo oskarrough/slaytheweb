@@ -8,8 +8,8 @@ In the root of this project you'll find configuration files as well as three fol
   - [game](src/game) contains the core game logic
   - [content](src/content) uses methods from the game engine to build cards, dungeon and monsters
   - [ui](src/ui) is the example web interface to actually play the game
-- [public →](public/) Copied to the web root as-is
-- [tests →](tests/) Contains all tests for the game engine. Nothing for the UI. Run `npm test`.
+- [public →](public/) Copied to the web root as-is, used for static images 
+- [tests →](tests/) Contains tests for the game. There are no tests for the UI.
 
 ## Src
 
