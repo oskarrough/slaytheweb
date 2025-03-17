@@ -2,84 +2,18 @@ import {html, Component} from '../lib.js'
 import createNewGame from '../../game/new-game.js'
 import actions from '../../game/actions.js'
 import {createCard} from '../../game/cards.js'
+import {getRoomTargets} from '../../game/utils-state.js'
 
 /**
-
-# Slay the Web - API Exploration (DEBUG UI)
-
-This document outlines the experimental debug UI for exploring and improving the Slay the Web game API.
-
-## Purpose
-
-The debug UI is designed to:
-
-1. Explore the game API in an interactive way
-2. Test different action sequences and observe their effects
-3. Identify areas for API improvement
-4. Experiment with alternative API designs
-
-## Debug UI
-
-The debug UI is inspired by Jupyter Notebooks, providing a cell-based interface for running game actions and observing their effects:
-
-### Features
-
-- **Cell-based execution**: Write and run code in individual cells
-- **Preview before execution**: See what an action would do without actually doing it
-- **State visualization**: Observe the game state after each action
-- **Queue inspection**: View the future and past action queues
-- **Action discovery**: Browse available actions
-
-### Usage
-
-1. **Create a new game**: Start with a fresh game state
-2. **Add cells**: Each cell can contain code to enqueue and execute an action
-3. **Run cells**: Execute the code in a cell to see its effect on the game state
-4. **Undo actions**: Revert the last action to try different approaches
-
-### Example Cell Code
-
-```javascript
-// Draw cards
-game.enqueue({type: "drawCards", amount: 1})
-
-// Play a card
-game.enqueue({type: "playCard", card: game.state.hand[0], target: "enemy0"})
-
-// End turn
-game.enqueue({type: "endTurn"})
-```
-
-## API Exploration Goals
-
-1. **Ergonomics**: Identify ways to make the API more intuitive and easier to use
-2. **Consistency**: Ensure actions follow consistent patterns and naming conventions
-3. **Flexibility**: Test the API's ability to handle complex game scenarios
-4. **Discoverability**: Make it easier to discover available actions and their parameters
-
-## Current API Structure
-
-The game uses an action queue system:
-
-1. Actions are enqueued with `game.enqueue({type: "actionType", ...params})`
-2. Actions are executed with `game.dequeue()`
-3. Actions can be undone with `game.undo()`
-
-## Next Steps
-
-- [ ] Identify common action patterns that could be simplified
-- [ ] Consider a more fluent API for common actions
-- [ ] Explore better ways to handle targeting
-- [ ] Test error handling and edge cases
-- [ ] Document all available actions and their parameters
-
-## References
-
-- `src/game/actions.js`: Contains all available actions
-- `src/game/action-manager.js`: Manages the action queue
-- `src/game/new-game.js`: Creates a new game state
-- `src/ui/components/debug-ui.js`: The Jupyter-inspired debug UI
-
+ * Debug Console for Slay the Web
+ *
+ * A console-like interface for testing game actions and seeing state changes.
+ * Features:
+ * - Select actions from dropdown
+ * - Parameter input fields appear dynamically based on selected action
+ * - Execute actions and see state changes
+ * - View action history and undo
+ * - Split view showing game state
  */
 
 export default class DebugUI extends Component {
@@ -91,464 +25,419 @@ export default class DebugUI extends Component {
 		const game = createNewGame(true)
 		this.setState({
 			game,
-			cells: [{code: 'game.enqueue({type: "drawCards", amount: 1})', result: null, preview: null}],
+			selectedAction: '',
+			actionParams: {},
+			history: [],
 		})
-		// Expose game to console for direct manipulation
-		// @ts-ignore - Declare game property on window
-		window.game = game
+		// @ts-ignore
+		window.game = window.game || game
 		console.log('New game created', game)
 	}
 
-	updateCell(index, code) {
-		const cells = [...this.state.cells]
-		cells[index] = {...cells[index], code}
-		this.setState({cells})
-	}
-
-	previewCell(index) {
-		const {game, cells} = this.state
-		if (!game) return
-
-		try {
-			// Clone the game state to preview without modifying
-			const stateBefore = JSON.parse(JSON.stringify(game.state))
-
-			// Evaluate the code (in a safe way)
-			// Note: In a real implementation, you'd need a safer way to evaluate code
-			const code = cells[index].code
-
-			// Show what would happen
-			const preview = {
-				code,
-				message: 'Preview only - run to see actual changes',
-			}
-
-			// Update the cell
-			const updatedCells = [...cells]
-			updatedCells[index] = {...updatedCells[index], preview, result: null}
-			this.setState({cells: updatedCells})
-		} catch (error) {
-			const updatedCells = [...cells]
-			updatedCells[index] = {
-				...updatedCells[index],
-				preview: {error: error.message},
-				result: null,
-			}
-			this.setState({cells: updatedCells})
+	// Get parameter schema for a selected action
+	getParamSchema(actionName) {
+		// Define parameter schemas for common actions
+		const schemas = {
+			playCard: [
+				{name: 'card', type: 'card', required: true},
+				{name: 'target', type: 'target', required: false},
+			],
+			drawCards: [{name: 'amount', type: 'number', required: false, default: 5}],
+			addHealth: [
+				{name: 'target', type: 'target', required: true},
+				{name: 'amount', type: 'number', required: true},
+			],
+			removeHealth: [
+				{name: 'target', type: 'target', required: true},
+				{name: 'amount', type: 'number', required: true},
+			],
+			setPower: [
+				{name: 'target', type: 'target', required: true},
+				{name: 'power', type: 'string', required: true},
+				{name: 'amount', type: 'number', required: true},
+			],
+			addCardToHand: [{name: 'card', type: 'card', required: true}],
+			addCardToDeck: [{name: 'card', type: 'card', required: true}],
+			upgradeCard: [{name: 'card', type: 'card', required: true}],
+			discardCard: [{name: 'card', type: 'card', required: true}],
 		}
+
+		// Return schema if found, otherwise empty array (no parameters)
+		return schemas[actionName] || []
 	}
 
-	runCell(index) {
-		const {game, cells} = this.state
-		if (!game) return
+	// Handle selection of an action
+	handleActionSelect(actionName) {
+		// Reset action parameters when changing actions
+		this.setState({
+			selectedAction: actionName,
+			actionParams: {},
+		})
+	}
+
+	// Handle parameter input change
+	handleParamChange(paramName, value) {
+		this.setState((state) => ({
+			actionParams: {
+				...state.actionParams,
+				[paramName]: value,
+			},
+		}))
+	}
+
+	// Handle card selection for card type parameters
+	handleCardSelect(paramName, cardName) {
+		const card = createCard(cardName)
+		this.handleParamChange(paramName, card)
+	}
+
+	// Execute the selected action
+	executeAction() {
+		const {game, selectedAction, actionParams} = this.state
+
+		if (!selectedAction) return
 
 		try {
-			// Store state before
+			// Create a snapshot of the state before
 			const stateBefore = JSON.parse(JSON.stringify(game.state))
 
-			// Evaluate and run the code
-			eval(cells[index].code)
+			// Queue and execute the action
+			game.enqueue({
+				type: selectedAction,
+				...actionParams,
+			})
+
 			game.dequeue()
 
-			// Compare states to show what changed
-			const stateAfter = game.state
-
-			// Store result with more detailed information
-			const result = {
-				message: 'Action executed successfully',
-				queue: {
-					future: game.future.list.length,
-					past: game.past.list.length,
-				},
-				lastAction:
-					game.past.list.length > 0
-						? game.past.list[game.past.list.length - 1]?.action?.type || 'unknown'
-						: 'none',
+			// Add to history
+			const historyItem = {
+				action: selectedAction,
+				params: {...actionParams},
+				timestamp: new Date().toLocaleTimeString(),
 			}
 
-			// Update the cell
-			const updatedCells = [...cells]
-			updatedCells[index] = {...updatedCells[index], result, preview: null}
-
-			// Add a new cell if this is the last one
-			if (index === cells.length - 1) {
-				updatedCells.push({code: '', result: null, preview: null})
-			}
-
-			this.setState({cells: updatedCells})
+			this.setState((state) => ({
+				history: [...state.history, historyItem],
+			}))
 		} catch (error) {
-			const updatedCells = [...cells]
-			updatedCells[index] = {
-				...updatedCells[index],
-				result: {error: error.message},
-				preview: null,
-			}
-			this.setState({cells: updatedCells})
+			console.error('Error executing action:', error)
+			alert(`Error: ${error.message}`)
 		}
 	}
 
-	addCell() {
-		const cells = [...this.state.cells, {code: '', result: null, preview: null}]
-		this.setState({cells})
+	// Undo the last action
+	undoAction() {
+		const {game, history} = this.state
+
+		if (history.length === 0) return
+
+		try {
+			game.undo()
+
+			this.setState((state) => ({
+				history: state.history.slice(0, -1),
+			}))
+		} catch (error) {
+			console.error('Error undoing action:', error)
+			alert(`Error undoing: ${error.message}`)
+		}
 	}
 
-	removeCell(index) {
-		if (this.state.cells.length <= 1) return
+	// Render parameters form based on selected action
+	renderParamsForm() {
+		const {selectedAction, actionParams, game} = this.state
 
-		const cells = [...this.state.cells]
-		cells.splice(index, 1)
-		this.setState({cells})
-	}
+		if (!selectedAction) return null
 
-	handleActionSelect(index, actionType) {
-		if (!actionType) return
-
-		const cells = [...this.state.cells]
-		let code = `// ${actionType} action\ngame.enqueue({type: "${actionType}"`
-
-		// Add common parameters for specific action types with helpful comments
-		switch (actionType) {
-			case 'drawCards':
-				code += `, amount: 1 // Number of cards to draw`
-				break
-
-			case 'addHealth':
-				code += `, 
-  target: "player", // Can be "player" or "enemy0", "enemy1", etc.
-  amount: 5         // Amount of health to add`
-				break
-
-			case 'removeHealth':
-				code += `, 
-  target: "player", // Can be "player" or "enemy0", "enemy1", etc.
-  amount: 5         // Amount of health to remove`
-				break
-
-			case 'playCard':
-				code += `, 
-  card: game.state.hand[0], // Card object to play
-  target: "enemy0"          // Target of the card (if needed)`
-				break
-
-			case 'addCardToHand':
-				code += `, 
-  card: createCard("Strike") // Card to add to hand`
-				break
-
-			case 'addCardToDeck':
-				code += `, 
-  card: createCard("Strike") // Card to add to deck`
-				break
-
-			case 'setPower':
-				code += `, 
-  target: "player",  // Can be "player" or "enemy0", "enemy1", etc.
-  power: "strength", // Power name (strength, dexterity, vulnerable, weak, etc.)
-  amount: 1          // Amount of power to apply`
-				break
-
-			case 'endTurn':
-				// No parameters needed
-				break
-
-			case 'move':
-				code += `, 
-  move: {x: 1, y: 0} // Direction to move in the dungeon`
-				break
-
-			case 'upgradeCard':
-				code += `, 
-  card: game.state.hand[0] // Card to upgrade`
-				break
-
-			default:
-				code += ` /* Add parameters as needed */`
-				break
-		}
-
-		code += `})`
-
-		cells[index] = {
-			...cells[index],
-			code,
-		}
-		this.setState({cells})
-	}
-
-	renderCell(cell, index) {
-		const {game} = this.state
-		if (!game) return null
-
-		// Get actions directly from the game object
-		const availableActions = Object.keys(actions)
-
-		// Extract the current action type from the cell code
-		let currentAction = ''
-		const match = cell.code.match(/type:\s*"([^"]+)"/)
-		if (match && match[1]) {
-			currentAction = match[1]
-		}
-
-		// Determine if the cell has been run successfully
-		const hasRun = cell.result && !cell.result.error
-
-		// Handle keyboard shortcuts
-		const handleKeyDown = (e) => {
-			// Run cell on Ctrl+Enter or Cmd+Enter
-			if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-				e.preventDefault()
-				this.runCell(index)
-			}
-		}
+		const paramSchema = this.getParamSchema(selectedAction)
 
 		return html`
-			<div class="Box cell ${hasRun ? 'cell-success' : ''}">
-				<header>
-					<h3>Cell ${index + 1}${currentAction ? ` - ${currentAction}` : ''}</h3>
-					<menu>
-						<button class="Button" onClick=${() => this.previewCell(index)}>Preview</button>
-						<button class="Button" onClick=${() => this.runCell(index)}>Run</button>
-						<button class="Button" onClick=${() => this.removeCell(index)}>Remove</button>
-					</menu>
-				</header>
+			<div class="params-form">
+				${paramSchema.map((param) => {
+					if (param.type === 'card') {
+						// Card selector
+						return html`
+							<div class="form-group">
+								<label>${param.name} (card)</label>
+								<select
+									onChange=${(e) => this.handleCardSelect(param.name, e.target.value)}
+									value=${actionParams[param.name]?.name || ''}
+								>
+									<option value="">Select a card...</option>
+									<option value="Strike">Strike</option>
+									<option value="Defend">Defend</option>
+									<option value="Bash">Bash</option>
+									<option value="Body Slam">Body Slam</option>
+									<option value="Clash">Clash</option>
+									<option value="Cleave">Cleave</option>
+									<option value="Flourish">Flourish</option>
+									<option value="Succube">Succube</option>
+									<option value="Thunderclap">Thunderclap</option>
+									<option value="Summer of Sam">Summer of Sam</option>
+								</select>
 
-				<select onChange=${(e) => this.handleActionSelect(index, e.target.value)} value=${currentAction}>
-					<option value="">Select an action...</option>
-					${availableActions.map((action) => html` <option value=${action}>${action}</option> `)}
-				</select>
+								<p class="help-text">
+									Or select from hand:
+									${game.state.hand.map(
+										(card, i) => html`
+											<button
+												class="card-btn ${actionParams[param.name]?.id === card.id ? 'selected' : ''}"
+												onClick=${() => this.handleParamChange(param.name, card)}
+											>
+												${card.name} (${i})
+											</button>
+										`,
+									)}
+								</p>
+							</div>
+						`
+					} else if (param.type === 'target') {
+						// Target selector
+						return html`
+							<div class="form-group">
+								<label>${param.name} (target)</label>
+								<select
+									onChange=${(e) => this.handleParamChange(param.name, e.target.value)}
+									value=${actionParams[param.name] || ''}
+								>
+									<option value="">Select target...</option>
+									<option value="player">Player</option>
+									<option value="enemy0">Enemy 0</option>
+									<option value="enemy1">Enemy 1</option>
+									<option value="enemy2">Enemy 2</option>
+									<option value="allEnemies">All Enemies</option>
+								</select>
+							</div>
+						`
+					} else {
+						// Default input for other types
+						return html`
+							<div class="form-group">
+								<label>${param.name} (${param.type})</label>
+								<input
+									type=${param.type === 'number' ? 'number' : 'text'}
+									value=${actionParams[param.name] !== undefined
+										? actionParams[param.name]
+										: param.default || ''}
+									onInput=${(e) =>
+										this.handleParamChange(
+											param.name,
+											param.type === 'number' ? Number(e.target.value) : e.target.value,
+										)}
+									placeholder=${param.required ? 'Required' : 'Optional'}
+								/>
+							</div>
+						`
+					}
+				})}
 
-				<textarea
-					value=${cell.code}
-					onInput=${(e) => this.updateCell(index, e.target.value)}
-					onKeyDown=${handleKeyDown}
-					placeholder="Type code here. Press Ctrl+Enter to run."
-				></textarea>
-
-				${cell.preview &&
-				html`
-					<section class="preview">
-						<h4>Preview</h4>
-						<pre>${JSON.stringify(cell.preview, null, 2)}</pre>
-					</section>
-				`}
-				${cell.result &&
-				!cell.result.error &&
-				html`
-					<section class="success">
-						<h4>Success</h4>
-						<pre>${JSON.stringify(cell.result, null, 2)}</pre>
-					</section>
-				`}
-				${cell.result &&
-				cell.result.error &&
-				html`
-					<section class="error">
-						<h4>Error</h4>
-						<pre>${JSON.stringify(cell.result, null, 2)}</pre>
-					</section>
-				`}
+				<button class="Button execute-btn" onClick=${() => this.executeAction()} disabled=${!selectedAction}>
+					Execute
+				</button>
 			</div>
 		`
 	}
 
+	// Render game state panel
 	renderGameState() {
 		const {game} = this.state
+
 		if (!game) return null
+
+		// Get current monsters
+		const monsters = []
+		try {
+			// Try to get room monsters safely
+			const room = game.state.dungeon?.graph[game.state.dungeon.y][game.state.dungeon.x]?.room
+			if (room && room.monsters) {
+				monsters.push(...room.monsters)
+			}
+		} catch (e) {
+			// Handle case where monsters can't be found
+		}
 
 		return html`
 			<div class="Box">
 				<h2>Game State</h2>
 
-				<section>
-					<h3>Player</h3>
-					<div>Health: ${game.state.player.currentHealth}/${game.state.player.maxHealth}</div>
-					<div>Energy: ${game.state.player.currentEnergy}/${game.state.player.maxEnergy}</div>
-					<div>Block: ${game.state.player.block}</div>
-					${Object.keys(game.state.player.powers || {}).length > 0 &&
-					html` <div>Powers: ${JSON.stringify(game.state.player.powers)}</div> `}
-				</section>
+				<details open>
+					<summary>
+						<h3>Player</h3>
+					</summary>
+					<section>
+						<div>Health: ${game.state.player.currentHealth}/${game.state.player.maxHealth}</div>
+						<div>Energy: ${game.state.player.currentEnergy}/${game.state.player.maxEnergy}</div>
+						<div>Block: ${game.state.player.block}</div>
+						${
+							Object.keys(game.state.player.powers || {}).length > 0 &&
+							html` <div>Powers: ${JSON.stringify(game.state.player.powers)}</div> `
+						}
+					</section>
+				</details>
 
-				<section>
-					<h3>Cards</h3>
-					<div>Hand: ${game.state.hand.length} cards</div>
-					<div>Draw pile: ${game.state.drawPile.length} cards</div>
-					<div>Discard pile: ${game.state.discardPile.length} cards</div>
-				</section>
+				<details open>
+					<summary>
+						<h3>Cards</h3>
+					</summary>
+					<section>
+						<div>
+							Hand (${game.state.hand.length}):
+							${game.state.hand.map(
+								(card) => html` <span class="card-pill" title=${JSON.stringify(card)}>${card.name}</span> `,
+							)}
+						</div>
+						<div>Draw pile: ${game.state.drawPile.length} cards</div>
+						<div>Discard pile: ${game.state.discardPile.length} cards</div>
+					</section>
+				</details>
 
-				<section>
-					<h3>Queue Information</h3>
-					<div>
-						<div>Future actions: ${game.future.list.length}</div>
-						<pre class="state-pre">
-${JSON.stringify(
-								game.future.list.map((item) => ({
-									type: item?.action?.type || 'unknown',
-								})),
-								null,
-								2,
-							)}</pre
-						>
-
-						<div>Past actions: ${game.past.list.length}</div>
-						<pre class="state-pre">
-${JSON.stringify(
-								game.past.list.map((item) => ({
-									type: item?.action?.type || 'unknown',
-								})),
-								null,
-								2,
-							)}</pre
-						>
+				<details open>
+					<summary>
+						<h3>Monsters</h3>
+					</summary>
+					<section>
+						${
+							monsters.length > 0
+								? monsters.map(
+										(monster, i) => html`
+											<div class="monster">
+												<strong>Enemy ${i}</strong>: HP ${monster.currentHealth}/${monster.maxHealth}
+												${monster.block > 0 ? html`<span>Block: ${monster.block}</span>` : ''}
+												${Object.keys(monster.powers || {}).length > 0
+													? html` <div>Powers: ${JSON.stringify(monster.powers)}</div> `
+													: ''}
+											</div>
+										`,
+									)
+								: html`<div>No monsters in current room</div>`
+						}
 					</div>
-				</section>
+				</details>
+
+				<details>
+					<summary>
+						<h3>Action Queue</h3>
+					</summary>
+					<section>
+						<div>Future actions: ${game.future.list.length}</div>
+						<div>Past actions: ${game.past.list.length}</div>
+					</section>
+				</details>
 
 				<details>
 					<summary>
 						<h3>Full Game State</h3>
 					</summary>
-					<pre class="full-state-pre">${JSON.stringify(game.state, null, 2)}</pre>
+					<section>
+						<pre class="full-state-pre">${JSON.stringify(game.state, null, 2)}</pre>
+					</section>
 				</details>
 			</div>
 		`
 	}
 
-	render(props, state) {
-		const {game, cells} = state
-		if (!game) return html`<div>Loading game...</div>`
-
-		console.log({game, cells})
+	// Render history panel
+	renderHistory() {
+		const {history} = this.state
 
 		return html`
-			<div class="debug-ui">
-				<header class="Box">
-					<p>
-						Explore the game API by writing and running code in cells below. Each cell can enqueue an action
-						and then dequeue it to see the results. Select an action from the dropdown in each cell to
-						generate code with common parameters. Press <kbd>Ctrl+Enter</kbd> to run a cell.
-					</p>
-					<menu>
-						<button class="Button" onClick=${() => this.reset()}>New Game</button>
-						<button class="Button" onClick=${() => game.undo()}>Undo Last Action</button>
-					</menu>
-				</header>
-
-				<main>
-					<article>
-						${cells?.map((cell, i) => this.renderCell(cell, i))}
-						<div class="add-cell-container">
-							<button class="Button" onClick=${() => this.addCell()}>Add Cell</button>
-						</div>
-					</article>
-					<aside>${this.renderGameState()}</aside>
-				</main>
+			<div class="Box history-panel">
+				<h3>Action History</h3>
+				${history.length === 0
+					? html`<div class="empty-history">No actions executed yet</div>`
+					: html`
+							<div class="history-list">
+								${history.map(
+									(item, i) => html`
+										<div class="history-item">
+											<div class="action-name">${item.action}</div>
+											<div class="action-params">${JSON.stringify(item.params)}</div>
+											<div class="action-time">${item.timestamp}</div>
+										</div>
+									`,
+								)}
+							</div>
+							<button class="Button undo-btn" onClick=${() => this.undoAction()}>Undo Last Action</button>
+						`}
 			</div>
-			<style>
-				:root {
-					--bg: hsl(245, 20%, 49%);
-				}
-				.debug-ui {
-					margin: 0 0.5rem;
-				}
-				.debug-ui menu {
-					margin: 0;
-					padding: 0;
-				}
-				.cell-success {
-					border-left: 4px solid #4caf50;
-				}
+		`
+	}
 
-				.cell > header {
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-				}
-				.cell h3,
-				.cell h4,
-				.cell pre {
-					margin: 0;
-				}
-				.cell menu .Button {
-					font-size: 1rem;
-					padding-left: 0.4em;
-					padding-right: 0.4em;
-				}
+	render(props, state) {
+		const {game} = state
 
-				select,
-				textarea,
-				.cell pre,
-				.full-state-pre {
-					background: hsla(0, 0%, 100%, 0.5);
-					padding: 0.4rem;
-					border-radius: 3px;
-					border: 0;
-				}
+		if (!game) return html`<div>Loading game...</div>`
 
-				pre {
-					margin: 0.5rem 0;
-				}
+		// Get all available actions
+		const availableActions = Object.keys(actions)
+			.filter((name) => typeof actions[name] === 'function')
+			.sort()
 
-				.full-state-pre {
-					font-size: 12px;
-					background: hsla(0, 0%, 100%, 0.5);
-					max-height: 400px;
-					overflow: auto;
-				}
-
-				select + textarea {
-					margin-top: 2px;
-				}
-
-				textarea {
-					width: 100%;
-					min-height: 80px;
-					font-family: monospace;
-					font-size: 14px;
-				}
-
-				/* Result panels */
-				.cell > section {
-					padding: 0.5rem;
-					border-radius: 3px;
-				}
-
-				.cell > section.preview {
-					background-color: #f8f9fa;
-				}
-
-				.cell > section.success {
-					background-color: #e8f5e9;
-					border-color: 4px solid #4caf50;
-				}
-
-				.cell > section.error {
-					background-color: #ffebee;
-					border-color: 4px solid #f44336;
-				}
-
-				.cell > section.success h4 {
-					color: #2e7d32;
-				}
-
-				.cell > section.error h4 {
-					color: #c62828;
-				}
-
-				.add-cell-container {
-					text-align: center;
-				}
-
-				main {
-					display: grid;
-					grid-template-columns: 1fr 1fr;
-					gap: 1rem;
-				}
-
-				@media (max-width: 768px) {
-					main {
-						grid-template-columns: 1fr;
+		return html`
+			<div class="debug-console">
+				<style>
+					:root {
+						--bg: var(--purple);
 					}
-				}
-			</style>
+					.debug-console {
+						display: grid;
+						grid-template-columns: 1fr 1fr;
+						gap: 1rem;
+						max-width: 1200px;
+						margin: 0 auto;
+					}
+					.form-group {
+					}
+					label {
+						display: block;
+					}
+					h2,
+					h3,
+					p {
+						font-size: 1rem;
+						margin: 0;
+					}
+					h2 {
+						margin-bottom: 0rem;
+					}
+						details {
+						margin-top: 0.5rem;}
+					summary h3 {
+						display: inline-block;
+						margin: 0;
+					}
+					.card-pill {
+						border-bottom: 1px dotted;
+					}
+					.card-btn.selected {
+						font-weight: bold;
+					}
+					.full-state-pre {
+						max-height: 300px;
+						overflow: auto;
+					}
+				</style>
+
+				<div class="left-panel">
+					<div class="Box">
+						<h2>Debug system</h2>
+						<select onChange=${(e) => this.handleActionSelect(e.target.value)} value=${state.selectedAction}>
+							<option value="">-- Select an action --</option>
+							${availableActions.map((action) => html` <option value=${action}>${action}</option> `)}
+						</select>
+
+						${this.renderParamsForm()}
+					</div>
+
+					${this.renderHistory()}
+
+					<menu>
+						<button onClick=${() => this.reset()}>New Game</button>
+					</<menu>
+				</div>
+
+				<div class="right-panel">${this.renderGameState()}</div>
+			</div>
 		`
 	}
 }
