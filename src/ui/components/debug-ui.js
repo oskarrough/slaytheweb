@@ -2,7 +2,9 @@ import {html, Component} from '../lib.js'
 import createNewGame from '../../game/new-game.js'
 import actions from '../../game/actions.js'
 import {createCard} from '../../game/cards.js'
-import {getRoomTargets} from '../../game/utils-state.js'
+import {getRoomTargets, getCurrRoom} from '../../game/utils-state.js'
+import {Monster} from '../../game/monster.js'
+import {MonsterRoom} from '../../game/rooms.js'
 
 /**
  * Debug Console for Slay the Web
@@ -141,6 +143,122 @@ export default class DebugUI extends Component {
 			console.error('Error undoing action:', error)
 			alert(`Error undoing: ${error.message}`)
 		}
+	}
+
+	// Add a monster to the current room
+	addMonsterToRoom() {
+		const {game} = this.state
+		const hp = Number(document.getElementById('new-monster-hp').value || 40)
+		
+		// Create a basic monster
+		const monster = Monster({
+			currentHealth: hp,
+			maxHealth: hp,
+			intents: [{damage: 6}, {block: 5}]
+		})
+		
+		// Add to current room
+		const room = getCurrRoom(game.state)
+		if (!room.monsters) room.monsters = []
+		room.monsters.push(monster)
+		
+		this.setState({}) // Force refresh
+	}
+
+	// Create a test monster room
+	createTestRoom() {
+		const {game} = this.state
+		
+		// Create a test room with one monster
+		const monster = Monster({
+			currentHealth: 40,
+			maxHealth: 40,
+			intents: [{damage: 6}, {block: 5}]
+		})
+		
+		// Replace current room
+		const {x, y} = game.state.dungeon
+		game.state.dungeon.graph[y][x].room = MonsterRoom(monster)
+		
+		// Reset encounter
+		game.enqueue({type: 'endEncounter'})
+		game.dequeue()
+		
+		this.setState({}) // Force refresh
+	}
+
+	// Render a simple room editor
+	renderRoomEditor() {
+		const {game} = this.state
+		if (!game || !game.state) return null
+		
+		const currentRoom = getCurrRoom(game.state)
+		
+		return html`
+			<div class="Box">
+				<h2>Room Editor</h2>
+				
+				<details>
+					<summary>Current Room Data</summary>
+					<pre>${JSON.stringify(currentRoom, null, 2)}</pre>
+				</details>
+				
+				<div class="monster-controls">
+					<h3>Add Monster</h3>
+					<div class="form-group">
+						<label>HP</label>
+						<input type="number" value="40" id="new-monster-hp" />
+						<button class="Button" onClick=${() => this.addMonsterToRoom()}>Add Monster</button>
+					</div>
+				</div>
+				
+				<h3>Current Monsters</h3>
+				${currentRoom.monsters?.map((monster, i) => html`
+					<div class="monster-editor">
+						<h4>Enemy ${i}</h4>
+						<div>HP: ${monster.currentHealth}/${monster.maxHealth}</div>
+						<div class="form-group">
+							<label>Set HP:</label>
+							<input type="number" id="set-hp-${i}" value="10" />
+							<button class="Button" onClick=${() => {
+								const value = Number(document.getElementById(`set-hp-${i}`).value)
+								game.enqueue({type: 'setHealth', target: `enemy${i}`, amount: value})
+								game.dequeue()
+								this.setState({}) // Force refresh
+							}}>Set</button>
+						</div>
+						<div class="form-group">
+							<label>Add HP:</label>
+							<input type="number" id="add-hp-${i}" value="5" />
+							<button class="Button" onClick=${() => {
+								const value = Number(document.getElementById(`add-hp-${i}`).value)
+								game.enqueue({type: 'addHealth', target: `enemy${i}`, amount: value})
+								game.dequeue()
+								this.setState({}) // Force refresh
+							}}>Add</button>
+						</div>
+						<div class="form-group">
+							<label>Apply Power:</label>
+							<select id="power-type-${i}">
+								<option value="weak">Weak</option>
+								<option value="vulnerable">Vulnerable</option>
+								<option value="strength">Strength</option>
+							</select>
+							<input type="number" id="power-amount-${i}" value="1" />
+							<button class="Button" onClick=${() => {
+								const power = document.getElementById(`power-type-${i}`).value
+								const amount = Number(document.getElementById(`power-amount-${i}`).value)
+								game.enqueue({type: 'setPower', target: `enemy${i}`, power, amount})
+								game.dequeue()
+								this.setState({}) // Force refresh
+							}}>Apply</button>
+						</div>
+					</div>
+				`)}
+				
+				<button class="Button" onClick=${() => this.createTestRoom()}>Create Test Room</button>
+			</div>
+		`
 	}
 
 	// Render parameters form based on selected action
@@ -387,6 +505,7 @@ export default class DebugUI extends Component {
 						margin: 0 auto;
 					}
 					.form-group {
+						margin-bottom: 0.5rem;
 					}
 					label {
 						display: block;
@@ -416,6 +535,17 @@ export default class DebugUI extends Component {
 						max-height: 300px;
 						overflow: auto;
 					}
+					.monster-editor {
+						border: 1px solid #ccc;
+						padding: 0.5rem;
+						margin-bottom: 0.5rem;
+					}
+					.Box {
+						margin-bottom: 1rem;
+					}
+					.Button {
+						margin-right: 0.25rem;
+					}
 				</style>
 
 				<div class="left-panel">
@@ -429,6 +559,8 @@ export default class DebugUI extends Component {
 						${this.renderParamsForm()}
 					</div>
 
+					${this.renderRoomEditor()}
+					
 					${this.renderHistory()}
 
 					<menu>
