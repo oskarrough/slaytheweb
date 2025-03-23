@@ -15,6 +15,16 @@
 	gap: 0.5rem;
 }
 .Cards--mini {
+	--card-height: 13rem;
+	/* --card-width: 13rem; */
+	/* --column-width: var(--card-width); */
+	/* display: grid; */
+	/* gap: 0; */
+	/* grid-template-columns: repeat(auto-fill, minmax(min(var(--column-width), 100%), 1fr)); */
+
+	.Card-media img {
+		height: 50px;
+	}
 }
 .Cards--withUpgrades {
 	> div {
@@ -41,7 +51,6 @@
 		}
 	}
 }
-
 
 .Card {
 	position: relative;
@@ -110,6 +119,7 @@
 	padding-right: 0.2em;
 	min-height: 2.5em;
 	margin: 0;
+	line-height: 1.2;
 }
 .Card-energy {
 	position: absolute;
