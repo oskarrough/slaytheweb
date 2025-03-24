@@ -45,6 +45,20 @@ The `src/game` folder contains the actual game logic.
 The `src/ui` folder is the website UI where you can actually play the game.  
 The `src/content` folder builds content for the game.
 
+### Coding style
+
+- JavaScript (ES modules)
+- JSDoc for documentation 
+- No semicolons, single quotes, tabs 
+- Error handling: Use try/catch sparingly; prefer validation and early returns
+
+## Architecture
+- `src/game/` - Core game logic
+- `src/content/` - Game content definition (cards, encounters)
+- `src/ui/` - Frontend components and UI logic
+- Use Preact/HTM for components, Immer for immutable state updates
+
+
 ## How to release a new version (aka deploy)
 
 Every commit to the  `main` branch automatically deploys to https://slaytheweb.cards via the Vercel service.  
