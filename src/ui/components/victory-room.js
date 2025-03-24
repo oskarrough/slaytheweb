@@ -36,7 +36,7 @@ const victoryRoomIntroTexts = [
 	"Victory's sweet, but a new card? Sweeter.",
 	'Monster down, morale up.',
 	"Ah, the smell of defeat! Now, how 'bout we celebrate with some fresh cardboard?",
-	'Sure, you could skip the rewards. You could also go to a restaurant and just eat bread.',
+	'Sure, you could skip the rewards. As you please.',
 	"You've slain, now you gain. What's it gonna be, hero?",
 	"Ah, victory! Don't linger too long; those cards won't pick themselves.",
 	'Where the cards are your oyster',
