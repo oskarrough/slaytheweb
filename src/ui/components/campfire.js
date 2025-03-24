@@ -49,7 +49,7 @@ export default class CampfireRoom extends Component {
 					<p center>${label}</p>
 					<${CardChooser}
 						gameState=${gameState}
-						cards=${gameState.deck}
+						cards=${gameState.deck.filter(card => !card.upgraded)}
 						didSelectCard=${(card) => this.onSelectCard(card)}
 					/>`}
 				<p center>
