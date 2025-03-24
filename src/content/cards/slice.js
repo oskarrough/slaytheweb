@@ -1,11 +1,12 @@
+// Succube.js
 export default {
-	name: 'Strike',
+	name: 'Slice',
 	type: 'attack',
-	energy: 1,
-	target: 'enemy',
+	energy: 0,
 	damage: 6,
+	target: 'enemy',
 	description: 'Deal 6 damage.',
-	image: 'sword.png',
+	image: 'manicule.jpg',
 }
 
 export const upgrade = (card) => {

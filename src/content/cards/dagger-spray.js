@@ -1,15 +1,15 @@
 export default {
-	name: 'Cleave',
+	name: 'Dagger Spray',
 	type: 'attack',
 	energy: 1,
 	damage: 8,
 	target: 'allEnemies',
-	description: 'Deal 8 damage to all enemies.',
+	description: 'Deal 4 damage to all enemies, TWICE.',
 	image: 'vernal-equinox.jpg',
 }
 
 export const upgrade = (card) => ({
 	...card,
-	damage: 11,
-	description: 'Deal 11 damage to all enemies.',
+	damage: 12,
+	description: 'Deal 6 damage to all enemies, TWICE.',
 })

@@ -96,19 +96,9 @@ function setDungeon(state, dungeon) {
  * @param {State} state
  * @returns {State} .
  */
+
 function addStarterDeck(state) {
-	const deck = [
-		createCard('Defend'),
-		createCard('Defend'),
-		createCard('Defend'),
-		createCard('Defend'),
-		createCard('Strike'),
-		createCard('Strike'),
-		createCard('Strike'),
-		createCard('Strike'),
-		createCard('Strike'),
-		createCard('Bash'),
-	]
+	const deck = [createCard('Strike')]
 	return produce(state, (draft) => {
 		draft.deck = deck
 		draft.drawPile = shuffle(deck)
@@ -404,7 +394,6 @@ function decreasePlayerPowerStacks(state) {
 		_decreasePowers(draft.player.powers)
 	})
 }
-
 /**
  * Decrease monster's power stacks.
  * @type {ActionFn<{}>}
@@ -501,14 +490,6 @@ function takeMonsterTurn(state, monsterIndex) {
 		monster.block = 0
 		// If dead don't do anything..
 		if (monster.currentHealth < 1) return
-
-		/**
-				if (monster.powers.poison)
-		{
-			state = removeHealth(state, {monster, powers.poison.use(monster.powers.poison)})
-			--hurt monster?!
-		}
-		 */
 
 		// Get current intent.
 		const intent = monster.intents[monster.nextIntent || 0]
@@ -626,6 +607,38 @@ function dealDamageEqualToWeak(state, {target}) {
  * Sets a single power on a specific target
  * @type {ActionFn<{target: CardTargets, power: string, amount: number}>}
  */
+function dealDamageEqualToBlue(state, {target}) {
+	return produce(state, (draft) => {
+		getRoomTargets(draft, target).forEach((t) => {
+			if (t.powers.blue) {
+				const amount = t.currentHealth - t.powers.blue
+				t.currentHealth = amount
+			}
+		})
+		return draft
+	})
+}
+
+/**
+ * Deals damage to "target" equal to the amount of blue on the target.
+ * @type {ActionFn<{target: CardTargets}>}
+ */
+function dealDamageEqualToRed(state, {target}) {
+	return produce(state, (draft) => {
+		getRoomTargets(draft, target).forEach((t) => {
+			if (t.powers.red) {
+				const amount = t.currentHealth - t.powers.red
+				t.currentHealth = amount
+			}
+		})
+		return draft
+	})
+}
+
+/**
+ * Deals damage to "target" equal to the amount of red on the target.
+ * @type {ActionFn<{target: CardTargets}>}
+ */
 function setPower(state, {target, power, amount}) {
 	return produce(state, (draft) => {
 		getRoomTargets(draft, target).forEach((target) => {
@@ -664,6 +677,14 @@ function iddqd(state) {
 	})
 }
 
+function setDeck(state, {cardNames}) {
+	const deck = cardNames.map((name) => createCard(name))
+	return produce(state, (draft) => {
+		draft.deck = deck
+		draft.drawPile = shuffle(deck)
+	})
+}
+
 const allActions = {
 	addCardToDeck,
 	addCardToHand,
@@ -676,6 +697,8 @@ const allActions = {
 	dealDamageEqualToBlock,
 	dealDamageEqualToVulnerable,
 	dealDamageEqualToWeak,
+	dealDamageEqualToBlue,
+	dealDamageEqualToRed,
 	discardCard,
 	discardHand,
 	drawCards,
@@ -687,6 +710,7 @@ const allActions = {
 	removeCard,
 	removeHealth,
 	removePlayerDebuffs,
+	setDeck,
 	setDungeon,
 	setHealth,
 	setPower,

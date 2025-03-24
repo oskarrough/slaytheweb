@@ -5,6 +5,8 @@ import {
 	regen as regenPower,
 	poison as poisonPower,
 	strength as strengthPower,
+	red as redPower,
+	blue as bluePower,
 } from '../../game/powers.js'
 
 /**
@@ -113,6 +115,8 @@ const Powers = (props) => {
 			<${Power} amount=${props.powers.weak} power=${weakPower} />
 			<${Power} amount=${props.powers.strength} power=${strengthPower} />
 			<${Power} amount=${props.powers.poison} power=${poisonPower} />
+			<${Power} amount=${props.powers.red} power=${redPower} />
+			<${Power} amount=${props.powers.blue} power=${bluePower} />
 		</div>
 	`
 }

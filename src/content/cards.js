@@ -1,26 +1,32 @@
 // List of filenames from /src/content/cards/*.js
 const cardIndex = [
+	'acrobatics',
 	'adrenaline',
-	'bash',
+	'backflip',
+	'backstab',
+	'bandage',
 	'bludgeon',
 	'body-slam',
+	'bulwark',
 	'clash',
-	'cleave',
+	'dagger-spray',
+	'dash',
 	'defend',
+	'deflect',
+	'die_die_die',
 	'flourish',
 	'intimidate',
 	'iron-wave',
 	'mask-of-the-faceless',
-	'pommel-strike',
-	'ritual-rain',
+	'neutralize',
+	'quick-slash',
+	'shiv',
+	'slice',
 	'soul-drain',
 	'strike',
-	'succube',
 	'sucker-punch',
-	'summer-of-sam',
+	'survivor',
 	'terror',
-	'thunderclap',
-	'voodoo-gift',
 ]
 
 /**
@@ -43,6 +49,7 @@ export const cardUpgrades = {}
 
 // Fill out the cards and upgrades maps.
 for (const fileName of cardIndex) {
+	// @ts-ignore
 	const module = await import(`./cards/${fileName}.js`)
 	cards.push(module.default)
 	cardUpgrades[module.default.name] = module.upgrade

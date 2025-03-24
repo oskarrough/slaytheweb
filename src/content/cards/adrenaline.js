@@ -4,23 +4,23 @@ export default {
 	energy: 0,
 	damage: 0,
 	target: 'player',
+	exhaust: true,
 	actions: [
-		{
-			type: 'drawCards',
-			parameter: {
-				amount: 2,
-			},
-		},
 		{
 			type: 'addEnergyToPlayer',
 			parameter: {
 				amount: 1,
 			},
 		},
+		{
+			type: 'drawCards',
+			parameter: {
+				amount: 2,
+			},
+		},
 	],
-	description: 'Gain 1 Energy. Draw 2 cards. Exhaust.',
+	description: 'Gain 2 Energy. Draw 2 cards. Exhaust',
 	image: 'serpentine-dancer.jpg',
-	exhaust: true,
 }
 
 export const upgrade = (card) => {
@@ -28,6 +28,7 @@ export const upgrade = (card) => {
 	a.parameter.amount = 2
 	return {
 		...card,
-		description: 'Gain 2 Energy. Draw 2 cards. Exhaust.',
+		block: 10,
+		description: 'Gain 2 Energy. Draw 2 cards. Gain 10 block. Exhaust',
 	}
 }
