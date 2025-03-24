@@ -1,17 +1,17 @@
 export default {
-	name: 'Defend',
+	name: 'Bulwark',
 	type: 'skill',
-	energy: 1,
+	energy: 2,
 	target: 'player',
-	block: 5,
-	description: 'Gain 5 Block.',
+	block: 16,
+	description: 'Gain 16 Block.',
 	image: 'shield.png',
 }
 
 export const upgrade = (card) => {
 	return {
 		...card,
-		block: 8,
-		description: 'Gain 8 Block.',
+		block: 20,
+		description: 'Gain 20 Block.',
 	}
 }

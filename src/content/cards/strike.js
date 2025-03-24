@@ -5,7 +5,7 @@ export default {
 	target: 'enemy',
 	damage: 6,
 	description: 'Deal 6 damage.',
-	image: 'the-angel-of-death.jpg',
+	image: 'sword.png',
 }
 
 export const upgrade = (card) => {

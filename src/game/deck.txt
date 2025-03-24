@@ -1,11 +1,24 @@
+Silent
 createCard('Defend'),
 createCard('Defend'),
 createCard('Defend'),
 createCard('Defend'),
-createCard('Strike'),
 createCard('Strike'),
 createCard('Strike'),
 createCard('Strike'),
 createCard('Strike'),
 createCard('Neutralize'),
 createCard('Survivor'),
+
+Color
+createCard('Color Clash'),
+createCard('Color Spray'),
+createCard('Red Strike'),
+createCard('Red Strike'),
+createCard('Red Defend'),
+createCard('Red Defend'),
+createCard('Blue Strike'),
+createCard('Blue Strike'),
+createCard('Blue Defend'),
+createCard('Blue Defend'),
+

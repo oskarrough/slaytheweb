@@ -5,7 +5,7 @@ export default {
 	block: 5,
 	target: 'enemy',
 	description: 'Gain 5 block. Apply 3 red.',
-	image: '2.jpg',
+	image: 'shielda.png',
 	powers: {
 		red: 3,
 	},

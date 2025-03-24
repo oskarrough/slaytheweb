@@ -96,18 +96,9 @@ function setDungeon(state, dungeon) {
  * @param {State} state
  * @returns {State} .
  */
+
 function addStarterDeck(state) {
 	const deck = [
-		createCard('Color Clash'),
-		createCard('Color Spray'),
-		createCard('Red Strike'),
-		createCard('Red Strike'),
-		createCard('Red Defend'),
-		createCard('Red Defend'),
-		createCard('Blue Strike'),
-		createCard('Blue Strike'),
-		createCard('Blue Defend'),
-		createCard('Blue Defend'),
 	]
 	return produce(state, (draft) => {
 		draft.deck = deck
@@ -404,7 +395,6 @@ function decreasePlayerPowerStacks(state) {
 		_decreasePowers(draft.player.powers)
 	})
 }
-
 /**
  * Decrease monster's power stacks.
  * @type {ActionFn<{}>}
@@ -501,14 +491,6 @@ function takeMonsterTurn(state, monsterIndex) {
 		monster.block = 0
 		// If dead don't do anything..
 		if (monster.currentHealth < 1) return
-
-		/**
-				if (monster.powers.poison)
-		{
-			state = removeHealth(state, {monster, powers.poison.use(monster.powers.poison)})
-			--hurt monster?!
-		}
-		 */
 
 		// Get current intent.
 		const intent = monster.intents[monster.nextIntent || 0]

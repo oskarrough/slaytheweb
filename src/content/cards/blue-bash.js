@@ -1,25 +1,20 @@
 export default {
-	name: 'Color Clash',
+	name: 'Blue Bash',
 	type: 'attack',
 	energy: 1,
 	target: 'enemy',
-	description: 'Deal damage equal to red and blue plus three.',
+	description: 'Apply 5 blue, deal that much damage.',
 	image: 'clasha.png',
-	damage: 3,
+	damage: 0,
+    powers: {
+		blue: 5,
+	},
 	actions: [
-		{
-			type: 'dealDamageEqualToRed',
-		},
+
 		{
 			type: 'dealDamageEqualToBlue',
 		},
-		{
-			type: 'setPower',
-			parameter: {
-				power: 'red',
-				amount: 0,
-			},
-		},
+
 		{
 			type: 'setPower',
 			parameter: {
@@ -33,9 +28,6 @@ export default {
 export const upgrade = (card) => {
 	// remove the "reset of monster power"
 	card.actions = [
-		{
-			type: 'dealDamageEqualToRed',
-		},
 		{
 			type: 'dealDamageEqualToBlue',
 		},

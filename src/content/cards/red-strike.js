@@ -5,7 +5,7 @@ export default {
 	damage: 5,
 	target: 'enemy',
 	description: 'Deal 5 Damage. Apply 3 red.',
-	image: '2.jpg',
+	image: 'sworda.png',
 	powers: {
 		red: 3,
 	},

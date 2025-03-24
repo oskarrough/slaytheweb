@@ -1,29 +1,24 @@
 export default {
-	name: 'Color Clash',
+	name: 'Red Bash',
 	type: 'attack',
 	energy: 1,
 	target: 'enemy',
-	description: 'Deal damage equal to red and blue plus three.',
+	description: 'Apply 5 red, deal that much damage.',
 	image: 'clasha.png',
-	damage: 3,
+	damage: 0,
+    powers: {
+		red: 5,
+	},
 	actions: [
+
 		{
 			type: 'dealDamageEqualToRed',
 		},
-		{
-			type: 'dealDamageEqualToBlue',
-		},
+
 		{
 			type: 'setPower',
 			parameter: {
 				power: 'red',
-				amount: 0,
-			},
-		},
-		{
-			type: 'setPower',
-			parameter: {
-				power: 'blue',
 				amount: 0,
 			},
 		},
@@ -35,9 +30,6 @@ export const upgrade = (card) => {
 	card.actions = [
 		{
 			type: 'dealDamageEqualToRed',
-		},
-		{
-			type: 'dealDamageEqualToBlue',
 		},
 	]
 	return {

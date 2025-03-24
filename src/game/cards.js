@@ -144,7 +144,7 @@ export function getRandomCards(list, amount) {
  */
 export function getCardRewards(amount = 3) {
 	// Remove boring cards from rewards.
-	const niceCards = cards.filter((card) => card.name !== 'Strike').filter((card) => card.name !== 'Defend')
+	const niceCards = cards.filter((card) => card.name !== 'Strike').filter((card) => card.name !== 'Defend').filter((card) => card.name !== 'Shiv')
 	// List of random card rewards.
 	const rewards = []
 	while (rewards.length < amount) {

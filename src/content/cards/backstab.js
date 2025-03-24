@@ -5,7 +5,7 @@ export default {
 	type: 'attack',
 	target: 'enemy',
 	description: 'Deal 11 damage, exhaust.',
-	image: 'fallback.jpg',
+	image: 'backstab.png',
 	exhaust: true,
 }
 

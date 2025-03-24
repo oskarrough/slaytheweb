@@ -2,12 +2,12 @@
 
 export default {
 	name: 'Deadly Poison',
-	type: 'attack',
+	type: 'skill',
 	energy: 1,
 	damage: 0,
-	target: 'enemy',
+	target: 'player',
 	powers: {
-		poison: 5,
+		strength: 5,
 	},
 	description: 'Apply 5 poison.',
 	image: '6.jpg',
