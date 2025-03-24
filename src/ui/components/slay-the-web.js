@@ -22,7 +22,10 @@ export default class SlayTheWeb extends Component {
 		const urlParams = new URLSearchParams(window.location.search)
 		const initialGameMode = urlParams.has('debug') ? GameModes.gameplay : GameModes.splash
 
-		this.state = {gameMode: initialGameMode}
+		this.state = {
+			gameMode: initialGameMode,
+			selectedDeck: null, // Stores the player's deck choice from the deck selection screen
+		}
 
 		this.handleNewGame = this.handleNewGame.bind(this)
 		this.handleContinue = this.handleContinue.bind(this)
@@ -30,9 +33,12 @@ export default class SlayTheWeb extends Component {
 		this.handleLoose = this.handleLoose.bind(this)
 	}
 
-	async handleNewGame() {
+	handleNewGame(selectedDeck) {
 		// await initSounds()
-		this.setState({gameMode: GameModes.gameplay})
+		this.setState({
+			gameMode: GameModes.gameplay,
+			selectedDeck,
+		})
 		// Clear any previous saved game.
 		window.history.pushState('', document.title, window.location.pathname)
 	}
@@ -50,15 +56,17 @@ export default class SlayTheWeb extends Component {
 	}
 
 	render() {
-		const {gameMode} = this.state
+		const {gameMode, selectedDeck} = this.state
 		if (gameMode === GameModes.splash) {
-			return html`<${SplashScreen} onNewGame=${this.handleNewGame} onContinue=${this.handleContinue} />`
+			return html` <${SplashScreen} onNewGame=${this.handleNewGame} onContinue=${this.handleContinue} /> `
 		}
 		if (gameMode === GameModes.gameplay) {
-			return html`<${GameScreen} onWin=${this.handleWin} onLoose=${this.handleLoose} /> `
+			return html`
+				<${GameScreen} selectedDeck=${selectedDeck} onWin=${this.handleWin} onLoose=${this.handleLoose} />
+			`
 		}
 		if (gameMode === GameModes.win) {
-			return html`<${WinScreen} onNewGame=${this.handleNewGame} /> `
+			return html`<${WinScreen} onNewGame=${this.handleNewGame} />`
 		}
 	}
 }

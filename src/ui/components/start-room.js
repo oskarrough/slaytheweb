@@ -1,5 +1,5 @@
 import {html, Component} from '../lib.js'
-import { DeckChooser } from './deck-chooser.js'
+import {DeckChooser} from './deck-chooser.js'
 
 export default class StartRoom extends Component {
 	render() {
@@ -21,4 +21,3 @@ export default class StartRoom extends Component {
 		`
 	}
 }
-

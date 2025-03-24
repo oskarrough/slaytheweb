@@ -98,8 +98,7 @@ function setDungeon(state, dungeon) {
  */
 
 function addStarterDeck(state) {
-	const deck = [
-	]
+	const deck = [createCard('Strike')]
 	return produce(state, (draft) => {
 		draft.deck = deck
 		draft.drawPile = shuffle(deck)
@@ -678,6 +677,14 @@ function iddqd(state) {
 	})
 }
 
+function setDeck(state, {cardNames}) {
+	const deck = cardNames.map((name) => createCard(name))
+	return produce(state, (draft) => {
+		draft.deck = deck
+		draft.drawPile = shuffle(deck)
+	})
+}
+
 const allActions = {
 	addCardToDeck,
 	addCardToHand,
@@ -703,6 +710,7 @@ const allActions = {
 	removeCard,
 	removeHealth,
 	removePlayerDebuffs,
+	setDeck,
 	setDungeon,
 	setHealth,
 	setPower,

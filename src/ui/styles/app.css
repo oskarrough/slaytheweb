@@ -5,8 +5,6 @@
 }
 
 html {
-	color: var(--text);
-	cursor: url(/images/cursors/default.png), auto;
 	min-height: 100%;
 	background-color: var(--bg);
 	background-attachment: fixed;
@@ -14,6 +12,7 @@ html {
 	background-size: cover;
 	background-repeat: no-repeat;
 	color: var(--text);
+	cursor: url(/images/cursors/default.png), auto;
 }
 
 body {
@@ -394,6 +393,7 @@ h2 {
 
 .Box--full {
 	max-width: 60rem;
+	width: 100%;
 }
 
 .Box h2,
@@ -414,13 +414,16 @@ h2 {
 	list-style: none;
 	padding: 0;
 }
-.Options > li {
-	text-align: center;
-}
 .Options .Button,
 .Options button {
-	display: block;
+	display: flex;
+	justify-content: center;
 	width: 100%;
+}
+
+.Options--horizontal {
+	flex-flow: row nowrap;
+	gap: 0.2rem;
 }
 
 /* Rewards */
@@ -480,3 +483,42 @@ h2 {
 	font-size: 1rem;
 }
 /* .driver-popover .driver-popover-footer button { } */
+
+/* Deck Chooser styles */
+.DeckTeaser {
+	flex-direction: column;
+	place-items: center;
+	place-content: center;
+	text-align: center;
+	align-items: center;
+	padding: 1rem;
+	min-width: 6em;
+	position: relative;
+}
+
+.DeckTeaser--selected {
+	background: var(--lightblue);
+	/* background: color-mix(in oklab, var(--lightblue), white 20%); */
+}
+
+.DeckTeaser-badge {
+	position: absolute;
+	top: -5px;
+	right: -5px;
+	background: var(--highlight);
+	color: black;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.8rem;
+	font-weight: bold;
+}
+
+.DeckChooser-count {
+	font-size: 0.8rem;
+	opacity: 0.8;
+	margin-top: 0.25rem;
+}
