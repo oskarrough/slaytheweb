@@ -326,6 +326,16 @@ export const MapNodeTypes = {
 	boss: '🌋',
 }
 
+export function nodeTypeToName(nodeType) {
+	return {
+		start: 'Start room',
+		C: 'Campfire',
+		M: 'Monster',
+		E: 'Elite monster',
+		boss: 'Boss',
+	}[nodeType]
+}
+
 /**
  * A node in the dungeon map graph
  * @param {MapNodeTypes} [type] - a string key to represent the type of room

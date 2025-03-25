@@ -1,7 +1,7 @@
 import {Component, html} from '../lib.js'
 import {debounce, random as randomBetween} from '../../utils.js'
 import {isRoomCompleted} from '../../game/utils-state.js'
-import {emojiFromNodeType, generatePaths} from '../../game/dungeon.js'
+import {emojiFromNodeType, nodeTypeToName, generatePaths} from '../../game/dungeon.js'
 
 /**
  * Renders a map of the dungeon.
@@ -175,6 +175,7 @@ export class SlayMap extends Component {
 									can-visit=${Boolean(canVisit)}
 									did-visit=${node.didVisit}
 									onClick=${() => this.nodeSelect({x: nodeIndex, y: rowIndex})}
+									title=${nodeTypeToName(node.type)}
 								>
 									<span>${emojiFromNodeType(node.type)}</span>
 								</slay-map-node>`
