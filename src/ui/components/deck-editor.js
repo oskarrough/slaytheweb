@@ -85,6 +85,9 @@ export function DeckEditor({deck, onSaveDeck, onDeleteDeck}) {
 	return html`
 		<div class="Split">
 			<div class="Box">
+				<${AvailableCards} onAdd=${(cardName) => setSelectedCards([...selectedCards, cardName])} />
+			</div>
+			<div class="Box">
 				<${DeckForm}
 					deckName=${deckName}
 					onNameChange=${setDeckName}
@@ -100,9 +103,6 @@ export function DeckEditor({deck, onSaveDeck, onDeleteDeck}) {
 						setSelectedCards(newDeck)
 					}}
 				/>
-			</div>
-			<div class="Box">
-				<${AvailableCards} onAdd=${(cardName) => setSelectedCards([...selectedCards, cardName])} />
 			</div>
 		</div>
 	`
