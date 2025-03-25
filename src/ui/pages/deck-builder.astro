@@ -1,0 +1,18 @@
+---
+import Layout from '../layouts/Layout.astro'
+import '../styles/index.css'
+---
+
+<Layout title="Deck Editor">
+  <div class="Container">
+		<p><a class="Button" href="/">&larr; Menu</a></p>
+	</div>
+
+	<div id="deck-editor-app"></div>
+
+	<script>
+		import { DeckEditorApp } from "../components/deck-editor-app"
+		import {render, html} from '../lib.js'
+		render(html`<${DeckEditorApp} />`, document.getElementById('deck-editor-app'))
+	</script>
+</Layout>

@@ -28,8 +28,8 @@ export default function Menu({game, gameState, onUndo}) {
 	return html`
 		<div class="Container">
 			<h1 center>Slay the Web</h1>
-			<br/>
-			<br/>
+			<br />
+			<br />
 			<div class="Box">
 				<ul class="Options">
 					<li>
@@ -43,7 +43,9 @@ export default function Menu({game, gameState, onUndo}) {
 					<li>
 						<button onClick=${() => abandonGame()}>Abandon Game</button>
 					</li>
-					<li><label>Sound <input type="checkbox" checked=${!muted} onClick=${() => toggleSound()}/></label></li>
+					<li>
+						<label>Sound <input type="checkbox" checked=${!muted} onClick=${() => toggleSound()} /></label>
+					</li>
 				</ul>
 			</div>
 

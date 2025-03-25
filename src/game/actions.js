@@ -664,6 +664,18 @@ function iddqd(state) {
 	})
 }
 
+/**
+ * Sets a custom deck of cards based on an array of card names.
+ * @type {ActionFn<{cardNames: string[]}>}
+ */
+function setDeck(state, {cardNames}) {
+	const deck = cardNames.map((name) => createCard(name))
+	return produce(state, (draft) => {
+		draft.deck = deck
+		draft.drawPile = shuffle(deck)
+	})
+}
+
 const allActions = {
 	addCardToDeck,
 	addCardToHand,
@@ -687,6 +699,7 @@ const allActions = {
 	removeCard,
 	removeHealth,
 	removePlayerDebuffs,
+	setDeck,
 	setDungeon,
 	setHealth,
 	setPower,
