@@ -4,7 +4,7 @@ import actions from '../src/game/actions.js'
 import {createCard, CardTargets} from '../src/game/cards.js'
 import {MonsterRoom} from '../src/game/rooms.js'
 import {Monster} from '../src/game/monster.js'
-import {createTestDungeon} from '../src/content/dungeon-encounters.js'
+import {createTestDungeon} from '../src/content/dungeons.js'
 import {getRoomTargets, getCurrRoom, isCurrRoomCompleted} from '../src/game/utils-state.js'
 import {canPlay} from '../src/game/conditions.js'
 

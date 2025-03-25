@@ -1,37 +1,8 @@
-import Dungeon from '../game/dungeon.js'
-import {MonsterRoom} from '../game/rooms.js'
 import {Monster} from '../game/monster.js'
+import {MonsterRoom} from '../game/rooms.js'
 import {random} from '../utils.js'
 
-// A dungeon encounter is the combination of a Room and Monster(s).
-
-// Hello. With the imported functions above you can create a dungeon with different rooms and monsters.
-// Should be able to support even more monsters (4-5)
-
-// This is the efault dungeon currently used.
-export const dungeonWithMap = () => {
-	return Dungeon({
-		width: 6,
-		height: 10,
-		minRooms: 3,
-		maxRooms: 4,
-		customPaths: '0235',
-	})
-}
-
-// This is the dungeon used in tests. Don't change it without running tests.
-export const createTestDungeon = () => {
-	const dungeon = Dungeon({width: 1, height: 3})
-	// The tests rely on the first room having a single monster, second room two monsters.
-	const intents = [{block: 7}, {damage: 10}, {damage: 8}, {}, {damage: 14}]
-	dungeon.graph[1][0].room = MonsterRoom(Monster({hp: 42, intents}))
-	dungeon.graph[2][0].room = MonsterRoom(Monster({hp: 24, intents}), Monster({hp: 13, intents}))
-	dungeon.graph[3][0].room = MonsterRoom(Monster({hp: 42, intents}))
-	return dungeon
-}
-
-// Here are some different monsters we use in the game.
-// should be changed to have monster files, to make adding/editing them easier
+// Groups of monster rooms of varying difficulty. Technically elites and bosses are just stronger monsters.
 export const easyMonsters = {}
 export const monsters = {}
 export const elites = {}
@@ -56,6 +27,7 @@ easyMonsters['Easy does it x2'] = MonsterRoom(
 		random: 1,
 	}),
 )
+
 monsters['RNG does it'] = MonsterRoom(
 	Monster({
 		hp: random(18, 20),
@@ -70,7 +42,6 @@ monsters['Easy one'] = MonsterRoom(
 		random: 2,
 	}),
 )
-
 //not perfect copy of base game monster, but pretty close
 //needs to gain strength (add to the 6 block)
 monsters['jaw worm'] = MonsterRoom(
@@ -108,12 +79,6 @@ monsters['Tiny Trio'] = MonsterRoom(
 	Monster({hp: random(12, 15), random: 2, intents: [{damage: 6}]}),
 	Monster({hp: random(10, 16), random: 3, intents: [{damage: 6}]}),
 )
-elites['monster7'] = MonsterRoom(
-	Monster({
-		hp: 46,
-		intents: [{damage: 12}, {block: 6, damage: 11}, {block: 5, damage: 16}, {}, {block: 6}],
-	}),
-)
 monsters['monster10'] = MonsterRoom(
 	Monster({
 		hp: 28,
@@ -121,6 +86,12 @@ monsters['monster10'] = MonsterRoom(
 	}),
 )
 
+elites['monster7'] = MonsterRoom(
+	Monster({
+		hp: 46,
+		intents: [{damage: 12}, {block: 6, damage: 11}, {block: 5, damage: 16}, {}, {block: 6}],
+	}),
+)
 elites['monster9'] = MonsterRoom(
 	Monster({
 		hp: 60,

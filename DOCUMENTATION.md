@@ -82,7 +82,7 @@ Every card must define two exports:
 - default: the card
 - upgrade: upgrade(card) => card
 
-#### dungeon-encounters.js
+#### dungeons.js
 
 Contains different monsters, room and dungeons. All created with methods from the game.
 

@@ -1,6 +1,6 @@
 // @ts-ignore
 import test from 'ava'
-import {createTestDungeon} from '../src/content/dungeon-encounters.js'
+import {createTestDungeon} from '../src/content/dungeons.js'
 import actions from '../src/game/actions.js'
 import Dungeon from '../src/game/dungeon.js'
 import {MonsterRoom} from '../src/game/rooms.js'
