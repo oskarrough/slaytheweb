@@ -378,9 +378,17 @@ h2 {
 
 /* Used in the main menu */
 .LastRun {
-	background: var(--yellow);
-	padding: 1px 3px;
-	font-size: small;
+	position: absolute;
+	bottom: 0px;
+	right: 3px;
+	/* background: var(--yellow); */
+	/* padding: 1px 3px; */
+	font-size: x-small;
+	text-decoration: none;
+}
+
+.Button:has(.LastRun) {
+	position: relative;
 }
 
 .Box input[type='text'] {

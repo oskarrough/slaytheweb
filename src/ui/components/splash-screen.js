@@ -42,7 +42,7 @@ export default class SplashScreen extends Component {
 
 	render(props, state) {
 		const run = state.runs[0]
-		
+
 		if (state.selectingDeck) {
 			return html`
 				<article class="Splash Container">
@@ -58,7 +58,7 @@ export default class SplashScreen extends Component {
 				</article>
 			`
 		}
-		
+
 		return html`
 			<article class="Splash Container">
 				<header class="Header">
@@ -76,20 +76,22 @@ export default class SplashScreen extends Component {
 							: html`
 									<li><button autofocus onClick=${this.props.onNewGame}>Play</button></li>
 									<li><button onClick=${this.startDeckSelection}>Custom Game</button></li>
+									<li><hr/></li>
 									<li><a class="Button" href="/?debug&tutorial">Tutorial</a></li>
 									<li><a class="Button" href="/deck-builder">Deck Builder</a></li>
 								`}
 						<li><a class="Button" href="/collection">Collection</a></li>
 						<li>
-							<a class="Button" href="/stats">Highscores</a>
-							${this.state.runs.length > 0
-								? html` <a class="LastRun" href=${`/stats/run?id=${run.id}`}>
-										Someone ${run.won ? 'won' : 'lost'} ${timeSince(run.createdAt)}
-									</a>`
-								: ''}
+							<a class="Button" href="/stats">Highscores
+								${this.state.runs.length > 0
+									&& html` <a class="LastRun" href=${`/stats/run?id=${run.id}`}>
+											Someone ${run.won ? 'won' : 'lost'} ${timeSince(run.createdAt)}
+										</a>` }
+							</a>
 						</li>
+						<li><a class="Button" href="/manual">Manual</a></li>
+						<li><a class="Button" href="/changelog">Changelog</a></li>
 					</ul>
-					<p center><a href="/changelog">Changelog</a> & <a href="/manual">Manual</a></p>
 				</div>
 			</article>
 		`
