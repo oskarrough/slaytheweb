@@ -5,7 +5,7 @@
 	justify-content: center;
 	min-height: var(--card-height);
 }
-.Cards > * {
+.Cards .Card {
 	width: var(--card-width);
 	height: var(--card-height);
 	flex-shrink: 1;
@@ -15,6 +15,24 @@
 	gap: 0.5rem;
 }
 .Cards--mini {
+	--card-height: 11rem;
+	/* --card-width: 13rem; */
+	/* --column-width: var(--card-width); */
+	/* display: grid; */
+	/* gap: 0; */
+	/* grid-template-columns: repeat(auto-fill, minmax(min(var(--column-width), 100%), 1fr)); */
+
+
+	.Card-name {
+		font-size: 1rem;
+	}
+	.Card-description {
+		font-size: 0.75rem;
+	}
+
+	.Card-media img {
+		height: 50px;
+	}
 }
 .Cards--withUpgrades {
 	> div {
@@ -41,7 +59,6 @@
 		}
 	}
 }
-
 
 .Card {
 	position: relative;
@@ -110,6 +127,7 @@
 	padding-right: 0.2em;
 	min-height: 2.5em;
 	margin: 0;
+	line-height: 1.2;
 }
 .Card-energy {
 	position: absolute;
@@ -124,4 +142,20 @@
 .Hand .Card[disabled] .EnergyBadge {
 	color: #fb1515;
 	background-color: hsl(0deg 73% 25%);
+}
+
+.Cards-item {
+	display: flex;
+	flex-flow: column;
+
+	stw-card + button {
+		margin: 0 auto;
+		font-size: 1rem;
+		position: relative;
+		top: -1rem;
+	}
+
+	stw-card + button:active:not([disabled]) {
+		top: calc(-1rem + 2px);
+	}
 }

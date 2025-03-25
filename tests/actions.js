@@ -4,7 +4,7 @@ import actions from '../src/game/actions.js'
 import {createCard, CardTargets} from '../src/game/cards.js'
 import {MonsterRoom} from '../src/game/rooms.js'
 import {Monster} from '../src/game/monster.js'
-import {createTestDungeon} from '../src/content/dungeon-encounters.js'
+import {createTestDungeon} from '../src/content/dungeons.js'
 import {getRoomTargets, getCurrRoom, isCurrRoomCompleted} from '../src/game/utils-state.js'
 import {canPlay} from '../src/game/conditions.js'
 
@@ -513,4 +513,31 @@ test('"Deal damage equal to block" mechanic works', (t) => {
 	t.is(state2.player.block, 5)
 	const state3 = a.playCard(state2, {card: createCard('Body Slam'), target: 'enemy0'})
 	t.is(getRoomTargets(state3, 'enemy0')[0].currentHealth, 42 - 5)
+})
+
+test('setDeck sets a custom deck', (t) => {
+	const {state} = t.context
+	const cardNames = ['Strike', 'Defend', 'Bash', 'Intimidate', 'Bludgeon']
+
+	// Set a custom deck
+	const newState = a.setDeck(state, {cardNames})
+
+	// Check deck length matches cardNames length
+	t.is(newState.deck.length, cardNames.length)
+
+	// Check drawPile has same number of cards
+	t.is(newState.drawPile.length, cardNames.length)
+
+	// Check all card names in the deck match what we provided
+	const deckCardNames = newState.deck.map((card) => card.name)
+	t.deepEqual(deckCardNames.sort(), cardNames.sort())
+
+	// Verify drawPile contains the same cards as deck (but possibly in different order)
+	const drawPileCardNames = newState.drawPile.map((card) => card.name)
+	t.deepEqual(drawPileCardNames.sort(), cardNames.sort())
+
+	// Verify the drawPile is shuffled (not in the same order as deck)
+	// Note: This could occasionally fail if the shuffle happens to return the same order
+	const getIds = (arr) => arr.map((card) => card.id)
+	t.notDeepEqual(getIds(newState.deck), getIds(newState.drawPile))
 })

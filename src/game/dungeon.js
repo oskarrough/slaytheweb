@@ -1,6 +1,5 @@
-/* eslint-disable complexity */
 import {uuid, shuffle, random as randomBetween, pick} from '../utils.js'
-import {easyMonsters, monsters, elites, bosses} from '../content/dungeon-encounters.js'
+import {easyMonsters, monsters, elites, bosses} from '../content/monster-rooms.js'
 import {StartRoom, CampfireRoom} from './rooms.js'
 
 /**
@@ -325,6 +324,16 @@ export const MapNodeTypes = {
 	Q: '❓',
 	E: '👹',
 	boss: '🌋',
+}
+
+export function nodeTypeToName(nodeType) {
+	return {
+		start: 'Start room',
+		C: 'Campfire',
+		M: 'Monster',
+		E: 'Elite monster',
+		boss: 'Boss',
+	}[nodeType]
 }
 
 /**

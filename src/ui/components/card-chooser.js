@@ -30,7 +30,7 @@ export default class CardChooser extends Component {
 						(card) =>
 							html`<div class="CardBox" onClick=${() => this.clickedCard(card)}>
 								${Card({card, gameState: props.gameState})}
-							</div>`
+							</div>`,
 					)}
 				</div>
 			</article>

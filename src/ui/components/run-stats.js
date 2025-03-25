@@ -62,16 +62,14 @@ export default function RunStats() {
 				and ended with ${state.player.currentHealth}/${state.player.maxHealth} health.
 			</p>
 
-			${extraStats && (
-				<p>
-					You encountered {extraStats.encountered} monsters. And killed {extraStats.killed} of them.
-				</p>
-			)}
+			${extraStats &&
+			html`<p>You encountered {extraStats.encountered} monsters. And killed {extraStats.killed} of them.</p>`}
 		</div>
 
 		<div class="Box">
 			<p>
-				Inspect the raw JSON data for the run  <a href=${'https://api.slaytheweb.cards/api/runs/' + run.id}
+				Inspect the raw JSON data for the run
+				<a href=${'https://api.slaytheweb.cards/api/runs/' + run.id}
 					>api.slaytheweb.cards/api/runs/${run.id}</a
 				>.
 			</p>
@@ -80,12 +78,11 @@ export default function RunStats() {
 		<div class="Box">
 			<p>Final deck had ${state.deck.length} cards:</p>
 			<div class="Cards Cards--grid Cards--mini">
-				${state.deck
-					.map((cardName) =>
-						Card({
-							card: createCard(cardName),
-						}),
-					)}
+				${state.deck.map((cardName) =>
+					Card({
+						card: createCard(cardName),
+					}),
+				)}
 			</div>
 		</div>
 

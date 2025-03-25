@@ -4,7 +4,7 @@ import {isDungeonCompleted, getRoomTargets, getCurrRoom} from './utils-state.js'
 import powers from './powers.js'
 import {conditionsAreValid} from './conditions.js'
 import {createCard, CardTargets} from './cards.js'
-import {dungeonWithMap} from '../content/dungeon-encounters.js'
+import {createDefaultDungeon} from '../content/dungeons.js'
 
 // Enable support for Map and Set. See https://immerjs.github.io/immer/installation/
 enableMapSet()
@@ -77,13 +77,13 @@ function createNewState() {
 }
 
 /**
- * By default a new game doesn't come with a dungeon. You have to set one explicitly. Look in dungeon-encounters.js for inspiration.
+ * By default a new game doesn't come with a dungeon. You have to set one explicitly. Look in dungeons.js for inspiration.
  * @param {State} state
  * @param {Dungeon} [dungeon]
  * @returns {State} .
  */
 function setDungeon(state, dungeon) {
-	if (!dungeon) dungeon = dungeonWithMap()
+	if (!dungeon) dungeon = createDefaultDungeon()
 	state.dungeon = dungeon
 	return state
 	// return produce(state, (draft) => {
@@ -664,6 +664,18 @@ function iddqd(state) {
 	})
 }
 
+/**
+ * Sets a custom deck of cards based on an array of card names.
+ * @type {ActionFn<{cardNames: string[]}>}
+ */
+function setDeck(state, {cardNames}) {
+	const deck = cardNames.map((name) => createCard(name))
+	return produce(state, (draft) => {
+		draft.deck = deck
+		draft.drawPile = shuffle(deck)
+	})
+}
+
 const allActions = {
 	addCardToDeck,
 	addCardToHand,
@@ -687,6 +699,7 @@ const allActions = {
 	removeCard,
 	removeHealth,
 	removePlayerDebuffs,
+	setDeck,
 	setDungeon,
 	setHealth,
 	setPower,
