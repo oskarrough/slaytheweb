@@ -90,13 +90,18 @@ button:focus,
 .driver-popover .driver-popover-footer button:hover,
 .driver-popover .driver-popover-footer button:focus {
 	background: hsl(194.7, 53.3%, 83%);
-	box-shadow: 0 0.1em var(--text-inverse);
+	/* box-shadow: 0 0.1em var(--text-inverse); */
 }
 .Button:active,
 button:active {
 	position: relative;
 	top: 0.1em;
 	box-shadow: none;
+}
+
+.Button[disabled] {
+	cursor: not-allowed;
+	color: gray;
 }
 
 input[type='text'],
@@ -132,7 +137,7 @@ h3 {
 	text-shadow: 1px 1px 1px var(--text-inverse);
 }
 h2 {
-	margin: 1rem 0 0.5rem;
+	margin: 0 0 0.5rem;
 }
 
 .App {
@@ -346,8 +351,7 @@ h2 {
 
 .Splash {
 	min-height: 100dvh;
-	justify-content: flex-end;
-	padding-bottom: 5vh;
+	justify-content: center;
 }
 
 .Splash-spoder {
