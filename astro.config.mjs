@@ -9,16 +9,10 @@ export default defineConfig({
 			sourcemap: true,
 		},
 	},
+	devToolbar: {
+		enabled: false
+	},
 	integrations: [
 		preact(),
-
-		// sentry({
-		// 	dsn: 'https://8dfaea3ae774cfc8d9a79fdac78b2c5d@o4506580528529408.ingest.sentry.io/4506580555268096',
-		// 	sourceMapsUploadOptions: {
-		// 		project: 'slaytheweb',
-		// 		authToken: process.env.SENTRY_AUTH_TOKEN,
-		// 		telemetry: false,
-		// 	},
-		// }),
 	],
 })
