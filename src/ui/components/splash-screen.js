@@ -2,7 +2,6 @@ import {html, Component} from '../lib.js'
 import {getRuns} from '../../game/backend.js'
 import {timeSince} from '../../utils.js'
 import gsap from '../animations.js'
-// import * as customDecks from '../../content/decks.js'
 import {DeckSelector} from './deck-selector.js'
 
 export default class SplashScreen extends Component {

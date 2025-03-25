@@ -105,6 +105,15 @@ See [animations.js](src/ui/animations.js). Most are made with gsap.
 
 See [sounds.js](src/ui/sounds.js) using the Web Audio API.
 
+### Debugging
+
+- Console commands available via window.stw
+- URL parameters for debugging:
+  - ?debug: Skips splash screen
+  - ?tutorial: Enables tutorial
+  - ?iddqd: God mode
+  - Game state can be saved to URL hash
+
 ## Backend
 
 With the integration of https://github.com/oskarrough/slaytheweb-backend in `game/backend.js`, you can choose to save your current run state in the Slay the Web database. Nothing but game state & date is stored. All runs are visible on `stats.html`.

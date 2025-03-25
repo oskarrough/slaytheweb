@@ -4,7 +4,7 @@ import {isRoomCompleted} from '../../game/utils-state.js'
 import {emojiFromNodeType, nodeTypeToName, generatePaths} from '../../game/dungeon.js'
 
 /**
- * Renders a map of the dungeon.
+ * Renders a map of the dungeon. A visual representation of the dungeon progress. Players select rooms to visit. Shows available paths and room types.
  * @param {object} props
  * @param {object} props.dungeon
  * @param {number} props.x - starting column
