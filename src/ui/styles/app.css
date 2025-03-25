@@ -17,7 +17,7 @@ html {
 
 body {
 	margin: 0;
-	overflow-y: scroll;
+	/* overflow-y: scroll; */
 }
 
 [center] {
@@ -103,8 +103,7 @@ button:focus,
 	/* box-shadow: 0 0.1em var(--text-inverse); */
 }
 
-.Button:active,
-button:active {
+.Button:active {
 	&:not([disabled]) {
 		position: relative;
 		top: 0.1em;
@@ -112,8 +111,7 @@ button:active {
 	}
 }
 
-.Button.selected,
-button.selected {
+.Button.selected {
 	background: color-mix(in oklab, var(--lightblue), black 30%);
 }
 
