@@ -1,13 +1,19 @@
-import {html, useState} from '../lib.js'
+import {html, useState, useEffect} from '../lib.js'
+import {uuid} from '../../utils.js'
 import {cards} from '../../content/cards.js'
 import {Card} from './cards.js'
 import {createCard} from '../../game/cards.js'
-import {saveDeck} from '../../content/decks.js'
+import {saveDeck, deleteDeck} from '../../ui/storage-deck.js'
 
 export function DeckEditor(props) {
-	// Initialize with values from deckToEdit if provided
-	const [deckName, setDeckName] = useState(props.deckToEdit ? props.deckToEdit.name : 'My Custom Deck')
-	const [selectedCards, setSelectedCards] = useState(props.deckToEdit ? props.deckToEdit.cards : [])
+	const [deckName, setDeckName] = useState(props.deck?.name)
+	const [selectedCards, setSelectedCards] = useState(props.deck?.cards || [])
+
+	// Update state when props.deck changes
+	useEffect(() => {
+		setDeckName(props.deck?.name)
+		setSelectedCards(props.deck?.cards || [])
+	}, [props.deck])
 
 	function addCard(cardName) {
 		setSelectedCards([...selectedCards, cardName])
@@ -19,35 +25,42 @@ export function DeckEditor(props) {
 		setSelectedCards(newDeck)
 	}
 
-	function handleSaveDeck() {
+	function handleSaveDeck(event) {
+		event.preventDefault()
 		if (!selectedCards.length) return
-
-		// Create the deck object
 		const deck = {
-			name: deckName.trim() || 'My Custom Deck',
+			...props.deck,
+			name: deckName.trim(),
 			cards: selectedCards,
+			custom: true
 		}
-
-		// Use the deck service to save
-		const updatedDecks = saveDeck(deck)
-
-		// Notify parent component if callback exists
-		if (props.onSaveDeck) {
-			props.onSaveDeck(deck)
+		saveDeck(deck)
+		if (props.onSaveDeck) props.onSaveDeck(deck)
+	}
+	
+	function handleDeleteDeck() {
+		if (!props.deck || !props.deck.id) return
+		
+		if (confirm(`Are you sure you want to delete the deck "${props.deck.name}"?`)) {
+			deleteDeck(props.deck.id)
+			if (props.onDeleteDeck) props.onDeleteDeck(props.deck.id)
 		}
 	}
 
 	return html`
-		<div class="deck-editor">
+		<div class="Split">
 			<div class="Box">
-				<p>
+				<form onSubmit=${(e) => handleSaveDeck(e)}>
 					<label>
 						Name <input type="text" value=${deckName} onInput=${(e) => setDeckName(e.target.value)} />
 					</label>
-				</p>
-				<button onClick=${handleSaveDeck} disabled=${selectedCards.length === 0} class="Button">
-					Save Deck
-				</button>
+					<button type="submit" disabled=${selectedCards.length === 0} class="Button">
+						Save deck
+					</button>
+					<button type="button" onClick=${handleDeleteDeck} class="Button" danger>
+						Delete deck
+					</button>
+				</form>
 				${selectedCards.length > 0
 					? html`
 							<div class="Cards Cards--grid Cards--mini">
@@ -56,7 +69,7 @@ export function DeckEditor(props) {
 										<div class="Cards-item">
 											<${Card} key=${cardName + index} card=${createCard(cardName)}>
 											</${Card}>
-											<button onClick=${() => removeCard(index)}>✕</button>
+											<button danger onClick=${() => removeCard(index)}>✕</button>
 										</div>
 									`,
 								)}
@@ -64,7 +77,6 @@ export function DeckEditor(props) {
 						`
 					: html`<p center>No cards selected yet. Add some from below</p>`}
 			</div>
-
 			<div class="Box">
 				<h3>Available Cards</h3>
 				<div class="Cards Cards--grid Cards--mini">

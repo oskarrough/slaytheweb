@@ -35,6 +35,15 @@ summary {
 		auto;
 }
 
+button[danger] {
+	background: var(--red);
+	color: var(--text);
+	
+	&:hover {
+		background: color-mix(in oklab, var(--red), black 30%);
+	}
+}
+
 summary {
 	user-select: none;
 }
@@ -72,7 +81,7 @@ button,
 	font-size: 1.25rem;
 	padding: 0.4em 1em 0.4em;
 	border: 3px solid var(--text-inverse);
-	border-radius: 0.3em;
+	border-radius: 0.4em;
 	background: var(--lightblue);
 	color: var(--text-inverse);
 	box-shadow: 0 0.2em var(--text-inverse);
@@ -92,11 +101,19 @@ button:focus,
 	background: hsl(194.7, 53.3%, 83%);
 	/* box-shadow: 0 0.1em var(--text-inverse); */
 }
+
 .Button:active,
 button:active {
-	position: relative;
-	top: 0.1em;
-	box-shadow: none;
+	&:not([disabled]) {
+		position: relative;
+		top: 0.1em;
+		box-shadow: none;
+	}
+}
+
+.Button.selected,
+button.selected {
+	background: color-mix(in oklab, var(--lightblue), black 30%);
 }
 
 .Button[disabled] {
@@ -136,6 +153,7 @@ h3 {
 	font-size: 1.25rem;
 	text-shadow: 1px 1px 1px var(--text-inverse);
 }
+
 h2 {
 	margin: 0 0 0.5rem;
 }
@@ -216,7 +234,6 @@ h2 {
 
 .App-background,
 .Targets,
-.Split,
 .Overlay {
 	animation: fade-in 1000ms cubic-bezier(0.23, 1, 0.32, 1);
 	animation-fill-mode: both;
@@ -224,11 +241,6 @@ h2 {
 
 .Targets {
 	animation-delay: 200ms;
-}
-
-.Split:not(.Targets) {
-	animation-delay: 150ms;
-	animation-duration: 2000ms;
 }
 
 @keyframes fade-in {
@@ -243,7 +255,7 @@ h2 {
 .Split {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	grid-gap: 2vw;
+	gap: 0;
 }
 
 .EnergyBadge {
@@ -352,6 +364,7 @@ h2 {
 .Splash {
 	min-height: 100dvh;
 	justify-content: center;
+	align-items: center;
 }
 
 .Splash-spoder {
@@ -370,10 +383,10 @@ h2 {
 }
 
 .Box input[type='text'] {
-	background: hsla(17, 6%, 53%, 1);
+	background: hsla(17, 6%, 70%, 1);
 	padding: 0.5rem;
 	border: 1px solid hsla(17, 6%, 3%, 1);
-	border-radius: 0.3rem;
+	border-radius: 0.4rem;
 }
 
 .Box,
@@ -385,7 +398,6 @@ h2 {
 	border: 2px solid hsla(17, 6%, 3%, 1);
 	min-width: 15rem;
 	max-width: 100%;
-	margin: 0.5rem auto;
 }
 
 .Box--text {
@@ -428,8 +440,11 @@ h2 {
 .Options .Button,
 .Options button {
 	display: flex;
+	flex-flow: column;
 	justify-content: center;
+	text-align: center;
 	width: 100%;
+
 }
 
 .Options--horizontal {
@@ -484,7 +499,7 @@ h2 {
 	background-color: var(--bg);
 	color: var(--text);
 	border: 2px solid var(--text);
-	border-radius: 0.5rem;
+	border-radius: 0.4rem;
 }
 .driver-popover .driver-popover-title {
 	font-size: 1.25rem;
@@ -493,50 +508,4 @@ h2 {
 .driver-popover .driver-popover-description,
 .driver-popover .driver-popover-footer button {
 	font-size: 1rem;
-}
-/* .driver-popover .driver-popover-footer button { } */
-
-.selected {
-	/* background: var(--lightblue); */
-	/* background: var(--yellow); */
-	background: color-mix(in oklab, var(--lightblue), black 20%);
-}
-
-.deck-selector {
-	display: flex;
-	flex-flow: column;
-}
-
-.Options--horizontal {
-	> li {
-		position: relative;
-		display: flex;
-		flex-flow: column;
-		justify-content: center;
-		flex-basis: var(--card-width);
-	}
-	button {
-		position: relative;
-		display: flex;
-		flex-flow: column;
-		padding-left: 0.4rem;
-		padding-right: 0.4rem;
-		font-size: 1rem;
-		small {
-			font-size: 80%;
-		}
-	}
-	button + button {
-		position: absolute;
-		top: -0.5rem;
-		left: -0.5rem;
-		padding: 0 0.2em;
-		border-width: 2px;
-		width: auto;
-		font-size: 1rem;
-	}
-	button[danger] {
-		background: var(--red);
-		color: var(--text);
-	}
 }
