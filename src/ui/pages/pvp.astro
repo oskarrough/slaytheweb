@@ -1,12 +1,447 @@
 ---
 import Layout from '../layouts/Layout.astro'
-import DebugUI from '../components/debug-ui.js'
+import '../styles/index.css'
 ---
 
-<script src="../components/slay-the-web.js"></script>
+<!-- <script src="../components/slay-the-web.js"></script> -->
+<script>
+	// PVP Mode Implementation
+	import createNewGame from '../../game/new-game.js'
+	import {CardTargets} from '../../game/cards.js'
+	import {html, render} from '../lib.js'
+	import {Player} from '../components/player.js'
+	import Cards from '../components/cards.js'
+	import enableDragDrop from '../dragdrop.js'
+	import * as sounds from '../sounds.js'
+	import {produce} from 'immer'
+	import Draggable from 'gsap/Draggable'
+	import gsap from 'gsap'
+
+	// Implementation plan:
+	// 1. Create two separate game states, one for each player
+	// 2. Coordinate between them so player actions affect the opponent
+	// 3. Implement custom UI to show both players
+
+	class PVPGame extends HTMLElement {
+		// Declare class properties to fix TypeScript errors
+		game1: any
+		game2: any
+		pvpState: {
+			currentPlayerTurn: number
+			developmentMode: boolean
+		}
+
+		constructor() {
+			super()
+
+			// Initialize two separate game states
+			this.game1 = createNewGame()
+			this.game2 = createNewGame()
+
+			// Initialize PVP-specific state
+			this.pvpState = {
+				currentPlayerTurn: 1, // 1 for player1, 2 for player2
+				developmentMode: true, // Show both hands during development
+			}
+
+			// Set up event handlers
+			this.playCard = this.playCard.bind(this)
+			this.endTurn = this.endTurn.bind(this)
+			this.update = this.update.bind(this)
+		}
+
+		connectedCallback() {
+			// Set up starter decks for both players
+			this.game1.enqueue({type: 'addStarterDeck'})
+			this.game1.dequeue()
+			this.game2.enqueue({type: 'addStarterDeck'})
+			this.game2.dequeue()
+
+			// Drawing initial hands is removed as createNewGame() already calls drawCards
+			// This was causing duplicate card drawing (10 instead of 5)
+
+			// Play sounds
+			sounds.startGame()
+
+			this.update()
+		}
+
+		playCard(cardId, targetString) {
+			const currentPlayer = this.pvpState.currentPlayerTurn
+			const activeGame = currentPlayer === 1 ? this.game1 : this.game2
+			const passiveGame = currentPlayer === 1 ? this.game2 : this.game1
+
+			console.log('Playing card with target:', targetString)
+
+			let card, hand
+
+			// Find the card in the active player's hand
+			hand = activeGame.state.hand
+			card = hand.find((c) => c.id === cardId)
+
+			if (!card) return // Card not found
+
+			// Only allow playing cards that cost less or equal to available energy
+			if (card.energy > activeGame.state.player.currentEnergy) {
+				// Not enough energy
+				sounds.cardToHand()
+				return
+			}
+
+			// Update the target string for PVP
+			// In PVP mode, if the target is an enemy, it refers to the other player
+			let pvpTarget = targetString
+
+			// Check for enemy targeting - this is crucial for PVP
+			const targetsOpponent = targetString.includes('enemy') || card.target === CardTargets.allEnemies
+
+			// Log target information for debugging
+			console.log(
+				'Card:',
+				card.name,
+				'Card target:',
+				card.target,
+				'Drop target:',
+				targetString,
+				'Targets opponent:',
+				targetsOpponent
+			)
+
+			if (targetsOpponent) {
+				// In PVP, we're targeting the other player directly
+				// We need to apply damage/effects to the other player
+				this.applyCardToOpponent(card, activeGame, passiveGame)
+			} else {
+				// Card targets the active player, use normal game logic
+				activeGame.enqueue({type: 'playCard', card, target: 'player'})
+				activeGame.dequeue()
+			}
+
+			// Play sound
+			sounds.playCard()
+
+			this.update()
+		}
+
+		applyCardToOpponent(card, activeGame, passiveGame) {
+			// Apply energy cost to active player
+			activeGame.state = produce(activeGame.state, (draft) => {
+				// Reduce energy
+				draft.player.currentEnergy -= card.energy
+
+				// Apply block if applicable (blocks always apply to the player who played the card)
+				if (card.block) {
+					draft.player.block += card.block
+				}
+
+				// Move card from hand to discard pile or exhaust
+				draft.hand = draft.hand.filter((c) => c.id !== card.id)
+				if (card.exhaust) {
+					draft.exhaustPile.push(card)
+				} else {
+					draft.discardPile.push(card)
+				}
+			})
+
+			// Apply damaging effects to the passive player (opponent)
+			if (card.damage) {
+				let amount = card.damage
+
+				// Apply strength modifier if any
+				if (activeGame.state.player.powers.strength) {
+					amount += activeGame.state.player.powers.strength
+				}
+
+				// Apply weak modifier if any
+				if (activeGame.state.player.powers.weak) {
+					amount = Math.floor(amount * 0.75)
+				}
+
+				// Apply vulnerable modifier if the opponent is vulnerable
+				if (passiveGame.state.player.powers.vulnerable) {
+					amount = Math.floor(amount * 1.5)
+				}
+
+				// Apply damage to opponent (respecting block)
+				passiveGame.state = produce(passiveGame.state, (draft) => {
+					if (draft.player.block >= amount) {
+						draft.player.block -= amount
+					} else {
+						const remainingDamage = amount - draft.player.block
+						draft.player.block = 0
+						draft.player.currentHealth -= remainingDamage
+					}
+				})
+			}
+
+			// Apply powers to the appropriate player
+			if (card.powers) {
+				Object.entries(card.powers).forEach(([name, stacks]) => {
+					// Check if the power should apply to the card player or opponent
+					// For simplicity, we'll assume offensive powers (weak, vulnerable) go to opponent
+					// and buffs (strength) go to the player who played the card
+					const isPowerOffensive = name === 'weak' || name === 'vulnerable'
+
+					if (isPowerOffensive) {
+						// Apply to opponent
+						passiveGame.state = produce(passiveGame.state, (draft) => {
+							draft.player.powers[name] = (draft.player.powers[name] || 0) + stacks
+						})
+					} else {
+						// Apply to card player
+						activeGame.state = produce(activeGame.state, (draft) => {
+							draft.player.powers[name] = (draft.player.powers[name] || 0) + stacks
+						})
+					}
+				})
+			}
+		}
+
+		endTurn() {
+			const currentPlayer = this.pvpState.currentPlayerTurn
+			const activeGame = currentPlayer === 1 ? this.game1 : this.game2
+
+			// Play turn end sound
+			sounds.endTurn()
+
+			// Discard hand, reset energy and block, draw new cards
+			activeGame.enqueue({type: 'discardHand'})
+			activeGame.dequeue()
+
+			// Reset energy and block
+			activeGame.state = produce(activeGame.state, (draft) => {
+				draft.player.currentEnergy = draft.player.maxEnergy
+				draft.player.block = 0
+			})
+
+			// Decrease power stacks for both players
+			this.game1.state = produce(this.game1.state, (draft) => {
+				Object.keys(draft.player.powers).forEach((power) => {
+					if (draft.player.powers[power] > 0) {
+						draft.player.powers[power]--
+					}
+				})
+			})
+
+			this.game2.state = produce(this.game2.state, (draft) => {
+				Object.keys(draft.player.powers).forEach((power) => {
+					if (draft.player.powers[power] > 0) {
+						draft.player.powers[power]--
+					}
+				})
+			})
+
+			// Draw new hand
+			activeGame.enqueue({type: 'drawCards', amount: 5})
+			activeGame.dequeue()
+
+			// Switch to the other player's turn
+			this.pvpState.currentPlayerTurn = currentPlayer === 1 ? 2 : 1
+
+			// Play start turn sound
+			sounds.startTurn()
+
+			this.update()
+		}
+
+		update() {
+			if (!this.isConnected) return // Check if element is connected to DOM
+
+			// Check for game over
+			if (this.game1.state.player.currentHealth <= 0) {
+				this.renderGameOver('Player 2 wins!')
+				return
+			}
+
+			if (this.game2.state.player.currentHealth <= 0) {
+				this.renderGameOver('Player 1 wins!')
+				return
+			}
+
+			// Render the game UI
+			this.renderGameUI()
+
+			// Set up drag and drop for the current player's hand
+			this.setupDragDrop()
+		}
+
+		setupDragDrop() {
+			setTimeout(() => {
+				// Use the existing drag-drop system
+				enableDragDrop(this, this.playCard)
+			}, 100)
+		}
+
+		renderGameUI() {
+			const currentPlayer = this.pvpState.currentPlayerTurn
+			const isPlayer1Turn = currentPlayer === 1
+			const activeGame = isPlayer1Turn ? this.game1 : this.game2
+
+			// Show deck stats
+			const deckStats = `Cards: Hand ${activeGame.state.hand.length}, Draw ${activeGame.state.drawPile.length}, Discard ${activeGame.state.discardPile.length}`
+
+			const {game1, game2} = this
+
+			// Render the game UI
+			const gameUI = html`
+				<header>
+					<p>Current player: ${isPlayer1Turn ? 'Player 1' : 'Player 2'}</p>
+					<div class="PVP-stats">${deckStats}</div>
+				</header>
+
+				<div class="Targets Split">
+					<div class="Targets-group ${!isPlayer1Turn ? 'current-target' : ''}">
+						<!-- Use "player0" and "enemy0" as data-type to work with existing drag-drop system -->
+						<div class="Target" data-type="${isPlayer1Turn ? 'player' : 'enemy'}0">
+							<h2><span class="Target-name">Player 1</span></h2>
+							<div class="Healthbar">
+								<p class="Healthbar-label">
+									<span>${game1.state.player.currentHealth}/${game1.state.player.maxHealth}</span>
+								</p>
+								<div
+									class="Healthbar-bar"
+									style=${`width: ${(game1.state.player.currentHealth / game1.state.player.maxHealth) * 100}%`}
+								></div>
+								<div
+									class="Healthbar-bar Healthbar-blockBar"
+									style=${`width: ${(game1.state.player.block / game1.state.player.maxHealth) * 100}%`}
+								>
+									${game1.state.player.block > 0 ? game1.state.player.block : ''}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="Targets-group ${isPlayer1Turn ? 'current-target' : ''}">
+						<!-- Use "player0" and "enemy0" as data-type to work with existing drag-drop system -->
+						<div class="Target" data-type="${isPlayer1Turn ? 'enemy' : 'player'}0">
+							<h2><span class="Target-name">Player 2</span></h2>
+							<div class="Healthbar">
+								<p class="Healthbar-label">
+									<span>${game2.state.player.currentHealth}/${game2.state.player.maxHealth}</span>
+								</p>
+								<div
+									class="Healthbar-bar"
+									style=${`width: ${(game2.state.player.currentHealth / game2.state.player.maxHealth) * 100}%`}
+								></div>
+								<div
+									class="Healthbar-bar Healthbar-blockBar"
+									style=${`width: ${(game2.state.player.block / game2.state.player.maxHealth) * 100}%`}
+								>
+									${game2.state.player.block > 0 ? game2.state.player.block : ''}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="Split ${activeGame.state.player.currentEnergy === 0 ? 'no-energy' : ''}">
+					<div class="EnergyBadge">
+						<span>${activeGame.state.player.currentEnergy}/${activeGame.state.player.maxEnergy}</span>
+					</div>
+					<p class="Actions">
+						<button class="EndTurn" onClick=${() => this.endTurn()}>End Turn</button>
+					</p>
+				</div>
+
+				${this.pvpState.developmentMode
+					? html`
+							<p>DEVELOPMENT MODE - Showing both hands</p>
+							<div class="Players-hands">
+								<div class="${isPlayer1Turn ? 'active-hand' : 'inactive-hand'}">
+									<h3>Player 1's Hand</h3>
+									<div class="Hand">
+										<${Cards} gameState=${game1.state} type="hand" />
+									</div>
+								</div>
+								<div class="${!isPlayer1Turn ? 'active-hand' : 'inactive-hand'}">
+									<h3>Player 2's Hand</h3>
+									<div class="Hand">
+										<${Cards} gameState=${game2.state} type="hand" />
+									</div>
+								</div>
+							</div>
+						`
+					: html`
+							<div class="Hand">
+								<${Cards} gameState=${activeGame.state} type="hand" />
+							</div>
+						`}
+			`
+
+			render(gameUI, this)
+		}
+
+		renderGameOver(message) {
+			const gameOverUI = html`
+				<div class="PVP-game-over">
+					<p>${message}</p>
+					<div class="PVP-stats">
+						<div>
+							Player 1: ${this.game1.state.player.currentHealth}/${this.game1.state.player.maxHealth} HP
+						</div>
+						<div>
+							Player 2: ${this.game2.state.player.currentHealth}/${this.game2.state.player.maxHealth} HP
+						</div>
+					</div>
+					<button onClick=${() => window.location.reload()}>Play Again</button>
+				</div>
+			`
+
+			render(gameOverUI, this)
+		}
+	}
+
+	customElements.define('stw-pvp', PVPGame)
+</script>
 
 <Layout title="PVP">
-  <p>hey</p>
-  <!-- <slay-the-web></slay-the-web> -->
-</Layout>
+	<div class="Container">
+		<p>Player versus Player combat - take turns playing cards against each other!</p>
+		<stw-pvp></stw-pvp>
+	</div>
 
+	<style is:global>
+		stw-pvp {
+			display: flex;
+			flex-direction: column;
+			min-height: 80vh;
+			position: relative;
+
+      .Hand {
+        transform: none;
+      }
+
+			.current-target {
+				outline: 2px dashed #00aaff;
+				padding: 5px;
+				border-radius: 4px;
+			}
+
+			.PVP-game-over {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				height: 50vh;
+			}
+
+			.Players-hands {
+				display: flex;
+				flex-direction: column;
+				gap: 1rem;
+			}
+
+			.active-hand {
+				background-color: rgba(0, 170, 255, 0.1);
+				border: 2px solid #00aaff;
+			}
+
+			.inactive-hand {
+				border: 2px solid transparent;
+				opacity: 0.5;
+				cursor: not-allowed;
+				pointer-events: none;
+			}
+		}
+	</style>
+</Layout>
