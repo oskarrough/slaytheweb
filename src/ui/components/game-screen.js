@@ -59,6 +59,12 @@ export default class App extends Component {
 		const game = createNewGame()
 		this.game = game
 
+		// Set the custom deck if one was selected
+		if (this.props.selectedDeck) {
+			this.game.enqueue({type: 'setDeck', cardNames: this.props.selectedDeck.cards})
+			this.game.dequeue()
+		}
+
 		if (debugMode) {
 			const roomIndex = game.state.dungeon.graph[1].findIndex((r) => r.room)
 			this.game.enqueue({type: 'move', move: {y: 1, x: roomIndex}})
