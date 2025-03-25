@@ -182,9 +182,10 @@ slay-map svg.paths line {
 	stroke-width: var(--pathWidth);
 	stroke-dasharray: 0.2em;
 	stroke-dashoffset: 0;
-	animation: mapLines 10s linear infinite;
 	/* opacity: 0.3; */
+	/* animation: mapLines 10s linear infinite; */
 }
+
 @keyframes mapLines {
 	from {
 		stroke-dashoffset: 0;
