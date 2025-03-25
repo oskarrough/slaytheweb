@@ -1,7 +1,7 @@
 import {Component, html} from '../lib.js'
 import {debounce, random as randomBetween} from '../../utils.js'
 import {isRoomCompleted} from '../../game/utils-state.js'
-import {emojiFromNodeType, generatePaths} from '../../game/dungeon.js'
+import {emojiFromNodeType, nodeTypeToName, generatePaths} from '../../game/dungeon.js'
 
 /**
  * Renders a map of the dungeon.
@@ -186,16 +186,6 @@ export class SlayMap extends Component {
 			</slay-map>
 		`
 	}
-}
-
-function nodeTypeToName(nodeType) {
-	return {
-		start: 'Start zone',
-		C: 'Camp site',
-		M: 'Monster',
-		E: 'Elite Monster',
-		boss: 'Final boss',
-	}[nodeType]
 }
 
 function isEmpty(obj) {
