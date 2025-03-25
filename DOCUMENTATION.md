@@ -5,50 +5,51 @@ Throughout the project I've attempted to document and leave comments. Go ahead a
 In the root of this project you'll find configuration files as well as three folders:
 
 - [src →](src/) The web root. 
+  - [content](src/content) contains cards, dungeons, encounters and monsters etc.
   - [game](src/game) contains the core game logic
-  - [content](src/content) uses methods from the game engine to build cards, dungeon and monsters
   - [ui](src/ui) is the example web interface to actually play the game
 - [public →](public/) Copied to the web root as-is
 - [tests →](tests/) Contains all tests for the game engine. Nothing for the UI. Run `npm test`.
 
-## Src
+## Coding style
 
-This is the full source code of the game _and_ UI. The game logic does not concern with the UI.
+- JavaScript (ES modules)
+- Web components and Preact HTM for rendering
+- Immer for immutable state updates
+- Error handling: Use try/catch sparingly; prefer validation and early returns
+- JSDoc for documentation
+- No semicolons, single quotes, tabs
 
 ### Game
 
 #### Game State
 
-The full game state is always stored in a single, large "game state" object. It is everything needed to reproduce a certain state of the game. Everything is synchronous. It does not care about your UI. The state is always modified using "actions".
+The full game state is always stored in a single, large "game state" object. It is everything needed to reproduce a certain state of the game. It does not know about your UI. The state is modified using synchronous "actions".
 
 #### Actions
 
 An action is a function that takes a `state` object, modifies it, and returns a new one. There are actions for drawing a card, dealing damage, applying a debuff... everything you want to do, there's an action.
 
-See all actions in [actions.js](src/game/actions.js). Most have comments and corresponding tests you can check.
+See all (mostly well documented) actions in [actions.js](src/game/actions.js).
 
 #### Action Manager
 
-As said, actions return a new state. They don't modify the original state. To keep track of all the moves (actions) made, we use the "action manager" to queue and dequeue them.
+As said, actions return a new state. To keep track of actions made, we use an "action manager" to queue and dequeue them.
 
 Run `enqueue(action)` to add an action to the list.  
 Run `dequeue()` to update the state with the changes from the oldest action in the queue.
 
-> Note, you don't pass an action directly to the action manager. Rather you pass an object. Like this: `{type: 'nameOfAction', damage: 5, ... more properties}`.
+> Note, you don't pass an action directly to the action manager. Rather you pass a description, like so: `{type: 'nameOfAction', damage: 5, ... more properties}`.
 
 #### Cards
 
-You have a deck of cards. Cards have different energy cost and can trigge other game actions when they are played.
+You have a deck of cards. Cards have energy cost, have target(s), can deal damage and block, trigger game actions, apply powers (de/buffs) when played and have conditions that decide when they can be played.
 
-1. Cards start in the "draw pile".
-2. From there they are drawn to the "hand"
-3. ...and finally, once played, to the "discard pile".
+Cards move from the "draw pile" into your hand, and once played to the discard pile.
 
-Once the draw pile is empty, and you attempt to draw, the discard pile is reshuffled into the draw pile.
+If the draw pile has fewer cards than you attempt to draw, the discard pile is shuffled into the draw pile.
 
 Cards also have a `target` property to suggest which targets the card should affect.
-
-For more advanced cards, you can define (custom) actions to run when the card is played. To limit when a a card can be played, use "conditions" (see the source code).
 
 #### Powers
 
