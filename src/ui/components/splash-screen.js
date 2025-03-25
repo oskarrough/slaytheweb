@@ -3,6 +3,7 @@ import {getRuns} from '../../game/backend.js'
 import {timeSince} from '../../utils.js'
 import gsap from '../animations.js'
 // import * as customDecks from '../../content/decks.js'
+import {DeckSelector} from './deck-selector.js'
 
 export default class SplashScreen extends Component {
 	constructor() {
@@ -10,9 +11,11 @@ export default class SplashScreen extends Component {
 		this.state = {
 			runs: [],
 			selectedDeck: null,
+			selectingDeck: false
 		}
 
 		this.handleStartGame = this.handleStartGame.bind(this)
+		this.startDeckSelection = this.startDeckSelection.bind(this)
 	}
 
 	componentDidMount() {
@@ -23,7 +26,14 @@ export default class SplashScreen extends Component {
 	}
 
 	handleDeckSelected(deck) {
-		this.setState({selectedDeck: deck})
+		this.setState({selectedDeck: deck}, () => {
+			// Start game immediately when a deck is selected
+			this.handleStartGame();
+		})
+	}
+
+	startDeckSelection() {
+		this.setState({selectingDeck: true})
 	}
 
 	handleStartGame() {
@@ -32,6 +42,23 @@ export default class SplashScreen extends Component {
 
 	render(props, state) {
 		const run = state.runs[0]
+		
+		if (state.selectingDeck) {
+			return html`
+				<article class="Splash Container">
+					<header class="Header">
+						<h1>Choose a Deck</h1>
+					</header>
+					<div class="Box">
+						<ul class="Options">
+							<li><button onClick=${() => this.setState({selectingDeck: false})}>Back</button></li>
+						</ul>
+						<${DeckSelector} onSelectDeck=${(deck) => this.handleDeckSelected(deck)} />
+					</div>
+				</article>
+			`
+		}
+		
 		return html`
 			<article class="Splash Container">
 				<header class="Header">
@@ -48,7 +75,7 @@ export default class SplashScreen extends Component {
 					`
 							: html`
 									<li><button autofocus onClick=${this.props.onNewGame}>Play</button></li>
-									<!-- <li><button onClick=${this.startDeckSelection}>Custom Game</button></li> -->
+									<li><button onClick=${this.startDeckSelection}>Custom Game</button></li>
 									<li><a class="Button" href="/?debug&tutorial">Tutorial</a></li>
 									<li><a class="Button" href="/deck-builder">Deck Builder</a></li>
 								`}

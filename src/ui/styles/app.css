@@ -437,6 +437,11 @@ h2 {
 	list-style: none;
 	padding: 0;
 }
+
+.Options + .Options {
+	margin-top: 0.5rem;
+}
+
 .Options .Button,
 .Options button {
 	display: flex;

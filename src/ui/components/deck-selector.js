@@ -18,8 +18,7 @@ export function DeckSelector(props) {
 	}
 
 	return html`
-		<div class="Box">
-			<ul class="Options oOptions--horizontal">
+			<ul class="Options">
 				${decks.map((deck) => {
 					const isSelected = selectedDeck?.id === deck.id
 					return html`
@@ -32,6 +31,5 @@ export function DeckSelector(props) {
 					`
 				})}
 			</ul>
-		</div>
 	`
 }

@@ -30,7 +30,9 @@ export function DeckEditorApp() {
 			</ul>
 		</div>
 
-		<${DeckSelector} onSelectDeck=${(deck) => setDeck(deck)} onDeleteDeck=${handleDeleteDeck} />
+		<div class=Box>
+			<${DeckSelector} onSelectDeck=${(deck) => setDeck(deck)} onDeleteDeck=${handleDeleteDeck} />
+		</div>
 		
 		${deck?.custom
 			? html`<${DeckEditor} deck=${deck} onSaveDeck=${handleSaveDeck} onDeleteDeck=${handleDeleteDeck} />`
