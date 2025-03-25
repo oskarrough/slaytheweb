@@ -17,6 +17,7 @@ html {
 
 body {
 	margin: 0;
+	overflow-y: scroll;
 }
 
 [center] {
@@ -38,7 +39,7 @@ summary {
 button[danger] {
 	background: var(--red);
 	color: var(--text);
-	
+
 	&:hover {
 		background: color-mix(in oklab, var(--red), black 30%);
 	}
@@ -78,8 +79,8 @@ a {
 .Button,
 button,
 .driver-popover .driver-popover-footer button {
-	font-size: 1.25rem;
-	padding: 0.4em 1em 0.4em;
+	font-size: 1rem;
+	padding: 0.4em 0.75rem 0.4em;
 	border: 3px solid var(--text-inverse);
 	border-radius: 0.4em;
 	background: var(--lightblue);

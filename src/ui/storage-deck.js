@@ -30,7 +30,8 @@ export function saveDeck(deck) {
 	const deckToSave = {
 		...deck,
 		id: deck.id,
-		name: deck.name.trim()
+		name: deck.name.trim(),
+		custom: true
 	}
 
 	// Get existing decks
