@@ -15,12 +15,20 @@
 	gap: 0.5rem;
 }
 .Cards--mini {
-	--card-height: 13rem;
+	--card-height: 11rem;
 	/* --card-width: 13rem; */
 	/* --column-width: var(--card-width); */
 	/* display: grid; */
 	/* gap: 0; */
 	/* grid-template-columns: repeat(auto-fill, minmax(min(var(--column-width), 100%), 1fr)); */
+
+
+	.Card-name {
+		font-size: 1rem;
+	}
+	.Card-description {
+		font-size: 0.75rem;
+	}
 
 	.Card-media img {
 		height: 50px;
@@ -139,10 +147,15 @@
 .Cards-item {
 	display: flex;
 	flex-flow: column;
+
 	stw-card + button {
 		margin: 0 auto;
 		font-size: 1rem;
 		position: relative;
 		top: -1rem;
+	}
+
+	stw-card + button:active:not([disabled]) {
+		top: calc(-1rem + 2px);
 	}
 }

@@ -50,6 +50,8 @@ export function DeckEditor(props) {
 	return html`
 		<div class="Split">
 			<div class="Box">
+				<h3>Editing custom deck ${props.deck.name}</h3>
+				<p>Custom decks are stored locally in your browser and not shared (yet).</p>
 				<form onSubmit=${(e) => handleSaveDeck(e)}>
 					<label>
 						Name <input type="text" value=${deckName} onInput=${(e) => setDeckName(e.target.value)} />
@@ -61,6 +63,7 @@ export function DeckEditor(props) {
 						Delete deck
 					</button>
 				</form>
+				<br/>
 				${selectedCards.length > 0
 					? html`
 							<div class="Cards Cards--grid Cards--mini">
