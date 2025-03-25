@@ -288,7 +288,7 @@ stw.dealCards()`)
 
 				${
 					this.isDead &&
-					html`<${Overlay}>
+					html`<${Overlay} middle>
 						<div class="Container">
 							<h1 center>You are dead</h1>
 							<${PublishRun} game=${this.game}><//>
@@ -300,21 +300,21 @@ stw.dealCards()`)
 
 				${
 					state.won &&
-					html`<${Overlay}>
+					html`<${Overlay} middle>
 						<div class="Container CContainer--center">
 							<h1 center>You won!</h1>
 							<${PublishRun} game=${this.game}><//>
 							<${DungeonStats} dungeon=${state.dungeon}><//>
-							<p><button onClick=${() => this.props.onWin()}>Continue</button></p>
+							<p center><button onClick=${() => this.props.onWin()}>Continue</button></p>
 						</div>
 					<//> `
 				}
 
-				${room.type === 'start' && html`<${Overlay}><${StartRoom} onContinue=${this.goToNextRoom} /><//>`}
+				${room.type === 'start' && html`<${Overlay} middle><${StartRoom} onContinue=${this.goToNextRoom} /><//>`}
 
 				${
 					room.type === 'campfire' &&
-					html`<${Overlay}>
+					html`<${Overlay} middle>
 						<${CampfireRoom}
 							gameState=${state}
 							onChoose=${this.handleCampfireChoice}
@@ -327,7 +327,7 @@ stw.dealCards()`)
 					!this.didWinEntireGame &&
 					this.didWin &&
 					room.type === 'monster' &&
-					html`<${Overlay}>
+					html`<${Overlay} middle>
 						<${VictoryRoom}
 							gameState=${state}
 							onSelectCard=${(card) => this.handlePlayerReward('addCard', card)}
@@ -368,7 +368,7 @@ stw.dealCards()`)
 					`
 				}
 
-				<${OverlayWithButton} id="Menu" topleft>
+				<${OverlayWithButton} id="Menu" topleft middle>
 					<button onClick=${() => this.toggleOverlay('#Menu')}><u>Esc</u>ape</button>
 					<div class="Overlay-content">
 							<${Menu} gameState=${state} game=${this.game} onUndo=${() => this.undo()} />
