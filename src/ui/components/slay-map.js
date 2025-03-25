@@ -151,7 +151,7 @@ export class SlayMap extends Component {
 		if (!dungeon.graph) throw new Error('No graph to render. This should not happen?', dungeon)
 
 		const currentNode = dungeon.graph[y][x]
-		
+
 		if (isEmpty(currentNode.edges)) {
 			dungeon.paths = generatePaths(dungeon.graph)
 			if (this.debug) console.log('generated new dungeon paths', {dungeon})
@@ -175,6 +175,7 @@ export class SlayMap extends Component {
 									can-visit=${Boolean(canVisit)}
 									did-visit=${node.didVisit}
 									onClick=${() => this.nodeSelect({x: nodeIndex, y: rowIndex})}
+									title=${nodeTypeToName(node.type)}
 								>
 									<span>${emojiFromNodeType(node.type)}</span>
 								</slay-map-node>`
@@ -187,14 +188,24 @@ export class SlayMap extends Component {
 	}
 }
 
-function isEmpty(obj) {
-  for (const prop in obj) {
-    if (Object.hasOwn(obj, prop)) {
-      return false;
-    }
-  }
+function nodeTypeToName(nodeType) {
+	return {
+		start: 'Start zone',
+		C: 'Camp site',
+		M: 'Monster',
+		E: 'Elite Monster',
+		boss: 'Final boss',
+	}[nodeType]
+}
 
-  return true;
+function isEmpty(obj) {
+	for (const prop in obj) {
+		if (Object.hasOwn(obj, prop)) {
+			return false
+		}
+	}
+
+	return true
 }
 
 // Since el.offsetLeft doesn't respect CSS transforms,
