@@ -230,7 +230,7 @@ export function selectCard() {
 	simpleBeep(noteToFreq['C4'], 0.125, 0.1)
 }
 
-export function playCard(card) {
+export function playCard(/*card*/) {
 	if (!audioContext) init()
 	simpleBeep(noteToFreq['G#3'], 0.0625, 0.3)
 }

@@ -40,7 +40,7 @@ export function getCurrRoom(state) {
 }
 
 /**
- * Returns a list of "targets" (player or monsters) in the current room. 
+ * Returns a list of "targets" (player or monsters) in the current room.
  * @param {State} state
  * @param {CardTargets} targetQuery - like player, enemy0, enemy1, enemy2, allEnemies
  * @returns {Array<MONSTER>}
@@ -87,7 +87,6 @@ export function getTargetStringFromElement(el) {
 	const targetIndex = Array.from(el.parentNode.children).indexOf(el)
 	return el.dataset.type + targetIndex
 }
-
 
 /**
  * @param {Room} room

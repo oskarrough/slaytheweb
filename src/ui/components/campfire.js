@@ -36,12 +36,12 @@ export default class CampfireRoom extends Component {
 									<li>
 										<button onClick=${() => this.setState({isChoosingCard: false})}>Cancel</button>
 									</li>
-							  `
+								`
 							: html`
 									<li><button onClick=${() => this.rest()}>Rest</button></li>
 									<li><button onClick=${() => this.choose('upgradeCard')}>Upgrade card</button></li>
 									<li><button onClick=${() => this.choose('removeCard')}>Remove card</button></li>
-							  `}
+								`}
 					</ul>
 				</div>
 				${isChoosingCard &&
@@ -49,7 +49,7 @@ export default class CampfireRoom extends Component {
 					<p center>${label}</p>
 					<${CardChooser}
 						gameState=${gameState}
-						cards=${gameState.deck.filter(card => !card.upgraded)}
+						cards=${gameState.deck.filter((card) => !card.upgraded)}
 						didSelectCard=${(card) => this.onSelectCard(card)}
 					/>`}
 				<p center>

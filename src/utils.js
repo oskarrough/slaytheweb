@@ -9,7 +9,7 @@ export function uuid(a) {
 	return a
 		? (a ^ ((Math.random() * 16) >> (a / 4))).toString(16)
 		: // @ts-ignore
-		  ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, uuid)
+			([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, uuid)
 }
 
 /**
@@ -97,13 +97,13 @@ export class Queue {
  * @returns {function}
  */
 export function throttle(func, delay) {
-  let lastCall = 0
-  return function (...args) {
-    const now = new Date().getTime()
-    if (now - lastCall < delay) return
-    lastCall = now
-    return func(...args)
-  }
+	let lastCall = 0
+	return function (...args) {
+		const now = new Date().getTime()
+		if (now - lastCall < delay) return
+		lastCall = now
+		return func(...args)
+	}
 }
 
 /**
@@ -115,18 +115,18 @@ export function throttle(func, delay) {
  * @returns {function}
  */
 export function debounce(func, wait, options = {}) {
-  let timeout
-  return function executedFunction(...args) {
-    const context = this
-    const later = function() {
-      timeout = null
-      if (options.trailing) func.apply(context, args)
-    }
-    const callNow = options.leading && !timeout
-    clearTimeout(timeout)
-    timeout = setTimeout(later, wait)
-    if (callNow) func.apply(context, args)
-  }
+	let timeout
+	return function executedFunction(...args) {
+		const context = this
+		const later = function () {
+			timeout = null
+			if (options.trailing) func.apply(context, args)
+		}
+		const callNow = options.leading && !timeout
+		clearTimeout(timeout)
+		timeout = setTimeout(later, wait)
+		if (callNow) func.apply(context, args)
+	}
 }
 
 /** Turns a timestamp into a string like "16. Dec 2024" */

@@ -1,5 +1,5 @@
-import { Draggable } from 'gsap/Draggable.js'
-import { cardHasValidTarget, getTargetStringFromElement } from '../game/utils-state.js'
+import {Draggable} from 'gsap/Draggable.js'
+import {cardHasValidTarget, getTargetStringFromElement} from '../game/utils-state.js'
 import gsap from './animations.js'
 import * as sounds from './sounds.js'
 
@@ -8,7 +8,7 @@ const overClass = 'is-dragOver'
 
 /** Makes the card fly back into the hand */
 function animateCardToHand(draggable) {
-	return gsap.to(draggable.target, { x: draggable.startX, y: draggable.startY, zIndex: 0 })
+	return gsap.to(draggable.target, {x: draggable.startX, y: draggable.startY, zIndex: 0})
 }
 
 /**
@@ -38,7 +38,6 @@ export default function enableDragDrop(container, afterRelease) {
 
 	cards.forEach((card) => {
 		Draggable.create(card, {
-
 			onDragStart() {
 				sounds.selectCard()
 			},

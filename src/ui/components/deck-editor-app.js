@@ -12,14 +12,18 @@ export function DeckEditorApp() {
 		setDeck({
 			id: uuid(),
 			name: `My deck ${uuid()}`,
-			custom: true
+			custom: true,
 		})
 	}
 
 	return html`
 		<div class="Box">
 			<h2>Deck Builder</h2>
-			<p>Slay the Web comes with a standard, classic deck. Now you can also create your own decks from the existing cards. Custom decks are, for now, only stored in your own browser. If you think others might find your deck fun, <a href="/manual">please contribute</a>!</p>
+			<p>
+				Slay the Web comes with a standard, classic deck. Now you can also create your own decks from the
+				existing cards. Custom decks are, for now, only stored in your own browser. If you think others might
+				find your deck fun, <a href="/manual">please contribute</a>!
+			</p>
 			<ul class="Options">
 				<li><button onClick=${createNewDeck}>New custom deck</button></li>
 			</ul>
@@ -31,14 +35,13 @@ export function DeckEditorApp() {
 
 		${deck?.custom
 			? html`<${DeckEditor}
-				deck=${deck}
-				onSaveDeck=${setDeck}
-				onDeleteDeck=${deckId => {
-					if (deck?.id === deckId) setDeck(null)
-				}}
-			/>`
-			: html`<${DeckPreview} deck=${deck} />`
-		}
+					deck=${deck}
+					onSaveDeck=${setDeck}
+					onDeleteDeck=${(deckId) => {
+						if (deck?.id === deckId) setDeck(null)
+					}}
+				/>`
+			: html`<${DeckPreview} deck=${deck} />`}
 	`
 }
 
@@ -49,9 +52,7 @@ function DeckPreview({deck}) {
 		<div class="Box">
 			<h3>${deck.name} <small>(Built-in deck)</small></h3>
 			<div class="Cards Cards--grid Cards--mini">
-				${deck.cards.map(cardName => html`
-					<${Card} key=${cardName} card=${createCard(cardName)} />
-				`)}
+				${deck.cards.map((cardName) => html` <${Card} key=${cardName} card=${createCard(cardName)} /> `)}
 			</div>
 		</div>
 	`

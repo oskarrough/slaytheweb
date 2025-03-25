@@ -11,7 +11,7 @@ export default class SplashScreen extends Component {
 		this.state = {
 			runs: [],
 			selectedDeck: null,
-			selectingDeck: false
+			selectingDeck: false,
 		}
 
 		this.handleStartGame = this.handleStartGame.bind(this)
@@ -28,7 +28,7 @@ export default class SplashScreen extends Component {
 	handleDeckSelected(deck) {
 		this.setState({selectedDeck: deck}, () => {
 			// Start game immediately when a deck is selected
-			this.handleStartGame();
+			this.handleStartGame()
 		})
 	}
 
@@ -76,17 +76,18 @@ export default class SplashScreen extends Component {
 							: html`
 									<li><button autofocus onClick=${this.props.onNewGame}>Play</button></li>
 									<li><button onClick=${this.startDeckSelection}>Custom Game</button></li>
-									<li><hr/></li>
+									<li><hr /></li>
 									<li><a class="Button" href="/?debug&tutorial">Tutorial</a></li>
 									<li><a class="Button" href="/deck-builder">Deck Builder</a></li>
 								`}
 						<li><a class="Button" href="/collection">Collection</a></li>
 						<li>
-							<a class="Button" href="/stats">Highscores
-								${this.state.runs.length > 0
-									&& html` <a class="LastRun" href=${`/stats/run?id=${run.id}`}>
-											Someone ${run.won ? 'won' : 'lost'} ${timeSince(run.createdAt)}
-										</a>` }
+							<a class="Button" href="/stats"
+								>Highscores
+								${this.state.runs.length > 0 &&
+								html` <a class="LastRun" href=${`/stats/run?id=${run.id}`}>
+									Someone ${run.won ? 'won' : 'lost'} ${timeSince(run.createdAt)}
+								</a>`}
 							</a>
 						</li>
 						<li><a class="Button" href="/manual">Manual</a></li>
