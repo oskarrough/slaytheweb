@@ -1,0 +1,82 @@
+---
+import Layout from '../layouts/Layout.astro'
+import '../styles/index.css'
+---
+
+<Layout title="Deck Editor">
+	<div id="deck-editor-app"></div>
+
+	<script>
+		import {html, render, useState, useEffect} from '../lib.js'
+		import {DeckEditor} from '../components/deck-editor.js'
+		import {DeckSelector} from '../components/deck-selector.js'
+		import {getCustomDecks, deleteDeck} from '../../content/decks.js'
+
+		function DeckEditorApp() {
+			const [view, setView] = useState('choose') // 'choose' or 'edit'
+			const [selectedDeck, setSelectedDeck] = useState(null)
+			const [customDecks, setCustomDecks] = useState([])
+
+			// Load custom decks
+			useEffect(() => {
+				const decks = getCustomDecks()
+				setCustomDecks(decks)
+			}, []) // Empty dependency array means this runs once on mount
+
+			function handleSelectDeck(deck) {
+				setSelectedDeck(deck)
+				setView('edit')
+			}
+
+			function handleCreateNewDeck() {
+				setSelectedDeck(null)
+				setView('edit')
+			}
+
+			function handleSaveDeck(deck) {
+				setView('choose')
+				// Refresh the list of custom decks
+				setCustomDecks(getCustomDecks())
+			}
+
+			function handleDeleteDeck(deckName) {
+				if (!deckName) return
+
+				// Use the deck service to delete
+				const updatedDecks = deleteDeck(deckName)
+				setCustomDecks(updatedDecks)
+
+				// If the deleted deck was the selected deck, clear the selection
+				if (selectedDeck && selectedDeck.name === deckName) {
+					setSelectedDeck(null)
+				}
+			}
+
+			function handleBack() {
+				setView('choose')
+			}
+
+			if (view === 'choose') {
+				return html`
+					<div>
+						<${DeckSelector}
+							customDecks=${customDecks}
+							onSelectDeck=${handleSelectDeck}
+							onDeleteDeck=${handleDeleteDeck}
+							onCreateNewDeck=${handleCreateNewDeck}
+						/>
+					</div>
+				`
+			} else {
+				return html`
+					<div class="Box">
+						<button onClick=${handleBack} class="Button">← Decks</button>
+					</div>
+					<${DeckEditor} deckToEdit=${selectedDeck} onSaveDeck=${handleSaveDeck} />
+				`
+			}
+		}
+
+		render(html`<${DeckEditorApp} />`, document.getElementById('deck-editor-app'))
+	</script>
+</Layout>

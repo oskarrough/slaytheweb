@@ -365,6 +365,13 @@ h2 {
 	font-size: small;
 }
 
+.Box input[type='text'] {
+	background: hsla(17, 6%, 53%, 1);
+	padding: 0.5rem;
+	border: 1px solid hsla(17, 6%, 3%, 1);
+	border-radius: 0.3rem;
+}
+
 .Box,
 .Box--text {
 	background: hsla(17, 6%, 53%, 1);
@@ -409,7 +416,7 @@ h2 {
 .Options {
 	display: flex;
 	flex-flow: column nowrap;
-	gap: 1rem;
+	gap: 0.5rem;
 	margin: 0 auto;
 	list-style: none;
 	padding: 0;
@@ -423,7 +430,8 @@ h2 {
 
 .Options--horizontal {
 	flex-flow: row nowrap;
-	gap: 0.2rem;
+	justify-content: center;
+	gap: 0.25rem;
 }
 
 /* Rewards */
@@ -484,41 +492,47 @@ h2 {
 }
 /* .driver-popover .driver-popover-footer button { } */
 
-/* Deck Chooser styles */
-.DeckTeaser {
-	flex-direction: column;
-	place-items: center;
-	place-content: center;
-	text-align: center;
-	align-items: center;
-	padding: 1rem;
-	min-width: 6em;
-	position: relative;
+.selected {
+	/* background: var(--lightblue); */
+	/* background: var(--yellow); */
+	background: color-mix(in oklab, var(--lightblue), black 20%);
 }
 
-.DeckTeaser--selected {
-	background: var(--lightblue);
-	/* background: color-mix(in oklab, var(--lightblue), white 20%); */
-}
-
-.DeckTeaser-badge {
-	position: absolute;
-	top: -5px;
-	right: -5px;
-	background: var(--highlight);
-	color: black;
-	width: 20px;
-	height: 20px;
-	border-radius: 50%;
+.deck-selector {
 	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 0.8rem;
-	font-weight: bold;
+	flex-flow: column;
 }
 
-.DeckChooser-count {
-	font-size: 0.8rem;
-	opacity: 0.8;
-	margin-top: 0.25rem;
+.Options--horizontal {
+	> li {
+		position: relative;
+		display: flex;
+		flex-flow: column;
+		justify-content: center;
+		flex-basis: var(--card-width);
+	}
+	button {
+		position: relative;
+		display: flex;
+		flex-flow: column;
+		padding-left: 0.4rem;
+		padding-right: 0.4rem;
+		font-size: 1rem;
+		small {
+			font-size: 80%;
+		}
+	}
+	button + button {
+		position: absolute;
+		top: -0.5rem;
+		left: -0.5rem;
+		padding: 0 0.2em;
+		border-width: 2px;
+		width: auto;
+		font-size: 1rem;
+	}
+	button[danger] {
+		background: var(--red);
+		color: var(--text);
+	}
 }

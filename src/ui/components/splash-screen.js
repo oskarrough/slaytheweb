@@ -2,7 +2,9 @@ import {html, Component} from '../lib.js'
 import {getRuns} from '../../game/backend.js'
 import {timeSince} from '../../utils.js'
 import gsap from '../animations.js'
-import {DeckChooser} from './deck-chooser.js'
+import {DeckSelector} from './deck-selector.js'
+import {DeckEditor} from './deck-editor.js'
+import {getCustomDecks, deleteDeck} from '../../content/decks.js'
 
 export default class SplashScreen extends Component {
 	constructor() {

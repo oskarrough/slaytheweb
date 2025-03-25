@@ -5,7 +5,7 @@
 	justify-content: center;
 	min-height: var(--card-height);
 }
-.Cards > * {
+.Cards .Card {
 	width: var(--card-width);
 	height: var(--card-height);
 	flex-shrink: 1;
@@ -134,4 +134,15 @@
 .Hand .Card[disabled] .EnergyBadge {
 	color: #fb1515;
 	background-color: hsl(0deg 73% 25%);
+}
+
+.Cards-item {
+	display: flex;
+	flex-flow: column;
+	stw-card + button {
+		margin: 0 auto;
+		font-size: 1rem;
+		position: relative;
+		top: -1rem;
+	}
 }
