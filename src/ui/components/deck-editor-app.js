@@ -18,11 +18,11 @@ export function DeckEditorApp() {
 
 	return html`
 		<div class="Box">
+			<h2>Deck Builder</h2>
+			<p>Slay the Web comes with a standard, classic deck. Now you can also create your own decks from the existing cards. Custom decks are, for now, only stored in your own browser. If you think others might find your deck fun, <a href="/manual">please contribute</a>!</p>
 			<ul class="Options">
-				<li><a href="/" class="Button">← Menu</a></li>
 				<li><button onClick=${createNewDeck}>New custom deck</button></li>
 			</ul>
-			<p>Slay the Web comes with a standard, classic deck. Now you can also create your own decks from the existing cards. Custom decks are, for now, only stored in your own browser. If you think others might find your deck fun, <a href="/manual">please contribute</a>!</p>
 		</div>
 
 		<div class="Box">
@@ -30,12 +30,12 @@ export function DeckEditorApp() {
 		</div>
 
 		${deck?.custom
-			? html`<${DeckEditor} 
-				deck=${deck} 
-				onSaveDeck=${setDeck} 
+			? html`<${DeckEditor}
+				deck=${deck}
+				onSaveDeck=${setDeck}
 				onDeleteDeck=${deckId => {
 					if (deck?.id === deckId) setDeck(null)
-				}} 
+				}}
 			/>`
 			: html`<${DeckPreview} deck=${deck} />`
 		}
@@ -44,7 +44,7 @@ export function DeckEditorApp() {
 
 function DeckPreview({deck}) {
 	if (!deck) return html``
-	
+
 	return html`
 		<div class="Box">
 			<h3>${deck.name} <small>(Built-in deck)</small></h3>
