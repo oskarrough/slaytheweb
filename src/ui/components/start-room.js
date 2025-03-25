@@ -1,5 +1,4 @@
 import {html, Component} from '../lib.js'
-import {DeckSelector} from './deck-selector.js'
 
 export default class StartRoom extends Component {
 	render() {

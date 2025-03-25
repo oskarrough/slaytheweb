@@ -151,7 +151,7 @@ export class SlayMap extends Component {
 		if (!dungeon.graph) throw new Error('No graph to render. This should not happen?', dungeon)
 
 		const currentNode = dungeon.graph[y][x]
-		
+
 		if (isEmpty(currentNode.edges)) {
 			dungeon.paths = generatePaths(dungeon.graph)
 			if (this.debug) console.log('generated new dungeon paths', {dungeon})
@@ -188,13 +188,13 @@ export class SlayMap extends Component {
 }
 
 function isEmpty(obj) {
-  for (const prop in obj) {
-    if (Object.hasOwn(obj, prop)) {
-      return false;
-    }
-  }
+	for (const prop in obj) {
+		if (Object.hasOwn(obj, prop)) {
+			return false
+		}
+	}
 
-  return true;
+	return true
 }
 
 // Since el.offsetLeft doesn't respect CSS transforms,

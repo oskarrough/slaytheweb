@@ -43,7 +43,7 @@ function minimizeGameState(state) {
 		delete draft.hand
 		delete draft.discardPile
 		delete draft.exhaustPile
-		draft.deck = draft.deck.map(card => {
+		draft.deck = draft.deck.map((card) => {
 			return card.name
 		})
 	})

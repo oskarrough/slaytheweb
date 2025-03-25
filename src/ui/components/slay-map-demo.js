@@ -5,7 +5,7 @@ import {DungeonConfig} from './dungeon-config.js'
 
 const MapDemo = () => {
 	const [dungeon, setDungeon] = useState(Dungeon())
-	const [scatter, setScatter] = useState(0)
+	const [scatter] = useState(0)
 	const x = 0
 	const y = 0
 	const onSelect = (move) => {
