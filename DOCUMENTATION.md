@@ -11,15 +11,6 @@ In the root of this project you'll find configuration files as well as three fol
 - [public →](public/) Copied to the web root as-is
 - [tests →](tests/) Contains all tests for the game engine. Nothing for the UI. Run `npm test`.
 
-## Coding style
-
-- JavaScript (ES modules)
-- Web components and Preact HTM for rendering
-- Immer for immutable state updates
-- Error handling: Use try/catch sparingly; prefer validation and early returns
-- JSDoc for documentation
-- No semicolons, single quotes, tabs
-
 ### Game
 
 #### Game State
@@ -82,27 +73,9 @@ Every card must define two exports:
 - default: the card
 - upgrade: upgrade(card) => card
 
-#### dungeon-encounters.js
+#### dungeons.js
 
 Contains different monsters, room and dungeons. All created with methods from the game.
-
-### UI
-
-The UI is made with htm and preact. I've tried not to create too many components and abstractions, although this might come back to haunt us.
-
-Everything starts with [index.html](https://github.com/oskarrough/slaytheweb/blob/main/index.html). When loaded,
-we show a splash/welcome screen as defined in [index.js](https://github.com/oskarrough/slaytheweb/blob/main/src/ui/index.js).
-
-Next, when you tap "Start Game", we load [app.js](https://github.com/oskarrough/slaytheweb/blob/main/src/ui/app.js).
-This one connects everything and manages the game state.
-
-#### Animations
-
-See [animations.js](src/ui/animations.js). Most are made with gsap.
-
-#### Sounds
-
-See [sounds.js](src/ui/sounds.js) using the Web Audio API.
 
 ## Tests
 
@@ -118,6 +91,20 @@ Additionally you can run `npm run lint` to automatically format all scripts acco
 
 You can also just run ava directly and do as you please. Example: `npm test tests/actions.js --watch`
 
+## UI
+
+The UI is made with web components, htm and preact. I've tried not to create too many components and abstractions, and copy/paste more, although this might come back to haunt us.
+
+In order to have easy HTML layouts (and more :tm:), we have Astro set up here. This means you can define new routes in src/ui/pages.
+
+### Animations
+
+See [animations.js](src/ui/animations.js). Most are made with gsap.
+
+### Sounds
+
+See [sounds.js](src/ui/sounds.js) using the Web Audio API.
+
 ## Backend
 
 With the integration of https://github.com/oskarrough/slaytheweb-backend in `game/backend.js`, you can choose to save your current run state in the Slay the Web database. Nothing but game state & date is stored. All runs are visible on `stats.html`.
@@ -125,3 +112,11 @@ With the integration of https://github.com/oskarrough/slaytheweb-backend in `gam
 ## Footnotes
 
 In the beginning I made this diagram of how the game works. It's probably outdated now but keeping it here for reference: https://kinopio.club/slay-the-web-Dh3xUjjHbol7RbCuqZQDn.
+
+- JavaScript (ES modules)
+- Web components and Preact HTM for rendering
+- Immer for immutable state updates
+- Error handling: Use try/catch sparingly; prefer validation and early returns
+- JSDoc for documentation
+- No semicolons, single quotes, tabs
+
