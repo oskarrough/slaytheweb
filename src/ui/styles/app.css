@@ -455,8 +455,22 @@ h2 {
 	padding: 0 0 0 1rem;
 }
 
-.Form p {
-	font-size: smaller;
+.Form {
+	:is(p) {
+		font-size: smaller;
+	}
+	:is(input) {
+		padding: 0.25rem;
+		margin-top: 0.25rem;
+		margin-bottom: 0.25rem;
+	}
+}
+.Form--vertical {
+	display: flex;
+	flex-direction: column;
+	:is(input) {
+		width: 100%;
+	}
 }
 
 .FlexGrid {

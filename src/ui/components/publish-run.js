@@ -25,7 +25,7 @@ export function PublishRun({game}) {
 	const duration = (endedAt - game.state.createdAt) / 1000
 
 	return html`
-		<form onSubmit=${onSubmit}>
+		<form onSubmit=${onSubmit} class="Form Form--vertical">
 			<p>You reached floor ${game.state.dungeon.y} in ${duration} seconds.</p>
 			${!didSubmit
 				? html`
@@ -35,8 +35,8 @@ export function PublishRun({game}) {
 						</label>
 						<button disabled=${loading} type="submit">Submit my run</button>
 						<p>${loading ? 'Submitting…' : ''}</p>
-						<p><a href="/stats">View highscores</a></p>
-				  `
+						<p center><a href="/stats">View highscores</a></p>
+					`
 				: html`<p>Thank you.</p>`}
 		</form>
 	`
