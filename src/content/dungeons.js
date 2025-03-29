@@ -22,4 +22,3 @@ export const createTestDungeon = () => {
 	dungeon.graph[3][0].room = MonsterRoom(Monster({hp: 42, intents}))
 	return dungeon
 }
-

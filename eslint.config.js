@@ -3,8 +3,17 @@ import globals from 'globals'
 import js from '@eslint/js'
 import prettier from 'eslint-plugin-prettier'
 import eslintConfigPrettier from 'eslint-config-prettier'
+import css from '@eslint/css'
 
 export default defineConfig([
+	// Lint CSS
+	{
+		files: ['src/**/*.css'],
+		plugins: { css },
+		language: 'css/css'
+	},
+
+	// Lint javascripts
 	{
 		files: ['src/**/*.{js,mjs,cjs}'],
 		languageOptions: {globals: globals.browser},
@@ -14,8 +23,9 @@ export default defineConfig([
 			'no-undef': 'warn',
 		},
 	},
+
+	// Prettier
 	{
-		// Apply Prettier only to files in src directory
 		files: ['src/**/*.{js,mjs,cjs}'],
 		plugins: {
 			prettier: prettier
@@ -24,6 +34,7 @@ export default defineConfig([
 			'prettier/prettier': 'error'
 		}
 	},
-	// This disables rules that conflict with Prettier globally
+
+	// Disable rules that conflict with Prettier globally
 	eslintConfigPrettier
 ])

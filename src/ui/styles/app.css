@@ -499,10 +499,10 @@ h2 {
 }
 
 .Form {
-	:is(p) {
+	& :is(p) {
 		font-size: smaller;
 	}
-	:is(input) {
+	& :is(input) {
 		padding: 0.25rem;
 		margin-top: 0.25rem;
 		margin-bottom: 0.25rem;
@@ -511,7 +511,7 @@ h2 {
 .Form--vertical {
 	display: flex;
 	flex-direction: column;
-	:is(input) {
+	& :is(input) {
 		width: 100%;
 	}
 }

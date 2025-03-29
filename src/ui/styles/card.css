@@ -5,15 +5,18 @@
 	justify-content: center;
 	min-height: var(--card-height);
 }
+
 .Cards .Card {
 	width: var(--card-width);
 	height: var(--card-height);
 	flex-shrink: 1;
 }
+
 .Cards--grid {
 	flex-wrap: wrap;
 	gap: 0.5rem;
 }
+
 .Cards--mini {
 	--card-height: 11rem;
 	/* --card-width: 13rem; */
@@ -22,42 +25,41 @@
 	/* gap: 0; */
 	/* grid-template-columns: repeat(auto-fill, minmax(min(var(--column-width), 100%), 1fr)); */
 
-
-	.Card-name {
+	& .Card-name {
 		font-size: 1rem;
 	}
-	.Card-description {
+
+	& .Card-description {
 		font-size: 0.75rem;
 	}
 
-	.Card-media img {
+	& .Card-media img {
 		height: 50px;
 	}
 }
+
 .Cards--withUpgrades {
-	> div {
+	&>div {
 		display: flex;
 		flex-flow: column wrap;
 	}
 
-	.Card {
-		height: 100%;
-	}
-
-	.Card:not([data-card-upgraded]) {
-	}
-	.Card[data-card-upgraded] {
+	& > div:hover .Card:not([data-card-upgraded]) {
 		display: none;
 	}
 
-	> div:hover {
-		.Card:not([data-card-upgraded]) {
-			display: none;
-		}
-		.Card[data-card-upgraded] {
-			display: flex;
-		}
+	& > div:hover .Card[data-card-upgraded] {
+		display: flex;
 	}
+
+	& .Card {
+		height: 100%;
+	}
+
+	& .Card[data-card-upgraded] {
+		display: none;
+	}
+
 }
 
 .Card {
@@ -73,6 +75,7 @@
 	image-rendering: -moz-crisp-edges;
 	image-rendering: pixelated;
 }
+
 .Card-inner {
 	width: 100%;
 	flex: 1;
@@ -82,11 +85,13 @@
 	color: var(--text);
 	text-align: center;
 }
+
 .Card-media {
 	margin: 0;
 	border-bottom: 2px solid #2a3335;
 	background: #111;
 }
+
 .Card-media img {
 	display: block;
 	width: 100%;
@@ -94,11 +99,13 @@
 	object-fit: cover;
 	object-position: center top;
 }
+
 @media (max-height: 500px) {
 	.Card-media img {
 		height: 70px;
 	}
 }
+
 .Card-name {
 	margin: 0.5rem 0;
 	padding: 0.5rem 0 0.1rem;
@@ -107,6 +114,7 @@
 	background-image: linear-gradient(to bottom, hsla(0, 0%, 0%, 0.2), transparent); */
 	user-select: none;
 }
+
 .Card-type {
 	margin: -0.75rem auto 0;
 	padding: 2px 5px 4px;
@@ -118,9 +126,11 @@
 	border-bottom-width: 2px;
 	border-radius: 0.4em;
 }
+
 .Card[data-card-type='attack'] .Card-type {
 	background: hsl(0deg 33% 19%);
 }
+
 .Card-description {
 	font-size: 0.875rem;
 	padding-left: 0.2em;
@@ -129,6 +139,7 @@
 	margin: 0;
 	line-height: 1.2;
 }
+
 .Card-energy {
 	position: absolute;
 	top: -1.3em;
@@ -139,6 +150,7 @@
 	box-shadow: none;
 	border-width: 0.15rem;
 }
+
 .Hand .Card[disabled] .EnergyBadge {
 	color: #fb1515;
 	background-color: hsl(0deg 73% 25%);
@@ -148,14 +160,14 @@
 	display: flex;
 	flex-flow: column;
 
-	stw-card + button {
+	& stw-card+button {
 		margin: 0 auto;
 		font-size: 1rem;
 		position: relative;
 		top: -1rem;
 	}
 
-	stw-card + button:active:not([disabled]) {
+	& stw-card+button:active:not([disabled]) {
 		top: calc(-1rem + 2px);
 	}
 }
