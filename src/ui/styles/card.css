@@ -113,6 +113,7 @@
 	/* background-color: #111;
 	background-image: linear-gradient(to bottom, hsla(0, 0%, 0%, 0.2), transparent); */
 	user-select: none;
+	-webkit-user-select: none;
 }
 
 .Card-type {

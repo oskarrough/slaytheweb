@@ -118,6 +118,7 @@ slay-map-node[type]:hover > span {
 /* the map node-types (what happens in this node) */
 slay-map-node[node-type] span {
 	user-select: none;
+	-webkit-user-select: none;
 	/* min-height: 3em; */
 	/* min-width: 3em; */
 	border-radius: 50%;

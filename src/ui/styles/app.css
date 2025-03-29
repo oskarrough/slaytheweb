@@ -47,6 +47,7 @@ button[danger] {
 
 summary {
 	user-select: none;
+	-webkit-user-select: none;
 }
 
 pre {
@@ -281,6 +282,7 @@ h2 {
 	margin-left: 1rem;
 	transition: background 700ms;
 	user-select: none;
+	-webkit-user-select: none;
 }
 .EnergyBadge > span {
 	transform: rotate(-45deg);

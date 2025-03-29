@@ -10,7 +10,13 @@ export default defineConfig([
 	{
 		files: ['src/**/*.css'],
 		plugins: { css },
-		language: 'css/css'
+		language: 'css/css',
+		...css.configs.recommended,
+		rules: {
+			"css/use-baseline": ["warn", {
+				available: 'newly'
+			}]
+		}
 	},
 
 	// Lint javascripts
