@@ -406,7 +406,7 @@ h2 {
 
 .Box,
 .Box--text {
-	background: hsla(17, 6%, 53%, 1);
+	background: hsla(17, 6%, 70%, 1);
 	color: hsl(17, 6%, 7%);
 	padding: 1rem;
 	border-radius: 0.75rem;

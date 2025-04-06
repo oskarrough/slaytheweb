@@ -4,12 +4,12 @@ Throughout the project I've attempted to document and leave comments. Go ahead a
 
 In the root of this project you'll find configuration files as well as three folders:
 
-- [src →](src/) The web root. 
+- [src](src/) The web root. 
   - [content](src/content) contains cards, dungeons, encounters and monsters etc.
   - [game](src/game) contains the core game logic
   - [ui](src/ui) is the example web interface to actually play the game
-- [public →](public/) Copied to the web root as-is, used for static images 
-- [tests →](tests/) Contains tests for the game. There are no tests for the UI.
+- [public](public/) Copied to the web root as-is, used for static images 
+- [tests](tests/) Contains tests for the game. There are no tests for the UI.
 
 ### Game
 
