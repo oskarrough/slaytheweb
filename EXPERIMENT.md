@@ -1,8 +1,6 @@
-# Slay the Web API Design
+# Slay the Web API design experiments and scratchpad
 
-## Core Principles
-
-1. **State-Based Architecture**
+1. State-Based Architecture
 - Every action operates on the full game state
 - Actions are pure functions: `(state, props) => newState`
 - This gives us great flexibility and predictability. Makes debugging, testing, and undo/redo trivial
@@ -20,7 +18,7 @@ game.enqueue({type: 'playCard', card: strike})
 game.dequeue()
 ```
 
-2. **Turn-Based Nature**
+2. Turn-Based Nature
 - Actions happen sequentially
 - Clear state transitions
 - Perfect for command pattern
@@ -53,16 +51,6 @@ Any wrapper API needs to respect this system:
 3. Past actions are tracked for undo
 4. The sequence of actions matters
 
-For example, a fluent API would need to:
-```js
-// Friendly API
-game.play(strike).on('enemy0')
-
-// Under the hood
-game.enqueue({type: 'playCard', card: strike, target: 'enemy0'})
-game.dequeue()
-```
-
 ## Design Goals
 
 1. **Readable & Intuitive**: Actions should read like English
@@ -77,7 +65,7 @@ All these styles wrap the same core state-based system, just with different ergo
 
 ### Current Style (Raw Actions)
 ```js
-// Verbose but explicit
+// Verbose and explicit
 game.enqueue({type: 'playCard', card: strike})
 game.dequeue()
 
@@ -85,6 +73,8 @@ game.dequeue()
 game.enqueue({type: 'drawCards', amount: 5})
 game.enqueue({type: 'playCard', card: strike, target: 'enemy0'})
 game.enqueue({type: 'endTurn'})
+game.dequeue()
+game.dequeue()
 game.dequeue()
 ```
 
@@ -94,19 +84,15 @@ The current style has some strong advantages:
 - Perfect foundation for building friendlier wrappers
 - Easy to serialize/deserialize for save states
 - Clear mapping between action name and implementation
+    
+
+
+
 
 ### Style A: Fluent/Chainable
-```js
-// Single actions
-game.play(strike).on('enemy0')
-game.draw(5)
 
-// Action sequences
-game
-  .draw(5)
-  .play(strike).on('enemy0')
-  .play(defend).on('player')
-  .endTurn()
+```js
+game.drawCards(5).playCard(strike, 'enemy0').endTurn().endTurn()
 
 // With conditions
 game.play(strike)
