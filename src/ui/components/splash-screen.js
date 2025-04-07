@@ -69,9 +69,11 @@ export default class SplashScreen extends Component {
 					<ul class="Options">
 						${location.hash
 							? html`
-								<li>Found a saved game. <button autofocus onClick=${this.props.onContinue}>Continue?</button></li>
-								<li><button onClick=${() => this.props.onNewGame()}>New Game</button></li>
-					`
+									<li>
+										Found a saved game. <button autofocus onClick=${this.props.onContinue}>Continue?</button>
+									</li>
+									<li><button onClick=${() => this.props.onNewGame()}>New Game</button></li>
+								`
 							: html`
 									<li><button autofocus onClick=${() => this.props.onNewGame()}>Play</button></li>
 									<li><button onClick=${this.startDeckSelection}>Custom Game</button></li>
