@@ -1,10 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import DebugUI from '../components/debug-ui.js'
+import '../styles/index.css'
 ---
 
-<script src="../components/slay-the-web.js"></script>
-
-<Layout title="Slay the Web - System">
+<Layout title="Slay the Web - debug">
   <DebugUI client:idle />
 </Layout>

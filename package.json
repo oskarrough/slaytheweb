@@ -18,6 +18,7 @@
     "release": "release-it"
   },
   "devDependencies": {
+    "@eslint/css": "^0.6.0",
     "@eslint/js": "^9.23.0",
     "astro": "5.5.4",
     "ava": "^6.2.0",

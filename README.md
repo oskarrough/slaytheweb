@@ -24,7 +24,6 @@ TLDR;
 1. Clone the repository
 2. Run `npm install` followed by `npm run dev` to open a local development server.
 
-
 ## Documentation
 
 If you're interested in contributing to the game or merely curious how it works:

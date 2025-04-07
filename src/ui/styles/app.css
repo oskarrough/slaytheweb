@@ -47,6 +47,7 @@ button[danger] {
 
 summary {
 	user-select: none;
+	-webkit-user-select: none;
 }
 
 pre {
@@ -288,6 +289,7 @@ h2 {
 	margin-left: 1rem;
 	transition: background 700ms;
 	user-select: none;
+	-webkit-user-select: none;
 }
 .EnergyBadge > span {
 	transform: rotate(-45deg);
@@ -406,7 +408,7 @@ h2 {
 
 .Box,
 .Box--text {
-	background: hsla(17, 6%, 53%, 1);
+	background: hsla(17, 6%, 70%, 1);
 	color: hsl(17, 6%, 7%);
 	padding: 1rem;
 	border-radius: 0.75rem;
@@ -506,10 +508,10 @@ h2 {
 }
 
 .Form {
-	:is(p) {
+	& :is(p) {
 		font-size: smaller;
 	}
-	:is(input) {
+	& :is(input) {
 		padding: 0.25rem;
 		margin-top: 0.25rem;
 		margin-bottom: 0.25rem;
@@ -518,7 +520,7 @@ h2 {
 .Form--vertical {
 	display: flex;
 	flex-direction: column;
-	:is(input) {
+	& :is(input) {
 		width: 100%;
 	}
 }
