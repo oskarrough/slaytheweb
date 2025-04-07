@@ -58,15 +58,22 @@ pre {
 input,
 textarea,
 select {
+	font-family: inherit;
 	cursor:
 		url(/images/cursors/select.png) 10 0,
 		auto;
 }
 
+select,
 input[type='text'],
 input[type='number'],
 textarea {
 	font-size: 1em;
+	border: 2px solid var(--text-inverse);
+	border-radius: 0.3em;
+	/* color: var(--text-inverse); */
+	box-shadow: 0 2px var(--text-inverse);
+	/* background: var(--lightblue); */
 }
 
 .Overlay input[type='text'] {
@@ -401,7 +408,7 @@ h2 {
 
 .Box,
 .Box--text {
-	background: hsla(17, 6%, 53%, 1);
+	background: hsla(17, 6%, 70%, 1);
 	color: hsl(17, 6%, 7%);
 	padding: 1rem;
 	border-radius: 0.75rem;
