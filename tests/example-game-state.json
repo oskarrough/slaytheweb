@@ -1,0 +1,2599 @@
+{
+  "turn": 3,
+  "deck": [
+    {
+      "id": "0166f0db-80c5-458a-ac71-85e79391a826",
+      "name": "Adrenaline",
+      "type": "skill",
+      "energy": 0,
+      "target": "player",
+      "damage": 0,
+      "block": 0,
+      "description": "Gain 1 Energy. Draw 2 cards. Exhaust.",
+      "actions": [
+        {
+          "type": "drawCards",
+          "parameter": {
+            "amount": 2,
+            "target": "player0"
+          }
+        },
+        {
+          "type": "addEnergyToPlayer",
+          "parameter": {
+            "amount": 2,
+            "target": "player0"
+          }
+        }
+      ],
+      "image": "serpentine-dancer.jpg",
+      "upgraded": false,
+      "exhaust": true
+    },
+    {
+      "id": "30ef7f9d-62a4-4e54-bb08-22575ff68b06",
+      "name": "Bash",
+      "type": "attack",
+      "energy": 2,
+      "target": "enemy",
+      "damage": 8,
+      "block": 0,
+      "powers": {
+        "vulnerable": 2
+      },
+      "description": "Deal 8 damage. Apply 2 Vulnerable.",
+      "image": "apteryx-mantelli.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "c49abe8a-b3f4-4d97-af37-46e67870c77f",
+      "name": "Bludgeon",
+      "type": "attack",
+      "energy": 3,
+      "target": "enemy",
+      "damage": 24,
+      "block": 0,
+      "description": "Deal 24 damage.",
+      "image": "alice-holds-the-white-king.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "3c357065-14f5-4d3e-a043-d0ed8e85cb64",
+      "name": "Body Slam",
+      "type": "attack",
+      "energy": 1,
+      "target": "enemy",
+      "damage": 0,
+      "block": 0,
+      "description": "Deal damage equal to your Block.",
+      "actions": [
+        {
+          "type": "dealDamageEqualToBlock"
+        }
+      ],
+      "image": "fallback.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "d9926561-be3d-4f4c-8fb8-e7d50537df2c",
+      "name": "Clash",
+      "type": "attack",
+      "energy": 0,
+      "target": "enemy",
+      "damage": 14,
+      "block": 0,
+      "description": "Can only be played if every card in your hand is an Attack. Deal 14 damage.",
+      "conditions": [
+        {
+          "type": "onlyType",
+          "cardType": "attack"
+        }
+      ],
+      "image": "h-sperling-horrified.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "5058c070-f7d1-4596-8886-781c0ff36efc",
+      "name": "Cleave",
+      "type": "attack",
+      "energy": 1,
+      "target": "allEnemies",
+      "damage": 8,
+      "block": 0,
+      "description": "Deal 8 damage to all enemies.",
+      "image": "vernal-equinox.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "b17dcca3-15f2-4469-85aa-2f73fb1b9d72",
+      "name": "Defend",
+      "type": "skill",
+      "energy": 1,
+      "target": "player",
+      "damage": 0,
+      "block": 5,
+      "description": "Gain 5 Block.",
+      "image": "angel-messenger.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "41d4ed36-b0a4-4ed9-8409-8815cf934c61",
+      "name": "Flourish",
+      "type": "skill",
+      "energy": 2,
+      "target": "player",
+      "damage": 0,
+      "block": 0,
+      "powers": {
+        "regen": 5
+      },
+      "description": "Gain 5 Regen. Can only be played if your health is below 50%.",
+      "conditions": [
+        {
+          "type": "healthPercentageBelow",
+          "percentage": 75
+        }
+      ],
+      "image": "5.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "adc1af8a-dbc5-4c6f-8b92-e7565c744c16",
+      "name": "Intimidate",
+      "type": "skill",
+      "energy": 0,
+      "target": "allEnemies",
+      "damage": 0,
+      "block": 0,
+      "powers": {
+        "weak": 2
+      },
+      "description": "Apply 1 Weak to ALL enemies. Exhaust.",
+      "image": "poured-millions-of-bubbles.jpg",
+      "upgraded": false,
+      "exhaust": true
+    },
+    {
+      "id": "5a93a18b-f053-4caa-a22d-4c7117c7c042",
+      "name": "Iron Wave",
+      "type": "attack",
+      "energy": 1,
+      "target": "enemy",
+      "damage": 5,
+      "block": 5,
+      "description": "Deal 5 damage. Gain 5 Block.",
+      "image": "henry-stares-back.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "007c8e3e-f605-438e-88b6-45c5ffd52e15",
+      "name": "Mask of the Faceless",
+      "type": "skill",
+      "energy": 0,
+      "target": "player",
+      "damage": 0,
+      "block": 0,
+      "description": "Gain 1 Energy",
+      "actions": [
+        {
+          "type": "addEnergyToPlayer",
+          "parameter": {
+            "amount": 1,
+            "target": "player0"
+          }
+        }
+      ],
+      "image": "mask-of-the-faceless.png",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "69b649c2-d06b-4d8f-b031-e4e332bd61c9",
+      "name": "Pommel Strike",
+      "type": "attack",
+      "energy": 1,
+      "target": "enemy",
+      "damage": 9,
+      "block": 0,
+      "description": "Deal 9 damage. Draw 1 card.",
+      "actions": [
+        {
+          "type": "drawCards",
+          "parameter": {
+            "amount": 2,
+            "target": "enemy2"
+          }
+        }
+      ],
+      "image": "8.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "a5741aa4-68b2-49cd-9810-febfb19b4d05",
+      "name": "Ritual Rain",
+      "type": "skill",
+      "energy": 2,
+      "target": "player",
+      "damage": 0,
+      "block": 0,
+      "description": "Dispel your Weaknesses and Vulnerabilities.",
+      "actions": [
+        {
+          "type": "removePlayerDebuffs"
+        }
+      ],
+      "image": "ritual-rain.png",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "a3a60507-bafa-4664-b761-87e97b32640b",
+      "name": "Soul Drain",
+      "type": "attack",
+      "energy": 1,
+      "target": "allEnemies",
+      "damage": 0,
+      "block": 0,
+      "powers": {
+        "weak": 3,
+        "vulnerable": 3
+      },
+      "description": "Apply 3 Weak and Vulnerability to ALL enemies. Drains 3 Health from you.",
+      "actions": [
+        {
+          "type": "removeHealth",
+          "parameter": {
+            "amount": 4,
+            "target": "player"
+          }
+        }
+      ],
+      "image": "soul-drain.png",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "96d54699-9384-4bc0-9320-e255bacfd418",
+      "name": "Strike",
+      "type": "attack",
+      "energy": 1,
+      "target": "enemy",
+      "damage": 6,
+      "block": 0,
+      "description": "Deal 6 damage.",
+      "image": "the-angel-of-death.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "2fec52ce-43ed-4287-876c-35447e7592b2",
+      "name": "Succube",
+      "type": "attack",
+      "energy": 3,
+      "target": "allEnemies",
+      "damage": 2,
+      "block": 0,
+      "description": "Deal 2 damage to ALL enemies and suck it into life.",
+      "actions": [
+        {
+          "type": "addRegenEqualToAllDamage"
+        }
+      ],
+      "image": "succube.png",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "95da754f-c461-4cf9-9953-cb6f032d7c3d",
+      "name": "Sucker Punch",
+      "type": "attack",
+      "energy": 1,
+      "target": "enemy",
+      "damage": 7,
+      "block": 0,
+      "powers": {
+        "weak": 1
+      },
+      "description": "Deal 7 damage. Apply 1 Weak.",
+      "image": "manicule.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "656e94a7-be8a-45fb-999a-7f071bf014c8",
+      "name": "Summer of Sam",
+      "type": "skill",
+      "energy": 1,
+      "target": "player",
+      "damage": 0,
+      "block": 0,
+      "description": "Gain 1 Health. If your health is below 50% draw 2 cards.",
+      "actions": [
+        {
+          "type": "addHealth",
+          "parameter": {
+            "amount": 2
+          }
+        },
+        {
+          "type": "drawCards",
+          "parameter": {
+            "amount": 2
+          },
+          "conditions": [
+            {
+              "type": "healthPercentageBelow",
+              "percentage": 50
+            }
+          ]
+        }
+      ],
+      "image": "bare-feet-of-god.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "ca15c60a-39ef-4afc-9bca-4deaebd172c8",
+      "name": "Terror",
+      "type": "skill",
+      "energy": 1,
+      "target": "enemy",
+      "damage": 0,
+      "block": 0,
+      "powers": {
+        "vulnerable": 99
+      },
+      "description": "Apply 99 Vulnerable. Exhaust.",
+      "image": "2.jpg",
+      "upgraded": false,
+      "exhaust": true
+    },
+    {
+      "id": "090af434-f0f7-43ab-99da-9e7dd1624b31",
+      "name": "Thunderclap",
+      "type": "attack",
+      "energy": 1,
+      "target": "allEnemies",
+      "damage": 4,
+      "block": 0,
+      "powers": {
+        "vulnerable": 1
+      },
+      "description": "Deal 4 damage. Apply 1 Vulnerable to ALL enemies.",
+      "image": "4.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "b12bb410-39bc-4af4-91ba-dfc7dec4c984",
+      "name": "Voodoo Gift",
+      "type": "attack",
+      "energy": 0,
+      "target": "enemy",
+      "damage": 0,
+      "block": 0,
+      "description": "Deal damage equal to target's Vulnerable and Weak and remove the debuffs.",
+      "actions": [
+        {
+          "type": "dealDamageEqualToWeak",
+          "parameter": {
+            "target": "enemy0"
+          }
+        },
+        {
+          "type": "dealDamageEqualToVulnerable",
+          "parameter": {
+            "target": "enemy0"
+          }
+        }
+      ],
+      "image": "voodoo-education.png",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "e6c46681-44bf-4043-9744-cee003b9a25d",
+      "name": "Adrenaline",
+      "type": "skill",
+      "energy": 0,
+      "target": "player",
+      "damage": 0,
+      "block": 0,
+      "description": "Gain 1 Energy. Draw 2 cards. Exhaust.",
+      "actions": [
+        {
+          "type": "drawCards",
+          "parameter": {
+            "amount": 2,
+            "target": "player0"
+          }
+        },
+        {
+          "type": "addEnergyToPlayer",
+          "parameter": {
+            "amount": 2,
+            "target": "player0"
+          }
+        }
+      ],
+      "image": "serpentine-dancer.jpg",
+      "upgraded": false,
+      "exhaust": true
+    }
+  ],
+  "drawPile": [
+    {
+      "id": "3c357065-14f5-4d3e-a043-d0ed8e85cb64",
+      "name": "Body Slam",
+      "type": "attack",
+      "energy": 1,
+      "target": "enemy",
+      "damage": 0,
+      "block": 0,
+      "description": "Deal damage equal to your Block.",
+      "actions": [
+        {
+          "type": "dealDamageEqualToBlock"
+        }
+      ],
+      "image": "fallback.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "c49abe8a-b3f4-4d97-af37-46e67870c77f",
+      "name": "Bludgeon",
+      "type": "attack",
+      "energy": 3,
+      "target": "enemy",
+      "damage": 24,
+      "block": 0,
+      "description": "Deal 24 damage.",
+      "image": "alice-holds-the-white-king.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "adc1af8a-dbc5-4c6f-8b92-e7565c744c16",
+      "name": "Intimidate",
+      "type": "skill",
+      "energy": 0,
+      "target": "allEnemies",
+      "damage": 0,
+      "block": 0,
+      "powers": {
+        "weak": 2
+      },
+      "description": "Apply 1 Weak to ALL enemies. Exhaust.",
+      "image": "poured-millions-of-bubbles.jpg",
+      "upgraded": false,
+      "exhaust": true
+    },
+    {
+      "id": "2fec52ce-43ed-4287-876c-35447e7592b2",
+      "name": "Succube",
+      "type": "attack",
+      "energy": 3,
+      "target": "allEnemies",
+      "damage": 2,
+      "block": 0,
+      "description": "Deal 2 damage to ALL enemies and suck it into life.",
+      "actions": [
+        {
+          "type": "addRegenEqualToAllDamage"
+        }
+      ],
+      "image": "succube.png",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "a5741aa4-68b2-49cd-9810-febfb19b4d05",
+      "name": "Ritual Rain",
+      "type": "skill",
+      "energy": 2,
+      "target": "player",
+      "damage": 0,
+      "block": 0,
+      "description": "Dispel your Weaknesses and Vulnerabilities.",
+      "actions": [
+        {
+          "type": "removePlayerDebuffs"
+        }
+      ],
+      "image": "ritual-rain.png",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "a3a60507-bafa-4664-b761-87e97b32640b",
+      "name": "Soul Drain",
+      "type": "attack",
+      "energy": 1,
+      "target": "allEnemies",
+      "damage": 0,
+      "block": 0,
+      "powers": {
+        "weak": 3,
+        "vulnerable": 3
+      },
+      "description": "Apply 3 Weak and Vulnerability to ALL enemies. Drains 3 Health from you.",
+      "actions": [
+        {
+          "type": "removeHealth",
+          "parameter": {
+            "amount": 4,
+            "target": "player"
+          }
+        }
+      ],
+      "image": "soul-drain.png",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "007c8e3e-f605-438e-88b6-45c5ffd52e15",
+      "name": "Mask of the Faceless",
+      "type": "skill",
+      "energy": 0,
+      "target": "player",
+      "damage": 0,
+      "block": 0,
+      "description": "Gain 1 Energy",
+      "actions": [
+        {
+          "type": "addEnergyToPlayer",
+          "parameter": {
+            "amount": 1,
+            "target": "player0"
+          }
+        }
+      ],
+      "image": "mask-of-the-faceless.png",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "090af434-f0f7-43ab-99da-9e7dd1624b31",
+      "name": "Thunderclap",
+      "type": "attack",
+      "energy": 1,
+      "target": "allEnemies",
+      "damage": 4,
+      "block": 0,
+      "powers": {
+        "vulnerable": 1
+      },
+      "description": "Deal 4 damage. Apply 1 Vulnerable to ALL enemies.",
+      "image": "4.jpg",
+      "upgraded": false,
+      "exhaust": false
+    }
+  ],
+  "hand": [
+    {
+      "id": "b12bb410-39bc-4af4-91ba-dfc7dec4c984",
+      "name": "Voodoo Gift",
+      "type": "attack",
+      "energy": 0,
+      "target": "enemy",
+      "damage": 0,
+      "block": 0,
+      "description": "Deal damage equal to target's Vulnerable and Weak and remove the debuffs.",
+      "actions": [
+        {
+          "type": "dealDamageEqualToWeak",
+          "parameter": {
+            "target": "enemy0"
+          }
+        },
+        {
+          "type": "dealDamageEqualToVulnerable",
+          "parameter": {
+            "target": "enemy0"
+          }
+        }
+      ],
+      "image": "voodoo-education.png",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "30ef7f9d-62a4-4e54-bb08-22575ff68b06",
+      "name": "Bash",
+      "type": "attack",
+      "energy": 2,
+      "target": "enemy",
+      "damage": 8,
+      "block": 0,
+      "powers": {
+        "vulnerable": 2
+      },
+      "description": "Deal 8 damage. Apply 2 Vulnerable.",
+      "image": "apteryx-mantelli.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "d9926561-be3d-4f4c-8fb8-e7d50537df2c",
+      "name": "Clash",
+      "type": "attack",
+      "energy": 0,
+      "target": "enemy",
+      "damage": 14,
+      "block": 0,
+      "description": "Can only be played if every card in your hand is an Attack. Deal 14 damage.",
+      "conditions": [
+        {
+          "type": "onlyType",
+          "cardType": "attack"
+        }
+      ],
+      "image": "h-sperling-horrified.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "656e94a7-be8a-45fb-999a-7f071bf014c8",
+      "name": "Summer of Sam",
+      "type": "skill",
+      "energy": 1,
+      "target": "player",
+      "damage": 0,
+      "block": 0,
+      "description": "Gain 1 Health. If your health is below 50% draw 2 cards.",
+      "actions": [
+        {
+          "type": "addHealth",
+          "parameter": {
+            "amount": 2
+          }
+        },
+        {
+          "type": "drawCards",
+          "parameter": {
+            "amount": 2
+          },
+          "conditions": [
+            {
+              "type": "healthPercentageBelow",
+              "percentage": 50
+            }
+          ]
+        }
+      ],
+      "image": "bare-feet-of-god.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "0166f0db-80c5-458a-ac71-85e79391a826",
+      "name": "Adrenaline",
+      "type": "skill",
+      "energy": 0,
+      "target": "player",
+      "damage": 0,
+      "block": 0,
+      "description": "Gain 1 Energy. Draw 2 cards. Exhaust.",
+      "actions": [
+        {
+          "type": "drawCards",
+          "parameter": {
+            "amount": 2,
+            "target": "player0"
+          }
+        },
+        {
+          "type": "addEnergyToPlayer",
+          "parameter": {
+            "amount": 2,
+            "target": "player0"
+          }
+        }
+      ],
+      "image": "serpentine-dancer.jpg",
+      "upgraded": false,
+      "exhaust": true
+    }
+  ],
+  "discardPile": [
+    {
+      "id": "b17dcca3-15f2-4469-85aa-2f73fb1b9d72",
+      "name": "Defend",
+      "type": "skill",
+      "energy": 1,
+      "target": "player",
+      "damage": 0,
+      "block": 5,
+      "description": "Gain 5 Block.",
+      "image": "angel-messenger.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "69b649c2-d06b-4d8f-b031-e4e332bd61c9",
+      "name": "Pommel Strike",
+      "type": "attack",
+      "energy": 1,
+      "target": "enemy",
+      "damage": 9,
+      "block": 0,
+      "description": "Deal 9 damage. Draw 1 card.",
+      "actions": [
+        {
+          "type": "drawCards",
+          "parameter": {
+            "amount": 2,
+            "target": "enemy2"
+          }
+        }
+      ],
+      "image": "8.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "96d54699-9384-4bc0-9320-e255bacfd418",
+      "name": "Strike",
+      "type": "attack",
+      "energy": 1,
+      "target": "enemy",
+      "damage": 6,
+      "block": 0,
+      "description": "Deal 6 damage.",
+      "image": "the-angel-of-death.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "5a93a18b-f053-4caa-a22d-4c7117c7c042",
+      "name": "Iron Wave",
+      "type": "attack",
+      "energy": 1,
+      "target": "enemy",
+      "damage": 5,
+      "block": 5,
+      "description": "Deal 5 damage. Gain 5 Block.",
+      "image": "henry-stares-back.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "5058c070-f7d1-4596-8886-781c0ff36efc",
+      "name": "Cleave",
+      "type": "attack",
+      "energy": 1,
+      "target": "allEnemies",
+      "damage": 8,
+      "block": 0,
+      "description": "Deal 8 damage to all enemies.",
+      "image": "vernal-equinox.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "95da754f-c461-4cf9-9953-cb6f032d7c3d",
+      "name": "Sucker Punch",
+      "type": "attack",
+      "energy": 1,
+      "target": "enemy",
+      "damage": 7,
+      "block": 0,
+      "powers": {
+        "weak": 1
+      },
+      "description": "Deal 7 damage. Apply 1 Weak.",
+      "image": "manicule.jpg",
+      "upgraded": false,
+      "exhaust": false
+    },
+    {
+      "id": "41d4ed36-b0a4-4ed9-8409-8815cf934c61",
+      "name": "Flourish",
+      "type": "skill",
+      "energy": 2,
+      "target": "player",
+      "damage": 0,
+      "block": 0,
+      "powers": {
+        "regen": 5
+      },
+      "description": "Gain 5 Regen. Can only be played if your health is below 50%.",
+      "conditions": [
+        {
+          "type": "healthPercentageBelow",
+          "percentage": 75
+        }
+      ],
+      "image": "5.jpg",
+      "upgraded": false,
+      "exhaust": false
+    }
+  ],
+  "exhaustPile": [
+    {
+      "id": "e6c46681-44bf-4043-9744-cee003b9a25d",
+      "name": "Adrenaline",
+      "type": "skill",
+      "energy": 0,
+      "target": "player",
+      "damage": 0,
+      "block": 0,
+      "description": "Gain 1 Energy. Draw 2 cards. Exhaust.",
+      "actions": [
+        {
+          "type": "drawCards",
+          "parameter": {
+            "amount": 2,
+            "target": "player0"
+          }
+        },
+        {
+          "type": "addEnergyToPlayer",
+          "parameter": {
+            "amount": 2,
+            "target": "player0"
+          }
+        }
+      ],
+      "image": "serpentine-dancer.jpg",
+      "upgraded": false,
+      "exhaust": true
+    },
+    {
+      "id": "ca15c60a-39ef-4afc-9bca-4deaebd172c8",
+      "name": "Terror",
+      "type": "skill",
+      "energy": 1,
+      "target": "enemy",
+      "damage": 0,
+      "block": 0,
+      "powers": {
+        "vulnerable": 99
+      },
+      "description": "Apply 99 Vulnerable. Exhaust.",
+      "image": "2.jpg",
+      "upgraded": false,
+      "exhaust": true
+    }
+  ],
+  "player": {
+    "maxEnergy": 3,
+    "currentEnergy": 3,
+    "maxHealth": 72,
+    "currentHealth": 63,
+    "block": 0,
+    "powers": {}
+  },
+  "dungeon": {
+    "id": "d6812ae1-6eed-43e2-89b7-014cafe9d551",
+    "graph": [
+      [
+        {
+          "id": "0a8e9382-18be-42f1-ab58-2e04486383c8",
+          "type": "start",
+          "room": {
+            "type": "start"
+          },
+          "edges": {},
+          "didVisit": false
+        }
+      ],
+      [
+        {
+          "id": "3c5a0f10-c44b-4dd6-bdc6-3959f507f16c",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 10,
+                "maxHealth": 10,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 5
+                  },
+                  {
+                    "damage": 11
+                  },
+                  {
+                    "damage": 9
+                  },
+                  {
+                    "block": 9
+                  }
+                ],
+                "nextIntent": 0
+              },
+              {
+                "currentHealth": 12,
+                "maxHealth": 12,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 9
+                  },
+                  {
+                    "damage": 10
+                  },
+                  {
+                    "damage": 5
+                  },
+                  {
+                    "block": 5
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "17329fc1-147f-4f30-8eb0-a996f48aa63c",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 13,
+                "maxHealth": 13,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 8
+                  },
+                  {
+                    "damage": 11
+                  },
+                  {
+                    "damage": 9
+                  },
+                  {
+                    "block": 9
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "9a32424b-621c-4533-a3cb-462332547ee2",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 13,
+                "maxHealth": 13,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 8
+                  },
+                  {
+                    "damage": 11
+                  },
+                  {
+                    "damage": 9
+                  },
+                  {
+                    "block": 9
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "abf83261-c093-4cd5-ba27-94d9ce82757e",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": -89,
+                "maxHealth": 10,
+                "block": 0,
+                "powers": {
+                  "vulnerable": 98
+                },
+                "intents": [
+                  {
+                    "damage": 5
+                  },
+                  {
+                    "damage": 11
+                  },
+                  {
+                    "damage": 9
+                  },
+                  {
+                    "block": 9
+                  }
+                ],
+                "nextIntent": 0
+              },
+              {
+                "currentHealth": -5,
+                "maxHealth": 12,
+                "block": 0,
+                "powers": {
+                  "vulnerable": 1
+                },
+                "intents": [
+                  {
+                    "damage": 9
+                  },
+                  {
+                    "damage": 10
+                  },
+                  {
+                    "damage": 5
+                  },
+                  {
+                    "block": 5
+                  }
+                ],
+                "nextIntent": 1
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": true
+        },
+        {
+          "id": "cd6366ae-9f00-4ce5-80eb-e7b9454b7ec1",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "1f3885ad-723c-48e6-992c-ad3ce2088c41",
+          "edges": {},
+          "didVisit": false
+        }
+      ],
+      [
+        {
+          "id": "7249e6d0-8a9f-46c2-93a6-ba3d0bc4e1fe",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "24a7c5e0-ccde-4534-9b46-b831ec75ac76",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "59762c0d-c678-4fd6-94d6-01380670e92f",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 43,
+                "maxHealth": 43,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 11
+                  },
+                  {
+                    "damage": 7,
+                    "block": 5
+                  },
+                  {
+                    "block": 6
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "78e436e7-cf21-472f-abed-dfcfbe08a2de",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 13,
+                "maxHealth": 13,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 5
+                  }
+                ],
+                "nextIntent": 0
+              },
+              {
+                "currentHealth": 7,
+                "maxHealth": 12,
+                "block": 0,
+                "powers": {
+                  "vulnerable": 98
+                },
+                "intents": [
+                  {
+                    "damage": 5
+                  }
+                ],
+                "nextIntent": 0
+              },
+              {
+                "currentHealth": -4,
+                "maxHealth": 11,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 7
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": true
+        },
+        {
+          "id": "d0f9cec4-e021-469c-86b3-7efaf49b5306",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 35,
+                "maxHealth": 35,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "vulnerable": 1
+                  },
+                  {
+                    "damage": 10
+                  },
+                  {
+                    "damage": 8
+                  },
+                  {},
+                  {
+                    "weak": 1
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "be966722-4ba9-4129-81c7-b7c4d797cf3d",
+          "edges": {},
+          "didVisit": false
+        }
+      ],
+      [
+        {
+          "id": "0b884b67-8f62-48c4-9b85-958931d17857",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "bb827fc0-bad8-4993-a989-6fca351662b3",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 20,
+                "maxHealth": 20,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 6
+                  },
+                  {
+                    "damage": 11
+                  },
+                  {
+                    "damage": 4
+                  },
+                  {
+                    "block": 9
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "86e95787-c4c4-48dc-8e10-98a111921762",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "f1da6bd3-98aa-4223-8684-0cf6269f6f50",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 20,
+                "maxHealth": 20,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 6
+                  },
+                  {
+                    "damage": 11
+                  },
+                  {
+                    "damage": 4
+                  },
+                  {
+                    "block": 9
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "cb9f71fb-0615-450b-a4df-515acdd7a2d9",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "87857f85-d0fb-4b30-92ff-70e4200bd8aa",
+          "type": "C",
+          "room": {
+            "type": "campfire"
+          },
+          "edges": {},
+          "didVisit": false
+        }
+      ],
+      [
+        {
+          "id": "7b0ea4f7-1621-4c0e-9a40-3abfbe766b44",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "14312cba-d49a-4cb7-904c-ad02ff00c6ea",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "627fab86-213a-4644-9b0c-b7deb2f5df0d",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "80a257dc-ebcb-4826-9756-743b686ae4fc",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 43,
+                "maxHealth": 43,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 11
+                  },
+                  {
+                    "damage": 7,
+                    "block": 5
+                  },
+                  {
+                    "block": 6
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "17b654b6-9ff1-4f14-8071-3f2978c08450",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 20,
+                "maxHealth": 20,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 6
+                  },
+                  {
+                    "damage": 11
+                  },
+                  {
+                    "damage": 4
+                  },
+                  {
+                    "block": 9
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "7847dec5-fe16-4adc-8c36-820bd601d2d0",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 13,
+                "maxHealth": 13,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 5
+                  }
+                ],
+                "nextIntent": 0
+              },
+              {
+                "currentHealth": 12,
+                "maxHealth": 12,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 5
+                  }
+                ],
+                "nextIntent": 0
+              },
+              {
+                "currentHealth": 11,
+                "maxHealth": 11,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 7
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        }
+      ],
+      [
+        {
+          "id": "49319338-4078-45f6-bcb5-f191e61ad4d0",
+          "type": "C",
+          "room": {
+            "type": "campfire"
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "b88c5bb3-6177-4921-bd95-7b6a2dff1fc8",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 43,
+                "maxHealth": 43,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 11
+                  },
+                  {
+                    "damage": 7,
+                    "block": 5
+                  },
+                  {
+                    "block": 6
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "584fe938-4312-4360-a02f-845f1530c180",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "dea5111a-0d52-4388-a916-56d3210e16dc",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 43,
+                "maxHealth": 43,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 11
+                  },
+                  {
+                    "damage": 7,
+                    "block": 5
+                  },
+                  {
+                    "block": 6
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "79aae134-fcff-4fde-a0ec-3f078cf6e295",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "b50c7699-d365-4897-b521-471411125f12",
+          "type": "E",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 70,
+                "maxHealth": 70,
+                "block": 12,
+                "powers": {},
+                "intents": [
+                  {
+                    "block": 5
+                  },
+                  {
+                    "damage": 16
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        }
+      ],
+      [
+        {
+          "id": "c032671b-8cd3-467f-9ef1-89730a85fdf7",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "6dec7542-373f-4685-82e3-822ed8dc345e",
+          "type": "C",
+          "room": {
+            "type": "campfire"
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "f18475d2-265c-454a-b122-6133aaea9f2e",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "dea8e68e-a847-4fe3-a231-ab6a9f0d5ceb",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 20,
+                "maxHealth": 20,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 6
+                  },
+                  {
+                    "damage": 11
+                  },
+                  {
+                    "damage": 4
+                  },
+                  {
+                    "block": 9
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "25f09359-293d-4e36-a4c3-8102fc66612b",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 20,
+                "maxHealth": 20,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 6
+                  },
+                  {
+                    "damage": 11
+                  },
+                  {
+                    "damage": 4
+                  },
+                  {
+                    "block": 9
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "268e11b4-22c2-4816-b097-de7c6a831b1f",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 20,
+                "maxHealth": 20,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 6
+                  },
+                  {
+                    "damage": 11
+                  },
+                  {
+                    "damage": 4
+                  },
+                  {
+                    "block": 9
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        }
+      ],
+      [
+        {
+          "id": "1744f9c9-75c1-4e92-ab63-e14367ef8681",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "3bb17118-6c43-47d6-94e7-9c3002361408",
+          "type": "C",
+          "room": {
+            "type": "campfire"
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "8df35712-73a5-4f32-87a8-2b35850452f4",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 14,
+                "maxHealth": 14,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 7
+                  },
+                  {
+                    "block": 4,
+                    "damage": 7
+                  },
+                  {
+                    "damage": 5
+                  },
+                  {},
+                  {
+                    "block": 6
+                  }
+                ],
+                "nextIntent": 0
+              },
+              {
+                "currentHealth": 29,
+                "maxHealth": 29,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 7
+                  },
+                  {
+                    "damage": 6
+                  },
+                  {
+                    "weak": 1
+                  },
+                  {
+                    "damage": 4
+                  },
+                  {}
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "9ed8ca05-0c23-4d66-9652-85b2610fed25",
+          "type": "E",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 46,
+                "maxHealth": 46,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 12
+                  },
+                  {
+                    "block": 6,
+                    "damage": 11
+                  },
+                  {
+                    "block": 5,
+                    "damage": 16
+                  },
+                  {},
+                  {
+                    "block": 6
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "6e4b2903-59f4-4bf4-83b5-3953e88094d2",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "c5dc9bbb-2069-4486-b9f7-a93b1b6e2bd6",
+          "edges": {},
+          "didVisit": false
+        }
+      ],
+      [
+        {
+          "id": "e756d3ad-15a5-4aab-aef3-9cf93da2abf6",
+          "type": "C",
+          "room": {
+            "type": "campfire"
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "02f4dc7d-0ffd-46d2-af83-ab2015a5d596",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "919a66a7-69a8-417b-875c-4aa40546ba83",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 28,
+                "maxHealth": 28,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "weak": 1
+                  },
+                  {
+                    "block": 10,
+                    "damage": 10
+                  },
+                  {
+                    "damage": 21
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "ca40bbf9-410c-4806-8a7c-b4cd66338b95",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 13,
+                "maxHealth": 13,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 5
+                  }
+                ],
+                "nextIntent": 0
+              },
+              {
+                "currentHealth": 12,
+                "maxHealth": 12,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 5
+                  }
+                ],
+                "nextIntent": 0
+              },
+              {
+                "currentHealth": 11,
+                "maxHealth": 11,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 7
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "bd1e42ab-ab3d-445c-aa1c-834bf3885c20",
+          "type": "C",
+          "room": {
+            "type": "campfire"
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "79b0b902-c2ec-48b8-87e6-dd5823d56584",
+          "edges": {},
+          "didVisit": false
+        }
+      ],
+      [
+        {
+          "id": "002bc723-cc49-417b-b4a0-b898b57609bf",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "ba7060f0-398f-4c14-8da7-f4ff4b2f7605",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "ae93b6f7-c66c-47d7-ac7c-60cfed10c57a",
+          "type": "E",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 70,
+                "maxHealth": 70,
+                "block": 12,
+                "powers": {},
+                "intents": [
+                  {
+                    "block": 5
+                  },
+                  {
+                    "damage": 16
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "e725f288-2b2a-44fd-aa59-c3af84a32633",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "0d7076c1-3436-4dd1-b533-9714e0b7f530",
+          "type": "E",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 45,
+                "maxHealth": 45,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "weak": 1
+                  },
+                  {
+                    "damage": 10
+                  }
+                ],
+                "nextIntent": 0
+              },
+              {
+                "currentHealth": 40,
+                "maxHealth": 40,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 10
+                  },
+                  {
+                    "weak": 1
+                  },
+                  {
+                    "damage": 4
+                  }
+                ],
+                "nextIntent": 0
+              },
+              {
+                "currentHealth": 44,
+                "maxHealth": 44,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 2
+                  },
+                  {
+                    "damage": 10
+                  },
+                  {
+                    "damage": 8
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "a00a4327-8d3d-4f29-8580-4ee4f1d7e73f",
+          "type": "C",
+          "room": {
+            "type": "campfire"
+          },
+          "edges": {},
+          "didVisit": false
+        }
+      ],
+      [
+        {
+          "id": "7535336a-ab3b-40ea-a984-d24345f095d9",
+          "type": "E",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 46,
+                "maxHealth": 46,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 12
+                  },
+                  {
+                    "block": 6,
+                    "damage": 11
+                  },
+                  {
+                    "block": 5,
+                    "damage": 16
+                  },
+                  {},
+                  {
+                    "block": 6
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "316bca1f-013c-4029-be44-02e2c679b96e",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "af2d4bd0-ccfb-4e86-be45-3623f3d3a956",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "aed6e315-d7c6-41a9-820a-3b3d72a8d051",
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "b691f49c-8cc4-4c47-bae1-d881e1154726",
+          "type": "M",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 13,
+                "maxHealth": 13,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 5
+                  }
+                ],
+                "nextIntent": 0
+              },
+              {
+                "currentHealth": 12,
+                "maxHealth": 12,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 5
+                  }
+                ],
+                "nextIntent": 0
+              },
+              {
+                "currentHealth": 11,
+                "maxHealth": 11,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 7
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        },
+        {
+          "id": "66d0c863-cb39-4423-a961-867cff91cf4d",
+          "type": "C",
+          "room": {
+            "type": "campfire"
+          },
+          "edges": {},
+          "didVisit": false
+        }
+      ],
+      [
+        {
+          "id": "8d1a12db-f269-42c6-9306-2fcb27a097d0",
+          "type": "boss",
+          "room": {
+            "type": "monster",
+            "monsters": [
+              {
+                "currentHealth": 124,
+                "maxHealth": 124,
+                "block": 0,
+                "powers": {},
+                "intents": [
+                  {
+                    "damage": 12
+                  },
+                  {
+                    "block": 6
+                  },
+                  {
+                    "damage": 13
+                  },
+                  {
+                    "damage": 3
+                  },
+                  {
+                    "weak": 2
+                  }
+                ],
+                "nextIntent": 0
+              }
+            ]
+          },
+          "edges": {},
+          "didVisit": false
+        }
+      ]
+    ],
+    "paths": [
+      [
+        [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            0
+          ]
+        ],
+        [
+          [
+            1,
+            0
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        [
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            1
+          ]
+        ],
+        [
+          [
+            3,
+            1
+          ],
+          [
+            4,
+            3
+          ]
+        ],
+        [
+          [
+            4,
+            3
+          ],
+          [
+            5,
+            0
+          ]
+        ],
+        [
+          [
+            5,
+            0
+          ],
+          [
+            6,
+            1
+          ]
+        ],
+        [
+          [
+            6,
+            1
+          ],
+          [
+            7,
+            1
+          ]
+        ],
+        [
+          [
+            7,
+            1
+          ],
+          [
+            8,
+            0
+          ]
+        ],
+        [
+          [
+            8,
+            0
+          ],
+          [
+            9,
+            2
+          ]
+        ],
+        [
+          [
+            9,
+            2
+          ],
+          [
+            10,
+            0
+          ]
+        ],
+        [
+          [
+            10,
+            0
+          ],
+          [
+            11,
+            0
+          ]
+        ]
+      ],
+      [
+        [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        [
+          [
+            1,
+            2
+          ],
+          [
+            2,
+            2
+          ]
+        ],
+        [
+          [
+            2,
+            2
+          ],
+          [
+            3,
+            3
+          ]
+        ],
+        [
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            3
+          ]
+        ],
+        [
+          [
+            4,
+            3
+          ],
+          [
+            5,
+            3
+          ]
+        ],
+        [
+          [
+            5,
+            3
+          ],
+          [
+            6,
+            3
+          ]
+        ],
+        [
+          [
+            6,
+            3
+          ],
+          [
+            7,
+            2
+          ]
+        ],
+        [
+          [
+            7,
+            2
+          ],
+          [
+            8,
+            2
+          ]
+        ],
+        [
+          [
+            8,
+            2
+          ],
+          [
+            9,
+            2
+          ]
+        ],
+        [
+          [
+            9,
+            2
+          ],
+          [
+            10,
+            4
+          ]
+        ],
+        [
+          [
+            10,
+            4
+          ],
+          [
+            11,
+            0
+          ]
+        ]
+      ],
+      [
+        [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            3
+          ]
+        ],
+        [
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            3
+          ]
+        ],
+        [
+          [
+            2,
+            3
+          ],
+          [
+            3,
+            3
+          ]
+        ],
+        [
+          [
+            3,
+            3
+          ],
+          [
+            4,
+            3
+          ]
+        ],
+        [
+          [
+            4,
+            3
+          ],
+          [
+            5,
+            3
+          ]
+        ],
+        [
+          [
+            5,
+            3
+          ],
+          [
+            6,
+            3
+          ]
+        ],
+        [
+          [
+            6,
+            3
+          ],
+          [
+            7,
+            3
+          ]
+        ],
+        [
+          [
+            7,
+            3
+          ],
+          [
+            8,
+            3
+          ]
+        ],
+        [
+          [
+            8,
+            3
+          ],
+          [
+            9,
+            4
+          ]
+        ],
+        [
+          [
+            9,
+            4
+          ],
+          [
+            10,
+            4
+          ]
+        ],
+        [
+          [
+            10,
+            4
+          ],
+          [
+            11,
+            0
+          ]
+        ]
+      ],
+      [
+        [
+          [
+            0,
+            0
+          ],
+          [
+            1,
+            3
+          ]
+        ],
+        [
+          [
+            1,
+            3
+          ],
+          [
+            2,
+            4
+          ]
+        ],
+        [
+          [
+            2,
+            4
+          ],
+          [
+            3,
+            5
+          ]
+        ],
+        [
+          [
+            3,
+            5
+          ],
+          [
+            4,
+            5
+          ]
+        ],
+        [
+          [
+            4,
+            5
+          ],
+          [
+            5,
+            5
+          ]
+        ],
+        [
+          [
+            5,
+            5
+          ],
+          [
+            6,
+            5
+          ]
+        ],
+        [
+          [
+            6,
+            5
+          ],
+          [
+            7,
+            3
+          ]
+        ],
+        [
+          [
+            7,
+            3
+          ],
+          [
+            8,
+            4
+          ]
+        ],
+        [
+          [
+            8,
+            4
+          ],
+          [
+            9,
+            5
+          ]
+        ],
+        [
+          [
+            9,
+            5
+          ],
+          [
+            10,
+            5
+          ]
+        ],
+        [
+          [
+            10,
+            5
+          ],
+          [
+            11,
+            0
+          ]
+        ]
+      ]
+    ],
+    "x": 3,
+    "y": 2,
+    "pathTaken": [
+      [
+        0,
+        0
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        2
+      ]
+    ]
+  },
+  "createdAt": 1742928242873,
+  "won": false
+}
