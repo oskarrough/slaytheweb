@@ -5,6 +5,7 @@ import powers from './powers.js'
 import {conditionsAreValid} from './conditions.js'
 import {createCard, CardTargets} from './cards.js'
 import {createDefaultDungeon} from '../content/dungeons.js'
+import {getMonsterIntents} from './monster.js'
 
 // Enable support for Map and Set. See https://immerjs.github.io/immer/installation/
 enableMapSet()
@@ -511,11 +512,12 @@ function takeMonsterTurn(state, monsterIndex) {
 		 */
 
 		// Get current intent.
-		const intent = monster.intents[monster.nextIntent || 0]
+		const intents = getMonsterIntents(monster)
+		const intent = intents[monster.nextIntent || 0]
 		if (!intent) return
 
 		// Increment for next turn..
-		if (monster.nextIntent === monster.intents.length - 1) {
+		if (monster.nextIntent === intents.length - 1) {
 			monster.nextIntent = 0
 		} else {
 			monster.nextIntent++

@@ -6,6 +6,7 @@ import {
 	poison as poisonPower,
 	strength as strengthPower,
 } from '../../game/powers.js'
+import {getMonsterIntents} from '../../game/monster.js'
 
 /**
  * @typedef {object} TargetProps
@@ -29,7 +30,8 @@ export const Player = (props) => {
 export const Monster = (props) => {
 	const monster = props.model
 	const state = props.gameState
-	const intent = monster.intents[monster.nextIntent]
+	const intents = getMonsterIntents(monster)
+	const intent = intents[monster.nextIntent]
 
 	function MonsterIntent([type, amount]) {
 		const weakened = monster.powers.weak
