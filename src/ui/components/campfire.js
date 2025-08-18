@@ -1,6 +1,7 @@
 import {pick} from '../../utils.js'
 import {html, Component} from '../lib.js'
 import CardChooser from './card-chooser.js'
+import {isCurrRoomCompleted} from '../../game/utils-state.js'
 
 export default class CampfireRoom extends Component {
 	rest() {
@@ -23,6 +24,17 @@ export default class CampfireRoom extends Component {
 		const {gameState} = props
 		const {choice, isChoosingCard} = state
 		let label = ''
+		if (isCurrRoomCompleted(gameState)){
+			return html`
+			<div class="Container Container--center">
+				<h1 center>You've already made a choice</h1>
+				<p center>
+					<button onClick=${props.onContinue}>Continue to the next room</button>
+				</p>
+			</div>
+		`;
+		}
+			
 		if (choice === 'upgradeCard') label = 'Choose a card to upgrade'
 		if (choice === 'removeCard') label = 'Choose a card to remove'
 		return html`
