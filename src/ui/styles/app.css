@@ -442,7 +442,7 @@ h2 {
 	max-width: 40ch;
 
 	&:has(.Options) {
-		max-width: 30ch;
+		max-width: 36ch;
 	}
 }
 
@@ -552,6 +552,7 @@ h2 {
 	display: flex;
 	flex-flow: row wrap;
 	align-items: baseline;
+	gap: 0.3em;
 }
 
 #driver-popover-content {
