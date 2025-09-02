@@ -19,8 +19,9 @@ export function DeckSelector({onSelectDeck}) {
 					<li>
 						<button onClick=${() => select(deck)} class=${selectedDeck?.id === deck.id ? 'selected' : ''}>
 							${deck.name}
-							<small>${deck.cards.length} cards</small>
-							${deck.custom && html`<small>custom</small>`}
+							<small>
+								${deck.cards.length} cards, ${deck.custom ? 'custom' : 'built-in'}
+							</small>
 						</button>
 					</li>
 				`,

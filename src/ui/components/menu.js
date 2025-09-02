@@ -27,7 +27,6 @@ export default function Menu({game, gameState, onUndo}) {
 
 	return html`
 		<div class="Container">
-			<h1 center>Slay the Web</h1>
 			<br />
 			<br />
 			<div class="Box">
@@ -37,11 +36,11 @@ export default function Menu({game, gameState, onUndo}) {
 							onClick=${() => saveToUrl(gameState)}
 							title="Your save game will be stored in the URL. Copy it"
 						>
-							Save
+							Save game
 						</button>
 					</li>
 					<li>
-						<button onClick=${() => abandonGame()}>Abandon Game</button>
+						<button danger onClick=${() => abandonGame()}>Abandon game</button>
 					</li>
 					<li>
 						<label>Sound <input type="checkbox" checked=${!muted} onClick=${() => toggleSound()} /></label>

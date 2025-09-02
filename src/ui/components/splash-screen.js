@@ -44,28 +44,28 @@ export default class SplashScreen extends Component {
 
 		if (state.selectingDeck) {
 			return html`
-				<article class="Splash Container">
-					<header class="Header">
-						<h1>Choose a Deck</h1>
-					</header>
+				<article class="Splash Container Container--vcenter">
 					<div class="Box">
 						<ul class="Options">
-							<li><button onClick=${() => this.setState({selectingDeck: false})}>Back</button></li>
+							<li><button onClick=${() => this.setState({selectingDeck: false})}>← Menu</button></li>
 						</ul>
+						<br/>
+						<h2>Choose a deck</h2>
 						<${DeckSelector} onSelectDeck=${(deck) => this.handleDeckSelected(deck)} />
+						<ul class="Options">
+							<li><hr /></li>
+							<li><a class="Button" href="/deck-builder">Deck builder →</a></li>
+						</ul>
 					</div>
 				</article>
 			`
 		}
 
 		return html`
-			<article class="Splash Container">
-				<header class="Header">
-					<h1>Slay the Web</h1>
-					<h2>A card crawl adventure for you and your browser</h2>
-					<img class="Splash-spoder" src="/images/spoder.png" title="Oh hello" />
-				</header>
+			<article class="Splash Container Container--vcenter">
+				<img class="Splash-spoder" src="/images/spoder.png" title="Oh hello" />
 				<div class="Box">
+					<h1 class="Splash-title">Slay the Web</h1>
 					<ul class="Options">
 						${location.hash
 							? html`
@@ -75,8 +75,8 @@ export default class SplashScreen extends Component {
 									<li><button onClick=${() => this.props.onNewGame()}>New Game</button></li>
 								`
 							: html`
-									<li><button autofocus onClick=${() => this.props.onNewGame()}>Play</button></li>
-									<li><button onClick=${this.startDeckSelection}>Custom Game</button></li>
+									<li><button class="primary" autofocus onClick=${() => this.props.onNewGame()}>Play</button></li>
+									<li><button onClick=${this.startDeckSelection}>Play custom deck</button></li>
 									<li><hr /></li>
 									<li><a class="Button" href="/?debug&tutorial">Tutorial</a></li>
 									<li><a class="Button" href="/deck-builder">Deck Builder</a></li>

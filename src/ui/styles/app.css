@@ -36,6 +36,18 @@ summary {
 		auto;
 }
 
+button.primary {
+	font-weight: 600;
+	/* background: var(--teal); */
+	/* color: var(--text); */
+
+	&:active,
+	&:hover {
+		/* background: color-mix(in oklab, var(--teal), white 6%); */
+		/* color: var(--text); */
+	}
+}
+
 button[danger] {
 	background: var(--red);
 	color: var(--text);
@@ -146,13 +158,12 @@ h1 {
 	font-size: 4rem;
 	margin-top: 2rem;
 	margin-bottom: -1rem;
-	/* background-image: linear-gradient(63deg, var(--yellow), hsl(17, 80%, 60%), hsl(0, 97.2%, 42.7%)); */
-	background-image: linear-gradient(68deg, #ffd75f, hsl(39.3, 100%, 60.8%), hsl(0, 28.1%, 17.5%));
+	background-image: linear-gradient(68deg, #ffc516, hsl(39.3, 100%, 60.8%), hsl(47.8, 100%, 50%));
 	-webkit-background-clip: text;
 	background-clip: text;
 	color: transparent;
 	text-shadow: 2px 3px hsla(240, 89%, 4%, 0.1);
-	letter-spacing: -2px;
+	letter-spacing: -0.03em;
 	line-height: 1;
 	margin-bottom: 0.25rem;
 }
@@ -160,6 +171,7 @@ h2,
 h3 {
 	font-size: 1.25rem;
 	text-shadow: 1px 1px 1px var(--text-inverse);
+	line-height: 1.1;
 }
 
 h2 {
@@ -370,7 +382,7 @@ h2 {
 	justify-content: center;
 }
 
-.Splash {
+.Container--vcenter {
 	min-height: 100dvh;
 	justify-content: center;
 	align-items: center;
@@ -382,6 +394,16 @@ h2 {
 	left: -20%;
 	top: 1%;
 	transform: rotate(130deg);
+}
+
+.Splash-title {
+	position: fixed;
+	bottom: 3%;
+	left: 3%;
+	font-size: 10rem;
+	font-size: max(16px, min(15vmin, 10rem));
+	color: var(--yellow);
+	pointer-events: none;
 }
 
 /* Used in the main menu */
@@ -408,13 +430,20 @@ h2 {
 
 .Box,
 .Box--text {
+	margin-left: auto;
+	margin-right: auto;
 	background: hsla(17, 6%, 70%, 1);
 	color: hsl(17, 6%, 7%);
 	padding: 1rem;
 	border-radius: 0.75rem;
 	border: 2px solid hsla(17, 6%, 3%, 1);
+	width: 100%;
 	min-width: 15rem;
-	max-width: 100%;
+	max-width: 40ch;
+
+	&:has(.Options) {
+		max-width: 30ch;
+	}
 }
 
 .Box--text {
@@ -441,11 +470,6 @@ h2 {
 	text-shadow: none;
 }
 
-.Header {
-	text-align: center;
-	margin-bottom: 1rem;
-}
-
 .Options {
 	display: flex;
 	flex-flow: column nowrap;
@@ -466,7 +490,6 @@ h2 {
 	justify-content: center;
 	text-align: center;
 	width: 100%;
-
 }
 
 .Options--horizontal {

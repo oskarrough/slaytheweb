@@ -20,7 +20,7 @@ export default class HistoryQueue extends Component {
 		// <${List} items=${props.future} />
 		return html`
 			<div class="Box">
-				<h2>Your past...<br />${time}</h2>
+				<h2>Your past... ${time}</h2>
 				<${List} items=${props.past} onUndo=${props.onUndo} />
 			</div>
 		`
