@@ -158,7 +158,7 @@ export class SlayMap extends Component {
 		}
 
 		return html`
-			<slay-map>
+			<slay-map class=${this.debug ? 'debug' : ''}>
 				${dungeon.graph.map(
 					(row, rowIndex) => html`
 						<slay-map-row current=${rowIndex === y}>

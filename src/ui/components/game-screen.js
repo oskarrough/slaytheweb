@@ -41,6 +41,7 @@ export default class App extends Component {
 		this.state = undefined
 		this.game = {}
 		this.overlayIndex = 11
+		this.debugMode = false
 
 		// Scope methods
 		this.playCard = this.playCard.bind(this)
@@ -54,6 +55,7 @@ export default class App extends Component {
 	componentDidMount() {
 		const urlParams = new URLSearchParams(window.location.search)
 		const debugMode = urlParams.has('debug')
+		this.debugMode = debugMode
 
 		// Set up a new game
 		const game = createNewGame()
@@ -384,7 +386,7 @@ stw.dealCards()`)
 				<${OverlayWithButton} id="Map" topright key=${1}>
 					<button align-right onClick=${() => this.toggleOverlay('#Map')}><u>M</u>ap</button>
 					<div class="Overlay-content">
-						<${SlayMap} dungeon=${state.dungeon} x=${state.dungeon.x} y=${state.dungeon.y} scatter=${20} onSelect=${this.handleMapMove}><//>
+						<${SlayMap} dungeon=${state.dungeon} x=${state.dungeon.x} y=${state.dungeon.y} scatter=${20} debug=${this.debugMode} onSelect=${this.handleMapMove}><//>
 					</div>
 				<//>
 

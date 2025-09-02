@@ -221,6 +221,11 @@ slay-map.debug slay-map-node {
 	outline: 1px solid cyan;
 	border-radius: 0;
 }
+/* In debug mode, allow clicking all linked nodes (ignore room completion) */
+slay-map.debug slay-map-node[linked] {
+    pointer-events: auto;
+    visibility: visible;
+}
 /* slay-map.debug slay-map-node span { outline: 1px solid white; } */
 /* slay-map.debug slay-map-node[type] span { outline: 1px solid red; } */
 /* slay-map.debug slay-map-node[linked] span { outline: 1px solid red; } */
