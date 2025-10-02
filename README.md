@@ -46,7 +46,7 @@ There are many areas that would make it more fun to play:
 
 ## How to release a new version (aka deploy)
 
-Every commit to the `main` branch automatically deploys to https://slaytheweb.cards via the Vercel service.
+Every commit to the `main` branch automatically deploys to https://slaytheweb.cards via Cloudflare.
 
 If you open a PR, it'll give you a preview URL where we can see if things are as expected.
 
