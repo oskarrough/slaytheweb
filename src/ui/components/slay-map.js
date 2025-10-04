@@ -189,6 +189,12 @@ export class SlayMap extends Component {
 }
 
 function isEmpty(obj) {
+	// Handle Sets and Maps
+	if (obj instanceof Set || obj instanceof Map) {
+		return obj.size === 0
+	}
+
+	// Handle regular objects
 	for (const prop in obj) {
 		if (Object.hasOwn(obj, prop)) {
 			return false

@@ -48,6 +48,8 @@ Cards can apply "powers". A power is a status effect or aura that usually lasts 
 
 As an example, setting `state.player.powers.weak = 5`, indicates that the player should be considered weak for five turns. Powers decrease by one stack per turn.
 
+Note: When monsters apply powers at end-of-turn, they add +1 to compensate for the immediate decrement that happens in the same turn.
+
 #### Player
 
 On `state.player` we have you, the player. This object describes the health, powers and the cards you have.
