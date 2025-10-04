@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "slaytheweb",
+  "compatibility_date": "2025-10-02",
+  "assets": {
+    "directory": "./dist"
+  }
+}
+

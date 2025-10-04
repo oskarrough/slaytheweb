@@ -3,7 +3,7 @@
 A single player deck-building roguelike video card game for the web based on Slay The Spire,  
 a fantastic video game designed by [MegaCrit](https://www.megacrit.com/).
 
-### [Play on slaytheweb.cards](https://slaytheweb.cards/)
+### [Play on slaytheweb.cards](https://www.slaytheweb.cards/)
 
 ### [Chat on #slaytheweb:matrix.org](https://matrix.to/#/#slaytheweb:matrix.org)
 
@@ -46,7 +46,7 @@ There are many areas that would make it more fun to play:
 
 ## How to release a new version (aka deploy)
 
-Every commit to the `main` branch automatically deploys to https://slaytheweb.cards via the Vercel service.
+Every commit to the `main` branch automatically deploys to https://slaytheweb.cards via Cloudflare.
 
 If you open a PR, it'll give you a preview URL where we can see if things are as expected.
 
