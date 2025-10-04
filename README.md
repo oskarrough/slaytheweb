@@ -3,7 +3,7 @@
 A single player deck-building roguelike video card game for the web based on Slay The Spire,  
 a fantastic video game designed by [MegaCrit](https://www.megacrit.com/).
 
-### [Play on slaytheweb.cards](https://slaytheweb.cards/)
+### [Play on slaytheweb.cards](https://www.slaytheweb.cards/)
 
 ### [Chat on #slaytheweb:matrix.org](https://matrix.to/#/#slaytheweb:matrix.org)
 
