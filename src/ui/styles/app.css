@@ -347,10 +347,9 @@ h2 {
 }
 .Hand .Card {
 	margin-left: -1.5rem;
-	cursor: grab;
 	cursor:
 		url(/images/cursors/grab-open.png) 10 0,
-		auto;
+		grab;
 }
 .Hand .Card[disabled] {
 	cursor: not-allowed;
@@ -399,7 +398,6 @@ h2 {
 	position: fixed;
 	bottom: 3%;
 	left: 3%;
-	font-size: 10rem;
 	font-size: max(16px, min(15vmin, 10rem));
 	color: var(--yellow);
 	pointer-events: none;
@@ -518,10 +516,9 @@ h2 {
 	box-shadow: 0 0 0.75em gold;
 }
 .CardBox {
-	cursor: pointer;
 	cursor:
 		url(/images/cursors/grab-open.png) 10 0,
-		auto;
+		pointer;
 }
 
 .HistoryList {
