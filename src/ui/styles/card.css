@@ -6,12 +6,6 @@
 	min-height: var(--card-height);
 }
 
-.Cards .Card {
-	width: var(--card-width);
-	height: var(--card-height);
-	flex-shrink: 1;
-}
-
 .Cards--grid {
 	flex-wrap: wrap;
 	gap: 0.5rem;
@@ -24,14 +18,6 @@
 	/* display: grid; */
 	/* gap: 0; */
 	/* grid-template-columns: repeat(auto-fill, minmax(min(var(--column-width), 100%), 1fr)); */
-
-	& .Card-name {
-		font-size: 1rem;
-	}
-
-	& .Card-description {
-		font-size: 0.75rem;
-	}
 
 	& .Card-media img {
 		height: 50px;
@@ -52,13 +38,19 @@
 		display: flex;
 	}
 
-	& .Card {
-		height: 100%;
-	}
-
 	& .Card[data-card-upgraded] {
 		display: none;
 	}
+}
+
+.Cards--withUpgrades .Card {
+	height: 100%;
+}
+
+.Cards .Card {
+	width: var(--card-width);
+	height: var(--card-height);
+	flex-shrink: 1;
 }
 
 .Card {
@@ -69,9 +61,8 @@
 	border-image-repeat: repeat;
 	border-image-slice: 6 6 6 6;
 	border-image-width: 0.75rem;
-	border-width: 0.75rem;
 	border-width: 0.5rem;
-	image-rendering: -moz-crisp-edges;
+	/*image-rendering: -moz-crisp-edges;*/
 	image-rendering: pixelated;
 }
 
@@ -105,12 +96,13 @@
 	}
 }
 
+.Cards--mini .Card-name {
+	font-size: 1rem;
+}
+
 .Card-name {
-	margin: 0.5rem 0;
 	padding: 0.5rem 0 0.1rem;
 	margin: 0;
-	/* background-color: #111;
-	background-image: linear-gradient(to bottom, hsla(0, 0%, 0%, 0.2), transparent); */
 	user-select: none;
 	-webkit-user-select: none;
 }
@@ -118,7 +110,7 @@
 .Card-type {
 	margin: -0.75rem auto 0;
 	padding: 2px 5px 4px;
-	font-family: "heliotrope_4_caps";
+	font-family: "heliotrope_4_caps", sans-serif;
 	font-feature-settings: "ss10";
 	font-size: 0.75rem;
 	background: hsl(191.3, 33.3%, 18.8%);
@@ -129,6 +121,10 @@
 
 .Card[data-card-type="attack"] .Card-type {
 	background: hsl(0deg 33% 19%);
+}
+
+.Cards--mini .Card-description {
+	font-size: 0.75rem;
 }
 
 .Card-description {

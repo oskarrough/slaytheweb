@@ -85,7 +85,9 @@ export default function enableDragDrop(container, afterRelease) {
 				}
 
 				// Remove active class from any other targets.
-				targets.forEach((t) => t.classList.remove(overClass))
+				targets.forEach((t) => {
+					t.classList.remove(overClass)
+				})
 			},
 		})
 	})

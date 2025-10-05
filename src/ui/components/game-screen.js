@@ -220,7 +220,9 @@ stw.dealCards()`)
 					'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #ExhaustPile[open]',
 				)
 				const mapOpened = document.querySelector('#Map').hasAttribute('open')
-				openOverlays.forEach((el) => el.removeAttribute('open'))
+				openOverlays.forEach((el) => {
+					el.removeAttribute('open')
+				})
 				if (!mapOpened) this.toggleOverlay('#Menu')
 			},
 			d: () => this.toggleOverlay('#Deck'),

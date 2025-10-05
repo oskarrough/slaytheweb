@@ -4,7 +4,9 @@ import {toggleMute} from '../sounds.js'
 import History from './history.js'
 
 // @ts-expect-error
-const abandonGame = () => (window.location.href = window.location.origin)
+const abandonGame = () => {
+	window.location.href = window.location.origin
+}
 
 /** @typedef {import('../../game/new-game.js').Game} Game */
 /** @typedef {import('../../game/actions.js').State} State */

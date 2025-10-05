@@ -13,6 +13,7 @@ input,
 .driver-popover .driver-popover-description,
 .driver-popover .driver-popover-footer button {
 	font-family: "heliotrope_4", serif;
-	font-feature-settings: "kern" 1;
-	font-feature-settings: "liga" on;
+	font-feature-settings:
+		"kern" 1,
+		"liga" on;
 }

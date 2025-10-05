@@ -73,7 +73,7 @@ export default function Dungeon(options) {
 
 	// Add "room" to all valid node in the graph.
 	graph.forEach((floor, floorNumber) => {
-		floor.map((node) => {
+		floor.forEach((node) => {
 			if (node.type) {
 				node.room = decideRoomType(node.type, floorNumber)
 			}
