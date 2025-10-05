@@ -1,4 +1,4 @@
-import Dungeon, { graphToString } from '../../game/dungeon.js'
+import Dungeon, {graphToString} from '../../game/dungeon.js'
 import {html, render, useState} from '../lib.js'
 import {DungeonConfig} from './dungeon-config.js'
 import {SlayMap} from './slay-map.js'
@@ -7,7 +7,6 @@ const MapDemo = () => {
 	const [dungeon, setDungeon] = useState(Dungeon())
 	const [scatter, setScatter] = useState(0)
 	const [currentPos, setCurrentPos] = useState({x: 0, y: 0})
-	const [showDataView, setShowDataView] = useState(false)
 
 	const onSelect = (move) => {
 		console.log('Selected move:', move)
@@ -21,10 +20,6 @@ const MapDemo = () => {
 		} else {
 			console.log('Cannot move to unconnected node')
 		}
-	}
-
-	const resetPosition = () => {
-		setCurrentPos({x: 0, y: 0})
 	}
 
 	const regenerateDungeon = (config) => {
