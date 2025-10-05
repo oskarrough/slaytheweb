@@ -79,27 +79,27 @@ monsters['Tiny Trio'] = MonsterRoom(
 	Monster({hp: random(12, 15), random: 2, intents: [{damage: 6}]}),
 	Monster({hp: random(10, 16), random: 3, intents: [{damage: 6}]}),
 )
-monsters['monster10'] = MonsterRoom(
+monsters.monster10 = MonsterRoom(
 	Monster({
 		hp: 28,
 		intents: [{weak: 1}, {block: 10, damage: 10}, {damage: 21}],
 	}),
 )
 
-elites['monster7'] = MonsterRoom(
+elites.monster7 = MonsterRoom(
 	Monster({
 		hp: 46,
 		intents: [{damage: 12}, {block: 6, damage: 11}, {block: 5, damage: 16}, {}, {block: 6}],
 	}),
 )
-elites['monster9'] = MonsterRoom(
+elites.monster9 = MonsterRoom(
 	Monster({
 		hp: 60,
 		intents: [{damage: 12}, {damage: 11, weak: 1}, {damage: 4, block: 6}],
 		random: 6,
 	}),
 )
-elites['Tougher'] = MonsterRoom(Monster({hp: 70, block: 12, intents: [{block: 5}, {damage: 16}]}))
+elites.Tougher = MonsterRoom(Monster({hp: 70, block: 12, intents: [{block: 5}, {damage: 16}]}))
 elites['The Trio'] = MonsterRoom(
 	Monster({
 		hp: random(39, 46),

@@ -1,5 +1,5 @@
-import {html, Component} from '../lib.js'
 import gsap from '../animations.js'
+import {Component, html} from '../lib.js'
 import {Card} from './cards.js'
 // import {createCard} from '../../game/cards.js'
 

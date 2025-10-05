@@ -1,6 +1,6 @@
+import Dungeon from '../game/dungeon.js'
 import {Monster} from '../game/monster.js'
 import {MonsterRoom} from '../game/rooms.js'
-import Dungeon from '../game/dungeon.js'
 
 export const createDefaultDungeon = () => {
 	return Dungeon({

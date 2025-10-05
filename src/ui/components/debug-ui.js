@@ -1,11 +1,11 @@
-import {html, Component} from '../lib.js'
-import createNewGame from '../../game/new-game.js'
+import {produce} from 'immer'
 import actions from '../../game/actions.js'
 import {createCard} from '../../game/cards.js'
-import {getCurrRoom} from '../../game/utils-state.js'
 import {Monster} from '../../game/monster.js'
+import createNewGame from '../../game/new-game.js'
 import {MonsterRoom} from '../../game/rooms.js'
-import {produce} from 'immer'
+import {getCurrRoom} from '../../game/utils-state.js'
+import {Component, html} from '../lib.js'
 
 /**
  * Debug Console for Slay the Web
@@ -32,7 +32,7 @@ export default class DebugUI extends Component {
 			actionParams: {},
 			history: [],
 		})
-		// @ts-ignore
+		// @ts-expect-error
 		window.game = window.game || game
 		console.log('New game created', game)
 	}
@@ -371,9 +371,7 @@ export default class DebugUI extends Component {
 								<label>${param.name} (${param.type})</label>
 								<input
 									type=${param.type === 'number' ? 'number' : 'text'}
-									value=${actionParams[param.name] !== undefined
-										? actionParams[param.name]
-										: param.default || ''}
+									value=${actionParams[param.name] !== undefined ? actionParams[param.name] : param.default || ''}
 									onInput=${(e) =>
 										this.handleParamChange(
 											param.name,
@@ -404,10 +402,10 @@ export default class DebugUI extends Component {
 		try {
 			// Try to get room monsters safely
 			const room = game.state.dungeon?.graph[game.state.dungeon.y][game.state.dungeon.x]?.room
-			if (room && room.monsters) {
+			if (room?.monsters) {
 				monsters.push(...room.monsters)
 			}
-		} catch (e) {
+		} catch (_e) {
 			// Handle case where monsters can't be found
 		}
 
@@ -458,9 +456,11 @@ export default class DebugUI extends Component {
 											<div class="monster">
 												<strong>Enemy ${i}</strong>: HP ${monster.currentHealth}/${monster.maxHealth}
 												${monster.block > 0 ? html`<span>Block: ${monster.block}</span>` : ''}
-												${Object.keys(monster.powers || {}).length > 0
-													? html` <div>Powers: ${JSON.stringify(monster.powers)}</div> `
-													: ''}
+												${
+													Object.keys(monster.powers || {}).length > 0
+														? html` <div>Powers: ${JSON.stringify(monster.powers)}</div> `
+														: ''
+												}
 											</div>
 										`,
 									)
@@ -498,12 +498,13 @@ export default class DebugUI extends Component {
 		return html`
 			<div class="Box history-panel">
 				<h3>Action History</h3>
-				${history.length === 0
-					? html`<div class="empty-history">No actions executed yet</div>`
-					: html`
+				${
+					history.length === 0
+						? html`<div class="empty-history">No actions executed yet</div>`
+						: html`
 							<div class="history-list">
 								${history.map(
-									(item, i) => html`
+									(item, _i) => html`
 										<div class="history-item">
 											<div class="action-name">${item.action}</div>
 											<div class="action-params">${JSON.stringify(item.params)}</div>
@@ -513,12 +514,13 @@ export default class DebugUI extends Component {
 								)}
 							</div>
 							<button class="Button undo-btn" onClick=${() => this.undoAction()}>Undo Last Action</button>
-						`}
+						`
+				}
 			</div>
 		`
 	}
 
-	render(props, state) {
+	render(_props, state) {
 		const {game} = state
 
 		if (!game) return html`<div>Loading game...</div>`

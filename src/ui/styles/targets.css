@@ -52,7 +52,10 @@
 }
 .Target.is-dragOver .Healthbar {
 	transition-duration: 100ms;
-	box-shadow: 1em 0 2em var(--yellow), 3px 3px 1px black, 0px 0px 30px 20px white;
+	box-shadow:
+		1em 0 2em var(--yellow),
+		3px 3px 1px black,
+		0px 0px 30px 20px white;
 }
 .Target--isDead {
 	pointer-events: none;
@@ -80,10 +83,15 @@
 	margin: 0.4em 0;
 	font-weight: bold;
 	color: var(--text);
-	text-shadow: var(--text-stroke) 1px 0px 0px, var(--text-stroke) 0.540302px 0.841471px 0px,
-		var(--text-stroke) -0.416147px 0.909297px 0px, var(--text-stroke) -0.989993px 0.14112px 0px,
-		var(--text-stroke) -0.653644px -0.756803px 0px, var(--text-stroke) 0.283662px -0.958924px 0px,
-		var(--text-stroke) 0.96017px -0.279416px 0px, 1px 1px 2px var(--text-inverse);
+	text-shadow:
+		var(--text-stroke) 1px 0px 0px,
+		var(--text-stroke) 0.540302px 0.841471px 0px,
+		var(--text-stroke) -0.416147px 0.909297px 0px,
+		var(--text-stroke) -0.989993px 0.14112px 0px,
+		var(--text-stroke) -0.653644px -0.756803px 0px,
+		var(--text-stroke) 0.283662px -0.958924px 0px,
+		var(--text-stroke) 0.96017px -0.279416px 0px,
+		1px 1px 2px var(--text-inverse);
 	/* text-shadow: */
 	/* 2px 2px 0 hsla(0, 0%, 10%, 0.8), */
 	/* 2px 2px 0 hsla(0, 0%, 10%, 0.8), */
@@ -108,7 +116,9 @@
 	max-width: 100%;
 	height: 100%;
 	background: var(--yellow);
-	transition: width 600ms var(--easing), background 300ms var(--easing);
+	transition:
+		width 600ms var(--easing),
+		background 300ms var(--easing);
 	border-radius: 0.5rem;
 	font-size: 1.25rem;
 	line-height: 1.8;

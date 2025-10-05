@@ -1,7 +1,7 @@
-import {pick} from '../../utils.js'
-import {html, Component} from '../lib.js'
-import CardChooser from './card-chooser.js'
 import {isCurrRoomCompleted} from '../../game/utils-state.js'
+import {pick} from '../../utils.js'
+import {Component, html} from '../lib.js'
+import CardChooser from './card-chooser.js'
 
 export default class CampfireRoom extends Component {
 	rest() {
@@ -24,7 +24,7 @@ export default class CampfireRoom extends Component {
 		const {gameState} = props
 		const {choice, isChoosingCard} = state
 		let label = ''
-		if (isCurrRoomCompleted(gameState)){
+		if (isCurrRoomCompleted(gameState)) {
 			return html`
 			<div class="Container Container--center">
 				<h1 center>You've already made a choice</h1>
@@ -32,9 +32,9 @@ export default class CampfireRoom extends Component {
 					<button onClick=${props.onContinue}>Continue to the next room</button>
 				</p>
 			</div>
-		`;
+		`
 		}
-			
+
 		if (choice === 'upgradeCard') label = 'Choose a card to upgrade'
 		if (choice === 'removeCard') label = 'Choose a card to remove'
 		return html`
@@ -43,27 +43,31 @@ export default class CampfireRoom extends Component {
 				<h2 center>${pick(campfireIntroTexts)}</h2>
 				<div class="Box">
 					<ul class="Options">
-						${isChoosingCard
-							? html`
+						${
+							isChoosingCard
+								? html`
 									<li>
 										<button onClick=${() => this.setState({isChoosingCard: false})}>Cancel</button>
 									</li>
 								`
-							: html`
+								: html`
 									<li><button onClick=${() => this.rest()}>Rest</button></li>
 									<li><button onClick=${() => this.choose('upgradeCard')}>Upgrade card</button></li>
 									<li><button onClick=${() => this.choose('removeCard')}>Remove card</button></li>
-								`}
+								`
+						}
 					</ul>
 				</div>
-				${isChoosingCard &&
-				html`<br />
+				${
+					isChoosingCard &&
+					html`<br />
 					<p center>${label}</p>
 					<${CardChooser}
 						gameState=${gameState}
 						cards=${gameState.deck.filter((card) => !card.upgraded)}
 						didSelectCard=${(card) => this.onSelectCard(card)}
-					/>`}
+					/>`
+				}
 				<p center>
 					<button onClick=${() => this.props.onContinue()}>No, thanks</button>
 				</p>

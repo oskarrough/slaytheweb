@@ -129,31 +129,31 @@ slay-map-node[node-type] span {
 }
 
 /* footstep to the bottom */
-slay-map-node[node-type='start'][current] span {
+slay-map-node[node-type="start"][current] span {
 	transform: rotate(180deg);
 }
 /* the start and end nodes */
-slay-map-node[node-type='start'],
-slay-map-node[node-type='boss'] {
+slay-map-node[node-type="start"],
+slay-map-node[node-type="boss"] {
 	/* font-size: 3rem; */
 	width: 10rem;
 	height: 10rem;
 }
 /* "Camp" */
-slay-map-node[node-type='C'] {
+slay-map-node[node-type="C"] {
 	/* font-size: 3rem; */
 	/* border-style: dotted; */
 }
 /* "Monster" of normal level */
-slay-map-node[node-type='M'][current] {
+slay-map-node[node-type="M"][current] {
 	/* background-color: lightgray; */
 }
 /* "Elite" monster*/
-slay-map-node[node-type='E'][current] {
+slay-map-node[node-type="E"][current] {
 	/* background-color: red; */
 }
 /* "boss", the end level */
-slay-map-node[node-type='boss'] {
+slay-map-node[node-type="boss"] {
 	font-size: 5rem;
 	border-color: gold;
 	animation-name: nodeTypeBoss;
@@ -164,9 +164,9 @@ slay-map-node[node-type='boss'] {
 }
 
 /* node-types with "emojis" */
-slay-map-node[node-type='C'],
-slay-map-node[node-type='M'],
-slay-map-node[node-type='E'] {
+slay-map-node[node-type="C"],
+slay-map-node[node-type="M"],
+slay-map-node[node-type="E"] {
 }
 
 slay-map svg.paths {
@@ -223,8 +223,8 @@ slay-map.debug slay-map-node {
 }
 /* In debug mode, allow clicking all linked nodes (ignore room completion) */
 slay-map.debug slay-map-node[linked] {
-    pointer-events: auto;
-    visibility: visible;
+	pointer-events: auto;
+	visibility: visible;
 }
 /* slay-map.debug slay-map-node span { outline: 1px solid white; } */
 /* slay-map.debug slay-map-node[type] span { outline: 1px solid red; } */

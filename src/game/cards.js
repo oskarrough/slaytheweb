@@ -1,5 +1,5 @@
-import {uuid} from '../utils.js'
 import {cards, cardUpgrades} from '../content/cards.js'
+import {uuid} from '../utils.js'
 
 // This file contains the logic to create cards.
 // While cards are described in plain object form, they are always converted to a class equivalent.
@@ -113,7 +113,7 @@ cards.forEach((card) => {
 	const upgradeFn = cardUpgrades[card.name]
 	if (upgradeFn) {
 		const upgradedCard = upgradeFn(card)
-		if (upgradedCard.name !== card.name + '+') {
+		if (upgradedCard.name !== `${card.name}+`) {
 			upgradeNameMap[upgradedCard.name] = card.name
 		}
 	}
@@ -127,7 +127,7 @@ cards.forEach((card) => {
  */
 export function getRandomCards(list, amount) {
 	const cardNames = list.map((card) => card.name)
-	let results = []
+	const results = []
 	for (let i = 0; i < amount; i++) {
 		const randomIndex = Math.floor(Math.random() * cardNames.length)
 		const name = cardNames[randomIndex]

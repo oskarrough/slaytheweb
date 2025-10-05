@@ -1,5 +1,5 @@
-import {html, useState} from '../lib.js'
 import {postRun} from '../../game/backend.js'
+import {html, useState} from '../lib.js'
 
 /**
  * Renders a form to submit the game run to the backend.
@@ -21,14 +21,15 @@ export function PublishRun({game}) {
 		setDidSubmit(true)
 	}
 
-	const endedAt = game.state.endedAt || new Date().getTime()
+	const endedAt = game.state.endedAt || Date.now()
 	const duration = (endedAt - game.state.createdAt) / 1000
 
 	return html`
 		<form onSubmit=${onSubmit} class="Form Form--vertical">
 			<p>You reached floor ${game.state.dungeon.y} in ${duration} seconds.</p>
-			${!didSubmit
-				? html`
+			${
+				!didSubmit
+					? html`
 						<label
 							>Want to post your run to the public, Slay the Web highscores?<br />
 							<input type="text" name="playername" maxlength="140" required placeholder="Know thyself" />
@@ -37,7 +38,8 @@ export function PublishRun({game}) {
 						<p>${loading ? 'Submitting…' : ''}</p>
 						<p center><a href="/stats">View highscores</a></p>
 					`
-				: html`<p>Thank you.</p>`}
+					: html`<p>Thank you.</p>`
+			}
 		</form>
 	`
 }

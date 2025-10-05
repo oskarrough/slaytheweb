@@ -58,13 +58,7 @@ export function simpleBeep(frequency = 440, duration = 0.2, volume = 0.3, type =
 /**
  * Plays a beep sound with frequency modulation
  */
-export function beep(
-	startFrequency = 440,
-	endFrequency = 880,
-	duration = 0.5,
-	waveform = 'square',
-	volume = 0.1,
-) {
+export function beep(startFrequency = 440, endFrequency = 880, duration = 0.5, waveform = 'square', volume = 0.1) {
 	if (!audioContext) init()
 	if (isMuted) return
 	const oscillator = audioContext.createOscillator()
@@ -227,7 +221,7 @@ export function cardToHand() {
 
 export function selectCard() {
 	if (!audioContext) init()
-	simpleBeep(noteToFreq['C4'], 0.125, 0.1)
+	simpleBeep(noteToFreq.C4, 0.125, 0.1)
 }
 
 export function playCard(/*card*/) {

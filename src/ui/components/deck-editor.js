@@ -1,8 +1,8 @@
-import {html, useState, useEffect} from '../lib.js'
 import {cards} from '../../content/cards.js'
-import {Card} from './cards.js'
 import {createCard} from '../../game/cards.js'
-import {saveDeck, deleteDeck} from '../../ui/storage-deck.js'
+import {deleteDeck, saveDeck} from '../../ui/storage-deck.js'
+import {html, useEffect, useState} from '../lib.js'
+import {Card} from './cards.js'
 
 function DeckForm({deckName, onNameChange, onSave, onDelete}) {
 	return html`

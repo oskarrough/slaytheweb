@@ -1,4 +1,4 @@
-import {html, Component} from '../lib.js'
+import {Component, html} from '../lib.js'
 
 export default class HistoryQueue extends Component {
 	constructor(props) {

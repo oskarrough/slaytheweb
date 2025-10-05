@@ -1,10 +1,10 @@
 ---
-import Layout from '../layouts/Layout.astro'
 import {getRuns} from '../../game/backend.js'
+import Layout from '../layouts/Layout.astro'
 import '../styles/typography.css'
 import '../styles/index.css'
 
-let {runs, total} = await getRuns()
+const {runs, total} = await getRuns()
 ---
 
 <Layout title="Statistics & Highscores">

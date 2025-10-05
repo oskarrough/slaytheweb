@@ -39,7 +39,7 @@
 }
 
 .Cards--withUpgrades {
-	&>div {
+	& > div {
 		display: flex;
 		flex-flow: column wrap;
 	}
@@ -59,7 +59,6 @@
 	& .Card[data-card-upgraded] {
 		display: none;
 	}
-
 }
 
 .Card {
@@ -119,8 +118,8 @@
 .Card-type {
 	margin: -0.75rem auto 0;
 	padding: 2px 5px 4px;
-	font-family: 'heliotrope_4_caps';
-	font-feature-settings: 'ss10';
+	font-family: "heliotrope_4_caps";
+	font-feature-settings: "ss10";
 	font-size: 0.75rem;
 	background: hsl(191.3, 33.3%, 18.8%);
 	border: 1px solid hsla(0, 0%, 0%, 0.2);
@@ -128,7 +127,7 @@
 	border-radius: 0.4em;
 }
 
-.Card[data-card-type='attack'] .Card-type {
+.Card[data-card-type="attack"] .Card-type {
 	background: hsl(0deg 33% 19%);
 }
 
@@ -161,14 +160,14 @@
 	display: flex;
 	flex-flow: column;
 
-	& stw-card+button {
+	& stw-card + button {
 		margin: 0 auto;
 		font-size: 1rem;
 		position: relative;
 		top: -1rem;
 	}
 
-	& stw-card+button:active:not([disabled]) {
+	& stw-card + button:active:not([disabled]) {
 		top: calc(-1rem + 2px);
 	}
 }

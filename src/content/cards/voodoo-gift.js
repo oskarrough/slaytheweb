@@ -42,6 +42,6 @@ export const upgrade = (card) => {
 	return {
 		...card,
 		damage: 9,
-		description: card.description + ' but without resets.',
+		description: `${card.description} but without resets.`,
 	}
 }

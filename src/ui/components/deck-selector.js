@@ -1,5 +1,5 @@
-import {html, useState} from '../lib.js'
 import * as builtinDecks from '../../content/decks.js'
+import {html, useState} from '../lib.js'
 import {getCustomDecks} from '../storage-deck.js'
 
 /** Renders a menu with all decks, both built-in and custom. Use the onSelectDeck prop callback to catch it */
