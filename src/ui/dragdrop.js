@@ -39,6 +39,11 @@ export default function enableDragDrop(container, afterRelease) {
 	cards.forEach((card) => {
 		Draggable.create(card, {
 			onDragStart() {
+				// Kill any animations trying to move this card
+				gsap.killTweensOf(this.target)
+				// Reset to proper hand position
+				this.startX = 0
+				this.startY = 0
 				sounds.selectCard()
 			},
 
