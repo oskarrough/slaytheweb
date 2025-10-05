@@ -1,4 +1,4 @@
-import {shuffle, range} from '../utils.js'
+import {range, shuffle} from '../utils.js'
 
 /**
  * @typedef MONSTER
@@ -32,7 +32,7 @@ export function Monster(
 	if (typeof props.random === 'number') {
 		randomIntents = props.intents.map((intent) => {
 			if (intent.damage) {
-				let newDamage = shuffle(range(5, intent.damage - props.random))[0]
+				const newDamage = shuffle(range(5, intent.damage - props.random))[0]
 				intent.damage = newDamage
 			}
 			return intent

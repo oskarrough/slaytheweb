@@ -1,7 +1,7 @@
-import {Component, html} from '../lib.js'
-import {debounce, random as randomBetween} from '../../utils.js'
+import {emojiFromNodeType, generatePaths, nodeTypeToName} from '../../game/dungeon.js'
 import {isRoomCompleted} from '../../game/utils-state.js'
-import {emojiFromNodeType, nodeTypeToName, generatePaths} from '../../game/dungeon.js'
+import {debounce, random as randomBetween} from '../../utils.js'
+import {Component, html} from '../lib.js'
 
 /**
  * Renders a map of the dungeon. A visual representation of the dungeon progress. Players select rooms to visit. Shows available paths and room types.

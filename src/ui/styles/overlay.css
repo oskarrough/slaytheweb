@@ -7,11 +7,6 @@
 	height: 100%;
 	z-index: 5;
 }
-.Overlay[middle] .Overlay-content {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-}
 .Overlay > button {
 	font-size: 1rem;
 	position: absolute;
@@ -46,6 +41,11 @@
 	top: auto;
 	bottom: 0;
 	right: 0;
+}
+.Overlay[middle] .Overlay-content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 .Overlay-content {
 	position: absolute;

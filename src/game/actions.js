@@ -1,10 +1,10 @@
-import {produce, enableMapSet} from 'immer'
-import {clamp, shuffle} from '../utils.js'
-import {isDungeonCompleted, getRoomTargets, getCurrRoom} from './utils-state.js'
-import powers from './powers.js'
-import {conditionsAreValid} from './conditions.js'
-import {createCard, CardTargets} from './cards.js'
+import {enableMapSet, produce} from 'immer'
 import {createDefaultDungeon} from '../content/dungeons.js'
+import {clamp, shuffle} from '../utils.js'
+import {CardTargets, createCard} from './cards.js'
+import {conditionsAreValid} from './conditions.js'
+import powers from './powers.js'
+import {getCurrRoom, getRoomTargets, isDungeonCompleted} from './utils-state.js'
 
 // Enable support for Map and Set. See https://immerjs.github.io/immer/installation/
 enableMapSet()
@@ -70,7 +70,7 @@ function createNewState() {
 			powers: {},
 		},
 		dungeon: undefined,
-		createdAt: new Date().getTime(),
+		createdAt: Date.now(),
 		endedAt: undefined,
 		won: false,
 	}
@@ -328,7 +328,7 @@ const removeHealth = (state, {target, amount = 0}) => {
 	return produce(state, (draft) => {
 		getRoomTargets(draft, target).forEach((t) => {
 			if (t.powers.vulnerable) amount = powers.vulnerable.use(amount)
-			let amountAfterBlock = t.block - amount
+			const amountAfterBlock = t.block - amount
 			if (amountAfterBlock < 0) {
 				t.block = 0
 				t.currentHealth = t.currentHealth + amountAfterBlock
@@ -336,7 +336,7 @@ const removeHealth = (state, {target, amount = 0}) => {
 				t.block = amountAfterBlock
 			}
 			if (target === 'player' && t.currentHealth < 1) {
-				draft.endedAt = new Date().getTime()
+				draft.endedAt = Date.now()
 			}
 		})
 	})
@@ -425,7 +425,7 @@ function endTurn(state) {
 	let newState = discardHand(state)
 	if (state.player.powers.regen) {
 		newState = produce(newState, (draft) => {
-			let amount = powers.regen.use(newState.player.powers.regen)
+			const amount = powers.regen.use(newState.player.powers.regen)
 			let newHealth
 			// Don't allow regen to go above max health.
 			if (newState.player.currentHealth + amount > newState.player.maxHealth) {
@@ -445,7 +445,7 @@ function endTurn(state) {
 	newState = produce(newState, (draft) => {
 		if (didWin) draft.won = true
 		if (gameOver) {
-			draft.endedAt = new Date().getTime()
+			draft.endedAt = Date.now()
 		}
 	})
 	if (!gameOver) newState = newTurn(newState)
@@ -486,7 +486,7 @@ function playMonsterActions(state) {
 	if (!room.monsters) return state
 	// For each monster, take turn, get state, pass to next monster.
 	let nextState = state
-	room.monsters.forEach((monster, index) => {
+	room.monsters.forEach((_monster, index) => {
 		nextState = takeMonsterTurn(nextState, index)
 	})
 	return nextState
@@ -533,7 +533,7 @@ function takeMonsterTurn(state, monsterIndex) {
 			draft.player.block = updatedPlayer.block
 			draft.player.currentHealth = updatedPlayer.currentHealth
 			if (updatedPlayer.currentHealth < 1) {
-				draft.endedAt = new Date().getTime()
+				draft.endedAt = Date.now()
 			}
 		}
 
@@ -562,7 +562,7 @@ function addCardToDeck(state, {card}) {
  * @type {ActionFn<{move: {x: number, y: number}}>}
  */
 function move(state, {move}) {
-	let nextState = endEncounter(state)
+	const nextState = endEncounter(state)
 
 	return produce(nextState, (draft) => {
 		// Clear temporary powers, energy and block on player.

@@ -49,7 +49,7 @@ export function healthPercentageBelow(state, condition) {
  * @returns {boolean}
  */
 export function conditionsAreValid(state, conditions) {
-	let isValid = true
+	const isValid = true
 	if (conditions) {
 		return conditions.every((condition) => {
 			const cond = allConditions[condition.type]

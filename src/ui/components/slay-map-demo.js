@@ -1,7 +1,7 @@
 import Dungeon from '../../game/dungeon.js'
 import {html, render, useState} from '../lib.js'
-import {SlayMap} from './slay-map.js'
 import {DungeonConfig} from './dungeon-config.js'
+import {SlayMap} from './slay-map.js'
 
 const MapDemo = () => {
 	const [dungeon, setDungeon] = useState(Dungeon())
@@ -20,10 +20,12 @@ const MapDemo = () => {
 			</details>
 		</div>
 
-		${dungeon &&
-		html`
+		${
+			dungeon &&
+			html`
 			<${SlayMap} dungeon=${dungeon} x=${x} y=${y} onSelect=${onSelect} scatter=${scatter} debug=${true}><//>
-		`}
+		`
+		}
 	`
 }
 

@@ -1,9 +1,9 @@
-import {html, useState, useEffect} from '../lib.js'
 import {getRun} from '../../game/backend.js'
+import {createCard} from '../../game/cards.js'
+import {html, useEffect, useState} from '../lib.js'
+import {Card} from './cards.js'
 import {getEnemiesStats} from './dungeon-stats.js'
 import {SlayMap} from './slay-map.js'
-import {Card} from './cards.js'
-import {createCard} from '../../game/cards.js'
 
 export default function RunStats() {
 	/** @type {ReturnType<typeof useState<import('../../game/backend.js').Run>>} */
@@ -40,10 +40,10 @@ export default function RunStats() {
 	const hours = Math.floor(ms / (1000 * 60 * 60))
 	const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60))
 	const seconds = Math.floor((ms / 1000) % 60)
-	const duration = `${hours > 0 ? hours + 'h ' : ''}${minutes}m ${seconds}s`
+	const duration = `${hours > 0 ? `${hours}h ` : ''}${minutes}m ${seconds}s`
 
 	// Not all runs have this data in the backend.
-	let extraStats = state.dungeon.graph ? getEnemiesStats(state.dungeon) : null
+	const extraStats = state.dungeon.graph ? getEnemiesStats(state.dungeon) : null
 	console.log('extraStats', extraStats)
 
 	return html`
@@ -62,14 +62,16 @@ export default function RunStats() {
 				and ended with ${state.player.currentHealth}/${state.player.maxHealth} health.
 			</p>
 
-			${extraStats &&
-			html`<p>You encountered {extraStats.encountered} monsters. And killed {extraStats.killed} of them.</p>`}
+			${
+				extraStats &&
+				html`<p>You encountered {extraStats.encountered} monsters. And killed {extraStats.killed} of them.</p>`
+			}
 		</div>
 
 		<div class="Box">
 			<p>
 				Inspect the raw JSON data for the run
-				<a href=${'https://api.slaytheweb.cards/api/runs/' + run.id}
+				<a href=${`https://api.slaytheweb.cards/api/runs/${run.id}`}
 					>api.slaytheweb.cards/api/runs/${run.id}</a
 				>.
 			</p>

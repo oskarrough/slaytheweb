@@ -1,5 +1,5 @@
-import actions from './actions.js'
 import ActionManager from './action-manager.js'
+import actions from './actions.js'
 
 /** @typedef {import('./actions.js').State} State */
 

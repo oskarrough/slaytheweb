@@ -1,9 +1,9 @@
-import {html, render} from '../lib.js'
 import createNewGame from '../../game/new-game.js'
 import {getCurrRoom} from '../../game/utils-state.js'
+import {html, render} from '../lib.js'
 import Cards from './cards.js'
-import {SlayMap} from './slay-map.js'
 import {Monster} from './player.js'
+import {SlayMap} from './slay-map.js'
 import '../styles/map.css'
 import '../styles/fct.css'
 import '../styles/slay-the-web-text.css'
@@ -75,8 +75,7 @@ export default class SlayTheWebText extends HTMLElement {
 
 			<h2>Map x${state.dungeon.x}/y${state.dungeon.y} → ${room.type} room</h2>
 			<div class="Targets-group">
-				${room.monsters &&
-				room.monsters.map((monster) => html`<${Monster} model=${monster} gameState=${state} />`)}
+				${room.monsters?.map((monster) => html`<${Monster} model=${monster} gameState=${state} />`)}
 			</div>
 
 			<h2>Draw pile</h2>
@@ -94,8 +93,10 @@ export default class SlayTheWebText extends HTMLElement {
 						<option value="">Select a target</option>
 						<option value="player">Player</option>
 						<option value="allEnemies">All enemies</option>
-						${room?.monsters?.length &&
-						room.monsters.map((monster, i) => html`<option value=${`enemy` + i}>enemy${i}</option>`)}
+						${
+							room?.monsters?.length &&
+							room.monsters.map((_monster, i) => html`<option value=${`enemy${i}`}>enemy${i}</option>`)
+						}
 					</select>
 					<button type="submit">Play</button>
 				</form>

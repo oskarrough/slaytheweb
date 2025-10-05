@@ -1,27 +1,25 @@
-import {html, Component} from '../lib.js'
-import gsap from '../animations.js'
 import Flip from 'gsap/Flip'
-
+import {createCard} from '../../game/cards.js'
 // Game logic
 import createNewGame from '../../game/new-game.js'
-import {createCard} from '../../game/cards.js'
 import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../../game/utils-state.js'
-import {saveToUrl, loadFromUrl} from '../save-load.js'
+import gsap from '../animations.js'
+import enableDragDrop from '../dragdrop.js'
+import startTutorial from '../intro-tutorial.js'
+import {Component, html} from '../lib.js'
+import {loadFromUrl, saveToUrl} from '../save-load.js'
 import * as sounds from '../sounds.js'
-
 // UI Components
 import CampfireRoom from './campfire.js'
 import Cards from './cards.js'
-import enableDragDrop from '../dragdrop.js'
 import DungeonStats from './dungeon-stats.js'
-import {SlayMap} from './slay-map.js'
 import Menu from './menu.js'
 import {Overlay, OverlayWithButton} from './overlays.js'
-import {Player, Monster} from './player.js'
+import {Monster, Player} from './player.js'
 import {PublishRun} from './publish-run.js'
+import {SlayMap} from './slay-map.js'
 import StartRoom from './start-room.js'
 import VictoryRoom from './victory-room.js'
-import startTutorial from '../intro-tutorial.js'
 
 export default class App extends Component {
 	get didWin() {
@@ -99,7 +97,7 @@ export default class App extends Component {
 
 	enableConsole() {
 		// Enable a "console" in the browser.
-		// @ts-ignore
+		// @ts-expect-error
 		window.stw = {
 			game: this.game,
 			run: this.runAction.bind(this),
@@ -113,7 +111,7 @@ stw.run('drawCards', {amount: 2})
 stw.dealCards()`)
 			},
 		}
-		// @ts-ignore
+		// @ts-expect-error
 		window.stw.help()
 	}
 
@@ -152,10 +150,10 @@ stw.dealCards()`)
 		const clone = cardEl.cloneNode(true)
 		const cardRect = cardEl.getBoundingClientRect()
 		clone.style.position = 'absolute'
-		clone.style.width = cardEl.offsetWidth + 'px'
-		clone.style.height = cardEl.offsetHeight + 'px'
-		clone.style.top = window.scrollY + cardRect.top + 'px'
-		clone.style.left = window.scrollX + cardRect.left + 'px'
+		clone.style.width = `${cardEl.offsetWidth}px`
+		clone.style.height = `${cardEl.offsetHeight}px`
+		clone.style.top = `${window.scrollY + cardRect.top}px`
+		clone.style.left = `${window.scrollX + cardRect.left}px`
 		clone.style.transform = ''
 		this.base.appendChild(clone)
 
@@ -218,11 +216,13 @@ stw.dealCards()`)
 			u: () => this.undo(),
 			Escape: () => {
 				// let openOverlays = this.base.querySelectorAll('.Overlay:not(#Menu)[open]')
-				let openOverlays = this.base.querySelectorAll(
+				const openOverlays = this.base.querySelectorAll(
 					'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #ExhaustPile[open]',
 				)
 				const mapOpened = document.querySelector('#Map').hasAttribute('open')
-				openOverlays.forEach((el) => el.removeAttribute('open'))
+				openOverlays.forEach((el) => {
+					el.removeAttribute('open')
+				})
 				if (!mapOpened) this.toggleOverlay('#Menu')
 			},
 			d: () => this.toggleOverlay('#Deck'),
@@ -231,10 +231,10 @@ stw.dealCards()`)
 			m: () => this.toggleOverlay('#Map'),
 			x: () => this.toggleOverlay('#ExhaustPile'),
 		}
-		keymap[key] && keymap[key]()
+		keymap[key]?.()
 	}
 
-	handlePlayerReward(choice, card) {
+	handlePlayerReward(_choice, card) {
 		this.game.enqueue({type: 'addCardToDeck', card})
 		this.setState({didPickCard: card})
 		this.update()
@@ -285,7 +285,7 @@ stw.dealCards()`)
 	 * 	!this.didWinEntireGame && this.didWin && room.type === 'monster' --> room victory screen
 	 * 	room.type === campfire
 	 */
-	render(props, state) {
+	render(_props, state) {
 		if (!state.player) return
 		const room = getCurrRoom(state)
 		const showCombat = room.type === 'monster'
@@ -352,8 +352,7 @@ stw.dealCards()`)
 								<${Player} model=${state.player} name="Player" />
 							</div>
 							<div class="Targets-group">
-								${room.monsters &&
-								room.monsters.map((monster) => html`<${Monster} model=${monster} gameState=${state} />`)}
+								${room.monsters?.map((monster) => html`<${Monster} model=${monster} gameState=${state} />`)}
 							</div>
 						</div>
 

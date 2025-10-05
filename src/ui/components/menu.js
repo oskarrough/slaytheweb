@@ -1,10 +1,12 @@
 import {html, useState} from '../lib.js'
-import History from './history.js'
 import {saveToUrl} from '../save-load.js'
 import {toggleMute} from '../sounds.js'
+import History from './history.js'
 
-// @ts-ignore
-const abandonGame = () => (window.location.href = window.location.origin)
+// @ts-expect-error
+const abandonGame = () => {
+	window.location.href = window.location.origin
+}
 
 /** @typedef {import('../../game/new-game.js').Game} Game */
 /** @typedef {import('../../game/actions.js').State} State */

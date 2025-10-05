@@ -1,7 +1,7 @@
-import {html, Component} from '../lib.js'
 import {getRuns} from '../../game/backend.js'
 import {timeSince} from '../../utils.js'
 import gsap from '../animations.js'
+import {Component, html} from '../lib.js'
 import {DeckSelector} from './deck-selector.js'
 
 export default class SplashScreen extends Component {
@@ -19,7 +19,7 @@ export default class SplashScreen extends Component {
 
 	componentDidMount() {
 		gsap.from(this.base, {duration: 0.2, autoAlpha: 0, scale: 0.98})
-		// @ts-ignore
+		// @ts-expect-error
 		gsap.to(this.base.querySelector('.Splash-spoder'), {delay: 5, x: 420, y: 60, duration: 3})
 		getRuns().then(({runs}) => this.setState({runs}))
 	}
@@ -39,7 +39,7 @@ export default class SplashScreen extends Component {
 		this.props.onNewGame(this.state.selectedDeck)
 	}
 
-	render(props, state) {
+	render(_props, state) {
 		const run = state.runs[0]
 
 		if (state.selectingDeck) {
@@ -67,28 +67,32 @@ export default class SplashScreen extends Component {
 				<div class="Box">
 					<h1 class="Splash-title">Slay the Web</h1>
 					<ul class="Options">
-						${location.hash
-							? html`
+						${
+							location.hash
+								? html`
 									<li>
 										Found a saved game. <button autofocus onClick=${this.props.onContinue}>Continue?</button>
 									</li>
 									<li><button onClick=${() => this.props.onNewGame()}>New Game</button></li>
 								`
-							: html`
+								: html`
 									<li><button class="primary" autofocus onClick=${() => this.props.onNewGame()}>Play</button></li>
 									<li><button onClick=${this.startDeckSelection}>Play custom deck</button></li>
 									<li><hr /></li>
 									<li><a class="Button" href="/?debug&tutorial">Tutorial</a></li>
 									<li><a class="Button" href="/deck-builder">Deck Builder</a></li>
-								`}
+								`
+						}
 						<li><a class="Button" href="/collection">Collection</a></li>
 						<li>
 							<a class="Button" href="/stats"
 								>Highscores
-								${this.state.runs.length > 0 &&
-								html` <a class="LastRun" href=${`/stats/run?id=${run.id}`}>
+								${
+									this.state.runs.length > 0 &&
+									html` <a class="LastRun" href=${`/stats/run?id=${run.id}`}>
 									Someone ${run.won ? 'won' : 'lost'} ${timeSince(run.createdAt)}
-								</a>`}
+								</a>`
+								}
 							</a>
 						</li>
 						<li><a class="Button" href="/manual">Manual</a></li>

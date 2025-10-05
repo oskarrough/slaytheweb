@@ -1,9 +1,9 @@
-import {html, useState} from '../lib.js'
+import {createCard} from '../../game/cards.js'
+import {uuid} from '../../utils.js'
+import {Card} from '../components/cards.js'
 import {DeckEditor} from '../components/deck-editor.js'
 import {DeckSelector} from '../components/deck-selector.js'
-import {createCard} from '../../game/cards.js'
-import {Card} from '../components/cards.js'
-import {uuid} from '../../utils.js'
+import {html, useState} from '../lib.js'
 
 export function DeckEditorApp() {
 	const [deck, setDeck] = useState(null)
@@ -33,15 +33,17 @@ export function DeckEditorApp() {
 			<${DeckSelector} onSelectDeck=${setDeck} />
 		</div>
 
-		${deck?.custom
-			? html`<${DeckEditor}
+		${
+			deck?.custom
+				? html`<${DeckEditor}
 					deck=${deck}
 					onSaveDeck=${setDeck}
 					onDeleteDeck=${(deckId) => {
 						if (deck?.id === deckId) setDeck(null)
 					}}
 				/>`
-			: html`<${DeckPreview} deck=${deck} />`}
+				: html`<${DeckPreview} deck=${deck} />`
+		}
 	`
 }
 

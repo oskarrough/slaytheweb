@@ -1,5 +1,5 @@
-import {html, useState} from '../lib.js'
 import {defaultOptions as defaultDungeonOptions} from '../../game/dungeon.js'
+import {html, useState} from '../lib.js'
 
 export const DungeonConfig = (props) => {
 	const [config, setConfig] = useState(defaultDungeonOptions)
@@ -18,7 +18,7 @@ export const DungeonConfig = (props) => {
 		const {value} = e.target
 		// el.style.setProperty(`--${field}`, value)
 		if (field === 'min-height') {
-			el.style[field] = value + 'vh'
+			el.style[field] = `${value}vh`
 		} else {
 			el.style[field] = value
 		}

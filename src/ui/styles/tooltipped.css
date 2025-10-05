@@ -1,6 +1,5 @@
 /* Copy/pasted and tweaked from https://primer.style/components/Tooltip */
 
-
 /*
 .tooltipped
 .tooltipped-nw
@@ -47,7 +46,7 @@
 	height: 0;
 	color: var(--color-tooltip-bg);
 	pointer-events: none;
-	content: '';
+	content: "";
 	border: 6px solid transparent;
 	opacity: 0;
 }
@@ -203,11 +202,6 @@
 .tooltipped-multiline.tooltipped-w::after,
 .tooltipped-multiline.tooltipped-e::after {
 	right: 100%;
-}
-@media screen and (min-width: 0\0) {
-	.tooltipped-multiline::after {
-		width: 250px;
-	}
 }
 .tooltipped-sticky::before,
 .tooltipped-sticky::after {

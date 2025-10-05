@@ -1,11 +1,12 @@
-@import './typography.css';
-@import './app.css';
-@import './overlay.css';
-@import './card.css';
-@import './targets.css';
-@import './fct.css';
-@import './map.css';
-@import './tooltipped.css';
+@import "./typography.css";
+@import "./app.css";
+@import "./overlay.css";
+@import "./card.css";
+@import "./healthbar.css";
+@import "./targets.css";
+@import "./fct.css";
+@import "./map.css";
+@import "./tooltipped.css";
 
 :root {
 	--card-width: 10em;

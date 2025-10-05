@@ -77,8 +77,8 @@ select {
 }
 
 select,
-input[type='text'],
-input[type='number'],
+input[type="text"],
+input[type="number"],
 textarea {
 	font-size: 1em;
 	border: 2px solid var(--text-inverse);
@@ -88,7 +88,7 @@ textarea {
 	/* background: var(--lightblue); */
 }
 
-.Overlay input[type='text'] {
+.Overlay input[type="text"] {
 	color-scheme: dark;
 }
 
@@ -140,8 +140,8 @@ button:focus,
 	color: gray;
 }
 
-input[type='text'],
-input[type='number'] {
+input[type="text"],
+input[type="number"] {
 	min-height: 1.5rem;
 }
 
@@ -157,7 +157,7 @@ h1 {
 	transform: rotate3d(5, 15, 3, -13deg);
 	font-size: 4rem;
 	margin-top: 2rem;
-	margin-bottom: -1rem;
+	margin-bottom: 0.25rem;
 	background-image: linear-gradient(68deg, #ffc516, hsl(39.3, 100%, 60.8%), hsl(47.8, 100%, 50%));
 	-webkit-background-clip: text;
 	background-clip: text;
@@ -165,7 +165,6 @@ h1 {
 	text-shadow: 2px 3px hsla(240, 89%, 4%, 0.1);
 	letter-spacing: -0.03em;
 	line-height: 1;
-	margin-bottom: 0.25rem;
 }
 h2,
 h3 {
@@ -198,46 +197,46 @@ h2 {
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
-	background-image: url('/images/scenes/moonlit-landscape-1904.jpg');
+	background-image: url("/images/scenes/moonlit-landscape-1904.jpg");
 }
-.App-background[data-room-index='1'] {
-	background-image: url('/images/scenes/arietty.webp');
+.App-background[data-room-index="1"] {
+	background-image: url("/images/scenes/arietty.webp");
 }
-.App-background[data-room-index='2'] {
-	background-image: url('/images/scenes/bauhaus.jpg');
+.App-background[data-room-index="2"] {
+	background-image: url("/images/scenes/bauhaus.jpg");
 }
-.App-background[data-room-index='3'] {
-	background-image: url('/images/scenes/chihiro.jpg');
+.App-background[data-room-index="3"] {
+	background-image: url("/images/scenes/chihiro.jpg");
 }
-.App-background[data-room-index='4'] {
-	background-image: url('/images/scenes/howl.jpg');
+.App-background[data-room-index="4"] {
+	background-image: url("/images/scenes/howl.jpg");
 }
-.App-background[data-room-index='5'] {
-	background-image: url('/images/scenes/laputa.jpg');
+.App-background[data-room-index="5"] {
+	background-image: url("/images/scenes/laputa.jpg");
 }
-.App-background[data-room-index='6'] {
-	background-image: url('/images/scenes/mononoke.jpg');
+.App-background[data-room-index="6"] {
+	background-image: url("/images/scenes/mononoke.jpg");
 }
-.App-background[data-room-index='7'] {
-	background-image: url('/images/scenes/nausicaa.jpg');
+.App-background[data-room-index="7"] {
+	background-image: url("/images/scenes/nausicaa.jpg");
 }
-.App-background[data-room-index='8'] {
-	background-image: url('/images/scenes/1.jpg');
+.App-background[data-room-index="8"] {
+	background-image: url("/images/scenes/1.jpg");
 }
-.App-background[data-room-index='9'] {
-	background-image: url('/images/scenes/landscape.jpg');
+.App-background[data-room-index="9"] {
+	background-image: url("/images/scenes/landscape.jpg");
 }
-.App-background[data-room-index='10'] {
-	background-image: url('/images/scenes/flying-duo.jpg');
+.App-background[data-room-index="10"] {
+	background-image: url("/images/scenes/flying-duo.jpg");
 }
-.App-background[data-room-index='11'] {
-	background-image: url('/images/scenes/ponyo.jpg');
+.App-background[data-room-index="11"] {
+	background-image: url("/images/scenes/ponyo.jpg");
 }
 
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
 .App-background::before,
 .App-background::after {
-	content: '';
+	content: "";
 	background: linear-gradient(to bottom, #0f1642, transparent);
 	position: absolute;
 	top: 0;
@@ -279,7 +278,6 @@ h2 {
 }
 
 .EnergyBadge {
-	transform: rotate3d(5, 15, 3, -20deg);
 	position: relative;
 	z-index: 1;
 	font-size: 1.5rem;
@@ -289,6 +287,7 @@ h2 {
 	justify-content: center;
 	align-items: center;
 	border: 3px solid hsla(0, 0%, 0%, 0.8);
+	/*transform: rotate3d(5, 15, 3, -20deg);*/
 	transform: rotate(45deg);
 	background-color: var(--teal);
 	text-shadow:
@@ -305,7 +304,7 @@ h2 {
 }
 .EnergyBadge > span {
 	transform: rotate(-45deg);
-	font-feature-settings: 'onum' on;
+	font-feature-settings: "onum" on;
 }
 .no-energy .EnergyBadge {
 	background: #272d2b;
@@ -348,10 +347,9 @@ h2 {
 }
 .Hand .Card {
 	margin-left: -1.5rem;
-	cursor: grab;
 	cursor:
 		url(/images/cursors/grab-open.png) 10 0,
-		auto;
+		grab;
 }
 .Hand .Card[disabled] {
 	cursor: not-allowed;
@@ -400,7 +398,6 @@ h2 {
 	position: fixed;
 	bottom: 3%;
 	left: 3%;
-	font-size: 10rem;
 	font-size: max(16px, min(15vmin, 10rem));
 	color: var(--yellow);
 	pointer-events: none;
@@ -421,7 +418,7 @@ h2 {
 	position: relative;
 }
 
-.Box input[type='text'] {
+.Box input[type="text"] {
 	background: hsla(17, 6%, 70%, 1);
 	padding: 0.5rem;
 	border: 1px solid hsla(17, 6%, 3%, 1);
@@ -519,10 +516,9 @@ h2 {
 	box-shadow: 0 0 0.75em gold;
 }
 .CardBox {
-	cursor: pointer;
 	cursor:
 		url(/images/cursors/grab-open.png) 10 0,
-		auto;
+		pointer;
 }
 
 .HistoryList {

@@ -36,7 +36,7 @@ const apiUrl = 'https://api.slaytheweb.cards/api/runs'
  */
 function minimizeGameState(state) {
 	return produce(state, (draft) => {
-		if (!draft.endedAt) draft.endedAt = new Date().getTime()
+		if (!draft.endedAt) draft.endedAt = Date.now()
 		// delete mini.dungeon?.graph
 		delete draft.dungeon?.paths
 		delete draft.drawPile
@@ -95,6 +95,6 @@ export async function getRuns() {
  * @returns {Promise<Run>} a single run
  */
 export async function getRun(id) {
-	const res = await fetch(apiUrl + `/${id}`)
+	const res = await fetch(`${apiUrl}/${id}`)
 	return res.json()
 }

@@ -1,6 +1,6 @@
-import {uuid, shuffle, random as randomBetween, pick} from '../utils.js'
-import {easyMonsters, monsters, elites, bosses} from '../content/monster-rooms.js'
-import {StartRoom, CampfireRoom} from './rooms.js'
+import {bosses, easyMonsters, elites, monsters} from '../content/monster-rooms.js'
+import {pick, random as randomBetween, shuffle, uuid} from '../utils.js'
+import {CampfireRoom, StartRoom} from './rooms.js'
 
 /**
  * A procedural generated dungeon map for Slay the Web. Again, heavily inspired by Slay the Spire.
@@ -73,7 +73,7 @@ export default function Dungeon(options) {
 
 	// Add "room" to all valid node in the graph.
 	graph.forEach((floor, floorNumber) => {
-		floor.map((node) => {
+		floor.forEach((node) => {
 			if (node.type) {
 				node.room = decideRoomType(node.type, floorNumber)
 			}
@@ -159,7 +159,7 @@ export function generatePaths(graph, customPaths) {
 		})
 	} else {
 		// Otherwise draw a path for each column.
-		graph[1].forEach((column, index) => {
+		graph[1].forEach((_column, index) => {
 			const path = findPath(graph, index)
 			paths.push(path)
 		})
@@ -194,12 +194,12 @@ function validNode(node) {
 function findPath(graph, preferredIndex, debug = false) {
 	if (debug) console.groupCollapsed('finding path', preferredIndex)
 
-	let path = []
+	const path = []
 	/** @type {MapNode|false} */
 	let lastVisited = false
 
 	// Walk through each floor.
-	for (let [floorIndex, floor] of graph.entries()) {
+	for (const [floorIndex, floor] of graph.entries()) {
 		if (debug) console.group(`floor ${floorIndex}`)
 
 		// If on last floor, stop moving.
@@ -217,8 +217,7 @@ function findPath(graph, preferredIndex, debug = false) {
 
 		// Find the "b" node we are going TO.
 		const bInfo =
-			searchValidNode(nextFloor, preferredIndex, 'forward') ||
-			searchValidNode(nextFloor, preferredIndex, 'backward')
+			searchValidNode(nextFloor, preferredIndex, 'forward') || searchValidNode(nextFloor, preferredIndex, 'backward')
 		if (!bInfo) throw Error('failed to find node to move to')
 		const moveTo = [floorIndex + 1, bInfo.index]
 		// Store it for later
@@ -251,14 +250,14 @@ function searchValidNode(floor, startX, direction) {
 	const step = direction === 'forward' ? 1 : -1
 	if (direction === 'forward') {
 		for (let i = startX; i >= 0 && i < floor.length; i += step) {
-			let node = floor[i]
+			const node = floor[i]
 			if (validNode(node)) {
 				return {node, index: i}
 			}
 		}
 	} else {
 		for (let i = startX; i >= 0; i += step) {
-			let node = floor[i]
+			const node = floor[i]
 			if (validNode(node)) {
 				return {node, index: i}
 			}
@@ -273,7 +272,7 @@ function searchValidNode(floor, startX, direction) {
  * @returns {string}
  */
 export function graphToString(graph) {
-	let textGraph = graph.map((floor) =>
+	const textGraph = graph.map((floor) =>
 		floor.map((node) => {
 			return emojiFromNodeType(node.type)
 		}),

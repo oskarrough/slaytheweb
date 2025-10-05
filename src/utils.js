@@ -98,8 +98,8 @@ export class Queue {
  */
 export function throttle(func, delay) {
 	let lastCall = 0
-	return function (...args) {
-		const now = new Date().getTime()
+	return (...args) => {
+		const now = Date.now()
 		if (now - lastCall < delay) return
 		lastCall = now
 		return func(...args)
@@ -117,15 +117,14 @@ export function throttle(func, delay) {
 export function debounce(func, wait, options = {}) {
 	let timeout
 	return function executedFunction(...args) {
-		const context = this
-		const later = function () {
+		const later = () => {
 			timeout = null
-			if (options.trailing) func.apply(context, args)
+			if (options.trailing) func.apply(this, args)
 		}
 		const callNow = options.leading && !timeout
 		clearTimeout(timeout)
 		timeout = setTimeout(later, wait)
-		if (callNow) func.apply(context, args)
+		if (callNow) func.apply(this, args)
 	}
 }
 
