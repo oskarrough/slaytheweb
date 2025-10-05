@@ -85,13 +85,13 @@
 	opacity: 1;
 	transform: translate3d(0, 0, 0);
 	transition:
-		opacity 600ms 60ms var(--easing),
-		transform 600ms 60ms var(--easing);
+		opacity 200ms 60ms var(--easing),
+		transform 300ms 60ms var(--easing);
 }
 .Overlay[open] .Overlay-bg {
 	display: block;
 	transform: translateX(0);
-	background: hsla(0, 0%, 0%, 0.95);
+	background: hsla(0, 0%, 0%, 0.7);
 }
 
 /* Inside overlays cards are allowed to wrap */

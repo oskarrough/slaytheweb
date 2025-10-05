@@ -1,4 +1,4 @@
-import {emojiFromNodeType, generatePaths, nodeTypeToName} from '../../game/dungeon.js'
+import {emojiFromNodeType, nodeTypeToName} from '../../game/dungeon.js'
 import {isRoomCompleted} from '../../game/utils-state.js'
 import {debounce, random as randomBetween} from '../../utils.js'
 import {Component, html} from '../lib.js'
@@ -12,6 +12,7 @@ import {Component, html} from '../lib.js'
  * @param {number} props.scatter - whether to visually move the nodes randomly a bit
  * @param {Function} props.onSelect - function called on map node select
  * @param {boolean} props.debug - if true, will console.log things
+ * @param {boolean} props.freeNavigation - if true, allows clicking any node regardless of connections
  */
 export class SlayMap extends Component {
 	constructor(props) {
@@ -29,17 +30,21 @@ export class SlayMap extends Component {
 
 	componentDidUpdate(prevProps) {
 		const newDungeon = this.props.dungeon.id !== prevProps?.dungeon.id
+		const scatterChanged = this.props.scatter !== prevProps?.scatter
 
-		// Let CSS know about the amount of rows and cols we have.
-		this.base.style.setProperty('--rows', Number(this.props.dungeon.graph.length))
-		this.base.style.setProperty('--columns', Number(this.props.dungeon.graph[1].length))
-
-		// Add references to our DOM elements on the graph. Why?
+		// Redraw paths when dungeon changes or first render
 		if (newDungeon || !this.didDrawPaths) {
 			this.drawPathsDebounced()
 			this.scatterNodes()
 		}
 
+		// Reapply scatter when slider changes
+		if (scatterChanged && this.didDrawPaths) {
+			this.scatterNodes()
+			this.drawPathsDebounced()
+		}
+
+		// Set up resize observer once
 		if (!this.resizeObserver) {
 			this.resizeObserver = new ResizeObserver(() => {
 				this.drawPathsDebounced()
@@ -147,18 +152,16 @@ export class SlayMap extends Component {
 	}
 
 	render(props) {
-		const {dungeon, x, y} = props
+		const {dungeon, x, y, freeNavigation} = props
 		if (!dungeon.graph) throw new Error('No graph to render. This should not happen?', dungeon)
 
 		const currentNode = dungeon.graph[y][x]
 
-		if (isEmpty(currentNode.edges)) {
-			dungeon.paths = generatePaths(dungeon.graph)
-			if (this.debug) console.log('generated new dungeon paths', {dungeon})
-		}
-
 		return html`
-			<slay-map class=${this.debug ? 'debug' : ''}>
+			<slay-map class=${this.debug ? 'debug' : ''} style=${{
+				'--rows': dungeon.graph.length,
+				'--columns': dungeon.graph[1].length,
+			}}>
 				${dungeon.graph.map(
 					(row, rowIndex) => html`
 						<slay-map-row current=${rowIndex === y}>
@@ -166,7 +169,7 @@ export class SlayMap extends Component {
 								const isCurrent = rowIndex === y && nodeIndex === x
 								const isConnected = currentNode.edges.has(node.id)
 								const completedCurrentRoom = isRoomCompleted(dungeon.graph[y][x].room)
-								const canVisit = isConnected && completedCurrentRoom
+								const canVisit = freeNavigation ? Boolean(node.type) : isConnected && completedCurrentRoom
 								return html`<slay-map-node
 									key=${`${rowIndex}${nodeIndex}`}
 									type=${Boolean(node.type)}
@@ -186,22 +189,6 @@ export class SlayMap extends Component {
 			</slay-map>
 		`
 	}
-}
-
-function isEmpty(obj) {
-	// Handle Sets and Maps
-	if (obj instanceof Set || obj instanceof Map) {
-		return obj.size === 0
-	}
-
-	// Handle regular objects
-	for (const prop in obj) {
-		if (Object.hasOwn(obj, prop)) {
-			return false
-		}
-	}
-
-	return true
 }
 
 // Since el.offsetLeft doesn't respect CSS transforms,

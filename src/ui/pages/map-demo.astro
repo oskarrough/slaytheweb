@@ -9,7 +9,7 @@ import '../styles/index.css'
 
 <Layout title="Map demo from Slay the Web">
   <div class="Container">
-		<p><a class="Button" href="/">&larr; Menu</a></p>
+    <p><a class="Button" href="/">&larr; Menu</a></p>
     <p>Here you can play around with the function used to generate the map in Slay the Web.</p>
   </div>
   <slay-map-demo></slay-map-demo>
@@ -18,11 +18,14 @@ import '../styles/index.css'
 <style>
   slay-map-demo {
     display: flex;
+    gap: 0.5rem;
     > .Box {
       flex: 25rem;
     }
-  }
-  slay-map {
-    min-height: calc(100vh - 5rem);
+    slay-map {
+      flex: 1;
+      margin-right: 0.5rem;
+      /* min-height: calc(100vh - 5rem); */
+    }
   }
 </style>

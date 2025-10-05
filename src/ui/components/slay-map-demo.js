@@ -1,29 +1,69 @@
-import Dungeon from '../../game/dungeon.js'
+import Dungeon, { graphToString } from '../../game/dungeon.js'
 import {html, render, useState} from '../lib.js'
 import {DungeonConfig} from './dungeon-config.js'
 import {SlayMap} from './slay-map.js'
 
 const MapDemo = () => {
 	const [dungeon, setDungeon] = useState(Dungeon())
-	const [scatter] = useState(0)
-	const x = 0
-	const y = 0
+	const [scatter, setScatter] = useState(0)
+	const [currentPos, setCurrentPos] = useState({x: 0, y: 0})
+	const [showDataView, setShowDataView] = useState(false)
+
 	const onSelect = (move) => {
-		console.log('move', move)
+		console.log('Selected move:', move)
+		const node = dungeon.graph[move.y][move.x]
+		const currentNode = dungeon.graph[currentPos.y][currentPos.x]
+
+		// Only allow movement to connected nodes or start
+		if (currentPos.y === 0 || currentNode.edges.has(node.id)) {
+			setCurrentPos(move)
+			console.log('Moved to:', move, 'Paths still exist:', dungeon.paths.length)
+		} else {
+			console.log('Cannot move to unconnected node')
+		}
+	}
+
+	const resetPosition = () => {
+		setCurrentPos({x: 0, y: 0})
+	}
+
+	const regenerateDungeon = (config) => {
+		setDungeon(Dungeon(config))
+		setCurrentPos({x: 0, y: 0})
 	}
 
 	return html`
-		<div class="Box">
+		<div class="Box" style="max-width: 25rem">
 			<details open>
-				<summary>Options</summary>
-				<${DungeonConfig} onUpdate=${(config) => setDungeon(Dungeon(config))} />
+				<summary><strong>Dungeon Configuration</strong></summary>
+				<${DungeonConfig} onUpdate=${regenerateDungeon} />
+				<fieldset class="Form">
+					<label>
+						Scatter: ${scatter}%
+						<input
+							type="range"
+							min="0"
+							max="20"
+							value=${scatter}
+							onInput=${(e) => setScatter(Number(e.target.value))}
+						/>
+					</label>
+				</fieldset>
 			</details>
+			<pre>${graphToString(dungeon.graph)}</pre>
 		</div>
 
 		${
 			dungeon &&
 			html`
-			<${SlayMap} dungeon=${dungeon} x=${x} y=${y} onSelect=${onSelect} scatter=${scatter} debug=${true}><//>
+			<${SlayMap}
+				dungeon=${dungeon}
+				x=${currentPos.x}
+				y=${currentPos.y}
+				onSelect=${onSelect}
+				scatter=${scatter}
+				debug=${true}
+			><//>
 		`
 		}
 	`

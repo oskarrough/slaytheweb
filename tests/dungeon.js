@@ -75,3 +75,40 @@ test('we can navigate a dungeon', (t) => {
 	t.is(nextState.dungeon.x, 0)
 	t.is(nextState.dungeon.y, 1)
 })
+
+test('boss node has no outgoing edges and paths still exist', (t) => {
+	let state = a.createNewState()
+	const dungeon = Dungeon({height: 3, width: 3})
+	state = a.setDungeon(state, dungeon)
+
+	// Verify paths were generated
+	t.true(dungeon.paths.length > 0, 'dungeon should have paths')
+
+	// Navigate to boss room (last floor)
+	const bossY = dungeon.graph.length - 1
+	state = a.move(state, {move: {x: 0, y: bossY}})
+
+	// Boss node should have no outgoing edges (it's the end)
+	const bossNode = state.dungeon.graph[bossY][0]
+	t.is(bossNode.edges.size, 0, 'boss node should have no outgoing edges')
+
+	// But dungeon paths should still exist
+	t.true(state.dungeon.paths.length > 0, 'paths should still exist')
+})
+
+test('paths persist independently of graph mutations', (t) => {
+	const dungeon = Dungeon({height: 3, width: 3})
+
+	// Store original path data
+	const originalPathCount = dungeon.paths.length
+	const originalFirstPath = JSON.stringify(dungeon.paths[0])
+
+	// Mutate navigation state
+	dungeon.y = 2
+	dungeon.graph[1][0].didVisit = true
+	dungeon.graph[2][0].didVisit = true
+
+	// Paths remain unchanged
+	t.is(dungeon.paths.length, originalPathCount, 'path count unchanged')
+	t.is(JSON.stringify(dungeon.paths[0]), originalFirstPath, 'path data unchanged')
+})

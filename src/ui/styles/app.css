@@ -418,13 +418,6 @@ h2 {
 	position: relative;
 }
 
-.Box input[type="text"] {
-	background: hsla(17, 6%, 70%, 1);
-	padding: 0.5rem;
-	border: 1px solid hsla(17, 6%, 3%, 1);
-	border-radius: 0.4rem;
-}
-
 .Box,
 .Box--text {
 	margin-left: auto;
@@ -527,20 +520,31 @@ h2 {
 }
 
 .Form {
+	fieldset {
+		display: flex;
+		flex-flow: column;
+		gap: 0.5rem;
+	}
+
+	label {
+		display: grid;
+		grid-template-columns: 6rem 1fr;
+		align-items: center;
+	}
+
 	& :is(p) {
 		font-size: smaller;
 	}
 	& :is(input) {
+		margin-right: auto;
 		padding: 0.25rem;
-		margin-top: 0.25rem;
-		margin-bottom: 0.25rem;
 	}
 }
 .Form--vertical {
-	display: flex;
-	flex-direction: column;
-	& :is(input) {
-		width: 100%;
+	/* display: flex; */
+	/* flex-direction: column; */
+	& :is([type="text"], [type="number"]) {
+		/* width: 100%; */
 	}
 }
 
