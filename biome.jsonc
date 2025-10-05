@@ -22,5 +22,18 @@
 			"bracketSpacing": false
 		}
 	},
-	"assist": { "actions": { "source": { "organizeImports": "on" } } }
+	"assist": { "actions": { "source": { "organizeImports": "on" } } },
+	"overrides": [
+		{
+			"includes": ["src/ui/**/*.astro"],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noUnusedVariables": "off",
+						"noUnusedImports": "off"
+					}
+				}
+			}
+		}
+	]
 }
