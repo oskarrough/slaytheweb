@@ -80,11 +80,16 @@ export default function RunStats() {
 		<div class="Box">
 			<p>Final deck had ${state.deck.length} cards:</p>
 			<div class="Cards Cards--grid Cards--mini">
-				${state.deck.map((cardName) =>
-					Card({
-						card: createCard(cardName),
-					}),
-				)}
+				${state.deck
+					.map((cardName) => {
+						try {
+							return Card({card: createCard(cardName)})
+						} catch (err) {
+							console.warn(`Skipping card "${cardName}": ${err.message}`)
+							return null
+						}
+					})
+					.filter(Boolean)}
 			</div>
 		</div>
 
