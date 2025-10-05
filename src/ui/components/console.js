@@ -13,7 +13,7 @@ export default function Console({game, onJumpToAction, onUndo, onRedo, onRunActi
 
 			<section>
 				<h3>Commands</h3>
-				<${CommandInterface} onRunAction=${onRunAction} freeMapNav=${freeMapNav} onToggleFreeMapNav=${onToggleFreeMapNav} />
+				<${CommandInterface} game=${game} onRunAction=${onRunAction} freeMapNav=${freeMapNav} onToggleFreeMapNav=${onToggleFreeMapNav} />
 			</section>
 
 			<section>
@@ -50,7 +50,7 @@ function ActionTimeline({past, onJumpToAction}) {
 	`
 }
 
-function CommandInterface({onRunAction, freeMapNav, onToggleFreeMapNav}) {
+function CommandInterface({game, onRunAction, freeMapNav, onToggleFreeMapNav}) {
 	const [input, setInput] = useState('')
 	const [history, setHistory] = useState([])
 	const [historyIndex, setHistoryIndex] = useState(-1)
@@ -65,25 +65,30 @@ function CommandInterface({onRunAction, freeMapNav, onToggleFreeMapNav}) {
 			if (Number.isNaN(amount)) return {error: 'Usage: hp <amount>'}
 			const action = amount < 0 ? 'removeHealth' : 'addHealth'
 			const absAmount = Math.abs(amount)
+			game.state.didCheat = true
 			onRunAction(action, {target: 'player', amount: absAmount})
 			return {success: `${amount < 0 ? 'Removed' : 'Added'} ${absAmount} HP`}
 		},
 		energy: (args) => {
 			const amount = Number.parseInt(args[0], 10)
 			if (Number.isNaN(amount)) return {error: 'Usage: energy <amount>'}
+			game.state.didCheat = true
 			onRunAction('addEnergyToPlayer', {amount})
 			return {success: `Added ${amount} energy`}
 		},
 		draw: (args) => {
 			const amount = Number.parseInt(args[0], 10) || 1
+			game.state.didCheat = true
 			onRunAction('drawCards', {amount})
 			return {success: `Drew ${amount} card${amount === 1 ? '' : 's'}`}
 		},
 		kill: () => {
+			game.state.didCheat = true
 			onRunAction('iddqd')
 			return {success: 'All enemies set to 1 HP'}
 		},
 		map: () => {
+			game.state.didCheat = true
 			onToggleFreeMapNav()
 			return {success: `Free map nav ${!freeMapNav ? 'enabled' : 'disabled'}`}
 		},

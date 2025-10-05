@@ -73,6 +73,7 @@ function createNewState() {
 		createdAt: Date.now(),
 		endedAt: undefined,
 		won: false,
+		didCheat: false,
 	}
 }
 
