@@ -1,6 +1,8 @@
 import Flip from 'gsap/Flip'
-import {createCard} from '../../game/cards.js'
+import {cards} from '../../content/cards.js'
 // Game logic
+import allActions from '../../game/actions.js'
+import {createCard} from '../../game/cards.js'
 import createNewGame from '../../game/new-game.js'
 import {getCurrRoom, isCurrRoomCompleted, isDungeonCompleted} from '../../game/utils-state.js'
 import gsap from '../animations.js'
@@ -12,6 +14,7 @@ import * as sounds from '../sounds.js'
 // UI Components
 import CampfireRoom from './campfire.js'
 import Cards from './cards.js'
+import Console from './console.js'
 import DungeonStats from './dungeon-stats.js'
 import Menu from './menu.js'
 import {Overlay, OverlayWithButton} from './overlays.js'
@@ -40,6 +43,7 @@ export default class App extends Component {
 		this.game = {}
 		this.overlayIndex = 11
 		this.debugMode = false
+		this.freeMapNav = false
 
 		// Scope methods
 		this.playCard = this.playCard.bind(this)
@@ -48,6 +52,9 @@ export default class App extends Component {
 		this.goToNextRoom = this.goToNextRoom.bind(this)
 		this.toggleOverlay = this.toggleOverlay.bind(this)
 		this.handleMapMove = this.handleMapMove.bind(this)
+		this.jumpToAction = this.jumpToAction.bind(this)
+		this.runAction = this.runAction.bind(this)
+		this.toggleFreeMapNav = this.toggleFreeMapNav.bind(this)
 	}
 
 	componentDidMount() {
@@ -97,18 +104,53 @@ export default class App extends Component {
 
 	enableConsole() {
 		// Enable a "console" in the browser.
+		const actionNames = Object.keys(allActions).sort()
+		const cardNames = cards.map((card) => card.name).sort()
+		const self = this
+
 		// @ts-expect-error
 		window.stw = {
+			// Core API
 			game: this.game,
 			run: this.runAction.bind(this),
 			dealCards: this.dealCards.bind(this),
 			createCard,
 			saveGame: (state) => saveToUrl(state || this.state),
-			help() {
-				console.log(`Welcome to the Slay The Web Console. Some examples:
-stw.run('removeHealth', {amount: 6, target: 'player'})
-stw.run('drawCards', {amount: 2})
-stw.dealCards()`)
+
+			// Discoverability
+			get state() {
+				return self.game.state
+			},
+			actions: actionNames,
+			cards: cardNames,
+
+			// Help system
+			help(actionName) {
+				if (!actionName) {
+					console.log(`%cWelcome to the Slay The Web Console`, 'font-weight: bold; font-size: 14px')
+					console.log(`\n%cCommon cheats:`, 'font-weight: bold')
+					console.log(`stw.run('addHealth', {target: 'player', amount: 50})`)
+					console.log(`stw.run('removeHealth', {target: 'player', amount: 10})`)
+					console.log(`stw.run('addEnergyToPlayer', {amount: 5})`)
+					console.log(`stw.run('drawCards', {amount: 3})`)
+					console.log(`stw.run('addCardToHand', {card: stw.createCard('Strike')})`)
+					console.log(`stw.run('iddqd')  // kill all monsters`)
+					console.log(`\n%cDiscovery:`, 'font-weight: bold')
+					console.log(`stw.actions      // list all ${actionNames.length} available actions`)
+					console.log(`stw.cards        // list all ${cardNames.length} card names`)
+					console.log(`stw.state        // view current game state`)
+					console.log(`stw.help('addHealth')  // show help for specific action`)
+					console.log(`\n%cUtilities:`, 'font-weight: bold')
+					console.log(`stw.dealCards()`)
+					console.log(`stw.saveGame()`)
+				} else if (actionNames.includes(actionName)) {
+					console.log(`%c${actionName}`, 'font-weight: bold')
+					console.log(`Usage: stw.run('${actionName}', {/* params */})`)
+					console.log('\nCheck the source code in src/game/actions.js for details')
+				} else {
+					console.log(`Unknown action: ${actionName}`)
+					console.log(`Available actions:`, actionNames)
+				}
 			},
 		}
 		// @ts-expect-error
@@ -129,6 +171,13 @@ stw.dealCards()`)
 	undo() {
 		this.game.undo()
 		this.setState(this.game.state, this.dealCards)
+	}
+
+	redo() {
+		const item = this.game.redo()
+		if (item) {
+			this.setState(item.state, this.dealCards)
+		}
 	}
 
 	/**
@@ -214,16 +263,18 @@ stw.dealCards()`)
 		const keymap = {
 			e: () => this.endTurn(),
 			u: () => this.undo(),
+			r: () => this.redo(),
+			c: () => this.toggleOverlay('#Console'),
 			Escape: () => {
 				// let openOverlays = this.base.querySelectorAll('.Overlay:not(#Menu)[open]')
 				const openOverlays = this.base.querySelectorAll(
-					'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #ExhaustPile[open]',
+					'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #ExhaustPile[open], #Console[open]',
 				)
-				const mapOpened = document.querySelector('#Map').hasAttribute('open')
+				const hadOpenOverlays = openOverlays.length > 0
 				openOverlays.forEach((el) => {
 					el.removeAttribute('open')
 				})
-				if (!mapOpened) this.toggleOverlay('#Menu')
+				if (!hadOpenOverlays) this.toggleOverlay('#Menu')
 			},
 			d: () => this.toggleOverlay('#Deck'),
 			a: () => this.toggleOverlay('#DrawPile'),
@@ -270,6 +321,27 @@ stw.dealCards()`)
 		this.setState({didPickCard: false})
 		this.game.enqueue({type: 'move', move})
 		this.update(this.dealCards)
+	}
+
+	jumpToAction(index) {
+		// Destructive rewind: remove all actions after the selected index
+		const past = this.game.past.list
+		if (index < 0 || index >= past.length) return
+
+		// Get the state at that point
+		const targetState = past[index].state
+
+		// Remove all actions after this index
+		this.game.past.list = past.slice(0, index + 1)
+
+		// Restore the state
+		this.game.state = targetState
+		this.setState(targetState, this.dealCards)
+	}
+
+	toggleFreeMapNav() {
+		this.freeMapNav = !this.freeMapNav
+		this.forceUpdate()
 	}
 
 	/**
@@ -385,7 +457,7 @@ stw.dealCards()`)
 				<${OverlayWithButton} id="Map" topright key=${1}>
 					<button align-right onClick=${() => this.toggleOverlay('#Map')}><u>M</u>ap</button>
 					<div class="Overlay-content">
-						<${SlayMap} dungeon=${state.dungeon} x=${state.dungeon.x} y=${state.dungeon.y} scatter=${20} debug=${this.debugMode} onSelect=${this.handleMapMove}><//>
+						<${SlayMap} dungeon=${state.dungeon} x=${state.dungeon.x} y=${state.dungeon.y} scatter=${20} debug=${this.debugMode} freeNavigation=${this.freeMapNav} onSelect=${this.handleMapMove}><//>
 					</div>
 				<//>
 
@@ -424,6 +496,21 @@ stw.dealCards()`)
 						<${Cards} gameState=${state} type="discardPile" />
 					</div>
 				<//>
+
+				<div id="Console" class="Overlay" middle>
+					<div class="Overlay-content">
+						<${Console}
+							game=${this.game}
+							gameState=${state}
+							onJumpToAction=${this.jumpToAction}
+							onUndo=${() => this.undo()}
+							onRedo=${() => this.redo()}
+							onRunAction=${this.runAction}
+							freeMapNav=${this.freeMapNav}
+							onToggleFreeMapNav=${this.toggleFreeMapNav}
+						/>
+					</div>
+				</div>
 		</div>
 		`
 	}

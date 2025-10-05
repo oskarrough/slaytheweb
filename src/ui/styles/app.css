@@ -569,3 +569,90 @@ h2 {
 .driver-popover .driver-popover-footer button {
 	font-size: 1rem;
 }
+
+.Console {
+	width: 100%;
+	max-width: 720px;
+	padding: 1rem;
+	background: var(--bg);
+	border: 1px solid black;
+	border-left: 0;
+	border-radius: 3px;
+}
+
+.ActionTimeline {
+	padding-left: 0;
+	list-style: none;
+	overflow: auto;
+	height: 200px;
+	border: 1px solid;
+
+	li {
+		display: flex;
+		align-items: center;
+
+		button {
+			margin-left: auto;
+		}
+	}
+}
+
+.CommandInterface {
+	font-family: "Courier New", monospace;
+}
+
+.CommandOutput {
+	max-height: 200px;
+	overflow-y: auto;
+	margin-bottom: 1rem;
+	border: 1px solid var(--gray);
+	padding: 0.5rem;
+	background: rgba(0, 0, 0, 0.3);
+}
+
+.CommandEntry {
+	margin-bottom: 0.5rem;
+}
+
+.CommandInput {
+	color: var(--gray);
+	margin-bottom: 0.25rem;
+}
+
+.CommandSuccess {
+	color: var(--green);
+}
+
+.CommandError {
+	color: var(--red);
+}
+
+.CommandInfo {
+	color: var(--teal);
+	margin: 0;
+	white-space: pre-wrap;
+}
+
+.CommandInputBox {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+
+	span {
+		color: var(--teal);
+		font-weight: bold;
+	}
+
+	input {
+		flex: 1;
+		background: rgba(0, 0, 0, 0.5);
+		border: 1px solid var(--gray);
+		color: var(--text);
+		padding: 0.5rem;
+		font-family: "Courier New", monospace;
+
+		&:focus {
+			outline: 1px solid var(--teal);
+		}
+	}
+}

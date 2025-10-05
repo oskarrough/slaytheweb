@@ -1,7 +1,6 @@
 import {html, useState} from '../lib.js'
 import {saveToUrl} from '../save-load.js'
 import {toggleMute} from '../sounds.js'
-import History from './history.js'
 
 // @ts-expect-error
 const abandonGame = () => {
@@ -14,12 +13,10 @@ const abandonGame = () => {
 /**
  * Do something
  * @param {object} props
- * @param {Game} props.game
  * @param {State} props.gameState
- * @param {Function} props.onUndo
  * @returns {import('preact').VNode}
  */
-export default function Menu({game, gameState, onUndo}) {
+export default function Menu({gameState}) {
 	const [muted, setMuted] = useState(false)
 
 	function toggleSound() {
@@ -48,9 +45,8 @@ export default function Menu({game, gameState, onUndo}) {
 						<label>Sound <input type="checkbox" checked=${!muted} onClick=${() => toggleSound()} /></label>
 					</li>
 				</ul>
+				<p><small>Press <kbd>c</kbd> for console</small></p>
 			</div>
-
-			<${History} future=${game.future.list} past=${game.past.list} onUndo=${onUndo} />
 		</div>
 	`
 }
