@@ -1,4 +1,6 @@
 import {useEffect, useRef, useState} from 'preact/hooks'
+import {cards} from '../../content/cards.js'
+import {createCard} from '../../game/cards.js'
 import {html} from '../lib.js'
 
 /** @typedef {import('../../game/new-game.js').Game} Game */
@@ -92,15 +94,68 @@ function CommandInterface({game, onRunAction, freeMapNav, onToggleFreeMapNav}) {
 			onToggleFreeMapNav()
 			return {success: `Free map nav ${!freeMapNav ? 'enabled' : 'disabled'}`}
 		},
+		add: (args) => {
+			const cardName = args.join(' ')
+			if (!cardName) return {error: 'Usage: add <cardName>'}
+
+			// Case-insensitive search
+			const card = cards.find((c) => c.name.toLowerCase() === cardName.toLowerCase())
+			if (!card) return {error: `Card not found: ${cardName}`}
+
+			game.state.didCheat = true
+			const newCard = createCard(card.name)
+			onRunAction('addCardToDeck', {card: newCard})
+			return {success: `Added ${card.name} to deck`}
+		},
+		remove: (args) => {
+			const cardName = args.join(' ')
+			if (!cardName) return {error: 'Usage: remove <cardName>'}
+
+			// Case-insensitive search in deck
+			const card = game.state.deck.find((c) => c.name.toLowerCase() === cardName.toLowerCase())
+			if (!card) return {error: `Card not found in deck: ${cardName}`}
+
+			game.state.didCheat = true
+			onRunAction('removeCard', {card})
+			return {success: `Removed ${card.name} from deck`}
+		},
+		upgrade: (args) => {
+			const input = args.join(' ')
+			if (!input) return {error: 'Usage: upgrade <cardName> or upgrade all'}
+
+			if (input.toLowerCase() === 'all') {
+				const toUpgrade = game.state.deck.filter((c) => !c.upgraded)
+				if (toUpgrade.length === 0) return {info: 'All cards already upgraded'}
+
+				game.state.didCheat = true
+				toUpgrade.forEach((card) => {
+					onRunAction('upgradeCard', {card})
+				})
+				return {success: `Upgraded ${toUpgrade.length} card${toUpgrade.length === 1 ? '' : 's'}`}
+			}
+
+			// Case-insensitive search in deck
+			const card = game.state.deck.find((c) => c.name.toLowerCase() === input.toLowerCase())
+			if (!card) return {error: `Card not found in deck: ${input}`}
+			if (card.upgraded) return {error: `${card.name} is already upgraded`}
+
+			game.state.didCheat = true
+			onRunAction('upgradeCard', {card})
+			return {success: `Upgraded ${card.name}`}
+		},
 		help: () => ({
 			info: `Available commands:
-  hp <amount>      - Add/remove health (negative to damage)
-  energy <amount>  - Add energy
-  draw [amount]    - Draw cards (default: 1)
-  kill             - Set all enemies to 1 HP
-  map              - Toggle free map navigation
-  help             - Show this help
-  clear            - Clear output`,
+  hp <amount>       - Add/remove health (negative to damage)
+  energy <amount>   - Add energy
+  draw [amount]     - Draw cards (default: 1)
+  kill              - Set all enemies to 1 HP
+  map               - Toggle free map navigation
+  add <cardName>    - Add card to deck
+  remove <cardName> - Remove card from deck
+  upgrade <cardName> - Upgrade specific card
+  upgrade all       - Upgrade all cards
+  help              - Show this help
+  clear             - Clear output`,
 		}),
 		clear: () => setOutput([]),
 	}
