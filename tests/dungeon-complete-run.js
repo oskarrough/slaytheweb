@@ -10,6 +10,7 @@ test('can complete entire dungeon from start to finish', (t) => {
 	const dungeon = createTestDungeon()
 	state = a.setDungeon(state, dungeon)
 	state = a.addStarterDeck(state)
+	state = a.iddqd(state)
 	state = a.drawCards(state)
 
 	t.is(state.dungeon.y, 0)
