@@ -336,7 +336,7 @@ export default class DebugUI extends Component {
 									${game.state.hand.map(
 										(card, i) => html`
 											<button
-												class="card-btn ${actionParams[param.name]?.id === card.id ? 'selected' : ''}"
+												class="Button card-btn ${actionParams[param.name]?.id === card.id ? 'selected' : ''}"
 												onClick=${() => this.handleParamChange(param.name, card)}
 											>
 												${card.name} (${i})
@@ -604,7 +604,7 @@ export default class DebugUI extends Component {
 					${this.renderHistory()}
 
 					<menu>
-						<button onClick=${() => this.reset()}>New Game</button>
+						<button class="Button" onClick=${() => this.reset()}>New Game</button>
 					</<menu>
 				</div>
 

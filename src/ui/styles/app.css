@@ -331,7 +331,7 @@ tbody {
 	width: 100%;
 }
 
-.Box :where(h2,h3,h4) {
+.Box :where(h2, h3, h4) {
 	text-shadow: none;
 }
 

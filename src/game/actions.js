@@ -269,7 +269,10 @@ export function useCardActions(state, {target, card}) {
 		action.parameter.target = target
 
 		// Run the action (and add the `card` to the parameters
-		nextState = allActions[action.type](nextState, {...action.parameter, card})
+		nextState = allActions[action.type](nextState, {
+			...action.parameter,
+			card,
+		})
 	})
 
 	return nextState
@@ -534,7 +537,10 @@ function takeMonsterTurn(state, monsterIndex) {
 		if (intent.damage) {
 			let amount = intent.damage
 			if (monster.powers.weak) amount = powers.weak.use(amount)
-			const updatedPlayer = removeHealth(draft, {target: 'player', amount}).player
+			const updatedPlayer = removeHealth(draft, {
+				target: 'player',
+				amount,
+			}).player
 			draft.player.block = updatedPlayer.block
 			draft.player.currentHealth = updatedPlayer.currentHealth
 			if (updatedPlayer.currentHealth < 1) {
@@ -681,6 +687,16 @@ function setDeck(state, {cardNames}) {
 	})
 }
 
+/**
+ * Marks the game state as having used cheats.
+ * @type {ActionFn<{}>}
+ */
+function setDidCheat(state) {
+	return produce(state, (draft) => {
+		draft.didCheat = true
+	})
+}
+
 const allActions = {
 	addCardToDeck,
 	addCardToHand,
@@ -705,6 +721,7 @@ const allActions = {
 	removeHealth,
 	removePlayerDebuffs,
 	setDeck,
+	setDidCheat,
 	setDungeon,
 	setHealth,
 	setPower,

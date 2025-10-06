@@ -29,7 +29,7 @@ export default class CampfireRoom extends Component {
 			<div class="Container Container--center">
 				<h1 center>You've already made a choice</h1>
 				<p center>
-					<button onClick=${props.onContinue}>Continue to the next room</button>
+					<button class="Button" onClick=${props.onContinue}>Continue to the next room</button>
 				</p>
 			</div>
 		`
@@ -47,13 +47,13 @@ export default class CampfireRoom extends Component {
 							isChoosingCard
 								? html`
 									<li>
-										<button onClick=${() => this.setState({isChoosingCard: false})}>Cancel</button>
+										<button class="Button" onClick=${() => this.setState({isChoosingCard: false})}>Cancel</button>
 									</li>
 								`
 								: html`
-									<li><button onClick=${() => this.rest()}>Rest</button></li>
-									<li><button onClick=${() => this.choose('upgradeCard')}>Upgrade card</button></li>
-									<li><button onClick=${() => this.choose('removeCard')}>Remove card</button></li>
+									<li><button class="Button" onClick=${() => this.rest()}>Rest</button></li>
+									<li><button class="Button" onClick=${() => this.choose('upgradeCard')}>Upgrade card</button></li>
+									<li><button class="Button" onClick=${() => this.choose('removeCard')}>Remove card</button></li>
 								`
 						}
 					</ul>
@@ -69,7 +69,7 @@ export default class CampfireRoom extends Component {
 					/>`
 				}
 				<p center>
-					<button onClick=${() => this.props.onContinue()}>No, thanks</button>
+					<button class="Button" onClick=${() => this.props.onContinue()}>No, thanks</button>
 				</p>
 			</div>
 		`

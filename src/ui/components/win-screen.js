@@ -8,7 +8,7 @@ const WinScreen = (props) => html`
 		<div class="Box">
 			<ul class="Options">
 				<li>
-					<button autofocus onClick=${props.onNewGame}>Play again</a>
+					<button class="Button" autofocus onClick=${props.onNewGame}>Play again</a>
 				</li>
 			</ul>
 		</div>

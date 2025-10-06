@@ -3,8 +3,8 @@ textarea,
 select {
 	font-family: inherit;
 	cursor:
-	url(/images/cursors/select.png) 10 0,
-	auto;
+		url(/images/cursors/select.png) 10 0,
+		auto;
 }
 
 select,
@@ -23,8 +23,8 @@ a,
 button,
 summary {
 	cursor:
-	url(/images/cursors/point.png) 10 0,
-	auto;
+		url(/images/cursors/point.png) 10 0,
+		auto;
 }
 
 button.primary {
@@ -47,7 +47,6 @@ button[danger] {
 		background: color-mix(in oklab, var(--red), black 30%);
 	}
 }
-
 
 .Button,
 .driver-popover .driver-popover-footer button {
@@ -92,8 +91,6 @@ input[type="number"] {
 	min-height: 1.5rem;
 }
 
-
-
 .Overlay input[type="text"] {
 	color-scheme: dark;
 }
@@ -101,7 +98,6 @@ input[type="number"] {
 a {
 	color: inherit;
 }
-
 
 .Form {
 	fieldset {
@@ -132,4 +128,3 @@ a {
 		/* width: 100%; */
 	}
 }
-

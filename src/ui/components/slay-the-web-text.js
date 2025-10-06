@@ -65,8 +65,8 @@ export default class SlayTheWebText extends HTMLElement {
 			<p>${this.game.future.list.length} future actions</p>
 			<p>${this.game.past.list.length} past actions</p>
 			<menu>
-				<button onClick=${() => this.update()}><u>U</u>pdate</button>
-				<button class="EndTurn" onClick=${() => this.endTurn()}><u>E</u>nd turn</button>
+				<button class="Button" onClick=${() => this.update()}><u>U</u>pdate</button>
+				<button class="Button EndTurn" onClick=${() => this.endTurn()}><u>E</u>nd turn</button>
 			</menu>
 			<h2>Player</h2>
 			<p>block: ${state.player.block}</p>
@@ -98,7 +98,7 @@ export default class SlayTheWebText extends HTMLElement {
 							room.monsters.map((_monster, i) => html`<option value=${`enemy${i}`}>enemy${i}</option>`)
 						}
 					</select>
-					<button type="submit">Play</button>
+					<button class="Button" type="submit">Play</button>
 				</form>
 			</menu>
 

@@ -258,15 +258,24 @@ export default class App extends Component {
 	}
 
 	handleShortcuts(event) {
-		if (event.target.nodeName === 'INPUT') return
+		const consoleOpen = this.base.querySelector('#Console[open]')
+		const isTyping = ['INPUT', 'TEXTAREA'].includes(event.target.nodeName)
+
+		// If console is open and we're typing in it, let console handle all keys
+		if (consoleOpen && isTyping) return
+
+		// If typing in other inputs (but console not open), ignore all shortcuts
+		if (isTyping) return
+
 		const {key} = event
 		const keymap = {
 			e: () => this.endTurn(),
-			u: () => this.undo(),
-			r: () => this.redo(),
-			c: () => this.toggleOverlay('#Console'),
+			c: () => {
+				event.preventDefault()
+				this.toggleOverlay('#Console')
+			},
 			Escape: () => {
-				// let openOverlays = this.base.querySelectorAll('.Overlay:not(#Menu)[open]')
+				event.preventDefault()
 				const openOverlays = this.base.querySelectorAll(
 					'#Deck[open], #DrawPile[open], #DiscardPile[open], #Map[open], #ExhaustPile[open], #Console[open]',
 				)
@@ -373,7 +382,7 @@ export default class App extends Component {
 							<h1 center>You are dead</h1>
 							<${PublishRun} game=${this.game}><//>
 							<${DungeonStats} dungeon=${state.dungeon}><//>
-							<button onClick=${() => this.props.onLoose()}>Try again?</button>
+							<button class="Button" onClick=${() => this.props.onLoose()}>Try again?</button>
 						</div>
 					<//> `
 				}
@@ -385,7 +394,7 @@ export default class App extends Component {
 							<h1 center>You won!</h1>
 							<${PublishRun} game=${this.game}><//>
 							<${DungeonStats} dungeon=${state.dungeon}><//>
-							<p center><button onClick=${() => this.props.onWin()}>Continue</button></p>
+							<p center><button class="Button" onClick=${() => this.props.onWin()}>Continue</button></p>
 						</div>
 					<//> `
 				}
@@ -437,7 +446,7 @@ export default class App extends Component {
 								>
 							</div>
 							<p class="Actions">
-								<button class="EndTurn" onClick=${() => this.endTurn()}><u>E</u>nd turn</button>
+								<button class="Button EndTurn" onClick=${() => this.endTurn()}><u>E</u>nd turn</button>
 							</p>
 						</div>
 
@@ -508,8 +517,10 @@ export default class App extends Component {
 							onRunAction=${this.runAction}
 							freeMapNav=${this.freeMapNav}
 							onToggleFreeMapNav=${this.toggleFreeMapNav}
+							onClose=${() => this.toggleOverlay('#Console')}
 						/>
 					</div>
+					<figure class="Overlay-bg"></figure>
 				</div>
 		</div>
 		`

@@ -47,7 +47,7 @@ export default class SplashScreen extends Component {
 				<article class="Splash Container Container--vcenter">
 					<div class="Box">
 						<ul class="Options">
-							<li><button onClick=${() => this.setState({selectingDeck: false})}>← Menu</button></li>
+							<li><button class="Button" onClick=${() => this.setState({selectingDeck: false})}>← Menu</button></li>
 						</ul>
 						<br/>
 						<h2>Choose a deck</h2>
@@ -71,13 +71,13 @@ export default class SplashScreen extends Component {
 							location.hash
 								? html`
 									<li>
-										Found a saved game. <button autofocus onClick=${this.props.onContinue}>Continue?</button>
+										Found a saved game. <button class="Button" autofocus onClick=${this.props.onContinue}>Continue?</button>
 									</li>
-									<li><button onClick=${() => this.props.onNewGame()}>New Game</button></li>
+									<li><button class="Button" onClick=${() => this.props.onNewGame()}>New Game</button></li>
 								`
 								: html`
-									<li><button class="primary" autofocus onClick=${() => this.props.onNewGame()}>Play</button></li>
-									<li><button onClick=${this.startDeckSelection}>Play custom deck</button></li>
+									<li><button class="Button primary" autofocus onClick=${() => this.props.onNewGame()}>Play</button></li>
+									<li><button class="Button" onClick=${this.startDeckSelection}>Play custom deck</button></li>
 									<li><hr /></li>
 									<li><a class="Button" href="/?debug&tutorial">Tutorial</a></li>
 									<li><a class="Button" href="/deck-builder">Deck Builder</a></li>

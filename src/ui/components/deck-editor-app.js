@@ -25,7 +25,7 @@ export function DeckEditorApp() {
 				find your deck fun, <a href="/manual">please contribute</a>!
 			</p>
 			<ul class="Options">
-				<li><button onClick=${createNewDeck}>New custom deck</button></li>
+				<li><button class="Button" onClick=${createNewDeck}>New custom deck</button></li>
 			</ul>
 		</div>
 
