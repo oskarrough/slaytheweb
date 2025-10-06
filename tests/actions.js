@@ -40,6 +40,7 @@ test('new game state is ok', (t) => {
 			block: 0,
 			powers: {},
 		},
+		didCheat: false
 	})
 })
 
