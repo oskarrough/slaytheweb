@@ -5,61 +5,119 @@ import {html} from '../lib.js'
 
 /** @typedef {import('../../game/new-game.js').Game} Game */
 
-export default function Console({game, onJumpToAction, onUndo, onRedo, onRunAction, freeMapNav, onToggleFreeMapNav}) {
+export default function Console({
+	game,
+	onJumpToAction,
+	onUndo,
+	onRedo,
+	onRunAction,
+	freeMapNav,
+	onToggleFreeMapNav,
+	onClose,
+}) {
 	const past = game.past.list || []
 	const redoStack = game.redoStack?.list || []
 
 	return html`
-		<div class="Box">
-			<h2><u>C</u>onsole</h2>
+    <div class="Box">
+      <section>
+        <h2><u>C</u>onsole</h2>
+        <${CommandInterface}
+          game=${game}
+          onRunAction=${onRunAction}
+          freeMapNav=${freeMapNav}
+          onToggleFreeMapNav=${onToggleFreeMapNav}
+          onClose=${onClose}
+        />
+      </section>
 
-			<section>
-				<h3>Commands</h3>
-				<${CommandInterface} game=${game} onRunAction=${onRunAction} freeMapNav=${freeMapNav} onToggleFreeMapNav=${onToggleFreeMapNav} />
-			</section>
-
-			<section>
-				<h3>Timeline (${past.length} actions)</h3>
-				<${ActionTimeline} past=${past} onJumpToAction=${onJumpToAction} />
-				<p>
-					<button onClick=${onUndo} disabled=${past.length === 0}>◄ Undo (u)</button>
-					<button onClick=${onRedo} disabled=${redoStack.length === 0}>Redo (r) ►</button>
-				</p>
-			</section>
-		</div>
-	`
+      <section>
+        <${ActionTimeline} past=${past} onJumpToAction=${onJumpToAction} />
+        <menu>
+          <button
+            class="Button"
+            onClick=${onUndo}
+            disabled=${past.length === 0}
+          >
+            ← Undo
+          </button>
+          <button
+            class="Button"
+            onClick=${onRedo}
+            disabled=${redoStack.length === 0}
+          >
+            Redo →
+          </button>
+        </menu>
+      </section>
+    </div>
+  `
 }
 
 function ActionTimeline({past, onJumpToAction}) {
 	if (!past.length) return html`<p><em>No actions yet...</em></p>`
 
 	return html`
-		<ol class="ActionTimeline">
-			${past.map((item, index) => {
+    <ol class="ActionTimeline" scroll>
+      ${past.toReversed().map((item, index) => {
 				const {action, state} = item
 				const meta = state ? `Turn ${state.turn || 0} • Floor ${state.dungeon?.y || 0}` : ''
 				return html`
-					<li key=${index}>
-						<div>
-							<strong>${action.type}</strong>${action.card ? `: ${action.card.name}` : ''}
-							${meta && html`<br/><small>${meta}</small>`}
-						</div>
-						<button onClick=${() => onJumpToAction(index)}>Jump</button>
-					</li>
-				`
+          <li key=${index}>
+            <div>
+              <strong>${action.type}</strong>${action.card ? `: ${action.card.name}` : ''}
+              ${meta && html`<br /><small>${meta}</small>`}
+            </div>
+            <button class="Button" onClick=${() => onJumpToAction(index)}>
+              Jump
+            </button>
+          </li>
+        `
 			})}
-		</ol>
-	`
+    </ol>
+  `
 }
 
-function CommandInterface({game, onRunAction, freeMapNav, onToggleFreeMapNav}) {
+function CommandInterface({game, onRunAction, freeMapNav, onToggleFreeMapNav, onClose}) {
 	const [input, setInput] = useState('')
 	const [history, setHistory] = useState([])
 	const [historyIndex, setHistoryIndex] = useState(-1)
 	const [output, setOutput] = useState([])
 	const inputRef = useRef(null)
+	const outputRef = useRef(null)
 
-	useEffect(() => inputRef.current?.focus(), [])
+	useEffect(() => {
+		// Check if parent overlay is open and focus input
+		const checkAndFocus = () => {
+			const overlay = document.getElementById('Console')
+			if (overlay?.hasAttribute('open') && inputRef.current) {
+				inputRef.current.focus()
+			}
+		}
+
+		// Focus on mount
+		checkAndFocus()
+
+		// Watch for changes to the open attribute
+		const observer = new MutationObserver(checkAndFocus)
+		const overlay = document.getElementById('Console')
+		if (overlay) {
+			observer.observe(overlay, {attributes: true, attributeFilter: ['open']})
+		}
+
+		return () => observer.disconnect()
+	}, [])
+
+	useEffect(() => {
+		if (outputRef.current) {
+			outputRef.current.scrollTop = outputRef.current.scrollHeight
+		}
+	}, [output])
+
+	const markAsCheat = () => {
+		game.enqueue({type: 'setDidCheat'})
+		game.dequeue()
+	}
 
 	const commands = {
 		hp: (args) => {
@@ -67,32 +125,34 @@ function CommandInterface({game, onRunAction, freeMapNav, onToggleFreeMapNav}) {
 			if (Number.isNaN(amount)) return {error: 'Usage: hp <amount>'}
 			const action = amount < 0 ? 'removeHealth' : 'addHealth'
 			const absAmount = Math.abs(amount)
-			game.state.didCheat = true
+			markAsCheat()
 			onRunAction(action, {target: 'player', amount: absAmount})
 			return {success: `${amount < 0 ? 'Removed' : 'Added'} ${absAmount} HP`}
 		},
 		energy: (args) => {
 			const amount = Number.parseInt(args[0], 10)
 			if (Number.isNaN(amount)) return {error: 'Usage: energy <amount>'}
-			game.state.didCheat = true
+			markAsCheat()
 			onRunAction('addEnergyToPlayer', {amount})
 			return {success: `Added ${amount} energy`}
 		},
 		draw: (args) => {
 			const amount = Number.parseInt(args[0], 10) || 1
-			game.state.didCheat = true
+			markAsCheat()
 			onRunAction('drawCards', {amount})
 			return {success: `Drew ${amount} card${amount === 1 ? '' : 's'}`}
 		},
 		kill: () => {
-			game.state.didCheat = true
+			markAsCheat()
 			onRunAction('iddqd')
 			return {success: 'All enemies set to 1 HP'}
 		},
 		map: () => {
-			game.state.didCheat = true
+			markAsCheat()
 			onToggleFreeMapNav()
-			return {success: `Free map nav ${!freeMapNav ? 'enabled' : 'disabled'}`}
+			return {
+				success: `Free map nav ${!freeMapNav ? 'enabled' : 'disabled'}`,
+			}
 		},
 		add: (args) => {
 			const cardName = args.join(' ')
@@ -102,7 +162,7 @@ function CommandInterface({game, onRunAction, freeMapNav, onToggleFreeMapNav}) {
 			const card = cards.find((c) => c.name.toLowerCase() === cardName.toLowerCase())
 			if (!card) return {error: `Card not found: ${cardName}`}
 
-			game.state.didCheat = true
+			markAsCheat()
 			const newCard = createCard(card.name)
 			onRunAction('addCardToDeck', {card: newCard})
 			return {success: `Added ${card.name} to deck`}
@@ -115,7 +175,7 @@ function CommandInterface({game, onRunAction, freeMapNav, onToggleFreeMapNav}) {
 			const card = game.state.deck.find((c) => c.name.toLowerCase() === cardName.toLowerCase())
 			if (!card) return {error: `Card not found in deck: ${cardName}`}
 
-			game.state.didCheat = true
+			markAsCheat()
 			onRunAction('removeCard', {card})
 			return {success: `Removed ${card.name} from deck`}
 		},
@@ -127,11 +187,13 @@ function CommandInterface({game, onRunAction, freeMapNav, onToggleFreeMapNav}) {
 				const toUpgrade = game.state.deck.filter((c) => !c.upgraded)
 				if (toUpgrade.length === 0) return {info: 'All cards already upgraded'}
 
-				game.state.didCheat = true
+				markAsCheat()
 				toUpgrade.forEach((card) => {
 					onRunAction('upgradeCard', {card})
 				})
-				return {success: `Upgraded ${toUpgrade.length} card${toUpgrade.length === 1 ? '' : 's'}`}
+				return {
+					success: `Upgraded ${toUpgrade.length} card${toUpgrade.length === 1 ? '' : 's'}`,
+				}
 			}
 
 			// Case-insensitive search in deck
@@ -139,23 +201,22 @@ function CommandInterface({game, onRunAction, freeMapNav, onToggleFreeMapNav}) {
 			if (!card) return {error: `Card not found in deck: ${input}`}
 			if (card.upgraded) return {error: `${card.name} is already upgraded`}
 
-			game.state.didCheat = true
+			markAsCheat()
 			onRunAction('upgradeCard', {card})
 			return {success: `Upgraded ${card.name}`}
 		},
 		help: () => ({
-			info: `Available commands:
-  hp <amount>       - Add/remove health (negative to damage)
-  energy <amount>   - Add energy
-  draw [amount]     - Draw cards (default: 1)
-  kill              - Set all enemies to 1 HP
-  map               - Toggle free map navigation
-  add <cardName>    - Add card to deck
-  remove <cardName> - Remove card from deck
+			info: `hp <amount>        - Add/remove health (negative to damage)
+  energy <amount>    - Add energy
+  draw [amount]      - Draw cards (default: 1)
+  kill               - Set all enemies to 1 HP
+  map                - Toggle free map navigation
+  add <cardName>     - Add card to deck
+  remove <cardName>  - Remove card from deck
   upgrade <cardName> - Upgrade specific card
-  upgrade all       - Upgrade all cards
-  help              - Show this help
-  clear             - Clear output`,
+  upgrade all        - Upgrade all cards
+  help               - Show this help
+  clear              - Clear output`,
 		}),
 		clear: () => setOutput([]),
 	}
@@ -170,7 +231,9 @@ function CommandInterface({game, onRunAction, freeMapNav, onToggleFreeMapNav}) {
 		const [name, ...args] = trimmed.split(/\s+/)
 		const result = commands[name]
 			? commands[name](args)
-			: {error: `Unknown command: ${name}. Type "help" for available commands.`}
+			: {
+					error: `Unknown command: ${name}. Type "help" for available commands.`,
+				}
 
 		if (result) setOutput((prev) => [...prev, {command: trimmed, result}])
 	}
@@ -189,54 +252,69 @@ function CommandInterface({game, onRunAction, freeMapNav, onToggleFreeMapNav}) {
 	}
 
 	const handleKey = (e) => {
+		// Always stop propagation to prevent game-screen from handling these events
+		if (e.key === 'Escape') {
+			e.preventDefault()
+			e.stopPropagation()
+			onClose?.()
+			// Return focus to the app container so shortcuts work immediately
+			document.querySelector('.App')?.focus()
+			return
+		}
 		if (e.key === 'Enter') {
+			e.preventDefault()
+			e.stopPropagation()
 			execute(input)
 			setInput('')
+			return
 		}
 		if (e.key === 'ArrowUp') {
 			e.preventDefault()
+			e.stopPropagation()
 			navigate('up')
+			return
 		}
 		if (e.key === 'ArrowDown') {
 			e.preventDefault()
+			e.stopPropagation()
 			navigate('down')
+			return
 		}
 	}
 
 	return html`
-		<div class="CommandInterface">
-			${
+    <div class="CommandInterface">
+      ${
 				output.length > 0 &&
 				html`
-				<div class="CommandOutput">
-					${output.map(
-						({command, result}, i) => html`
-						<div key=${i} class="CommandEntry">
-							<div class="CommandInput">→ ${command}</div>
-							${Object.entries(result).map(
-								([type, msg]) =>
-									html`<${type === 'info' ? 'pre' : 'div'} class="Command${type[0].toUpperCase() + type.slice(1)}">${msg}</>`,
-							)}
-						</div>
-					`,
-					)}
-				</div>
-			`
+        <output ref=${outputRef}>
+          <ol class="scroll">
+            ${output.map(
+							({command, result}, i) => html`
+                <li key=${i}>
+                  <kbd>→ ${command}</kbd>
+                  ${Object.entries(result).map(
+										([type, msg]) =>
+											html`<${type === 'info' ? 'pre' : 'div'} class="Command${type[0].toUpperCase() + type.slice(1)}">${msg}</>`,
+									)}
+                </li>
+              `,
+						)}
+          </ol>
+        </output>
+      `
 			}
-			<div class="CommandInputBox">
-				<span>→</span>
-				<input
-					ref=${inputRef}
-					type="text"
-					value=${input}
-					onInput=${(e) => setInput(e.target.value)}
-					onKeyDown=${handleKey}
-					placeholder="Type 'help' for commands..."
-				/>
-			</div>
-			<small style="opacity: 0.6; margin-top: 0.5rem; display: block;">
-				↑↓ for history • Enter to run • ${freeMapNav ? '✓ Free map nav' : ''}
-			</small>
-		</div>
-	`
+      <input
+        ref=${inputRef}
+        type="text"
+        value=${input}
+        onInput=${(e) => setInput(e.target.value)}
+        onKeyDown=${handleKey}
+        placeholder="Type 'help' for commands..."
+      />
+      <small>
+        ↑↓ for history • Enter to run ${freeMapNav ? ' • ✓ Free map nav' : ''}
+      </small>
+    </div>
+  `
 }
