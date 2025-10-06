@@ -1,0 +1,2 @@
+- Read @README.md and @DOCUMENTATION.md
+- After finishing a group of work, run `bun run lint` followed by `bun run test`.
