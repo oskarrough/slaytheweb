@@ -20,8 +20,10 @@ import actions from './actions.js'
  * @prop {function(FutureAction):void} enqueue
  * @prop {function(State):State} dequeue
  * @prop {function():PastAction} undo
+ * @prop {function():State} redo
  * @prop {Queue} future
  * @prop {Queue} past
+ * @prop {Queue} redoStack
  */
 
 /**
@@ -33,6 +35,7 @@ import actions from './actions.js'
 export default function ActionManager(props) {
 	const future = new Queue()
 	const past = new Queue()
+	const redoStack = new Queue()
 
 	/**
 	 * Enqueued items are added to the "future" list
@@ -41,6 +44,8 @@ export default function ActionManager(props) {
 	function enqueue(action) {
 		if (props.debug) console.log('am:enqueue', action)
 		future.enqueue({action})
+		// Clear redo stack when new actions are taken
+		redoStack.list = []
 	}
 
 	/**
@@ -73,14 +78,35 @@ export default function ActionManager(props) {
 	 */
 	function undo() {
 		if (props.debug) console.log('am:undo')
-		return this.past.list.pop()
+		const item = this.past.list.pop()
+		// Push to redo stack when undoing
+		if (item) {
+			redoStack.enqueue(item)
+		}
+		return item
+	}
+
+	/**
+	 * Redoes the most recently undone action
+	 * @returns {PastAction}
+	 */
+	function redo() {
+		if (props.debug) console.log('am:redo')
+		const item = redoStack.list.pop()
+		// Push back to past when redoing
+		if (item) {
+			past.enqueue(item)
+		}
+		return item
 	}
 
 	return {
 		enqueue,
 		dequeue,
 		undo,
+		redo,
 		future,
 		past,
+		redoStack,
 	}
 }

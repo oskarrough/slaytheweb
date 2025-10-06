@@ -8,7 +8,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "astro dev",
-		"lint": "biome check",
+		"lint": "biome check --fix",
 		"test": "ava",
 		"test:watch": "ava --watch",
 		"test:coverage": "c8 ava",

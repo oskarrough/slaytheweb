@@ -1,7 +1,6 @@
 import {html, useState} from '../lib.js'
 import {saveToUrl} from '../save-load.js'
 import {toggleMute} from '../sounds.js'
-import History from './history.js'
 
 // @ts-expect-error
 const abandonGame = () => {
@@ -14,12 +13,10 @@ const abandonGame = () => {
 /**
  * Do something
  * @param {object} props
- * @param {Game} props.game
  * @param {State} props.gameState
- * @param {Function} props.onUndo
  * @returns {import('preact').VNode}
  */
-export default function Menu({game, gameState, onUndo}) {
+export default function Menu({gameState}) {
 	const [muted, setMuted] = useState(false)
 
 	function toggleSound() {
@@ -35,6 +32,7 @@ export default function Menu({game, gameState, onUndo}) {
 				<ul class="Options">
 					<li>
 						<button
+							class="Button"
 							onClick=${() => saveToUrl(gameState)}
 							title="Your save game will be stored in the URL. Copy it"
 						>
@@ -42,15 +40,13 @@ export default function Menu({game, gameState, onUndo}) {
 						</button>
 					</li>
 					<li>
-						<button danger onClick=${() => abandonGame()}>Abandon game</button>
+						<button class="Button" danger onClick=${() => abandonGame()}>Abandon game</button>
 					</li>
 					<li>
 						<label>Sound <input type="checkbox" checked=${!muted} onClick=${() => toggleSound()} /></label>
 					</li>
 				</ul>
 			</div>
-
-			<${History} future=${game.future.list} past=${game.past.list} onUndo=${onUndo} />
 		</div>
 	`
 }

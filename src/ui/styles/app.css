@@ -20,41 +20,19 @@ body {
 	/* overflow-y: scroll; */
 }
 
+.scroll,
+[scroll] {
+	overflow-y: scroll;
+	scrollbar-width: thin;
+	max-height: 200px;
+}
+
 [center] {
 	text-align: center;
 }
 
 [align-right] {
 	text-align: right;
-}
-
-a,
-button,
-summary {
-	cursor:
-		url(/images/cursors/point.png) 10 0,
-		auto;
-}
-
-button.primary {
-	font-weight: 600;
-	/* background: var(--teal); */
-	/* color: var(--text); */
-
-	&:active,
-	&:hover {
-		/* background: color-mix(in oklab, var(--teal), white 6%); */
-		/* color: var(--text); */
-	}
-}
-
-button[danger] {
-	background: var(--red);
-	color: var(--text);
-
-	&:hover {
-		background: color-mix(in oklab, var(--red), black 30%);
-	}
 }
 
 summary {
@@ -67,114 +45,12 @@ pre {
 	word-break: break-all;
 }
 
-input,
-textarea,
-select {
-	font-family: inherit;
-	cursor:
-		url(/images/cursors/select.png) 10 0,
-		auto;
-}
-
-select,
-input[type="text"],
-input[type="number"],
-textarea {
-	font-size: 1em;
-	border: 2px solid var(--text-inverse);
-	border-radius: 0.3em;
-	/* color: var(--text-inverse); */
-	box-shadow: 0 2px var(--text-inverse);
-	/* background: var(--lightblue); */
-}
-
-.Overlay input[type="text"] {
-	color-scheme: dark;
-}
-
-a {
-	color: inherit;
-}
-
-.Button,
-button,
-.driver-popover .driver-popover-footer button {
-	font-size: 1rem;
-	padding: 0.4em 0.75rem 0.4em;
-	border: 3px solid var(--text-inverse);
-	border-radius: 0.4em;
-	background: var(--lightblue);
-	color: var(--text-inverse);
-	box-shadow: 0 0.2em var(--text-inverse);
-	text-decoration: none;
-	transition: box-shadow 100ms;
-}
-.Button + .Button,
-button + button {
-	margin-left: 0.2em;
-}
-.Button:hover,
-.Button:focus,
-button:hover,
-button:focus,
-.driver-popover .driver-popover-footer button:hover,
-.driver-popover .driver-popover-footer button:focus {
-	background: hsl(194.7, 53.3%, 83%);
-	/* box-shadow: 0 0.1em var(--text-inverse); */
-}
-
-.Button:active {
-	&:not([disabled]) {
-		position: relative;
-		top: 0.1em;
-		box-shadow: none;
-	}
-}
-
-.Button.selected {
-	background: color-mix(in oklab, var(--lightblue), black 30%);
-}
-
-.Button[disabled] {
-	cursor: not-allowed;
-	color: gray;
-}
-
-input[type="text"],
-input[type="number"] {
-	min-height: 1.5rem;
-}
-
 table {
 	width: 100%;
 }
 
 tbody {
 	font-size: smaller;
-}
-
-h1 {
-	transform: rotate3d(5, 15, 3, -13deg);
-	font-size: 4rem;
-	margin-top: 2rem;
-	margin-bottom: 0.25rem;
-	background-image: linear-gradient(68deg, #ffc516, hsl(39.3, 100%, 60.8%), hsl(47.8, 100%, 50%));
-	-webkit-background-clip: text;
-	background-clip: text;
-	color: transparent;
-	text-shadow: 2px 3px hsla(240, 89%, 4%, 0.1);
-	letter-spacing: -0.03em;
-	line-height: 1;
-}
-h2,
-h3 {
-	font-size: 1.25rem;
-	text-shadow: 1px 1px 1px var(--text-inverse);
-	line-height: 1.1;
-}
-
-h2 {
-	margin: 0 0 0.5rem;
 }
 
 .App {
@@ -429,7 +305,7 @@ h2 {
 	border: 2px solid hsla(17, 6%, 3%, 1);
 	width: 100%;
 	min-width: 15rem;
-	max-width: 40ch;
+	max-width: 60ch;
 
 	&:has(.Options) {
 		max-width: 36ch;
@@ -455,8 +331,7 @@ h2 {
 	width: 100%;
 }
 
-.Box h2,
-.Box h3 {
+.Box :where(h2, h3, h4) {
 	text-shadow: none;
 }
 
@@ -473,8 +348,7 @@ h2 {
 	margin-top: 0.5rem;
 }
 
-.Options .Button,
-.Options button {
+.Options .Button {
 	display: flex;
 	flex-flow: column;
 	justify-content: center;
@@ -488,7 +362,6 @@ h2 {
 	gap: 0.25rem;
 }
 
-/* Rewards */
 .RewardsBox {
 	text-align: center;
 	margin-bottom: 2rem;
@@ -512,11 +385,6 @@ h2 {
 	cursor:
 		url(/images/cursors/grab-open.png) 10 0,
 		pointer;
-}
-
-.HistoryList {
-	text-align: left;
-	padding: 0 0 0 1rem;
 }
 
 .Form {

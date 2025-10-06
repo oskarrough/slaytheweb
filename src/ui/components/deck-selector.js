@@ -17,7 +17,7 @@ export function DeckSelector({onSelectDeck}) {
 			${decks.map(
 				(deck) => html`
 					<li>
-						<button onClick=${() => select(deck)} class=${selectedDeck?.id === deck.id ? 'selected' : ''}>
+						<button class="Button ${selectedDeck?.id === deck.id ? 'selected' : ''}" onClick=${() => select(deck)}>
 							${deck.name}
 							<small>
 								${deck.cards.length} cards, ${deck.custom ? 'custom' : 'built-in'}

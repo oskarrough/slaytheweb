@@ -25,7 +25,7 @@ function SelectedCards({selectedCards, onRemove}) {
 				(cardName, index) => html`
 					<div class="Cards-item">
 						<${Card} key=${cardName} card=${createCard(cardName)} />
-						<button danger onClick=${() => onRemove(index)}>✕</button>
+						<button class="Button" danger onClick=${() => onRemove(index)}>✕</button>
 					</div>
 				`,
 			)}
@@ -41,7 +41,7 @@ function AvailableCards({onAdd}) {
 				(card) => html`
 					<div class="Cards-item">
 						<${Card} key=${card.name} card=${card} />
-						<button onClick=${() => onAdd(card.name)}>+</button>
+						<button class="Button" onClick=${() => onAdd(card.name)}>+</button>
 					</div>
 				`,
 			)}

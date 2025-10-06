@@ -27,7 +27,7 @@ export default function VictoryRoom(props) {
 			`
 			}
 			<ul class="Options">
-				<button onClick=${props.onContinue}>Continue to the next room</button>
+				<button class="Button" onClick=${props.onContinue}>Continue to the next room</button>
 			</ul>
 		</div>
 	`

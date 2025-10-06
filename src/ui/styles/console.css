@@ -1,0 +1,107 @@
+.Box:has(.CommandInterface) {
+	max-width: 40rem;
+	margin: 0.5rem 0.5rem auto;
+}
+
+.CommandInterface {
+	display: flex;
+	flex-flow: column;
+
+	output {
+		font-size: 14px;
+		background: hsla(0 0 0 / 0.1);
+		border-radius: 0.75rem;
+		border: 2px solid hsla(17, 6%, 3%, 1);
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+		color-scheme: dark;
+		overflow: hidden;
+
+		ol {
+			list-style: none;
+			padding-left: 0.5rem;
+			margin: 0;
+			max-height: 24vh;
+			/*padding-bottom: 5rem;*/
+		}
+
+		kbd {
+			background: var(--teal);
+			color: var(--text);
+			/*color: var(--teal);*/
+		}
+
+		pre {
+			/*font-family: inherit;*/
+		}
+	}
+
+	input {
+		position: relative;
+		top: -3px;
+		min-height: 2rem;
+		/*border-top-left-radius: 0;*/
+		/*border-top-right-radius: 0;*/
+		border-top-width: 1px;
+		padding-left: 0.3rem;
+	}
+
+	small {
+		text-align: right;
+	}
+}
+
+.ActionTimeline {
+	padding-left: 0;
+	list-style: none;
+	/*height: 12rem;*/
+	border-radius: 0.75rem;
+	border: 2px solid hsla(17, 6%, 3%, 1);
+	margin: 1rem 0 0;
+
+	li {
+		display: flex;
+		align-items: center;
+		border-bottom: 1px solid;
+		padding: 0 0.5rem;
+		line-height: 1.1;
+		min-height: 3rem;
+		position: relative;
+
+		button {
+			margin-left: auto;
+		}
+
+		&::before {
+			content: "";
+			width: 6px;
+			height: 6px;
+			border-radius: 50%;
+			background: currentColor;
+			position: absolute;
+			left: 0.5rem;
+		}
+
+		&:last-child {
+			border-bottom: 0;
+		}
+
+		&:first-child::before {
+			background: var(--yellow);
+		}
+
+		> div {
+			margin-left: 1rem;
+		}
+	}
+
+	p {
+		margin: 0;
+	}
+
+	& + menu {
+		padding: 0;
+		margin: 0.5rem calc(0.5rem + 2px) 0 0;
+		text-align: right;
+	}
+}

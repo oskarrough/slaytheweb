@@ -1,4 +1,7 @@
+@import "./variables.css";
+@import "./fonts.css";
 @import "./typography.css";
+@import "./forms.css";
 @import "./app.css";
 @import "./overlay.css";
 @import "./card.css";
@@ -7,18 +10,4 @@
 @import "./fct.css";
 @import "./map.css";
 @import "./tooltipped.css";
-
-:root {
-	--card-width: 10em;
-	--card-height: 17em;
-	--yellow: #ffc107;
-	--teal: #116f54;
-	--lightblue: hsl(194.7, 53.3%, 79%);
-	--purple: hsl(245, 20%, 49%);
-	--red: hsl(0, 77%, 29%);
-	--bg: hsl(0, 30%, 8%);
-	--text: hsl(34, 78%, 85%);
-	--text-inverse: hsla(0, 0%, 0%, 0.95);
-	--text-stroke: var(--text-inverse);
-	--easing: cubic-bezier(0.23, 1, 0.32, 1);
-}
+@import "./console.css";

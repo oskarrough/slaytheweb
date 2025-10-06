@@ -1,0 +1,127 @@
+input,
+textarea,
+select {
+	font-family: inherit;
+	cursor:
+		url(/images/cursors/select.png) 10 0,
+		auto;
+}
+
+select,
+input[type="text"],
+input[type="number"],
+textarea {
+	font-size: 1em;
+	border: 2px solid var(--text-inverse);
+	border-radius: 0.3em;
+	/* color: var(--text-inverse); */
+	box-shadow: 0 2px var(--text-inverse);
+	/* background: var(--lightblue); */
+}
+
+a,
+button,
+summary {
+	cursor:
+		url(/images/cursors/point.png) 10 0,
+		auto;
+}
+
+button.primary {
+	font-weight: 600;
+	/* background: var(--teal); */
+	/* color: var(--text); */
+
+	&:active,
+	&:hover {
+		/* background: color-mix(in oklab, var(--teal), white 6%); */
+		/* color: var(--text); */
+	}
+}
+
+button[danger] {
+	background: var(--red);
+	color: var(--text);
+
+	&:hover {
+		background: color-mix(in oklab, var(--red), black 30%);
+	}
+}
+
+.Button,
+.driver-popover .driver-popover-footer button {
+	font-size: 1rem;
+	padding: 0.4em 0.75rem 0.4em;
+	border: 3px solid var(--text-inverse);
+	border-radius: 0.4em;
+	background: var(--lightblue);
+	color: var(--text-inverse);
+	box-shadow: 0 0.2em var(--text-inverse);
+	text-decoration: none;
+	transition: box-shadow 100ms;
+}
+.Button + .Button {
+	margin-left: 0.2em;
+}
+.Button:hover,
+.Button:focus,
+.driver-popover .driver-popover-footer button:hover,
+.driver-popover .driver-popover-footer button:focus {
+	background: hsl(194.7, 53.3%, 83%);
+	/* box-shadow: 0 0.1em var(--text-inverse); */
+}
+
+.Button:active:not([disabled]) {
+	position: relative;
+	top: 0.1em;
+	box-shadow: none;
+}
+
+.Button.selected {
+	background: color-mix(in oklab, var(--lightblue), black 30%);
+}
+
+.Button[disabled] {
+	cursor: not-allowed;
+	color: gray;
+}
+
+input[type="text"],
+input[type="number"] {
+	min-height: 1.5rem;
+}
+
+.Overlay input[type="text"] {
+	color-scheme: dark;
+}
+
+a {
+	color: inherit;
+}
+
+.Form {
+	fieldset {
+		display: flex;
+		flex-flow: column;
+		gap: 0.5rem;
+	}
+
+	label {
+		display: grid;
+		grid-template-columns: 6rem 1fr;
+		align-items: center;
+	}
+
+	& :is(input) {
+		margin-right: auto;
+		padding: 0.25rem;
+	}
+}
+
+.Form--vertical {
+	/* display: flex; */
+	/* flex-direction: column; */
+	& :is([type="text"], [type="number"]) {
+		/* width: 100%; */
+	}
+}

@@ -73,6 +73,7 @@ function createNewState() {
 		createdAt: Date.now(),
 		endedAt: undefined,
 		won: false,
+		didCheat: false,
 	}
 }
 
@@ -192,13 +193,17 @@ function removeCard(state, {card}) {
 }
 
 /**
- * Upgrades a card.
+ * Upgrades a card (everywhere it exists)
  * @type {ActionFn<{card: object}>}
  */
 function upgradeCard(state, {card}) {
 	return produce(state, (draft) => {
-		const index = draft.deck.findIndex((c) => c.id === card.id)
-		draft.deck[index] = createCard(card.name, true)
+		const upgradedCard = createCard(card.name, true)
+		const piles = [draft.deck, draft.hand, draft.drawPile, draft.discardPile, draft.exhaustPile]
+		piles.forEach((pile) => {
+			const index = pile.findIndex((c) => c.id === card.id)
+			if (index !== -1) pile[index] = upgradedCard
+		})
 	})
 }
 
@@ -264,7 +269,10 @@ export function useCardActions(state, {target, card}) {
 		action.parameter.target = target
 
 		// Run the action (and add the `card` to the parameters
-		nextState = allActions[action.type](nextState, {...action.parameter, card})
+		nextState = allActions[action.type](nextState, {
+			...action.parameter,
+			card,
+		})
 	})
 
 	return nextState
@@ -529,7 +537,10 @@ function takeMonsterTurn(state, monsterIndex) {
 		if (intent.damage) {
 			let amount = intent.damage
 			if (monster.powers.weak) amount = powers.weak.use(amount)
-			const updatedPlayer = removeHealth(draft, {target: 'player', amount}).player
+			const updatedPlayer = removeHealth(draft, {
+				target: 'player',
+				amount,
+			}).player
 			draft.player.block = updatedPlayer.block
 			draft.player.currentHealth = updatedPlayer.currentHealth
 			if (updatedPlayer.currentHealth < 1) {
@@ -676,6 +687,16 @@ function setDeck(state, {cardNames}) {
 	})
 }
 
+/**
+ * Marks the game state as having used cheats.
+ * @type {ActionFn<{}>}
+ */
+function setDidCheat(state) {
+	return produce(state, (draft) => {
+		draft.didCheat = true
+	})
+}
+
 const allActions = {
 	addCardToDeck,
 	addCardToHand,
@@ -700,6 +721,7 @@ const allActions = {
 	removeHealth,
 	removePlayerDebuffs,
 	setDeck,
+	setDidCheat,
 	setDungeon,
 	setHealth,
 	setPower,
