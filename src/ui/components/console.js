@@ -110,7 +110,12 @@ function CommandInterface({game, onRunAction, freeMapNav, onToggleFreeMapNav, on
 
 	useEffect(() => {
 		if (outputRef.current) {
-			outputRef.current.scrollTop = outputRef.current.scrollHeight
+			// Use requestAnimationFrame to ensure DOM has painted
+			requestAnimationFrame(() => {
+				if (outputRef.current) {
+					outputRef.current.scrollTop = outputRef.current.scrollHeight
+				}
+			})
 		}
 	}, [output])
 
@@ -206,7 +211,7 @@ function CommandInterface({game, onRunAction, freeMapNav, onToggleFreeMapNav, on
 			return {success: `Upgraded ${card.name}`}
 		},
 		help: () => ({
-			info: `hp <amount>        - Add/remove health (negative to damage)
+			info: `  hp <amount>        - Add/remove health (negative to damage)
   energy <amount>    - Add energy
   draw [amount]      - Draw cards (default: 1)
   kill               - Set all enemies to 1 HP
@@ -287,8 +292,8 @@ function CommandInterface({game, onRunAction, freeMapNav, onToggleFreeMapNav, on
       ${
 				output.length > 0 &&
 				html`
-        <output ref=${outputRef}>
-          <ol class="scroll">
+        <output>
+          <ol class="scroll" ref=${outputRef}>
             ${output.map(
 							({command, result}, i) => html`
                 <li key=${i}>
