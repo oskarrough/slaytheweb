@@ -29,8 +29,8 @@ export function PublishRun({game}) {
 			<p>You reached floor ${game.state.dungeon.y} in ${duration} seconds.</p>
 			${
 				game.state.didCheat
-					? html`<p><em>Cheats were used during this run - leaderboard submission disabled.</em></p>
-						<p center><a href="/stats">View highscores</a></p>`
+					? html`<p><em>Leaderboard is disabled as cheats were used during this run.</em></p>
+						<p center><a href="/stats" class="Button">View highscores</a></p>`
 					: !didSubmit
 						? html`
 							<label

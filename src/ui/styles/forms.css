@@ -112,9 +112,6 @@ a {
 		align-items: center;
 	}
 
-	& :is(p) {
-		font-size: smaller;
-	}
 	& :is(input) {
 		margin-right: auto;
 		padding: 0.25rem;

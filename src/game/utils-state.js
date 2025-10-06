@@ -115,18 +115,13 @@ export function isCurrRoomCompleted(state) {
 }
 
 /**
- * Checks if the whole dungeon (all rooms) has been cleared.
- * As long as there is one cleared node per floor, we are good.
+ * Checks if the whole dungeon has been completed.
+ * A dungeon is complete when the boss room (final floor) has been cleared.
  * @param {State} state
  * @returns {boolean}
  */
 export function isDungeonCompleted(state) {
-	const clearedRooms = state.dungeon.graph
-		.map((floor) => {
-			return floor.some((node) => {
-				return node.room && isRoomCompleted(node.room)
-			})
-		})
-		.filter(Boolean)
-	return clearedRooms.length === state.dungeon.graph.length
+	const lastFloor = state.dungeon.graph[state.dungeon.graph.length - 1]
+	const bossNode = lastFloor[0] // Boss floor only has one node
+	return bossNode.room && isRoomCompleted(bossNode.room)
 }
