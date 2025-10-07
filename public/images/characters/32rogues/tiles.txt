@@ -1,0 +1,163 @@
+1.a. dirt wall (top)
+1.b. dirt wall (side)
+1.c. inner wall
+
+2.a. rough stone wall (top)
+2.b. rough stone wall (side)
+
+3.a. stone brick wall (top)
+3.b. stone brick wall (side 1)
+3.c. stone brick wall (side 2)
+
+4.a. igneous wall (top)
+4.b. igneous wall (side)
+
+5.a. large stone wall (top)
+5.b. large stone wall (side)
+
+6.a. catacombs / skull wall (top)
+6.b. catacombs / skull walls (side)
+
+7.a. blank floor (dark grey)
+7.b. floor stone 1
+7.c. floor stone 2
+7.d. floor stone 3 
+7.e. floor stone 1 (no bg)
+7.f. floor stone 2 (no bg)
+7.g. floor stone 3 (no bg)
+
+8.a. blank floor (dark purple)
+8.b. grass 1
+8.c. grass 2
+8.d. grass 3 
+8.e. grass 1 (no bg)
+8.f. grass 2 (no bg)
+8.g. grass 3 (no bg)
+
+
+9.a. empty
+9.b. dirt 1
+9.c. dirt 2
+9.d. dirt 3 
+9.e. dirt 1 (no bg)
+9.f. dirt 2 (no bg)
+9.g. dirt 3 (no bg)
+
+10.a. empty
+10.b. stone floor 1
+10.c. stone floor 2
+10.d. stone floor 3 
+10.e. stone floor 1 (no bg)
+10.f. stone floor 2 (no bg)
+10.g. stone floor 3 (no bg)
+
+11.a. empty
+11.b. bone 1
+11.c. bone 2
+11.d. bone 3 
+11.e. bone 1 (no bg)
+11.f. bone 2 (no bg)
+11.g. bone 3 (no bg)
+
+12.a. blank red floor
+12.b. red stone floor 1 (red bg)
+12.c. red stone floor 2 (red bg)
+12.d. red stone floor 3 (red bg)
+12.e. red stone floor 1 (no bg)
+12.f. red stone floor 2 (no bg)
+12.g. red stone floor 3 (no bg)
+
+
+13.a. blank blue floor
+13.b. blue stone floor 1 (blue bg)
+13.c. blue stone floor 2 (blue bg)
+13.d. blue stone floor 3 (blue bg)
+
+14.a. blank green floor
+14.b. dirt 1 (green bg)
+14.c. dirt 2 (green bg)
+14.d. dirt 3 (green bg)
+
+15.a. empty
+15.b. grass 1 (green bg)
+15.c. grass 2 (green bg)
+15.d. grass 3 (green bg)
+
+16.a. dark brown bg
+16.b. bones 1 (dark brown bg)
+16.c. bones 2 (dark brown bg)
+16.d. bones 3 (dark brown bg)
+
+17.a. door 1
+17.b. door 2
+17.c. framed door 1 (shut)
+17.d. framed door 1 (open)
+17.e. framed door 2 (shut)
+17.f. framed door 2 (open)
+17.g. grated door
+17.h. staircase down
+17.i. staircase up
+17.j. pressure plate (up)
+17.k. pressure plate (down)
+17.l. chute
+17.m. pit
+17.n. trap door
+17.o. pentagram
+17.p. spikes (down)
+17.q. spites (up)
+
+18.a. chest (closed)
+18.b. chest (open)
+18.c. jar (closed)
+18.d. jar (open)
+18.e. barrel
+18.f. ore sack
+18.g. log pile
+
+19.a. large rock 1
+19.b. large rock 2
+
+20.a. buckwheet
+20.b. flax
+20.c. papyrus sedge
+20.d. kenaf
+20.e. ramie
+20.f. jute
+20.g. rice
+20.h. wheat
+20.i. maize / corn
+20.j. amaranth
+20.k. quinoa
+20.l. bitter vetch
+20.m. sorghum
+20.n. red spinach
+20.o. cotton
+20.p. alfalfa
+
+21.a. small mushrooms
+21.b. large mushroom
+
+22.a. corpse (bones) 1
+22.b. corpse (bones) 2
+
+23.a. blood spatter 1
+23.b. blood spatter 2
+23.c. slime (small)
+23.d. slime (large)
+
+24.a. coffin (closed)
+24.b. coffin (ajar)
+24.c. coffin (open)
+24.d. sarcophagus (closed)
+24.e. sarcophagus (ajar)
+24.f. sarcophagus (open)
+
+26.a. sapling
+26.b. small tree
+26.c. tree
+26.d. two tile tree
+
+
+
+
+

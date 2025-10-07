@@ -1,0 +1,179 @@
+1.a. dagger
+1.b. short sword
+1.c. short sword 2
+1.d. long sword
+1.e. bastard sword
+1.f. zweihander
+1.g. sanguine dagger
+1.h. magic dagger
+1.i. crystal sword
+1.j. evil sword
+1.k. flame sword
+
+2.a. wide short sword
+2.b. wide long sword
+2.c. rapier
+2.d. long rapier
+2.e. flamberge
+2.f. large flamberge
+2.g. great sword
+
+3.a. shotel
+3.b. scimitar
+3.c. large scimitar
+3.d. great scimitar
+3.e. kukri
+
+4.a. hand axe
+4.b. battle axe
+4.c. halberd
+4.d. great axe
+4.e. giant axe
+4.f. hatchet
+4.g. woodcutter's axe
+
+5.a. blacksmiths hammer
+5.b. short warhammer
+5.c. long warhammer
+5.d. hammer
+5.e. great hammer
+
+6.a. mace 1
+6.b. mace 2
+6.c. great mace
+6.d. spiked bat
+
+7.a. spear
+7.b. short spear
+7.c. pitchfork
+7.d. trident
+7.e. magic spear
+
+8.a. flail 1
+8.b. flail 2
+8.c. flail 3
+
+9.a. club
+9.b. spiked club
+9.c. great club
+9.d. club with nails
+
+10.a. crossbow
+10.b. short bow
+10.c. long bow
+10.d. long bow 2
+10.e. large crossbow
+
+11.a. crystal staff
+11.b. holy staff
+11.c. druid staff
+11.d. blue staff
+11.e. golden staff
+11.f. red crystal staff
+11.g. flame staff
+11.h. blue crystal staff
+11.i. cross staff
+11.j. saint's staff
+
+12.a. buckler
+12.b. kite shield
+12.c. cross shield
+12.d. dark shield
+12.e. round shield
+12.f. buckler 2
+12.g. large shield
+
+13.a. cloth armor
+13.b. leather armor
+13.c. robe
+13.d. chain mail
+13.e. scale mail
+13.f. chest plate
+
+14.a. cloth gloves
+14.b. leather gloves
+14.c. blue cloth gloves
+14.d. gauntlets
+
+15.a. shoes
+15.b. leather boots
+15.c. high blue boots
+15.d. greaves
+
+16.a. cloth hood
+16.b. leather helm
+16.c. wide-brimmed hat
+16.d. chain mail coif
+16.e. helm
+16.f. helm with chain mail
+16.g. plate helm 1
+16.h. plate helm 2
+
+17.a. red pendant
+17.b. metal pendant
+17.c. crystal pendant
+17.d. disc pendant
+17.e. cross pendant
+17.f. stone pendant
+17.g. ankh
+
+18.a. gold emerald ring
+18.b. gold band ring
+18.c. green signet ring
+18.d. ruby ring
+18.e. sapphire ring
+18.f. onyx ring
+
+19.a. gold signet ring
+19.b. silver signet ring
+19.c. jade ring
+19.d. silver signet ring
+19.e. twisted gold ring
+19.f. twisted metal ring
+
+20.a. purple potion
+20.b. red potion
+20.c. brown vial
+20.d. large dark potion
+20.e. green potion
+
+21.a. black potion
+21.b. bright green potion
+21.c. pink vial
+21.d. blue potion
+21.e. orange potion
+
+22.a. scroll
+22.b. book
+22.c. red book
+22.d. dark tome
+22.e. tome
+22.f. tome 2
+22.g. scroll 2
+22.h. page
+
+23.a. gold key
+23.b. ornate key
+23.c. metal key
+23.d. primitive key
+
+24.a. arrow
+24.b. arrows
+24.c. bolt
+24.d. bolts
+
+25.a. coin
+25.b. small stacks of coins
+25.c. large stacks of coins
+25.d. coin purse
+
+26.a. cheese
+26.b. bread
+26.c. apple
+26.d. bottle of beer
+25.e. bottle of water
+
+
+
+
+

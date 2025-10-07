@@ -1,0 +1,46 @@
+1.a. dwarf
+1.b. elf
+1.c. ranger
+1.d. rogue
+1.e. bandit
+
+2.a. knight
+2.b. male fighter
+2.c. female knight
+2.d. female knight (helmetless)
+2.e. shield knight
+
+3.a. monk
+3.b. priest
+3.c. female war cleric
+3.d. male war cleric
+3.e. templar
+3.f. schema monk
+3.g. elder schema monk
+
+4.a. male barbarian
+4.b. male winter barbarian
+4.c. female winter barbarian
+4.d. swordsman
+4.e. fencer
+4.f. female barbarian
+
+5.a. female wizard
+5.b. male wizard
+5.c. druid
+5.d. desert sage
+5.e. dwarf mage
+6.f. warlock
+
+7.a. farmer (wheat thresher)
+7.b. farmer (scythe)
+7.c. farmer (pitchfork)
+7.d. baker
+7.e. blacksmith
+7.f. scholar
+
+8.a. peasant / coalburner
+8.b. peasant
+8.c. shopkeep
+8.d. elderly woman
+8.e. elderly man

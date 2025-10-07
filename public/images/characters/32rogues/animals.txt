@@ -1,0 +1,101 @@
+1.a. grizzly bear
+1.b. black bear
+1.c. polar bear
+1.d. panda
+
+2.a. chimpanzee
+2.b. gorilla
+3.c. orangutan
+
+4.a. aye aye
+4.b. gibbon
+4.c. mandrill
+4.d. capuchin
+4.e. langur
+
+5.a. cat
+5.b. bobcat
+5.c. cougar
+5.d. cheetah
+5.e. lynx
+5.f. ocelot
+5.g. male lion
+5.h. female lion
+
+6.a. dog
+6.b. puppy
+6.c. hyena
+6.d. fox
+6.e. jackal
+6.f. coyote
+6.g. wolf
+
+7.a. capybara
+7.b. beaver 
+7.c. mink
+7.d. mongoose
+7.e. marmot
+7.f. groundhog
+7.g. chinchilla
+7.h. echidna
+
+8.a. aardvark
+8.b. armadillo
+8.c. badger
+8.d. honeybadger
+8.e. coati
+8.f. opossum
+8.g. rabbit
+8.h. hare
+8.i. rat
+
+9.a. snake
+9.b. cobra
+9.c. kingsnake
+9.d. black mamba
+
+10.a. alligator
+10.b. monitor lizard
+10.c. iguana
+10.d. tortoise
+10.e. snapping turtle
+10.f. alligator snapping turtle
+
+11.a. cow
+11.b. horse
+11.c. donkey
+11.d. mule
+11.e. alpaca
+11.f. llama
+11.g. pig
+11.h. boar
+12.a. camel
+12.b. reindeer/caribou
+12.c. water buffalo
+12.d. yak
+
+13.a. seagull
+13.b. barn owl
+13.c. common buzzard
+
+14.a. kangaroo
+14.b. koala
+
+15.a. penguin
+15.b. little penguin
+15.c. cassowary
+15.d. emu
+
+16.a. chicken
+16.b. rooster
+16.c. mallard duck
+16.d. swan
+16.e. turkey
+16.f. guineafowl
+16.g. peacock
+
+17.a. goat
+17.b. mountain goat
+17.c. ibex
+17.d. sheep (ram)
+16.e. sheep (ewe)

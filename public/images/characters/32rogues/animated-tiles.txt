@@ -1,0 +1,12 @@
+1. brazier (unlit)
+2. brazier (lit)
+3. fire pit (unlit)
+4. fire pit (lit)
+5. torch (unlit)
+6. torch (lit)
+7. lamp (unlit)
+8. lamp (lit)
+9. fire
+10. small fire
+11. water waves
+12. poison bubbles

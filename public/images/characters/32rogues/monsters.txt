@@ -1,0 +1,76 @@
+1.a. orc
+1.b. orc wizard
+1.c. goblin
+1.d. orc blademaster
+1.e. orc warchief
+1.f. goblin archer
+1.g. goblin mage
+1.h. goblin brute
+
+2.a. ettin
+2.b. two headed ettin
+2.c. troll
+
+3.a. small slime
+3.b. big slime
+3.c. slimebody
+3.d. merged slimebodies
+
+4.a. faceless monk
+4.b. unholy cardinal
+
+5.a. skeleton
+5.b. skeleton archer
+5.c. lich
+5.d. death knight
+5.e. zombie
+5.f. ghoul
+
+6.a. banshee
+6.b. reaper
+6.c. wraith
+6.d. cultist
+6.e. hag/witch
+
+7.a. giant centipede
+7.b. lampreymander
+7.c. giant earthworm
+7.d. manticore
+7.e. giant ant
+7.f. lycanthrope
+7.g. giant bata
+7.h. lesser giant ant
+7.i. giant spider
+7.j. lesser giant spider
+7.k. warg/dire wolf
+7.l. giant rat
+
+8.a. dryad
+8.b. wendigo
+8.c. rock golem
+8.d. centaur
+8.e. naga
+8.f. forest spirit
+8.g. satyr
+8.h. minotaur
+8.i. harpy
+8.j. gorgon/medusa
+
+9.a. lizardfolk / kobold (reptile)
+9.b. drake / lesser dragon
+9.c. dragon
+9.d. cockatrice
+9.e. basilisk
+
+10.a. small kobold (canine)
+10.b. kobold (canine)
+
+11.a. small myconid
+11.b. large myconid
+
+12.a. angel / archangel
+12.b. imp / devil
+
+13.a. small writhing mass
+13.b. large writhing mass
+13.c. writhing humanoid

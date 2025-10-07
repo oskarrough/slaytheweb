@@ -11,3 +11,8 @@
 @import "./map.css";
 @import "./tooltipped.css";
 @import "./console.css";
+
+img-sprite {
+	display: block;
+}
+

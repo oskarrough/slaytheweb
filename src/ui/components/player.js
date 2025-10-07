@@ -75,9 +75,17 @@ class Target extends Component {
 	render({model, type, name, children}, state) {
 		const isDead = model.currentHealth < 1
 		const hp = isDead ? 0 : model.currentHealth
+		const displayName = name || model.name
+
 		return html`
 			<div class=${`Target${isDead ? ' Target--isDead' : ''}`} data-type=${type}>
-				<h2><span class="Target-name">${name}</span> ${children}</h2>
+				<header class="Target-header">
+					${model.sprite && html`<img-sprite class="Target-sprite" sprite=${model.sprite}></img-sprite>`}
+					<h3 class="Target-intents">
+						<span class="Target-name">${displayName}</span>
+						${children}
+					</h3>
+				</header>
 				<${Healthbar} max=${model.maxHealth} value=${hp} block=${model.block} />
 				<${Powers} powers=${model.powers} />
 				<div class="Target-combatText Split">
