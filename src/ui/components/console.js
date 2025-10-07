@@ -59,7 +59,7 @@ function ActionTimeline({past, onJumpToAction}) {
 
 	return html`
     <ol class="ActionTimeline" scroll>
-      ${past.toReversed().map((item, index) => {
+      ${[...past].reverse().map((item, index) => {
 				const {action, state} = item
 				const meta = state ? `Turn ${state.turn || 0} • Floor ${state.dungeon?.y || 0}` : ''
 				return html`
