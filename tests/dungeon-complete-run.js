@@ -88,7 +88,7 @@ test('validates path integrity at boss room', (t) => {
 
 		if (y === bossFloorIndex) {
 			const bossNode = state.dungeon.graph[bossFloorIndex][0]
-			t.is(bossNode.edges.size, 0)
+			t.is(bossNode.edges.length, 0)
 			t.true(state.dungeon.paths.length > 0)
 			t.true(Array.isArray(state.dungeon.paths))
 			state.dungeon.paths.forEach((path, idx) => {

@@ -167,7 +167,7 @@ export class SlayMap extends Component {
 						<slay-map-row current=${rowIndex === y}>
 							${row.map((node, nodeIndex) => {
 								const isCurrent = rowIndex === y && nodeIndex === x
-								const isConnected = currentNode.edges.has(node.id)
+								const isConnected = currentNode.edges.includes(node.id)
 								const completedCurrentRoom = isRoomCompleted(dungeon.graph[y][x].room)
 								const canVisit = freeNavigation ? Boolean(node.type) : isConnected && completedCurrentRoom
 								return html`<slay-map-node

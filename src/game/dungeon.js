@@ -293,14 +293,16 @@ function storePathOnGraph(graph, path) {
 		const b = nodeFromMove(graph, move[1])
 
 		// @todo refactor so we don't have to do this. Depending on how the dungeon (and graph) was generated, the edges might not be set.
-		if (typeof a.edges?.has !== 'function') {
-			a.edges = new Set()
+		if (!Array.isArray(a.edges)) {
+			a.edges = []
 		}
-		if (typeof b.edges?.has !== 'function') {
-			b.edges = new Set()
+		if (!Array.isArray(b.edges)) {
+			b.edges = []
 		}
 
-		a.edges.add(b.id)
+		if (!a.edges.includes(b.id)) {
+			a.edges.push(b.id)
+		}
 	})
 	return graph
 }
@@ -345,7 +347,7 @@ function createMapNode(type) {
 		id: uuid(),
 		type: type,
 		room: undefined,
-		edges: new Set(),
+		edges: [],
 		didVisit: false,
 	}
 }
