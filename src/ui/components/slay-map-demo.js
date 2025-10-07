@@ -14,7 +14,7 @@ const MapDemo = () => {
 		const currentNode = dungeon.graph[currentPos.y][currentPos.x]
 
 		// Only allow movement to connected nodes or start
-		if (currentPos.y === 0 || currentNode.edges.has(node.id)) {
+		if (currentPos.y === 0 || currentNode.edges.includes(node.id)) {
 			setCurrentPos(move)
 			console.log('Moved to:', move, 'Paths still exist:', dungeon.paths.length)
 		} else {

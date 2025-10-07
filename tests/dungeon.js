@@ -90,7 +90,7 @@ test('boss node has no outgoing edges and paths still exist', (t) => {
 
 	// Boss node should have no outgoing edges (it's the end)
 	const bossNode = state.dungeon.graph[bossY][0]
-	t.is(bossNode.edges.size, 0, 'boss node should have no outgoing edges')
+	t.is(bossNode.edges.length, 0, 'boss node should have no outgoing edges')
 
 	// But dungeon paths should still exist
 	t.true(state.dungeon.paths.length > 0, 'paths should still exist')
