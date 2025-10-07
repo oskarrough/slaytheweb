@@ -13,7 +13,8 @@ coverage/
 dist/
 dev-dist/
 docs/
-.vercel
+.vercel/
 .astro/
 .env.local
 .cursor/
+.claude/
