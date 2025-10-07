@@ -25,20 +25,28 @@
 }
 
 .Cards--withUpgrades {
-	& > div {
+	& .CardBox {
 		display: flex;
 		flex-flow: column wrap;
+		position: relative;
+		cursor: pointer;
 	}
 
-	& > div:hover .Card:not([data-card-upgraded]) {
+	& .CardBox:not([flipped]) .Card:not([upgraded]) {
+		display: flex;
+	}
+
+	& .CardBox[flipped] .Card:not([upgraded]) {
 		display: none;
 	}
 
-	& > div:hover .Card[data-card-upgraded] {
+	& .CardBox[flipped] .Card[upgraded] {
 		display: flex;
+		border-color: color-mix(in oklab, var(--lightblue), white 30%);
+		box-shadow: 0 0 1rem color-mix(in oklab, var(--lightblue), white 30%);
 	}
 
-	& .Card[data-card-upgraded] {
+	& .Card[upgraded] {
 		display: none;
 	}
 }

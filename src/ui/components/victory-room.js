@@ -23,6 +23,7 @@ export default function VictoryRoom(props) {
 					animate
 					cards=${getCardRewards(3)}
 					didSelectCard=${(card) => props.onSelectCard(card)}
+					buttonLabel="Add to deck"
 				/>
 			`
 			}

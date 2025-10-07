@@ -3,8 +3,7 @@ import Layout from '../layouts/Layout.astro'
 import '../styles/index.css'
 
 import {cards} from '../../content/cards.js'
-import {createCard} from '../../game/cards'
-import {Card} from '../components/cards.js'
+import CardPair from '../components/card-pair.js'
 ---
 
 <Layout title="Collection, Slay the Web">
@@ -34,14 +33,7 @@ import {Card} from '../components/cards.js'
 
 		<div class="Box Box--text Box--full">
 			<div class="Cards Cards--grid Cards--withUpgrades">
-				{
-					cards.map((card) => (
-						<div>
-							<Card card={card} />
-							<Card card={createCard(card.name, true)} />
-						</div>
-					))
-				}
+				{cards.map((card) => <CardPair card={card} gameState={{}} client:load />)}
 			</div>
 		</div>
 	</article>
