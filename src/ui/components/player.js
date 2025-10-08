@@ -56,7 +56,7 @@ export const Monster = (props) => {
 	}
 
 	return html`
-		<${Target} ...${props} type="enemy">
+		<${Target} ...${props} type="enemy" name=${monster.name}>
 			${intent && Object.entries(intent).map((intent) => MonsterIntent(intent))}
 		<//>
 	`
@@ -75,9 +75,16 @@ class Target extends Component {
 	render({model, type, name, children}, state) {
 		const isDead = model.currentHealth < 1
 		const hp = isDead ? 0 : model.currentHealth
+
 		return html`
 			<div class=${`Target${isDead ? ' Target--isDead' : ''}`} data-type=${type}>
-				<h2><span class="Target-name">${name}</span> ${children}</h2>
+				<header class="Target-header">
+					${model.sprite && html`<img-sprite class="Target-sprite" sprite=${model.sprite} scale="2"></img-sprite>`}
+					<h3 class="Target-intents">
+						<span class="Target-name">${name}</span>
+						${children}
+					</h3>
+				</header>
 				<${Healthbar} max=${model.maxHealth} value=${hp} block=${model.block} />
 				<${Powers} powers=${model.powers} />
 				<div class="Target-combatText Split">

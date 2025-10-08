@@ -2,6 +2,8 @@ import {range, shuffle} from '../utils.js'
 
 /**
  * @typedef MONSTER
+ * @prop {string} [name] - Display name for the monster
+ * @prop {string} [sprite] - Sprite ID from monsters.txt (e.g., "7.c")
  * @prop {number} [hp]
  * @prop {number} [currentHealth]
  * @prop {number} [maxHealth]
@@ -40,6 +42,8 @@ export function Monster(
 	}
 
 	return {
+		name: props.name,
+		sprite: props.sprite,
 		currentHealth: props.hp || props.currentHealth,
 		maxHealth: props.hp || props.maxHealth,
 		block: props.block || 0,

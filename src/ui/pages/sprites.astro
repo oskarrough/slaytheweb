@@ -1,0 +1,68 @@
+---
+import Layout from '../layouts/Layout.astro'
+import '../styles/index.css'
+import {bosses, elites, monsters} from '../../content/monster-rooms.js'
+import {animalSprites, itemSprites, monsterSprites, rogueSprites, tileSprites} from '../../utils/sprites.js'
+import {Monster} from '../components/player.js'
+
+const tiers = [
+	{name: 'Monsters', data: monsters},
+	{name: 'Elites', data: elites},
+	{name: 'Bosses', data: bosses},
+]
+
+const allSprites = [
+	{name: 'Monsters', sheet: 'monsters', data: monsterSprites},
+	{name: 'Animals', sheet: 'animals', data: animalSprites},
+	{name: 'Rogues', sheet: 'rogues', data: rogueSprites},
+	{name: 'Items', sheet: 'items', data: itemSprites},
+	{name: 'Tiles', sheet: 'tiles', data: tileSprites},
+]
+
+const gameState = {
+	player: {
+		powers: {vulnerable: 0, weak: 0, strength: 0, poison: 0, regen: 0},
+	},
+}
+---
+
+<script src="../components/img-sprite.js"></script>
+
+<Layout title="Monster sprites">
+  <div class="Container">
+    <p><a class="Button" href="/">&larr; Menu</a></p>
+
+    <div class="Box">
+    	<h2>All sprites from 32rogues</h2>
+        <p>A list of all the <em>sprites</em> in the game to get an overview. Also see <a href="/monsters">monsters</a>.</p>
+    </div>
+
+    <div class="sprite-gallery">
+      {allSprites.map(({name, sheet, data}) => (
+        <>
+          <h2>{name}</h2>
+          {data.map((row, rowIndex) => {
+            if (row.length === 0) return null
+            return (
+              <section>
+                <!-- <h3>Row {rowIndex}</h3> -->
+                <div grid>
+                  {row.map((spriteName, colIndex) => {
+                    if (!spriteName) return null
+                    return (
+                      <article>
+                        <img-sprite row={rowIndex} col={colIndex} sheet={sheet}></img-sprite>
+                        <code>{spriteName}</code>
+                        <code>[{rowIndex}, {colIndex}]</code>
+                      </article>
+                    )
+                  })}
+                </div>
+              </section>
+            )
+          })}
+        </>
+      ))}
+    </div>
+  </div>
+</Layout>

@@ -1,4 +1,4 @@
-import {bosses, easyMonsters, elites, monsters} from '../content/monster-rooms.js'
+import {bosses, elites, monsters} from '../content/monster-rooms.js'
 import {pick, random as randomBetween, shuffle, uuid} from '../utils.js'
 import {CampfireRoom, StartRoom} from './rooms.js'
 
@@ -386,7 +386,7 @@ export function decideRoomType(type, floor) {
 	const pickRandomFromObj = (obj) => obj[shuffle(Object.keys(obj))[0]]
 	if (floor === 0) return StartRoom()
 	if (type === 'C') return CampfireRoom()
-	if (type === 'M' && floor < 2) return pickRandomFromObj(easyMonsters)
+	if (type === 'M' && floor < 2) return pickRandomFromObj(monsters) // @todo slightly easier?
 	if (type === 'M') return pickRandomFromObj(monsters)
 	if (type === 'E') return pickRandomFromObj(elites)
 	if (type === 'boss') return pickRandomFromObj(bosses)

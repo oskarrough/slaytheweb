@@ -18,7 +18,11 @@
 	max-width: 20rem;
 	user-select: none;
 }
-.Target h2 {
+.Target-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 0.5em;
 	min-height: 1.4em;
 	margin: 0 0.5rem 0;
 	padding: 0.1em 0.5em;
@@ -26,6 +30,18 @@
 	background: linear-gradient(10deg, black -80%, transparent 80%);
 	border-top-left-radius: 0.5em;
 	border-top-right-radius: 0.5em;
+}
+.Target-sprite {
+	flex-shrink: 0;
+}
+.Target-intents {
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+	margin: auto 0 0;
+}
+.Target-name {
+	display: none;
 }
 .Target-intent {
 	display: inline-block;

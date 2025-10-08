@@ -1,0 +1,53 @@
+---
+import Layout from '../layouts/Layout.astro'
+import '../styles/index.css'
+import {bosses, elites, monsters} from '../../content/monster-rooms.js'
+import {Monster} from '../components/player.js'
+
+const tiers = [
+	{name: 'Monsters', data: monsters},
+	{name: 'Elites', data: elites},
+	{name: 'Bosses', data: bosses},
+]
+
+const gameState = {
+	player: {
+		powers: {vulnerable: 0, weak: 0, strength: 0, poison: 0, regen: 0},
+	},
+}
+---
+
+<script src="../components/img-sprite.js"></script>
+
+<Layout title="Monster sprites">
+  <div class="Container">
+    <p><a class="Button" href="/">&larr; Menu</a></p>
+
+    <div class="Box">
+    	<h2>Monsters</h2>
+        <p>A list of all the <em>monster rooms</em> in the game grouped into "Monsters", "Elites" and "Boss".</p>
+        <p>Also see <a href="/sprites">sprites</a>.</p>
+    </div>
+
+    <div class="MonsterRooms">
+
+      {tiers.map(tier => {
+        const encounters = Object.entries(tier.data)
+        return (
+        <h2>{tier.name}</h2>
+            <div>
+              {encounters.map(([encounterName, room]) => (
+                <div>
+                  <h3>{encounterName}</h3>
+                  <div row>
+                    {room.monsters.map(monster => (
+                      <Monster model={monster} gameState={gameState} client:load />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+        )
+      })}
+    </div>
+    </Layout>
