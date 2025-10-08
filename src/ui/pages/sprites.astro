@@ -1,0 +1,64 @@
+---
+import Layout from '../layouts/Layout.astro'
+import '../styles/index.css'
+import {bosses, elites, monsters} from '../../content/monster-rooms.js'
+import {animalSprites, itemSprites, monsterSprites, rogueSprites, tileSprites} from '../../utils/sprites.js'
+import {Monster} from '../components/player.js'
+
+const tiers = [
+	{name: 'Monsters', data: monsters},
+	{name: 'Elites', data: elites},
+	{name: 'Bosses', data: bosses},
+]
+
+const allSprites = [
+	{name: 'Monsters', sheet: 'monsters', data: monsterSprites},
+	{name: 'Animals', sheet: 'animals', data: animalSprites},
+	{name: 'Rogues', sheet: 'rogues', data: rogueSprites},
+	{name: 'Items', sheet: 'items', data: itemSprites},
+	{name: 'Tiles', sheet: 'tiles', data: tileSprites},
+]
+
+const gameState = {
+	player: {
+		powers: {vulnerable: 0, weak: 0, strength: 0, poison: 0, regen: 0},
+	},
+}
+---
+
+<script src="../components/img-sprite.js"></script>
+
+<Layout title="Monster sprites">
+  <div class="Container">
+    <p><a class="Button" href="/">&larr; Menu</a></p>
+
+    <div class="Box">
+    	<h2>All sprites from 32rogues</h2>
+        <p>A list of all the <em>sprites</em> in the game to get an overview. Also see <a href="/monsters">monsters</a>.</p>
+    </div>
+
+    <div class="sprite-gallery">
+      {allSprites.map(({name, sheet, data}) => {
+        const categories = Object.entries(data)
+        return (
+          <>
+            <h2>{name}</h2>
+            {categories.map(([category, sprites]) => (
+              <section>
+                <h3>{category}</h3>
+                <div grid>
+                  {sprites.map((spriteId) => (
+                    <article>
+                      <img-sprite sprite={spriteId} sheet={sheet}></img-sprite>
+                      <code>{spriteId}</code>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            ))}
+          </>
+        )
+      })}
+    </div>
+  </div>
+</Layout>

@@ -2,7 +2,6 @@
 import Layout from '../layouts/Layout.astro'
 import '../styles/index.css'
 import {bosses, elites, monsters} from '../../content/monster-rooms.js'
-import {monsterSprites} from '../../utils/sprites.js'
 import {Monster} from '../components/player.js'
 
 const tiers = [
@@ -10,8 +9,6 @@ const tiers = [
 	{name: 'Elites', data: elites},
 	{name: 'Bosses', data: bosses},
 ]
-
-const spriteCategories = Object.entries(monsterSprites)
 
 const gameState = {
 	player: {
@@ -27,7 +24,9 @@ const gameState = {
     <p><a class="Button" href="/">&larr; Menu</a></p>
 
     <div class="Box">
-        <p>A list of all the <em>monster rooms</em> in the game grouped into "Monsters", "Elites" and "Boss". Further down you'll find all available sprites.</p>
+    	<h2>Monsters</h2>
+        <p>A list of all the <em>monster rooms</em> in the game grouped into "Monsters", "Elites" and "Boss".</p>
+        <p>Also see <a href="/sprites">sprites</a>.</p>
     </div>
 
     <div class="MonsterRooms">
@@ -51,23 +50,4 @@ const gameState = {
         )
       })}
     </div>
-
-    <hr>
-    <h2>Sprites from 32rogues</h2>
-    <div class="sprite-gallery">
-      {spriteCategories.map(([category, sprites]) => (
-        <section>
-          <h3>{category}</h3>
-          <div grid>
-            {sprites.map((spriteId) => (
-              <article>
-                <img-sprite sprite={spriteId}></img-sprite>
-                <code>{spriteId}</code>
-                </article>
-            ))}
-          </div>
-        </section>
-      ))}
-    </div>
-  </div>
-</Layout>
+    </Layout>

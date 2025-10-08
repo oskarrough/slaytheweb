@@ -171,6 +171,139 @@ export const monsterSprites = {
 }
 
 /**
+ * All available animal sprites from animals.txt
+ */
+export const animalSprites = {
+	bears: ['1.a', '1.b', '1.c', '1.d'],
+	primates: ['2.a', '2.b', '3.c'],
+	'small primates': ['4.a', '4.b', '4.c', '4.d', '4.e'],
+	felines: ['5.a', '5.b', '5.c', '5.d', '5.e', '5.f', '5.g', '5.h'],
+	canines: ['6.a', '6.b', '6.c', '6.d', '6.e', '6.f', '6.g'],
+	rodents: ['7.a', '7.b', '7.c', '7.d', '7.e', '7.f', '7.g', '7.h'],
+	'small mammals': ['8.a', '8.b', '8.c', '8.d', '8.e', '8.f', '8.g', '8.h', '8.i'],
+	snakes: ['9.a', '9.b', '9.c', '9.d'],
+	reptiles: ['10.a', '10.b', '10.c', '10.d', '10.e', '10.f'],
+	livestock: ['11.a', '11.b', '11.c', '11.d', '11.e', '11.f', '11.g', '11.h'],
+	'large mammals': ['12.a', '12.b', '12.c', '12.d'],
+	birds: ['13.a', '13.b', '13.c'],
+	marsupials: ['14.a', '14.b'],
+	'flightless birds': ['15.a', '15.b', '15.c', '15.d'],
+	poultry: ['16.a', '16.b', '16.c', '16.d', '16.e', '16.f', '16.g'],
+	caprines: ['17.a', '17.b', '17.c', '17.d', '16.e'],
+}
+
+/**
+ * All available rogue/character sprites from rogues.txt
+ */
+export const rogueSprites = {
+	adventurers: ['1.a', '1.b', '1.c', '1.d', '1.e'],
+	knights: ['2.a', '2.b', '2.c', '2.d', '2.e'],
+	clerics: ['3.a', '3.b', '3.c', '3.d', '3.e', '3.f', '3.g'],
+	barbarians: ['4.a', '4.b', '4.c', '4.d', '4.e', '4.f'],
+	wizards: ['5.a', '5.b', '5.c', '5.d', '5.e', '6.f'],
+	peasants: ['7.a', '7.b', '7.c', '7.d', '7.e', '7.f'],
+	townsfolk: ['8.a', '8.b', '8.c', '8.d', '8.e'],
+}
+
+/**
+ * All available item sprites from items.txt
+ */
+export const itemSprites = {
+	'swords (straight)': ['1.a', '1.b', '1.c', '1.d', '1.e', '1.f', '1.g', '1.h', '1.i', '1.j', '1.k'],
+	'swords (wide)': ['2.a', '2.b', '2.c', '2.d', '2.e', '2.f', '2.g'],
+	'swords (curved)': ['3.a', '3.b', '3.c', '3.d', '3.e'],
+	axes: ['4.a', '4.b', '4.c', '4.d', '4.e', '4.f', '4.g'],
+	hammers: ['5.a', '5.b', '5.c', '5.d', '5.e'],
+	maces: ['6.a', '6.b', '6.c', '6.d'],
+	spears: ['7.a', '7.b', '7.c', '7.d', '7.e'],
+	flails: ['8.a', '8.b', '8.c'],
+	clubs: ['9.a', '9.b', '9.c', '9.d'],
+	'bows & crossbows': ['10.a', '10.b', '10.c', '10.d', '10.e'],
+	staffs: ['11.a', '11.b', '11.c', '11.d', '11.e', '11.f', '11.g', '11.h', '11.i', '11.j'],
+	shields: ['12.a', '12.b', '12.c', '12.d', '12.e', '12.f', '12.g'],
+	armor: ['13.a', '13.b', '13.c', '13.d', '13.e', '13.f'],
+	gloves: ['14.a', '14.b', '14.c', '14.d'],
+	boots: ['15.a', '15.b', '15.c', '15.d'],
+	helms: ['16.a', '16.b', '16.c', '16.d', '16.e', '16.f', '16.g', '16.h'],
+	pendants: ['17.a', '17.b', '17.c', '17.d', '17.e', '17.f', '17.g'],
+	'rings 1': ['18.a', '18.b', '18.c', '18.d', '18.e', '18.f'],
+	'rings 2': ['19.a', '19.b', '19.c', '19.d', '19.e', '19.f'],
+	'potions 1': ['20.a', '20.b', '20.c', '20.d', '20.e'],
+	'potions 2': ['21.a', '21.b', '21.c', '21.d', '21.e'],
+	'books & scrolls': ['22.a', '22.b', '22.c', '22.d', '22.e', '22.f', '22.g', '22.h'],
+	keys: ['23.a', '23.b', '23.c', '23.d'],
+	projectiles: ['24.a', '24.b', '24.c', '24.d'],
+	currency: ['25.a', '25.b', '25.c', '25.d'],
+	food: ['26.a', '26.b', '26.c', '26.d', '25.e'],
+}
+
+/**
+ * All available tile sprites from tiles.txt
+ */
+export const tileSprites = {
+	'walls (dirt)': ['1.a', '1.b', '1.c'],
+	'walls (rough stone)': ['2.a', '2.b'],
+	'walls (stone brick)': ['3.a', '3.b', '3.c'],
+	'walls (igneous)': ['4.a', '4.b'],
+	'walls (large stone)': ['5.a', '5.b'],
+	'walls (catacombs)': ['6.a', '6.b'],
+	'floors (stone)': ['7.a', '7.b', '7.c', '7.d', '7.e', '7.f', '7.g'],
+	'floors (grass)': ['8.a', '8.b', '8.c', '8.d', '8.e', '8.f', '8.g'],
+	'floors (dirt)': ['9.a', '9.b', '9.c', '9.d', '9.e', '9.f', '9.g'],
+	'floors (dungeon)': ['10.a', '10.b', '10.c', '10.d', '10.e', '10.f', '10.g'],
+	'floors (bones)': ['11.a', '11.b', '11.c', '11.d', '11.e', '11.f', '11.g'],
+	'floors (red)': ['12.a', '12.b', '12.c', '12.d', '12.e', '12.f', '12.g'],
+	'floors (blue)': ['13.a', '13.b', '13.c', '13.d'],
+	'floors (green dirt)': ['14.a', '14.b', '14.c', '14.d'],
+	'floors (green grass)': ['15.a', '15.b', '15.c', '15.d'],
+	'floors (dark bones)': ['16.a', '16.b', '16.c', '16.d'],
+	'dungeon features': [
+		'17.a',
+		'17.b',
+		'17.c',
+		'17.d',
+		'17.e',
+		'17.f',
+		'17.g',
+		'17.h',
+		'17.i',
+		'17.j',
+		'17.k',
+		'17.l',
+		'17.m',
+		'17.n',
+		'17.o',
+		'17.p',
+		'17.q',
+	],
+	containers: ['18.a', '18.b', '18.c', '18.d', '18.e', '18.f', '18.g'],
+	rocks: ['19.a', '19.b'],
+	crops: [
+		'20.a',
+		'20.b',
+		'20.c',
+		'20.d',
+		'20.e',
+		'20.f',
+		'20.g',
+		'20.h',
+		'20.i',
+		'20.j',
+		'20.k',
+		'20.l',
+		'20.m',
+		'20.n',
+		'20.o',
+		'20.p',
+	],
+	mushrooms: ['21.a', '21.b'],
+	corpses: ['22.a', '22.b'],
+	splatter: ['23.a', '23.b', '23.c', '23.d'],
+	coffins: ['24.a', '24.b', '24.c', '24.d', '24.e', '24.f'],
+	trees: ['26.a', '26.b', '26.c', '26.d'],
+}
+
+/**
  * Get all sprite IDs as flat array
  * @returns {string[]}
  */
