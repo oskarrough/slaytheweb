@@ -12,6 +12,37 @@
 @import "./tooltipped.css";
 @import "./console.css";
 
+/** Styles in this file should probably be moved into dedicated files */
+
 img-sprite {
 	display: block;
+}
+
+[row] {
+	display: flex;
+}
+
+.MonsterRooms {
+	/* on the game screen they need more spacing, here not */
+	.Target {
+		margin: 0;
+		padding: 0;
+	}
+}
+
+.sprite-gallery {
+	margin-block: 1rem;
+
+	[grid] {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+		margin-block-end: 1rem;
+	}
+
+	article {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
 }

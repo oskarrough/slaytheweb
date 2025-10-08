@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro'
 import '../styles/index.css'
 import {bosses, elites, monsters} from '../../content/monster-rooms.js'
 import {monsterSprites} from '../../utils/sprites.js'
-import {MonsterRoster} from '../components/monster-roster.js'
+import {Monster} from '../components/player.js'
 
 const tiers = [
 	{name: 'Monsters', data: monsters},
@@ -12,6 +12,12 @@ const tiers = [
 ]
 
 const spriteCategories = Object.entries(monsterSprites)
+
+const gameState = {
+	player: {
+		powers: {vulnerable: 0, weak: 0, strength: 0, poison: 0, regen: 0},
+	},
+}
 ---
 
 <script src="../components/img-sprite.js"></script>
@@ -24,7 +30,27 @@ const spriteCategories = Object.entries(monsterSprites)
         <p>A list of all the <em>monster rooms</em> in the game grouped into "Monsters", "Elites" and "Boss". Further down you'll find all available sprites.</p>
     </div>
 
-    <MonsterRoster tiers={tiers} client:load />
+    <div class="MonsterRooms">
+
+      {tiers.map(tier => {
+        const encounters = Object.entries(tier.data)
+        return (
+        <h2>{tier.name}</h2>
+            <div>
+              {encounters.map(([encounterName, room]) => (
+                <div>
+                  <h3>{encounterName}</h3>
+                  <div row>
+                    {room.monsters.map(monster => (
+                      <Monster model={monster} gameState={gameState} client:load />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+        )
+      })}
+    </div>
 
     <hr>
     <h2>Sprites from 32rogues</h2>
@@ -45,57 +71,3 @@ const spriteCategories = Object.entries(monsterSprites)
     </div>
   </div>
 </Layout>
-
-<style>
-
-.monster-roster {
-	section[list] {
-		> h2 {
-			/*color: var(--teal);*/
-			/*font-size: 1.7rem;*/
-			/*margin-bottom: 1rem;*/
-		}
-		/*margin-bottom: 1rem;*/
-		> div > article {
-			/*margin-left: 1rem;*/
-		}
-	}
-	section[grid] {
-		display: flex;
-
-		.Target {
-			margin-top: 0;
-			padding-top: 0;
-			padding-bottom: 0;
-		}
-		.Target-sprite {
-		float: left;
-		}
-		.Target-name {
-		    display: none;
-		}
-	}
-	h3 {
-	}
-}
-
-
-.sprite-gallery {
-	margin-block: 1rem;
-
-	[grid] {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 1rem;
-		margin-block-end: 1rem;
-}
-
-article {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-}
-
-}
-
-</style>
