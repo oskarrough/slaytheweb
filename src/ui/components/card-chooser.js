@@ -7,7 +7,7 @@ export default class CardChooser extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			flippedIndex: null,
+			selectedIndex: null,
 		}
 	}
 
@@ -20,17 +20,16 @@ export default class CardChooser extends Component {
 	}
 
 	handleCardClick(index) {
-		// Toggle or set flipped index
 		this.setState({
-			flippedIndex: this.state.flippedIndex === index ? null : index,
+			selectedIndex: this.state.selectedIndex === index ? null : index,
 		})
 	}
 
 	handleButtonClick() {
-		const {flippedIndex} = this.state
-		if (flippedIndex === null) return
+		const {selectedIndex} = this.state
+		if (selectedIndex === null) return
 
-		const card = this.props.cards[flippedIndex]
+		const card = this.props.cards[selectedIndex]
 		const cardEl = this.base.querySelector(`[data-id="${card.id}"]`)
 
 		setTimeout(() => {
@@ -41,8 +40,8 @@ export default class CardChooser extends Component {
 	}
 
 	render(props, state) {
-		const {flippedIndex} = state
-		const hasUpgrades = props.cards.some((card) => !card.upgraded)
+		const {selectedIndex} = state
+		const hasUpgrades = props.showUpgrades !== false && props.cards.some((card) => !card.upgraded)
 		const showButton = props.buttonLabel !== undefined
 
 		console.log('CardChooser:', {
@@ -59,7 +58,8 @@ export default class CardChooser extends Component {
 						(card, index) =>
 							html`<div
 								class="CardBox"
-								flipped=${flippedIndex === index ? '' : null}
+								selected=${selectedIndex === index ? '' : null}
+								flipped=${hasUpgrades && selectedIndex === index ? '' : null}
 								onClick=${() => this.handleCardClick(index)}
 							>
 								${Card({card, gameState: props.gameState})}
@@ -74,7 +74,7 @@ export default class CardChooser extends Component {
 						${props.cancelButton}
 						<button
 							class="Button Button--primary"
-							disabled=${flippedIndex === null}
+							disabled=${selectedIndex === null}
 							onClick=${() => this.handleButtonClick()}
 						>
 							${props.buttonLabel}
