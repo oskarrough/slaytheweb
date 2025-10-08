@@ -3,6 +3,7 @@ import {html, render, useState} from '../lib.js'
 import {DungeonConfig} from './dungeon-config.js'
 import {SlayMap} from './slay-map.js'
 
+/** Preact component */
 const MapDemo = () => {
 	const [dungeon, setDungeon] = useState(Dungeon())
 	const [scatter, setScatter] = useState(0)
@@ -64,6 +65,7 @@ const MapDemo = () => {
 	`
 }
 
+/** Custom element wrapping the MapDemo preact component */
 class SlayMapDemo extends HTMLElement {
 	connectedCallback() {
 		render(html`<${MapDemo} />`, this)

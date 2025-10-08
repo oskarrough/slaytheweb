@@ -2,7 +2,6 @@
 import Layout from '../layouts/Layout.astro'
 import '../styles/index.css'
 import {bosses, elites, monsters} from '../../content/monster-rooms.js'
-import {monsterSprites} from '../../utils/sprites.js'
 import {Monster} from '../components/player.js'
 
 const tiers = [
@@ -11,126 +10,44 @@ const tiers = [
 	{name: 'Bosses', data: bosses},
 ]
 
-// Create minimal game state for static roster display
-function createStaticGameState() {
-	return {
-		player: {
-			powers: {vulnerable: 0, weak: 0, strength: 0, poison: 0, regen: 0},
-		},
-	}
+const gameState = {
+	player: {
+		powers: {vulnerable: 0, weak: 0, strength: 0, poison: 0, regen: 0},
+	},
 }
-
-const spriteCategories = Object.entries(monsterSprites)
 ---
 
-<script>
-  import '../components/img-sprite.js'
-</script>
+<script src="../components/img-sprite.js"></script>
 
 <Layout title="Monster sprites">
   <div class="Container">
     <p><a class="Button" href="/">&larr; Menu</a></p>
 
     <div class="Box">
-        <p>A list of all the <em>monster rooms</em> in the game grouped into "Monsters", "Elites" and "Boss". Further down you'll find all available sprites.</p>
+    	<h2>Monsters</h2>
+        <p>A list of all the <em>monster rooms</em> in the game grouped into "Monsters", "Elites" and "Boss".</p>
+        <p>Also see <a href="/sprites">sprites</a>.</p>
     </div>
 
-    <div class="monster-roster">
-      {tiers.map((tier) => {
+    <div class="MonsterRooms">
+
+      {tiers.map(tier => {
         const encounters = Object.entries(tier.data)
         return (
-          <section list>
-            <h2>{tier.name}</h2>
+        <h2>{tier.name}</h2>
             <div>
-              {encounters.map(([encounterName, room]) => {
-                const monstersInRoom = room.monsters
-                return (
-                  <article>
-                    <h3>{encounterName}</h3>
-                    <section grid>
-                      {monstersInRoom.map((monster) => (
-                        <Monster model={monster} gameState={createStaticGameState()} />
-                      ))}
-                    </section>
-                  </article>
-                )
-              })}
+              {encounters.map(([encounterName, room]) => (
+                <div>
+                  <h3>{encounterName}</h3>
+                  <div row>
+                    {room.monsters.map(monster => (
+                      <Monster model={monster} gameState={gameState} client:load />
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
-          </section>
         )
       })}
     </div>
-
-    <hr>
-    <h2>Sprites from 32rogues</h2>
-    <div class="sprite-gallery">
-      {spriteCategories.map(([category, sprites]) => (
-        <section>
-          <h3>{category}</h3>
-          <div grid>
-            {sprites.map((spriteId) => (
-              <article>
-                <img-sprite sprite={spriteId}></img-sprite>
-                <code>{spriteId}</code>
-                </article>
-            ))}
-          </div>
-        </section>
-      ))}
-    </div>
-  </div>
-</Layout>
-
-<style>
-
-.monster-roster {
-	section[list] {
-		> h2 {
-			/*color: var(--teal);*/
-			/*font-size: 1.7rem;*/
-			/*margin-bottom: 1rem;*/
-		}
-		/*margin-bottom: 1rem;*/
-		> div > article {
-			/*margin-left: 1rem;*/
-		}
-	}
-	section[grid] {
-		display: flex;
-
-		.Target {
-			margin-top: 0;
-			padding-top: 0;
-			padding-bottom: 0;
-		}
-		.Target-sprite {
-		float: left;
-		}
-		.Target-name {
-		    display: none;
-		}
-	}
-	h3 {
-	}
-}
-
-
-.sprite-gallery {
-	margin-block: 1rem;
-
-	[grid] {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 1rem;
-		margin-block-end: 1rem;
-}
-
-article {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-}
-
-}
-
-</style>
+    </Layout>
