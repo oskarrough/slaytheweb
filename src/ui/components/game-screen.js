@@ -12,6 +12,7 @@ import {Component, html} from '../lib.js'
 import {loadFromUrl, saveToUrl} from '../save-load.js'
 import * as sounds from '../sounds.js'
 // UI Components
+import './img-sprite.js'
 import CampfireRoom from './campfire.js'
 import Cards from './cards.js'
 import Console from './console.js'
