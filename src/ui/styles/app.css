@@ -296,8 +296,7 @@ tbody {
 
 .Box,
 .Box--text {
-	margin-left: auto;
-	margin-right: auto;
+	margin: 1rem auto;
 	background: hsla(17, 6%, 70%, 1);
 	color: hsl(17, 6%, 7%);
 	padding: 1rem;
