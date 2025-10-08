@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro'
 import '../styles/index.css'
 import {bosses, elites, monsters} from '../../content/monster-rooms.js'
 import {monsterSprites} from '../../utils/sprites.js'
-import {Monster} from '../components/player.js'
+import {MonsterRoster} from '../components/monster-roster.js'
 
 const tiers = [
 	{name: 'Monsters', data: monsters},
@@ -11,21 +11,10 @@ const tiers = [
 	{name: 'Bosses', data: bosses},
 ]
 
-// Create minimal game state for static roster display
-function createStaticGameState() {
-	return {
-		player: {
-			powers: {vulnerable: 0, weak: 0, strength: 0, poison: 0, regen: 0},
-		},
-	}
-}
-
 const spriteCategories = Object.entries(monsterSprites)
 ---
 
-<script>
-  import '../components/img-sprite.js'
-</script>
+<script src="../components/img-sprite.js"></script>
 
 <Layout title="Monster sprites">
   <div class="Container">
@@ -35,31 +24,7 @@ const spriteCategories = Object.entries(monsterSprites)
         <p>A list of all the <em>monster rooms</em> in the game grouped into "Monsters", "Elites" and "Boss". Further down you'll find all available sprites.</p>
     </div>
 
-    <div class="monster-roster">
-      {tiers.map((tier) => {
-        const encounters = Object.entries(tier.data)
-        return (
-          <section list>
-            <h2>{tier.name}</h2>
-            <div>
-              {encounters.map(([encounterName, room]) => {
-                const monstersInRoom = room.monsters
-                return (
-                  <article>
-                    <h3>{encounterName}</h3>
-                    <section grid>
-                      {monstersInRoom.map((monster) => (
-                        <Monster model={monster} gameState={createStaticGameState()} />
-                      ))}
-                    </section>
-                  </article>
-                )
-              })}
-            </div>
-          </section>
-        )
-      })}
-    </div>
+    <MonsterRoster tiers={tiers} client:load />
 
     <hr>
     <h2>Sprites from 32rogues</h2>

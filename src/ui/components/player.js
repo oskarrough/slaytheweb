@@ -6,7 +6,6 @@ import {
 	weak as weakPower,
 } from '../../game/powers.js'
 import {Component, html} from '../lib.js'
-import '../components/img-sprite.js'
 
 /**
  * @typedef {object} TargetProps
