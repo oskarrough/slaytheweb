@@ -65,7 +65,7 @@ export default class SplashScreen extends Component {
 			<article class="Splash Container Container--vcenter">
 				<img class="Splash-spoder" src="/images/spoder.png" title="Oh hello" />
 				<div class="Box">
-					<h1 class="Splash-title">Slay the Web</h1>
+					<h1 class="Title Splash-title">Slay the Web</h1>
 					<ul class="Options">
 						${
 							location.hash
