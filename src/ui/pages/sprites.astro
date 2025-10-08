@@ -38,27 +38,31 @@ const gameState = {
     </div>
 
     <div class="sprite-gallery">
-      {allSprites.map(({name, sheet, data}) => {
-        const categories = Object.entries(data)
-        return (
-          <>
-            <h2>{name}</h2>
-            {categories.map(([category, sprites]) => (
+      {allSprites.map(({name, sheet, data}) => (
+        <>
+          <h2>{name}</h2>
+          {data.map((row, rowIndex) => {
+            if (row.length === 0) return null
+            return (
               <section>
-                <h3>{category}</h3>
+                <!-- <h3>Row {rowIndex}</h3> -->
                 <div grid>
-                  {sprites.map((spriteId) => (
-                    <article>
-                      <img-sprite sprite={spriteId} sheet={sheet}></img-sprite>
-                      <code>{spriteId}</code>
-                    </article>
-                  ))}
+                  {row.map((spriteName, colIndex) => {
+                    if (!spriteName) return null
+                    return (
+                      <article>
+                        <img-sprite row={rowIndex} col={colIndex} sheet={sheet}></img-sprite>
+                        <code>{spriteName}</code>
+                        <code>[{rowIndex}, {colIndex}]</code>
+                      </article>
+                    )
+                  })}
                 </div>
               </section>
-            ))}
-          </>
-        )
-      })}
+            )
+          })}
+        </>
+      ))}
     </div>
   </div>
 </Layout>

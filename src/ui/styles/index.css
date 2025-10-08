@@ -58,5 +58,19 @@ img-sprite {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+
+		&:hover {
+			img-sprite {
+				border: 1px solid var(--yellow);
+			}
+		}
+	}
+
+	img-sprite {
+		border: 1px solid transparent;
+	}
+
+	code {
+		font-size: 10px;
 	}
 }
