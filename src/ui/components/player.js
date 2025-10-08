@@ -79,7 +79,7 @@ class Target extends Component {
 		return html`
 			<div class=${`Target${isDead ? ' Target--isDead' : ''}`} data-type=${type}>
 				<header class="Target-header">
-					${model.sprite && html`<img-sprite class="Target-sprite" sprite=${model.sprite}></img-sprite>`}
+					${model.sprite && html`<img-sprite class="Target-sprite" sprite=${model.sprite} scale="2"></img-sprite>`}
 					<h3 class="Target-intents">
 						<span class="Target-name">${name}</span>
 						${children}
