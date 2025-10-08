@@ -1,179 +1,420 @@
 /**
  * Sprite utilities for 32rogues sprite pack
  * Sprites are 32x32px in a grid layout
+ *
+ * Each spritesheet (monsters.png, animals.png, etc.) is a grid of 32x32px sprites.
+ * Different spritesheets have different widths (measured in columns of sprites).
+ *
+ * To display a sprite:
+ * 1. Use [row, col] or {row, col} to reference it
+ * 2. Calculate CSS background-position: x = col × 32px × scale, y = row × 32px × scale
+ * 3. Set CSS background-size based on the spritesheet's column count
+ *
+ * The 2D arrays below mirror the actual spritesheet layout.
+ * null represents empty cells in the grid.
  */
 
 const SPRITE_SIZE = 32
 
-// Map sprite IDs to their sequential index in the spritesheet
-// monsters.png is 12 columns × 13 rows
-// Each category starts at column 0 of a new row
-const SPRITE_INDEX = {
-	// Row 0: orcs (8 sprites)
-	'1.a': 0,
-	'1.b': 1,
-	'1.c': 2,
-	'1.d': 3,
-	'1.e': 4,
-	'1.f': 5,
-	'1.g': 6,
-	'1.h': 7,
-	// Row 1: giants/ettins (3 sprites)
-	'2.a': 12,
-	'2.b': 13,
-	'2.c': 14,
-	// Row 2: slimes (4 sprites)
-	'3.a': 24,
-	'3.b': 25,
-	'3.c': 26,
-	'3.d': 27,
-	// Row 3: cultists (2 sprites)
-	'4.a': 36,
-	'4.b': 37,
-	// Row 4: undead (6 sprites)
-	'5.a': 48,
-	'5.b': 49,
-	'5.c': 50,
-	'5.d': 51,
-	'5.e': 52,
-	'5.f': 53,
-	// Row 5: spirits (5 sprites)
-	'6.a': 60,
-	'6.b': 61,
-	'6.c': 62,
-	'6.d': 63,
-	'6.e': 64,
-	// Row 6: beasts (12 sprites, fills entire row)
-	'7.a': 72,
-	'7.b': 73,
-	'7.c': 74,
-	'7.d': 75,
-	'7.e': 76,
-	'7.f': 77,
-	'7.g': 78,
-	'7.h': 79,
-	'7.i': 80,
-	'7.j': 81,
-	'7.k': 82,
-	'7.l': 83,
-	// Row 7: nature (10 sprites - dryad, wendigo, rock golem, etc.)
-	'8.a': 84,
-	'8.b': 85,
-	'8.c': 86,
-	'8.d': 87,
-	'8.e': 88,
-	'8.f': 89,
-	'8.g': 90,
-	'8.h': 91,
-	'8.i': 92,
-	'8.j': 93,
-	// Row 8: dragons (5 sprites)
-	'9.a': 96,
-	'9.b': 97,
-	'9.c': 98,
-	'9.d': 99,
-	'9.e': 100,
-	// Row 9: kobolds (2 sprites)
-	'10.a': 108,
-	'10.b': 109,
-	// Row 10: myconids (2 sprites)
-	'11.a': 120,
-	'11.b': 121,
-	// Row 11: celestial (2 sprites)
-	'12.a': 132,
-	'12.b': 133,
-	// Row 12: aberrations (3 sprites)
-	'13.a': 144,
-	'13.b': 145,
-	'13.c': 146,
+// Grid column counts for each spritesheet (width in sprites)
+const GRID_COLS = {
+	monsters: 12, // 384px ÷ 32px
+	animals: 9, // 288px ÷ 32px
+	rogues: 7, // 224px ÷ 32px
+	items: 11, // 352px ÷ 32px
+	tiles: 17, // 544px ÷ 32px
 }
 
-const GRID_COLS = 12
-
 /**
- * Parse sprite ID (e.g., "7.c") into grid coordinates
- * @param {string} spriteId - e.g., "7.c" or "1.a"
- * @returns {{row: number, col: number}} Zero-indexed grid coordinates
+ * monsters.png - 12 columns wide
+ * 2D array mirrors the actual spritesheet grid layout
  */
-export function parseSpriteId(spriteId) {
-	if (!spriteId || typeof spriteId !== 'string') {
-		throw new Error(`Invalid sprite ID: ${spriteId}`)
-	}
-
-	const index = SPRITE_INDEX[spriteId]
-	if (index === undefined) {
-		throw new Error(`Unknown sprite ID: ${spriteId}`)
-	}
-
-	// Convert sequential index to grid position
-	const row = Math.floor(index / GRID_COLS)
-	const col = index % GRID_COLS
-
-	return {row, col}
-}
+const monsterSprites = [
+	// Row 0: orcs
+	['orc', 'orc wizard', 'goblin', 'orc blademaster', 'orc warchief', 'goblin archer', 'goblin mage', 'goblin brute'],
+	// Row 1: giants/ettins
+	['ettin', 'two headed ettin', 'troll'],
+	// Row 2: slimes
+	['small slime', 'big slime', 'slimebody', 'merged slimebodies'],
+	// Row 3: cultists
+	['faceless monk', 'unholy cardinal'],
+	// Row 4: undead
+	['skeleton', 'skeleton archer', 'lich', 'death knight', 'zombie', 'ghoul'],
+	// Row 5: spirits
+	['banshee', 'reaper', 'wraith', 'cultist', 'hag/witch'],
+	// Row 6: beasts (fills entire row)
+	[
+		'giant centipede',
+		'lampreymander',
+		'giant earthworm',
+		'manticore',
+		'giant ant',
+		'lycanthrope',
+		'giant bata',
+		'lesser giant ant',
+		'giant spider',
+		'lesser giant spider',
+		'warg/dire wolf',
+		'giant rat',
+	],
+	// Row 7: nature
+	['dryad', 'wendigo', 'rock golem', 'centaur', 'naga', 'forest spirit', 'satyr', 'minotaur', 'harpy', 'gorgon/medusa'],
+	// Row 8: dragons
+	['lizardfolk / kobold (reptile)', 'drake / lesser dragon', 'dragon', 'cockatrice', 'basilisk'],
+	// Row 9: kobolds
+	['small kobold (canine)', 'kobold (canine)'],
+	// Row 10: myconids
+	['small myconid', 'large myconid'],
+	// Row 11: celestial
+	['angel / archangel', 'imp / devil'],
+	// Row 12: aberrations
+	['small writhing mass', 'large writhing mass', 'writhing humanoid'],
+]
 
 /**
- * Get CSS background-position for a sprite ID
- * @param {string} spriteId - e.g., "7.c"
- * @param {number} [scale=2] - Scale multiplier to match backgroundSize
- * @returns {string} CSS background-position value, e.g., "-64px -192px"
+ * animals.png - 9 columns wide
  */
-export function getSpritePosition(spriteId, scale = 2) {
-	const {row, col} = parseSpriteId(spriteId)
-	const x = col * SPRITE_SIZE * scale
-	const y = row * SPRITE_SIZE * scale
-	return `-${x}px -${y}px`
-}
+const animalSprites = [
+	// Row 0: bears
+	['grizzly bear', 'black bear', 'polar bear', 'panda'],
+	// Row 1: primates
+	['chimpanzee', 'gorilla', 'orangutan'],
+	// Row 2: small primates
+	['aye aye', 'gibbon', 'mandrill', 'capuchin', 'langur'],
+	// Row 3: felines
+	['cat', 'bobcat', 'cougar', 'cheetah', 'lynx', 'ocelot', 'male lion', 'female lion'],
+	// Row 4: canines
+	['dog', 'puppy', 'hyena', 'fox', 'jackal', 'coyote', 'wolf'],
+	// Row 5: rodents
+	['capybara', 'beaver', 'mink', 'mongoose', 'marmot', 'groundhog', 'chinchilla', 'echidna'],
+	// Row 6: small mammals
+	['aardvark', 'armadillo', 'badger', 'honeybadger', 'coati', 'opossum', 'rabbit', 'hare', 'rat'],
+	// Row 7: snakes
+	['snake', 'cobra', 'kingsnake', 'black mamba'],
+	// Row 8: reptiles
+	['alligator', 'monitor lizard', 'iguana', 'tortoise', 'snapping turtle', 'alligator snapping turtle'],
+	// Row 9: livestock
+	['cow', 'horse', 'donkey', 'mule', 'alpaca', 'llama', 'pig', 'boar'],
+	// Row 10: large mammals
+	['camel', 'reindeer/caribou', 'water buffalo', 'yak'],
+	// Row 11: birds
+	['seagull', 'barn owl', 'common buzzard'],
+	// Row 12: marsupials
+	['kangaroo', 'koala'],
+	// Row 13: flightless birds
+	['penguin', 'little penguin', 'cassowary', 'emu'],
+	// Row 14: poultry
+	['chicken', 'rooster', 'mallard duck', 'swan', 'turkey', 'guineafowl', 'peacock'],
+	// Row 15: caprines
+	['goat', 'mountain goat', 'ibex', 'sheep (ram)', 'sheep (ewe)'],
+]
 
 /**
- * Get CSS style object for rendering a sprite
- * @param {string} spriteId - e.g., "7.c"
+ * rogues.png - 7 columns wide
+ */
+const rogueSprites = [
+	// Row 0: adventurers
+	['dwarf', 'elf', 'ranger', 'rogue', 'bandit'],
+	// Row 1: knights
+	['knight', 'male fighter', 'female knight', 'female knight (helmetless)', 'shield knight'],
+	// Row 2: clerics
+	['monk', 'priest', 'female war cleric', 'male war cleric', 'templar', 'schema monk', 'elder schema monk'],
+	// Row 3: barbarians
+	['male barbarian', 'male winter barbarian', 'female winter barbarian', 'swordsman', 'fencer', 'female barbarian'],
+	// Row 4: wizards
+	['female wizard', 'male wizard', 'druid', 'desert sage', 'dwarf mage', 'warlock'],
+	// Row 5: (empty row)
+	[],
+	// Row 6: peasants
+	['farmer (wheat thresher)', 'farmer (scythe)', 'farmer (pitchfork)', 'baker', 'blacksmith', 'scholar'],
+	// Row 7: townsfolk
+	['peasant / coalburner', 'peasant', 'shopkeep', 'elderly woman', 'elderly man'],
+]
+
+/**
+ * items.png - 11 columns wide
+ */
+const itemSprites = [
+	// Row 0: swords (straight)
+	[
+		'dagger',
+		'short sword',
+		'short sword 2',
+		'long sword',
+		'bastard sword',
+		'zweihander',
+		'sanguine dagger',
+		'magic dagger',
+		'crystal sword',
+		'evil sword',
+		'flame sword',
+	],
+	// Row 1: swords (wide)
+	['wide short sword', 'wide long sword', 'rapier', 'long rapier', 'flamberge', 'large flamberge', 'great sword'],
+	// Row 2: swords (curved)
+	['shotel', 'scimitar', 'large scimitar', 'great scimitar', 'kukri'],
+	// Row 3: axes
+	['hand axe', 'battle axe', 'halberd', 'great axe', 'giant axe', 'hatchet', "woodcutter's axe"],
+	// Row 4: hammers
+	['blacksmiths hammer', 'short warhammer', 'long warhammer', 'hammer', 'great hammer'],
+	// Row 5: maces
+	['mace 1', 'mace 2', 'great mace', 'spiked bat'],
+	// Row 6: spears
+	['spear', 'short spear', 'pitchfork', 'trident', 'magic spear'],
+	// Row 7: flails
+	['flail 1', 'flail 2', 'flail 3'],
+	// Row 8: clubs
+	['club', 'spiked club', 'great club', 'club with nails'],
+	// Row 9: bows & crossbows
+	['crossbow', 'short bow', 'long bow', 'long bow 2', 'large crossbow'],
+	// Row 10: staffs
+	[
+		'crystal staff',
+		'holy staff',
+		'druid staff',
+		'blue staff',
+		'golden staff',
+		'red crystal staff',
+		'flame staff',
+		'blue crystal staff',
+		'cross staff',
+		"saint's staff",
+	],
+	// Row 11: shields
+	['buckler', 'kite shield', 'cross shield', 'dark shield', 'round shield', 'buckler 2', 'large shield'],
+	// Row 12: armor
+	['cloth armor', 'leather armor', 'robe', 'chain mail', 'scale mail', 'chest plate'],
+	// Row 13: gloves
+	['cloth gloves', 'leather gloves', 'blue cloth gloves', 'gauntlets'],
+	// Row 14: boots
+	['shoes', 'leather boots', 'high blue boots', 'greaves'],
+	// Row 15: helms
+	[
+		'cloth hood',
+		'leather helm',
+		'wide-brimmed hat',
+		'chain mail coif',
+		'helm',
+		'helm with chain mail',
+		'plate helm 1',
+		'plate helm 2',
+	],
+	// Row 16: pendants
+	['red pendant', 'metal pendant', 'crystal pendant', 'disc pendant', 'cross pendant', 'stone pendant', 'ankh'],
+	// Row 17: rings 1
+	['gold emerald ring', 'gold band ring', 'green signet ring', 'ruby ring', 'sapphire ring', 'onyx ring'],
+	// Row 18: rings 2
+	[
+		'gold signet ring',
+		'silver signet ring',
+		'jade ring',
+		'silver signet ring',
+		'twisted gold ring',
+		'twisted metal ring',
+	],
+	// Row 19: potions 1
+	['purple potion', 'red potion', 'brown vial', 'large dark potion', 'green potion'],
+	// Row 20: potions 2
+	['black potion', 'bright green potion', 'pink vial', 'blue potion', 'orange potion'],
+	// Row 21: books & scrolls
+	['scroll', 'book', 'red book', 'dark tome', 'tome', 'tome 2', 'scroll 2', 'page'],
+	// Row 22: keys
+	['gold key', 'ornate key', 'metal key', 'primitive key'],
+	// Row 23: projectiles
+	['arrow', 'arrows', 'bolt', 'bolts'],
+	// Row 24: currency
+	['coin', 'small stacks of coins', 'large stacks of coins', 'coin purse'],
+	// Row 25: food
+	['cheese', 'bread', 'apple', 'bottle of beer', 'bottle of water'],
+]
+
+/**
+ * tiles.png - 17 columns wide
+ */
+const tileSprites = [
+	// Row 0: walls (dirt)
+	['dirt wall (top)', 'dirt wall (side)', 'inner wall'],
+	// Row 1: walls (rough stone)
+	['rough stone wall (top)', 'rough stone wall (side)'],
+	// Row 2: walls (stone brick)
+	['stone brick wall (top)', 'stone brick wall (side 1)', 'stone brick wall (side 2)'],
+	// Row 3: walls (igneous)
+	['igneous wall (top)', 'igneous wall (side)'],
+	// Row 4: walls (large stone)
+	['large stone wall (top)', 'large stone wall (side)'],
+	// Row 5: walls (catacombs)
+	['catacombs / skull wall (top)', 'catacombs / skull walls (side)'],
+	// Row 6: floors (stone)
+	[
+		'blank floor (dark grey)',
+		'floor stone 1',
+		'floor stone 2',
+		'floor stone 3',
+		'floor stone 1 (no bg)',
+		'floor stone 2 (no bg)',
+		'floor stone 3 (no bg)',
+	],
+	// Row 7: floors (grass)
+	[
+		'blank floor (dark purple)',
+		'grass 1',
+		'grass 2',
+		'grass 3',
+		'grass 1 (no bg)',
+		'grass 2 (no bg)',
+		'grass 3 (no bg)',
+	],
+	// Row 8: floors (dirt)
+	['empty', 'dirt 1', 'dirt 2', 'dirt 3', 'dirt 1 (no bg)', 'dirt 2 (no bg)', 'dirt 3 (no bg)'],
+	// Row 9: floors (dungeon)
+	[
+		'empty',
+		'stone floor 1',
+		'stone floor 2',
+		'stone floor 3',
+		'stone floor 1 (no bg)',
+		'stone floor 2 (no bg)',
+		'stone floor 3 (no bg)',
+	],
+	// Row 10: floors (bones)
+	['empty', 'bone 1', 'bone 2', 'bone 3', 'bone 1 (no bg)', 'bone 2 (no bg)', 'bone 3 (no bg)'],
+	// Row 11: floors (red)
+	[
+		'blank red floor',
+		'red stone floor 1 (red bg)',
+		'red stone floor 2 (red bg)',
+		'red stone floor 3 (red bg)',
+		'red stone floor 1 (no bg)',
+		'red stone floor 2 (no bg)',
+		'red stone floor 3 (no bg)',
+	],
+	// Row 12: floors (blue)
+	['blank blue floor', 'blue stone floor 1 (blue bg)', 'blue stone floor 2 (blue bg)', 'blue stone floor 3 (blue bg)'],
+	// Row 13: floors (green dirt)
+	['blank green floor', 'dirt 1 (green bg)', 'dirt 2 (green bg)', 'dirt 3 (green bg)'],
+	// Row 14: floors (green grass)
+	['empty', 'grass 1 (green bg)', 'grass 2 (green bg)', 'grass 3 (green bg)'],
+	// Row 15: floors (dark bones)
+	['dark brown bg', 'bones 1 (dark brown bg)', 'bones 2 (dark brown bg)', 'bones 3 (dark brown bg)'],
+	// Row 16: dungeon features
+	[
+		'door 1',
+		'door 2',
+		'framed door 1 (shut)',
+		'framed door 1 (open)',
+		'framed door 2 (shut)',
+		'framed door 2 (open)',
+		'grated door',
+		'staircase down',
+		'staircase up',
+		'pressure plate (up)',
+		'pressure plate (down)',
+		'chute',
+		'pit',
+		'trap door',
+		'pentagram',
+		'spikes (down)',
+		'spites (up)',
+	],
+	// Row 17: containers
+	['chest (closed)', 'chest (open)', 'jar (closed)', 'jar (open)', 'barrel', 'ore sack', 'log pile'],
+	// Row 18: rocks
+	['large rock 1', 'large rock 2'],
+	// Row 19: crops
+	[
+		'buckwheet',
+		'flax',
+		'papyrus sedge',
+		'kenaf',
+		'ramie',
+		'jute',
+		'rice',
+		'wheat',
+		'maize / corn',
+		'amaranth',
+		'quinoa',
+		'bitter vetch',
+		'sorghum',
+		'red spinach',
+		'cotton',
+		'alfalfa',
+	],
+	// Row 20: mushrooms
+	['small mushrooms', 'large mushroom'],
+	// Row 21: corpses
+	['corpse (bones) 1', 'corpse (bones) 2'],
+	// Row 22: splatter
+	['blood spatter 1', 'blood spatter 2', 'slime (small)', 'slime (large)'],
+	// Row 23: coffins
+	[
+		'coffin (closed)',
+		'coffin (ajar)',
+		'coffin (open)',
+		'sarcophagus (closed)',
+		'sarcophagus (ajar)',
+		'sarcophagus (open)',
+	],
+	// Row 24: (empty row)
+	[],
+	// Row 25: trees
+	['sapling', 'small tree', 'tree', 'two tile tree'],
+]
+
+/**
+ * Get CSS style object for rendering a sprite using row/col coordinates
+ * @param {number|Array<number>|{row: number, col: number}} rowOrCoords - Row index, [row, col] array, or {row, col} object
+ * @param {number} [col] - Column index (if first param is row number)
  * @param {string} [spritesheet='monsters'] - Which spritesheet to use
  * @param {number} [scale=2] - Scale multiplier (2 = 64px display size)
  * @returns {object} Style object for inline styles
  */
-export function getSpriteStyle(spriteId, spritesheet = 'monsters', scale = 2) {
-	const position = getSpritePosition(spriteId, scale)
+export function getSpriteStyle(rowOrCoords, col, spritesheet = 'monsters', scale = 2) {
+	let row
+
+	// Handle different input formats
+	if (Array.isArray(rowOrCoords)) {
+		// [row, col] format
+		;[row, col] = rowOrCoords
+		// If 3rd arg is a number, it's scale, and spritesheet is default
+		if (typeof spritesheet === 'number') {
+			scale = spritesheet
+			spritesheet = 'monsters'
+		}
+	} else if (typeof rowOrCoords === 'object' && rowOrCoords !== null) {
+		// {row, col} format
+		row = rowOrCoords.row
+		col = rowOrCoords.col
+		// 2nd arg is spritesheet, 3rd is scale
+		if (typeof col === 'string') {
+			spritesheet = col
+			col = rowOrCoords.col
+			if (typeof spritesheet === 'number') {
+				scale = spritesheet
+				spritesheet = 'monsters'
+			}
+		}
+	} else {
+		// (row, col, ...) format
+		row = rowOrCoords
+	}
+
+	// Calculate position directly from row/col
+	const x = col * SPRITE_SIZE * scale
+	const y = row * SPRITE_SIZE * scale
 	const displaySize = SPRITE_SIZE * scale
-	// monsters.png is 384px wide (12 columns × 32px)
-	const sheetWidthInSprites = 12
+	const sheetWidthInSprites = GRID_COLS[spritesheet]
 	const scaledSheetWidth = sheetWidthInSprites * SPRITE_SIZE * scale
 
 	return {
 		width: `${displaySize}px`,
 		height: `${displaySize}px`,
 		backgroundImage: `url(/images/characters/32rogues/${spritesheet}.png)`,
-		backgroundPosition: position,
+		backgroundPosition: `-${x}px -${y}px`,
 		backgroundSize: `${scaledSheetWidth}px auto`,
 		imageRendering: 'pixelated',
 		display: 'inline-block',
 	}
 }
 
-/**
- * All available monster sprites from monsters.txt
- * Organized by category for easy browsing
- */
-export const monsterSprites = {
-	orcs: ['1.a', '1.b', '1.c', '1.d', '1.e', '1.f', '1.g', '1.h'],
-	giants: ['2.a', '2.b', '2.c'],
-	slimes: ['3.a', '3.b', '3.c', '3.d'],
-	cultists: ['4.a', '4.b'],
-	undead: ['5.a', '5.b', '5.c', '5.d', '5.e', '5.f'],
-	spirits: ['6.a', '6.b', '6.c', '6.d', '6.e'],
-	beasts: ['7.a', '7.b', '7.c', '7.d', '7.e', '7.f', '7.g', '7.h', '7.i', '7.j', '7.k', '7.l'],
-	nature: ['8.a', '8.b', '8.c', '8.d', '8.e', '8.f', '8.g', '8.h', '8.i', '8.j'],
-	dragons: ['9.a', '9.b', '9.c', '9.d', '9.e'],
-	kobolds: ['10.a', '10.b'],
-	myconids: ['11.a', '11.b'],
-	celestial: ['12.a', '12.b'],
-	aberrations: ['13.a', '13.b', '13.c'],
-}
-
-/**
- * Get all sprite IDs as flat array
- * @returns {string[]}
- */
-export function getAllSpriteIds() {
-	return Object.values(monsterSprites).flat()
-}
+// Export sprite arrays for external use
+export {monsterSprites, animalSprites, rogueSprites, itemSprites, tileSprites}

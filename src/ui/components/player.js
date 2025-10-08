@@ -6,7 +6,6 @@ import {
 	weak as weakPower,
 } from '../../game/powers.js'
 import {Component, html} from '../lib.js'
-import '../components/img-sprite.js'
 
 /**
  * @typedef {object} TargetProps
@@ -57,7 +56,7 @@ export const Monster = (props) => {
 	}
 
 	return html`
-		<${Target} ...${props} type="enemy">
+		<${Target} ...${props} type="enemy" name=${monster.name}>
 			${intent && Object.entries(intent).map((intent) => MonsterIntent(intent))}
 		<//>
 	`
@@ -76,14 +75,13 @@ class Target extends Component {
 	render({model, type, name, children}, state) {
 		const isDead = model.currentHealth < 1
 		const hp = isDead ? 0 : model.currentHealth
-		const displayName = name || model.name
 
 		return html`
 			<div class=${`Target${isDead ? ' Target--isDead' : ''}`} data-type=${type}>
 				<header class="Target-header">
-					${model.sprite && html`<img-sprite class="Target-sprite" sprite=${model.sprite}></img-sprite>`}
+					${model.sprite && html`<img-sprite class="Target-sprite" sprite=${model.sprite} scale="2"></img-sprite>`}
 					<h3 class="Target-intents">
-						<span class="Target-name">${displayName}</span>
+						<span class="Target-name">${name}</span>
 						${children}
 					</h3>
 				</header>
