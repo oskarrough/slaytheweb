@@ -60,8 +60,6 @@ export default class App extends Component {
 
 	componentDidMount() {
 		const urlParams = new URLSearchParams(window.location.search)
-		const debugMode = urlParams.has('debug')
-		this.debugMode = debugMode
 
 		// Set up a new game
 		const game = createNewGame()
@@ -73,7 +71,9 @@ export default class App extends Component {
 			this.game.dequeue()
 		}
 
-		if (debugMode) {
+		this.debugMode = urlParams.has('debug')
+		if (this.debugMode) {
+			this.freeMapNav = true
 			const roomIndex = game.state.dungeon.graph[1].findIndex((r) => r.room)
 			this.game.enqueue({type: 'move', move: {y: 1, x: roomIndex}})
 			this.game.dequeue()
