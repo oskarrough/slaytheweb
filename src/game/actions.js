@@ -37,6 +37,7 @@ enableMapSet()
  * @prop {Array} exhaustPile
  * @prop {Player} player
  * @prop {Dungeon} [dungeon]
+ * @prop {boolean} didCheat
  */
 
 /**
