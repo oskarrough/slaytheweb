@@ -8,6 +8,7 @@ const MapDemo = () => {
 	const [dungeon, setDungeon] = useState(Dungeon())
 	const [scatter, setScatter] = useState(0)
 	const [currentPos, setCurrentPos] = useState({x: 0, y: 0})
+	const [debug, setDebug] = useState(true)
 
 	const onSelect = (move) => {
 		console.log('Selected move:', move)
@@ -32,7 +33,7 @@ const MapDemo = () => {
 		<div class="Box" style="max-width: 25rem">
 			<details open>
 				<summary><strong>Dungeon Configuration</strong></summary>
-				<${DungeonConfig} onUpdate=${regenerateDungeon} />
+				<${DungeonConfig} onUpdate=${regenerateDungeon} debug=${debug} onDebugToggle=${() => setDebug(!debug)} />
 				<fieldset class="Form">
 					<label>
 						Scatter: ${scatter}%
@@ -58,7 +59,7 @@ const MapDemo = () => {
 				y=${currentPos.y}
 				onSelect=${onSelect}
 				scatter=${scatter}
-				debug=${true}
+				debug=${debug}
 			><//>
 		`
 		}

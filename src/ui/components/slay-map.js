@@ -1,6 +1,6 @@
 import {emojiFromNodeType, nodeTypeToName} from '../../game/dungeon.js'
 import {isRoomCompleted} from '../../game/utils-state.js'
-import {debounce, random as randomBetween} from '../../utils.js'
+import {debounce, random as randomBetween, setToArray} from '../../utils.js'
 import {Component, html} from '../lib.js'
 
 /**
@@ -15,10 +15,9 @@ import {Component, html} from '../lib.js'
  * @param {boolean} props.freeNavigation - if true, allows clicking any node regardless of connections
  */
 export class SlayMap extends Component {
-	constructor(props) {
+	constructor() {
 		super()
 		this.didDrawPaths = false
-		this.debug = props.debug
 		// this.drawPathsThrottled = throttle(this.drawPaths.bind(this), 500)
 	}
 
@@ -57,7 +56,7 @@ export class SlayMap extends Component {
 	scatterNodes() {
 		const distance = Number(this.props.scatter)
 		if (!distance) return
-		if (this.debug) console.log('scattering map nodes with a type')
+		if (this.props.debug) console.log('scattering map nodes with a type')
 		const nodes = this.base.querySelectorAll('slay-map-node[type]')
 		nodes.forEach((node) => {
 			node.style.transform = `translate3d(
@@ -71,8 +70,10 @@ export class SlayMap extends Component {
 	// Draws SVG lines between the DOM nodes from the dungeon's path.
 	// This is heavy work, don't do it on every render
 	drawPaths() {
-		if (this.debug) console.time('drawPaths')
-		if (this.debug) console.groupCollapsed(`drawing ${this.props.dungeon.paths.length} paths`)
+		if (!this.props.dungeon.paths) return
+
+		if (this.props.debug) console.time('drawPaths')
+		if (this.props.debug) console.groupCollapsed(`drawing ${this.props.dungeon.paths.length} paths`)
 
 		const existingPaths = this.base?.querySelectorAll(`svg.paths`) || []
 		for (const p of existingPaths) {
@@ -85,8 +86,8 @@ export class SlayMap extends Component {
 
 		this.didDrawPaths = true
 
-		if (this.debug) console.groupEnd()
-		if (this.debug) console.timeEnd('drawPaths')
+		if (this.props.debug) console.groupEnd()
+		if (this.props.debug) console.timeEnd('drawPaths')
 	}
 
 	/**
@@ -97,7 +98,7 @@ export class SlayMap extends Component {
 	drawPath(path, preferredIndex) {
 		const graph = this.props.dungeon.graph
 		const containerElement = this.base
-		const debug = this.debug
+		const debug = this.props.debug
 
 		const nodeFromMove = ([row, col]) => graph[row][col]
 		const elFromNode = ([row, col]) => containerElement.childNodes[row].childNodes[col]
@@ -146,9 +147,8 @@ export class SlayMap extends Component {
 	}
 
 	nodeSelect({x, y}) {
-		if (this.debug) console.log('nodeSelect', {x, y})
+		if (this.props.debug) console.log('nodeSelect', {x, y})
 		this.props.onSelect({x, y})
-		// this.dispatchEvent(new CustomEvent('node-select', {detail: {x, y}}))
 	}
 
 	render(props) {
@@ -161,7 +161,7 @@ export class SlayMap extends Component {
 		}
 
 		return html`
-			<slay-map class=${this.debug ? 'debug' : ''} style=${{
+			<slay-map class=${this.props.debug ? 'debug' : ''} style=${{
 				'--rows': dungeon.graph.length,
 				'--columns': dungeon.graph[1].length,
 			}}>
