@@ -71,7 +71,6 @@ export default class CardChooser extends Component {
 					showButton &&
 					html`
 					<p center>
-						${props.cancelButton}
 						<button
 							class="Button Button--primary"
 							disabled=${selectedIndex === null}

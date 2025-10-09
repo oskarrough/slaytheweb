@@ -67,7 +67,6 @@ export default class CampfireRoom extends Component {
 						cards=${gameState.deck.filter((card) => !card.upgraded)}
 						didSelectCard=${(card) => this.onSelectCard(card)}
 						buttonLabel="Upgrade"
-						cancelButton=${html`<button class="Button" onClick=${() => this.setState({isChoosingCard: false})}>Cancel</button>`}
 					/>`
 				}
 				${
