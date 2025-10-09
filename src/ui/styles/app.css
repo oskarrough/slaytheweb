@@ -363,10 +363,8 @@ tbody {
 
 .RewardsBox {
 	text-align: center;
-	margin-bottom: 2rem;
 	/* so card animations dont cause scroll */
 	overflow: hidden;
-	padding: 2rem;
 }
 .RewardsBox h2 {
 	margin-bottom: 4rem;

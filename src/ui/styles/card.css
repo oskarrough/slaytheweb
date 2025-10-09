@@ -43,7 +43,7 @@
 	& .CardBox[flipped] .Card[upgraded] {
 		display: flex;
 		border-color: color-mix(in oklab, var(--lightblue), white 30%);
-		box-shadow: 0 0 1.5rem color-mix(in oklab, var(--lightblue), white 30%);
+		box-shadow: 0 0 1.7rem color-mix(in oklab, var(--lightblue), white 30%);
 	}
 
 	& .Card[upgraded] {
