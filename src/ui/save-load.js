@@ -1,4 +1,5 @@
 import superjson from 'superjson'
+import {setToArray} from '../utils.js'
 
 /**
  * Helpers to save and load the entire game state.
@@ -42,5 +43,16 @@ export function saveToUrl(state) {
  */
 export function loadFromUrl() {
 	const state = decodeURIComponent(window.location.hash.split('#')[1])
-	return decode(state)
+	const decoded = decode(state)
+
+	// Migrate old Set edges to arrays
+	if (decoded.dungeon?.graph) {
+		decoded.dungeon.graph.forEach(floor => {
+			floor.forEach(node => {
+				if (node.edges) node.edges = setToArray(node.edges)
+			})
+		})
+	}
+
+	return decoded
 }

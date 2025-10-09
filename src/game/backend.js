@@ -1,4 +1,5 @@
 import {produce} from 'immer'
+import {setToArray} from '../utils.js'
 
 const apiUrl = 'https://api.slaytheweb.cards/api/runs'
 // const apiUrl = 'http://localhost:3000/api/runs'
@@ -84,11 +85,29 @@ export async function postRun(game, playerName) {
 }
 
 /**
+ * Migrates old Set-based edges to arrays
+ * @param {Run} run
+ * @returns {Run}
+ */
+function migrateRun(run) {
+	if (run.gameState?.dungeon?.graph) {
+		run.gameState.dungeon.graph.forEach(floor => {
+			floor.forEach(node => {
+				if (node.edges) node.edges = setToArray(node.edges)
+			})
+		})
+	}
+	return run
+}
+
+/**
  * @returns {Promise<{runs: Run[], total: number}>} list of game runs
  */
 export async function getRuns() {
 	const res = await fetch(apiUrl)
-	return await res.json()
+	const data = await res.json()
+	data.runs = data.runs.map(migrateRun)
+	return data
 }
 
 /**
@@ -96,5 +115,6 @@ export async function getRuns() {
  */
 export async function getRun(id) {
 	const res = await fetch(`${apiUrl}/${id}`)
-	return res.json()
+	const run = await res.json()
+	return migrateRun(run)
 }

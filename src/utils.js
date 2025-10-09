@@ -149,3 +149,12 @@ export function timeSince(timestamp) {
 	if (seconds < 172800) return 'yesterday'
 	return `${Math.floor(seconds / 86400)} days ago`
 }
+
+/**
+ * Converts Set to array if needed, otherwise returns input
+ * @param {Set|Array|any} value
+ * @returns {Array|any}
+ */
+export function setToArray(value) {
+	return value instanceof Set ? Array.from(value) : value
+}
