@@ -1,6 +1,5 @@
 ---
 import Layout from '../../layouts/Layout.astro'
-// import '../../styles/typography.css'
 import '../../styles/index.css'
 import RunComponent from '../../components/run-stats'
 ---
@@ -8,7 +7,6 @@ import RunComponent from '../../components/run-stats'
 <Layout title="Statistics & Highscores">
 	<article class="Container">
 		<p><a class="Button" href="/stats">&larr; Highscores</a></p>
-
 		<RunComponent client:only />
 	</article>
 </Layout>

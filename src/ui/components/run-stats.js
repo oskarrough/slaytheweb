@@ -64,7 +64,7 @@ export default function RunStats() {
 
 			${
 				extraStats &&
-				html`<p>You encountered {extraStats.encountered} monsters. And killed {extraStats.killed} of them.</p>`
+				html`<p>You encountered ${extraStats.encountered} monsters. And killed ${extraStats.killed} of them.</p>`
 			}
 		</div>
 

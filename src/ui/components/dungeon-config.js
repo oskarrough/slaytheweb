@@ -24,14 +24,6 @@ export const DungeonConfig = (props) => {
 		}
 	}
 
-	const [debugStyles, setDebugStyles] = useState(true)
-
-	const toggleDebugStyles = () => {
-		const el = document.querySelector('slay-map')
-		el.classList.toggle('debug')
-		setDebugStyles(!debugStyles)
-	}
-
 	return html`
 		<form class="Form FForm--vertical">
 			<fieldset>
@@ -47,7 +39,7 @@ export const DungeonConfig = (props) => {
 			</fieldset>
 			<fieldset>
 				<legend>Map size</legend>
-				<label>Debug styles <input type="checkbox" checked=${debugStyles} onInput=${() => toggleDebugStyles()} /></label>
+				<label>Debug styles <input type="checkbox" checked=${props.debug} onInput=${props.onDebugToggle} /></label>
 				<label>
 					Height in vh
 					<input

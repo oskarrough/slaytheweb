@@ -22,7 +22,7 @@ import {CampfireRoom, StartRoom} from './rooms.js'
  * @prop {string} id
  * @prop {MapNodeTypes} type
  * @prop {Room} [room]
- * @prop {Set} edges - a list of node ids that this node connects to
+ * @prop {Array<string>} edges - a list of node ids that this node connects to
  * @prop {boolean} didVisit - whether you have visited this node or not
  */
 /** @typedef {Array<Array<MapNode>>} Graph is a list of floors with nodes*/

@@ -149,3 +149,18 @@ export function timeSince(timestamp) {
 	if (seconds < 172800) return 'yesterday'
 	return `${Math.floor(seconds / 86400)} days ago`
 }
+
+/**
+ * Converts Set to array if needed, otherwise returns input
+ * Handles both actual Sets and serialized Sets (empty objects {})
+ * @param {Set|Array|any} value
+ * @returns {Array|any}
+ */
+export function setToArray(value) {
+	if (value instanceof Set) return Array.from(value)
+	// Handle serialized Sets that became empty objects
+	if (value && typeof value === 'object' && !Array.isArray(value) && Object.keys(value).length === 0) {
+		return []
+	}
+	return value
+}
