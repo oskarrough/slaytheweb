@@ -72,8 +72,6 @@ export async function postRun(game, playerName) {
 		}),
 	}
 
-	console.log('Posting run', run)
-
 	return fetch(apiUrl, {
 		method: 'POST',
 		headers: {
@@ -91,8 +89,8 @@ export async function postRun(game, playerName) {
  */
 function migrateRun(run) {
 	if (run.gameState?.dungeon?.graph) {
-		run.gameState.dungeon.graph.forEach(floor => {
-			floor.forEach(node => {
+		run.gameState.dungeon.graph.forEach((floor) => {
+			floor.forEach((node) => {
 				if (node.edges) node.edges = setToArray(node.edges)
 			})
 		})

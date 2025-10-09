@@ -47,8 +47,8 @@ export function loadFromUrl() {
 
 	// Migrate old Set edges to arrays
 	if (decoded.dungeon?.graph) {
-		decoded.dungeon.graph.forEach(floor => {
-			floor.forEach(node => {
+		decoded.dungeon.graph.forEach((floor) => {
+			floor.forEach((node) => {
 				if (node.edges) node.edges = setToArray(node.edges)
 			})
 		})

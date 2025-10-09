@@ -156,6 +156,9 @@ export class SlayMap extends Component {
 		if (!dungeon.graph) throw new Error('No graph to render. This should not happen?', dungeon)
 
 		const currentNode = dungeon.graph[y][x]
+		if (!Array.isArray(currentNode.edges)) {
+			currentNode.edges = setToArray(currentNode.edges)
+		}
 
 		return html`
 			<slay-map class=${this.debug ? 'debug' : ''} style=${{
