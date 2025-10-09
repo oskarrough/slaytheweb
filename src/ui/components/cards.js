@@ -30,7 +30,7 @@ export function Card(props) {
 			data-card-target=${card.target}
 			key=${card.id}
 			data-id=${card.id}
-			data-card-upgraded=${card.upgraded}
+			upgraded=${card.upgraded ? '' : null}
 			disabled=${isDisabled}
 		>
 			<div class="Card-inner">
