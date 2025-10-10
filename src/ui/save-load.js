@@ -1,10 +1,8 @@
-import superjson from 'superjson'
 import {setToArray} from '../utils.js'
 
 /**
  * Helpers to save and load the entire game state.
- * We use `superjson` insetad of JSON.stringify/parse,
- * because the state contains Set()s and Map()s.
+ * Uses standard JSON.stringify/parse for serialization.
  */
 
 /**
@@ -13,7 +11,7 @@ import {setToArray} from '../utils.js'
  * @returns {string}
  */
 export function encode(state) {
-	return superjson.stringify(state)
+	return JSON.stringify(state)
 }
 
 /**
@@ -22,7 +20,7 @@ export function encode(state) {
  * @returns {object}
  */
 export function decode(state) {
-	return superjson.parse(state)
+	return JSON.parse(state)
 }
 
 /**
