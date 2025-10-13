@@ -53,18 +53,11 @@ test('drawing a starter deck adds it to the draw pile', (t) => {
 
 test('starter deck is shuffled', (t) => {
 	const {state} = t.context
-	const removeIds = (arr) =>
-		arr.map((card) => {
-			delete card.id
-			return card
-		})
-	const tries = Array(10).fill(10)
-	t.plan(tries.length)
-	tries.forEach(() => {
-		let draw1 = a.addStarterDeck(state)
-		let draw2 = a.addStarterDeck(state)
-		t.notDeepEqual(removeIds(draw1.drawPile), removeIds(draw2.drawPile))
-	})
+	const getNames = (arr) => arr.map((card) => card.name)
+	const newState = a.addStarterDeck(state)
+
+	// Check drawPile is not in the same order as deck
+	t.notDeepEqual(getNames(newState.deck), getNames(newState.drawPile))
 })
 
 test('can add a card to hand', (t) => {

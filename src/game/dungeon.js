@@ -4,14 +4,17 @@ import {CampfireRoom, StartRoom} from './rooms.js'
 
 /**
  * A procedural generated dungeon map for Slay the Web. Again, heavily inspired by Slay the Spire.
- * This is kind of complicated, so let me lay down the vocabulary, starting from the top.
- * A "dungeon" wraps it all together. A navigatable graph with a list of paths.
- * A "graph" is a list of floors.
- * A "path" is a list of moves from one node to another, going from top to bottom.
- * A "floor" is a row (list) of nodes.
- * A "node" is a point on the map
- * A "room" lives on a node, and could be a monster room, a a campfire etc.
- * A "move" y/x coodinates
+ *
+ * Vocabulary from top to bottom:
+ * - "dungeon": the full structure with graph, paths, and current position
+ * - "graph": 2d array of floors, each floor is an array of nodes
+ * - "floor": one row of nodes (graph[y] is a floor)
+ * - "node": a single point on the map at graph[y][x]
+ * - "room": content of a node (monster, campfire, etc)
+ * - "paths": pre-generated possible routes from start to boss (4 paths in default dungeon)
+ * - "pathTaken": the actual route the player chose (grows as they play)
+ * - "edges": which nodes connect to which (derived from paths, stored as node IDs on each node)
+ * - "move": [y, x] coordinates
  */
 
 /** @typedef {import('./cards.js').CARD} Card */
@@ -287,7 +290,7 @@ export function graphToString(graph) {
  * @param {Path} path
  * @returns {Graph}
  */
-function storePathOnGraph(graph, path) {
+export function storePathOnGraph(graph, path) {
 	path.forEach((move) => {
 		const a = nodeFromMove(graph, move[0])
 		const b = nodeFromMove(graph, move[1])

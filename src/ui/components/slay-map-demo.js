@@ -10,6 +10,8 @@ const MapDemo = () => {
 	const [currentPos, setCurrentPos] = useState({x: 0, y: 0})
 	const [debug, setDebug] = useState(true)
 
+	window.slaymapdemo = dungeon
+
 	const onSelect = (move) => {
 		console.log('Selected move:', move)
 		const node = dungeon.graph[move.y][move.x]

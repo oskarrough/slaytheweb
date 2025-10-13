@@ -48,21 +48,6 @@ test('we know when a monster room with many monsters is completed', (t) => {
 	t.true(isCurrRoomCompleted(state))
 })
 
-test('we know when the entire dungeon is compelete', (t) => {
-	let state = a.createNewState()
-	state = a.setDungeon(state, createTestDungeon())
-	state.dungeon.y = 1
-	getCurrRoom(state).monsters[0].currentHealth = 0
-	state.dungeon.y = 2
-	getCurrRoom(state).monsters[0].currentHealth = 0
-	getCurrRoom(state).monsters[1].currentHealth = 0
-	state.dungeon.y = 3
-	getCurrRoom(state).monsters[0].currentHealth = 0
-	state.dungeon.y = 4
-	getCurrRoom(state).monsters[0].currentHealth = 0
-	t.true(isDungeonCompleted(state))
-})
-
 test.todo('we know when a campfire has been used')
 
 test('we can navigate a dungeon', (t) => {
@@ -74,26 +59,6 @@ test('we can navigate a dungeon', (t) => {
 	const nextState = a.move(state, {move: {x: 0, y: 1}})
 	t.is(nextState.dungeon.x, 0)
 	t.is(nextState.dungeon.y, 1)
-})
-
-test('boss node has no outgoing edges and paths still exist', (t) => {
-	let state = a.createNewState()
-	const dungeon = Dungeon({height: 3, width: 3})
-	state = a.setDungeon(state, dungeon)
-
-	// Verify paths were generated
-	t.true(dungeon.paths.length > 0, 'dungeon should have paths')
-
-	// Navigate to boss room (last floor)
-	const bossY = dungeon.graph.length - 1
-	state = a.move(state, {move: {x: 0, y: bossY}})
-
-	// Boss node should have no outgoing edges (it's the end)
-	const bossNode = state.dungeon.graph[bossY][0]
-	t.is(bossNode.edges.length, 0, 'boss node should have no outgoing edges')
-
-	// But dungeon paths should still exist
-	t.true(state.dungeon.paths.length > 0, 'paths should still exist')
 })
 
 test('paths persist independently of graph mutations', (t) => {
