@@ -4,7 +4,10 @@
 		"checkJs": true,
 		"target": "esnext",
 		"moduleResolution": "bundler",
-		"noEmit": true
+		"noEmit": true,
+		"paths": {
+			"@src/*": ["./src/*"]
+		}
 	},
 	"types": ["vite/client"]
 }
