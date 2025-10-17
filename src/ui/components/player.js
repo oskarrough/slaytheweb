@@ -49,8 +49,8 @@ export const Monster = (props) => {
 		if (type === 'vulnerable' || type === 'weak') amount = undefined
 
 		return html`
-			<div class="Target-intent ${tooltip && 'tooltipped tooltipped-n'}" aria-label="${tooltip}">
-				<img alt=${type} src="/images/${type}.png" /> ${amount}
+			<div class="Target-intent ${tooltip && 'tooltipped tooltipped-n'}" aria-label=${tooltip}>
+				<img alt=${type} src=${`/images/${type}.png`} /> ${amount}
 			</div>
 		`
 	}
