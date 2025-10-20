@@ -112,11 +112,11 @@ export function throttle(func, delay) {
  * @param {object} options
  * @prop {boolean} options.leading
  * @prop {boolean} options.trailing
- * @returns {function}
+ * @returns {function & {cancel: function}}
  */
 export function debounce(func, wait, options = {}) {
 	let timeout
-	return function executedFunction(...args) {
+	const executedFunction = function (...args) {
 		const later = () => {
 			timeout = null
 			if (options.trailing) func.apply(this, args)
@@ -126,6 +126,11 @@ export function debounce(func, wait, options = {}) {
 		timeout = setTimeout(later, wait)
 		if (callNow) func.apply(this, args)
 	}
+	executedFunction.cancel = () => {
+		clearTimeout(timeout)
+		timeout = null
+	}
+	return executedFunction
 }
 
 /** Turns a timestamp into a string like "16. Dec 2024" */

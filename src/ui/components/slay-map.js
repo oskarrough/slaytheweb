@@ -22,9 +22,11 @@ export class SlayMap extends Component {
 	}
 
 	componentDidMount() {
-		this.drawPathsDebounced = debounce(this.drawPaths.bind(this), 300, {leading: true, trailing: true})
+		this.drawPathsDebounced = debounce(this.drawPaths.bind(this), 300, {trailing: true})
 		// trigger update..
 		this.setState({universe: 42})
+		// Draw paths on initial mount (DOM is ready here)
+		this.drawPaths()
 	}
 
 	componentDidUpdate(prevProps) {
@@ -52,6 +54,16 @@ export class SlayMap extends Component {
 		}
 	}
 
+	componentWillUnmount() {
+		if (this.resizeObserver) {
+			this.resizeObserver.disconnect()
+			this.resizeObserver = null
+		}
+		if (this.drawPathsDebounced) {
+			this.drawPathsDebounced.cancel()
+		}
+	}
+
 	// Shake the positions up a bit.
 	scatterNodes() {
 		const distance = Number(this.props.scatter)
@@ -71,11 +83,22 @@ export class SlayMap extends Component {
 	// This is heavy work, don't do it on every render
 	drawPaths() {
 		if (!this.props.dungeon.paths) return
+		if (!this.base) {
+			if (this.props.debug) console.warn('drawPaths: this.base missing (called too early)')
+			return
+		}
+
+		// Check if DOM structure is ready by verifying first row exists
+		const firstRow = this.base.childNodes[0]
+		if (!firstRow) {
+			if (this.props.debug) console.warn('drawPaths: DOM not ready (no childNodes)')
+			return
+		}
 
 		if (this.props.debug) console.time('drawPaths')
 		if (this.props.debug) console.groupCollapsed(`drawing ${this.props.dungeon.paths.length} paths`)
 
-		const existingPaths = this.base?.querySelectorAll(`svg.paths`) || []
+		const existingPaths = this.base.querySelectorAll(`svg.paths`)
 		for (const p of existingPaths) {
 			p.remove()
 		}
@@ -100,10 +123,20 @@ export class SlayMap extends Component {
 		const containerElement = this.base
 		const debug = this.props.debug
 
-		const nodeFromMove = ([row, col]) => graph[row][col]
-		const elFromNode = ([row, col]) => containerElement.childNodes[row].childNodes[col]
+		if (!containerElement) {
+			if (debug) console.warn('drawPath: containerElement missing')
+			return
+		}
 
-		if (!containerElement) throw new Error('Missing container element')
+		const nodeFromMove = ([row, col]) => graph[row][col]
+		const elFromNode = ([row, col]) => {
+			const rowNode = containerElement.childNodes[row]
+			if (!rowNode) {
+				if (debug) console.warn(`drawPath: childNodes[${row}] missing, DOM not ready`)
+				return null
+			}
+			return rowNode.childNodes[col]
+		}
 
 		// Create an empty <svg> to hold our path. And remove previous if we are drawing agian.
 		const id = `path${preferredIndex}`
@@ -123,11 +156,18 @@ export class SlayMap extends Component {
 			const aEl = elFromNode(move[0])
 			const bEl = elFromNode(move[1])
 
+			// If DOM nodes aren't ready yet, skip this path (will retry via drawPaths timeout)
+			if (!aEl || !bEl) {
+				if (debug) console.warn('drawPath: DOM nodes not ready, skipping path')
+				return
+			}
+
 			// Create a line between each element.
 			const aPos = getPosWithin(aEl, containerElement)
 			const bPos = getPosWithin(bEl, containerElement)
 			if (!aPos.top) {
-				throw Error("Could not render the svg path. Is the graph's container element rendered/visible?")
+				if (debug) console.warn('drawPath: element positions not ready')
+				return
 			}
 			const line = document.createElementNS('http://www.w3.org/2000/svg', 'line')
 			line.setAttribute('x1', String(aPos.left + aPos.width / 2))
