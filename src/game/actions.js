@@ -147,6 +147,16 @@ function addCardToHand(state, {card}) {
 }
 
 /**
+ * Creates a card by name and adds it to your hand.
+ * Useful in card definitions where you can't create card instances directly.
+ * @type {ActionFn<{cardName: string}>}
+ */
+function createAndAddCardToHand(state, {cardName}) {
+	const card = createCard(cardName)
+	return addCardToHand(state, {card})
+}
+
+/**
  * Discard a single card from your hand.
  * @type {ActionFn<{card: CARD}>}
  */
@@ -177,6 +187,25 @@ function discardHand(state) {
 			draft.discardPile.push(card)
 		})
 		draft.hand = []
+	})
+}
+
+/**
+ * Discard X random cards from your hand.
+ * @type {ActionFn<{amount: number}>}
+ */
+function discardRandomCards(state, {amount}) {
+	return produce(state, (draft) => {
+		const shuffledHand = shuffle([...state.hand])
+		const toDiscard = shuffledHand.slice(0, amount)
+		toDiscard.forEach((card) => {
+			draft.hand = draft.hand.filter((c) => c.id !== card.id)
+			if (card.exhaust) {
+				draft.exhaustPile.push(card)
+			} else {
+				draft.discardPile.push(card)
+			}
+		})
 	})
 }
 
@@ -698,6 +727,8 @@ function setDidCheat(state) {
 const allActions = {
 	addCardToDeck,
 	addCardToHand,
+	createAndAddCardToHand,
+
 	addEnergyToPlayer,
 	addHealth,
 	addRegenEqualToAllDamage,
@@ -709,6 +740,7 @@ const allActions = {
 	dealDamageEqualToWeak,
 	discardCard,
 	discardHand,
+	discardRandomCards,
 	drawCards,
 	endTurn,
 	iddqd,

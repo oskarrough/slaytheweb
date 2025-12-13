@@ -260,6 +260,35 @@ test('can discard the entire hand', (t) => {
 	t.is(state4.discardPile.length, 5)
 })
 
+test('can discard random cards from hand', (t) => {
+	const {state} = t.context
+	const state2 = a.addStarterDeck(state)
+	const state3 = a.drawCards(state2)
+	t.is(state3.hand.length, 5)
+	t.is(state3.discardPile.length, 0)
+
+	const state4 = a.discardRandomCards(state3, {amount: 2})
+	t.is(state4.hand.length, 3)
+	t.is(state4.discardPile.length, 2)
+
+	// Discarded cards should be cards that were in hand
+	const handIds = state3.hand.map((c) => c.id)
+	state4.discardPile.forEach((card) => {
+		t.true(handIds.includes(card.id))
+	})
+})
+
+test('discardRandomCards with more cards than in hand only discards what exists', (t) => {
+	const {state} = t.context
+	const state2 = a.addStarterDeck(state)
+	const state3 = a.drawCards(state2, {amount: 1})
+	t.is(state3.hand.length, 1)
+
+	const state4 = a.discardRandomCards(state3, {amount: 5})
+	t.is(state4.hand.length, 0)
+	t.is(state4.discardPile.length, 1)
+})
+
 test('we can end an encounter with reshuffle and draw', (t) => {
 	let {state} = t.context
 	const state2 = a.addStarterDeck(state)
