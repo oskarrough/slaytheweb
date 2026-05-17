@@ -1,0 +1,40 @@
+---
+import PageHeader from '../components/PageHeader.astro'
+import Layout from '../layouts/Layout.astro'
+import '../styles/index.css'
+
+const sceneGlob = import.meta.glob('/public/images/scenes/*')
+const scenes = Object.keys(sceneGlob)
+	.map((path) => {
+		const filename = path.split('/').pop() || ''
+		return {
+			filename,
+			src: `/images/scenes/${filename}`,
+		}
+	})
+	.sort((a, b) => a.filename.localeCompare(b.filename))
+---
+
+<Layout title="Scene Gallery, Slay the Web">
+	<div class="Container">
+		<PageHeader title="Scene Gallery" subtitle={`${scenes.length} backgrounds`} />
+
+		<div class="Grid">
+			{scenes.map(scene => (
+				<figure>
+					<img src={scene.src} alt={scene.filename} loading="lazy" />
+					<figcaption>{scene.filename}</figcaption>
+				</figure>
+			))}
+		</div>
+	</div>
+</Layout>
+
+<style>
+	.Grid {
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	}
+	.Grid img {
+		aspect-ratio: 16 / 9;
+	}
+</style>

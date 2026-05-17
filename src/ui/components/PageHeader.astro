@@ -1,0 +1,65 @@
+---
+interface Props {
+	title: string
+	subtitle?: string
+}
+
+const {title, subtitle} = Astro.props
+const currentPath = Astro.url.pathname
+
+const pages = [
+	{href: '/collection', label: 'cards'},
+	{href: '/monsters', label: 'monsters'},
+	{href: '/scenes', label: 'scenes'},
+	{href: '/designer', label: 'designer'},
+	{href: '/sprites', label: 'sprites'},
+	{href: '/sounds', label: 'sounds'},
+]
+---
+
+<header>
+	<p><a class="Button" href="/">&larr; Menu</a></p>
+	<h1>{title}</h1>
+	{subtitle && <p>{subtitle}</p>}
+	<nav>
+		{pages.map(({href, label}) => (
+			<a href={href} aria-current={currentPath === href ? 'page' : undefined}>{label}</a>
+		))}
+	</nav>
+</header>
+
+<style>
+	header {
+		text-align: center;
+		margin-bottom: 1rem;
+	}
+	header > p {
+		margin: 0;
+	}
+	h1 {
+		margin-bottom: 0.25rem;
+	}
+	h1 + p {
+		font-size: 1rem;
+		margin: 0;
+	}
+	nav {
+		margin-top: 0.75rem;
+		display: flex;
+		justify-content: center;
+		gap: 0.25em 1em;
+		flex-wrap: wrap;
+	}
+	nav a {
+		color: var(--text);
+		text-decoration: none;
+		opacity: 0.7;
+	}
+	nav a:hover {
+		opacity: 1;
+	}
+	nav a[aria-current="page"] {
+		color: var(--yellow);
+		opacity: 1;
+	}
+</style>

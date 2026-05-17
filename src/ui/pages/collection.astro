@@ -1,4 +1,5 @@
 ---
+import PageHeader from '../components/PageHeader.astro'
 import Layout from '../layouts/Layout.astro'
 import '../styles/index.css'
 
@@ -8,12 +9,7 @@ import CardPair from '../components/card-pair.js'
 
 <Layout title="Collection, Slay the Web">
 	<article class="Container">
-		<p><a class="Button" href="/">&larr; Menu</a></p>
-
-		<header class="Header">
-			<h1 medium>Slay the Web</h1>
-			<h2>{cards.length} Card Collection</h2>
-		</header>
+		<PageHeader title="Card Collection" subtitle={`${cards.length} cards`} />
 
 		<div class="Box Box--text">
 			<p>Would you like to create your own card? Or tune an existing one?</p>

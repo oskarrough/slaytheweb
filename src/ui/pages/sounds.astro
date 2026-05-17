@@ -1,4 +1,5 @@
 ---
+import PageHeader from '../components/PageHeader.astro'
 import Layout from '../layouts/Layout.astro'
 import '../styles/index.css'
 
@@ -33,45 +34,32 @@ const sounds = ['startGame', 'startTurn', 'endTurn', 'selectCard', 'cardToHand',
 	})
 </script>
 
-<Layout title="Slay the Web">
+<Layout title="Sounds, Slay the Web">
 	<div class="Container">
-		<h1>Sounds</h1>
-		<p>Play any of the sound effects used in the game.</p>	
+		<PageHeader title="Sounds" subtitle={`${sounds.length + 7} effects`} />
 
-		<menu class="sounds">
-			{
-				sounds.map((s) => (
-					<button type="button" data-sound={s}>
-						{s}
-					</button>
-				))
-			}
-		</menu>
-    <menu>
-			<button type="button" data-sfx="220">220</button>
-			<button type="button" data-sfx="440">440</button>
-			<button type="button" data-sfx="880">880</button>
-			<button type="button" data-sfx data-coin="minor">Coin minor</button>
-			<button type="button" data-sfx data-coin="major">Coin major</button>
-			<button type="button" data-sfx data-coin="pentatonic">Coin penta</button>
-			<button type="button" data-sfx="whoosh">Whoosh</button>
-		</menu>
+		<section>
+			<h2>Game sounds</h2>
+			<div class="Grid">
+				{sounds.map((s) => (
+					<figure>
+						<button type="button" data-sound={s}>{s}</button>
+					</figure>
+				))}
+			</div>
+		</section>
+
+		<section>
+			<h2>Tones</h2>
+			<div class="Grid">
+				<figure><button type="button" data-sfx="220">220hz</button></figure>
+				<figure><button type="button" data-sfx="440">440hz</button></figure>
+				<figure><button type="button" data-sfx="880">880hz</button></figure>
+				<figure><button type="button" data-sfx data-coin="minor">Coin minor</button></figure>
+				<figure><button type="button" data-sfx data-coin="major">Coin major</button></figure>
+				<figure><button type="button" data-sfx data-coin="pentatonic">Coin penta</button></figure>
+				<figure><button type="button" data-sfx="whoosh">Whoosh</button></figure>
+			</div>
+		</section>
 	</div>
 </Layout>
-
-<style>
-	h1 + p {
-		margin-left: 0.8em;
-		margin-bottom: 2rem;
-	}
-	menu {
-		margin: 0 0 1rem;
-		display: flex;
-		flex-flow: column wrap;
-		gap: 0.5em;
-		max-width: 14em;
-	}
-	button {
-		margin: 0;
-	}
-</style>

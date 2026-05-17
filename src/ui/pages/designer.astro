@@ -1,0 +1,151 @@
+---
+import PageHeader from '../components/PageHeader.astro'
+import Layout from '../layouts/Layout.astro'
+import '../styles/index.css'
+import * as cards from '../../content/prompts/cards.js'
+import * as scenes from '../../content/prompts/scenes.js'
+
+function generatePrompt(config, selections) {
+	let prompt = config.template
+	for (const cat of config.categories) {
+		const option = cat.options.find((o) => o.name === selections[cat.key]) || cat.options[0]
+		prompt = prompt.replace(`{${cat.key}}`, option.desc)
+	}
+	return prompt
+}
+
+const defaultSceneSelections = Object.fromEntries(scenes.categories.map((c) => [c.key, c.options[0].name]))
+const defaultCardSelections = Object.fromEntries(cards.categories.map((c) => [c.key, c.options[0].name]))
+const defaultScenePrompt = generatePrompt(scenes, defaultSceneSelections)
+const defaultCardPrompt = generatePrompt(cards, defaultCardSelections)
+---
+
+<Layout title="Designer, Slay the Web">
+	<div class="Container">
+		<PageHeader title="Designer" subtitle="prompt workshop for visual assets" />
+
+		<div class="Split">
+			<section class="Box Box--text" data-generator="scene">
+				<h3>scene wallpapers</h3>
+				<p>backgrounds for dungeon rooms and combat</p>
+
+				<form class="Form">
+					<fieldset>
+						{scenes.categories.map(cat => (
+							<label>
+								<span>{cat.label}</span>
+								<select data-key={cat.key}>
+									{cat.options.map(opt => (
+										<option value={opt.name}>{opt.name}</option>
+									))}
+								</select>
+							</label>
+						))}
+					</fieldset>
+				</form>
+
+				<p>
+					<button class="Button" data-action="randomize">Randomize</button>
+					<button class="Button" data-action="copy">Copy</button>
+				</p>
+
+				<output>
+					<small>{defaultScenePrompt}</small>
+				</output>
+			</section>
+
+			<section class="Box Box--text" data-generator="card">
+				<h3>card illustrations</h3>
+				<p>artwork for attack, skill, power cards</p>
+
+				<form class="Form">
+					<fieldset>
+						{cards.categories.map(cat => (
+							<label>
+								<span>{cat.label}</span>
+								<select data-key={cat.key}>
+									{cat.options.map(opt => (
+										<option value={opt.name}>{opt.name}</option>
+									))}
+								</select>
+							</label>
+						))}
+					</fieldset>
+				</form>
+
+				<p>
+					<button class="Button" data-action="randomize">Randomize</button>
+					<button class="Button" data-action="copy">Copy</button>
+				</p>
+
+				<output>
+					<small>{defaultCardPrompt}</small>
+				</output>
+			</section>
+		</div>
+
+		<p center><small>copy prompts → paste into midjourney / nanobanana</small></p>
+	</div>
+</Layout>
+
+<style>
+	select {
+		font-family: system-ui, sans-serif;
+	}
+	.Split {
+		gap: 1rem;
+	}
+	section h3 {
+		margin-top: 0;
+	}
+	output {
+		display: block;
+		margin: 1rem 0;
+		color: var(--yellow);
+	}
+</style>
+
+<script>
+	import * as scenes from '../../content/prompts/scenes.js'
+	import * as cards from '../../content/prompts/cards.js'
+
+	const configs = {scene: scenes, card: cards}
+
+	function generatePrompt(config, section) {
+		let prompt = config.template
+		for (const cat of config.categories) {
+			const select = section.querySelector(`select[data-key="${cat.key}"]`)
+			const option = cat.options.find(o => o.name === select.value) || cat.options[0]
+			prompt = prompt.replace(`{${cat.key}}`, option.desc)
+		}
+		return prompt
+	}
+
+	function updateOutput(section) {
+		const type = section.dataset.generator
+		const config = configs[type]
+		const prompt = generatePrompt(config, section)
+		section.querySelector('output small').textContent = prompt
+	}
+
+	function randomize(section) {
+		const type = section.dataset.generator
+		const config = configs[type]
+		for (const cat of config.categories) {
+			const select = section.querySelector(`select[data-key="${cat.key}"]`)
+			select.selectedIndex = Math.floor(Math.random() * cat.options.length)
+		}
+		updateOutput(section)
+	}
+
+	function copy(section) {
+		const text = section.querySelector('output')?.textContent?.trim()
+		if (text) navigator.clipboard.writeText(text)
+	}
+
+	for (const section of document.querySelectorAll('[data-generator]')) {
+		section.querySelectorAll('select').forEach(s => s.addEventListener('change', () => updateOutput(section)))
+		section.querySelector('[data-action="randomize"]')?.addEventListener('click', () => randomize(section))
+		section.querySelector('[data-action="copy"]')?.addEventListener('click', () => copy(section))
+	}
+</script>

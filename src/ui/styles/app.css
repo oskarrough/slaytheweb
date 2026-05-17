@@ -76,37 +76,67 @@ tbody {
 	background-image: url("/images/scenes/moonlit-landscape-1904.jpg");
 }
 .App-background[data-room-index="1"] {
-	background-image: url("/images/scenes/arietty.webp");
+	background-image: url("/images/scenes/crimson-obsidian.jpg");
 }
 .App-background[data-room-index="2"] {
-	background-image: url("/images/scenes/bauhaus.jpg");
+	background-image: url("/images/scenes/fantasy-wallpaper-1.jpg");
 }
 .App-background[data-room-index="3"] {
-	background-image: url("/images/scenes/chihiro.jpg");
+	background-image: url("/images/scenes/fantasy-wallpaper-2.jpg");
 }
 .App-background[data-room-index="4"] {
-	background-image: url("/images/scenes/howl.jpg");
-}
-.App-background[data-room-index="5"] {
 	background-image: url("/images/scenes/laputa.jpg");
 }
-.App-background[data-room-index="6"] {
+.App-background[data-room-index="5"] {
 	background-image: url("/images/scenes/mononoke.jpg");
 }
-.App-background[data-room-index="7"] {
-	background-image: url("/images/scenes/nausicaa.jpg");
+.App-background[data-room-index="6"] {
+	background-image: url("/images/scenes/gateeye.jpg");
 }
-.App-background[data-room-index="8"] {
+.App-background[data-room-index="7"] {
 	background-image: url("/images/scenes/1.jpg");
 }
-.App-background[data-room-index="9"] {
+.App-background[data-room-index="8"] {
 	background-image: url("/images/scenes/landscape.jpg");
 }
+.App-background[data-room-index="9"] {
+	background-image: url("/images/scenes/hillcity.jpg");
+}
 .App-background[data-room-index="10"] {
-	background-image: url("/images/scenes/flying-duo.jpg");
+	background-image: url("/images/scenes/hillside-cattain.jpg");
 }
 .App-background[data-room-index="11"] {
-	background-image: url("/images/scenes/ponyo.jpg");
+	background-image: url("/images/scenes/mossguy2.jpg");
+}
+.App-background[data-room-index="12"] {
+	background-image: url("/images/scenes/mossguy3.jpg");
+}
+.App-background[data-room-index="13"] {
+	background-image: url("/images/scenes/mossguy4.jpg");
+}
+.App-background[data-room-index="14"] {
+	background-image: url("/images/scenes/mountainman.jpg");
+}
+.App-background[data-room-index="15"] {
+	background-image: url("/images/scenes/painted-landscape-1.jpg");
+}
+.App-background[data-room-index="16"] {
+	background-image: url("/images/scenes/painted-landscape-2.jpg");
+}
+.App-background[data-room-index="17"] {
+	background-image: url("/images/scenes/blue-glowing-spines.jpg");
+}
+.App-background[data-room-index="18"] {
+	background-image: url("/images/scenes/blue-god-creature.jpg");
+}
+.App-background[data-room-index="19"] {
+	background-image: url("/images/scenes/blue-water-figure.jpg");
+}
+.App-background[data-room-index="20"] {
+	background-image: url("/images/scenes/green-wallpaper.jpg");
+}
+.App-background[data-room-index="21"] {
+	background-image: url("/images/scenes/hunter-green-viridian.jpg");
 }
 
 /* Darkens the top of the screen to highlight the player+monsters on the background. */
@@ -389,6 +419,8 @@ tbody {
 		display: flex;
 		flex-flow: column;
 		gap: 0.5rem;
+		border: none;
+		padding: 0;
 	}
 
 	label {
@@ -418,6 +450,49 @@ tbody {
 	flex-flow: row wrap;
 	align-items: baseline;
 	gap: 0.3em;
+}
+
+.Grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+	gap: 1rem;
+}
+
+.Grid figure {
+	margin: 0;
+	background: var(--bg-dark, #1a1a1a);
+	border-radius: 0.5rem;
+	overflow: hidden;
+}
+
+.Grid figure img,
+.Grid figure img-sprite {
+	width: 100%;
+	aspect-ratio: 1;
+	object-fit: cover;
+	display: block;
+}
+
+.Grid figcaption {
+	padding: 0.5rem;
+	font-size: 0.75rem;
+	text-align: center;
+	word-break: break-all;
+	color: var(--yellow);
+}
+
+.Grid figure button {
+	width: 100%;
+	margin: 0;
+}
+
+.Grid .Encounter {
+	display: flex;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.5rem;
+	min-height: 80px;
+	align-items: flex-end;
 }
 
 #driver-popover-content {
