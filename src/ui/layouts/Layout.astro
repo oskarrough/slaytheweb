@@ -39,17 +39,18 @@ const {title} = Astro.props
 			crossorigin
 		/>
 		<script>
-      // Load Sentry if not on localhost.
+			// Only load Sentry on the production site, so forks, previews and localhost never report errors.
+			const productionHosts = ['slaytheweb.cards', 'www.slaytheweb.cards']
 			const environment = import.meta.env.PROD ? 'production' : 'development'
 			const pkgVersion = import.meta.env.PUBLIC_VERSION
-			const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-			if (!isLocalhost) {
+			if (productionHosts.includes(window.location.hostname)) {
 				// @ts-ignore
 				window.sentryOnLoad = function () {
 					// @ts-ignore
 					Sentry.init({
 						environment,
 						release: 'slaytheweb@' + pkgVersion,
+						allowUrls: [/^https:\/\/(www\.)?slaytheweb\.cards\//],
 					})
 				}
 
