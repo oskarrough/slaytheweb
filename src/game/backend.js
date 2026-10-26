@@ -109,10 +109,12 @@ export async function getRuns() {
 }
 
 /**
- * @returns {Promise<Run>} a single run
+ * @returns {Promise<Run|null>}
  */
 export async function getRun(id) {
 	const res = await fetch(`${apiUrl}/${id}`)
+	if (!res.ok) return null
 	const run = await res.json()
+	if (!run.gameState.dungeon) return null
 	return migrateRun(run)
 }

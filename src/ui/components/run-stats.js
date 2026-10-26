@@ -28,7 +28,8 @@ export default function RunStats() {
 	}, [id])
 
 	if (!id) return html`<p>Add ?id=1234 (and use a real ID) to the URL to see a specific run.</p>`
-	if (!run) return html`<h1>Loading statistics for run no. ${id}...</h1>`
+	if (run === undefined) return html`<h1>Loading statistics for run no. ${id}...</h1>`
+	if (!run) return html`<h1>Run no. ${id} not found</h1>`
 
 	const state = run.gameState
 	const date = new Intl.DateTimeFormat('en', {
@@ -93,12 +94,15 @@ export default function RunStats() {
 			</div>
 		</div>
 
-		<${SlayMap}
-			dungeon=${run.gameState.dungeon}
-			x=${state.dungeon.x}
-			y=${state.dungeon.y}
-			scatter=${20}
-			debug=${true}
-		><//>
+		${
+			state.dungeon.graph &&
+			html`<${SlayMap}
+				dungeon=${run.gameState.dungeon}
+				x=${state.dungeon.x}
+				y=${state.dungeon.y}
+				scatter=${20}
+				debug=${true}
+			><//>`
+		}
 	`
 }
