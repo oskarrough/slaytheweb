@@ -21,7 +21,9 @@ export default class SplashScreen extends Component {
 		gsap.from(this.base, {duration: 0.2, autoAlpha: 0, scale: 0.98})
 		// @ts-expect-error
 		gsap.to(this.base.querySelector('.Splash-spoder'), {delay: 5, x: 420, y: 60, duration: 3})
-		getRuns().then(({runs}) => this.setState({runs}))
+		getRuns()
+			.then(({runs}) => this.setState({runs}))
+			.catch(() => {})
 	}
 
 	handleDeckSelected(deck) {
