@@ -103,6 +103,7 @@ function migrateRun(run) {
  */
 export async function getRuns() {
 	const res = await fetch(apiUrl)
+	if (!res.ok) throw new Error(`Could not fetch runs: ${res.status}`)
 	const data = await res.json()
 	data.runs = data.runs.map(migrateRun)
 	return data
