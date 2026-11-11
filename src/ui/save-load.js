@@ -38,6 +38,9 @@ export function decode(state) {
 
 	// Reconstruct edges from paths
 	if (decoded.dungeon?.graph && decoded.dungeon?.paths) {
+		decoded.dungeon.graph.flat().forEach((node) => {
+			node.edges = []
+		})
 		decoded.dungeon.paths.forEach((path) => {
 			storePathOnGraph(decoded.dungeon.graph, path)
 		})

@@ -295,14 +295,6 @@ export function storePathOnGraph(graph, path) {
 		const a = nodeFromMove(graph, move[0])
 		const b = nodeFromMove(graph, move[1])
 
-		// @todo refactor so we don't have to do this. Depending on how the dungeon (and graph) was generated, the edges might not be set.
-		if (!Array.isArray(a.edges)) {
-			a.edges = []
-		}
-		if (!Array.isArray(b.edges)) {
-			b.edges = []
-		}
-
 		if (!a.edges.includes(b.id)) {
 			a.edges.push(b.id)
 		}

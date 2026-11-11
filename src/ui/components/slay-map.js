@@ -1,6 +1,6 @@
 import {emojiFromNodeType, nodeTypeToName} from '../../game/dungeon.js'
 import {isRoomCompleted} from '../../game/utils-state.js'
-import {debounce, random as randomBetween, setToArray} from '../../utils.js'
+import {debounce, random as randomBetween} from '../../utils.js'
 import {Component, html} from '../lib.js'
 
 /**
@@ -196,9 +196,6 @@ export class SlayMap extends Component {
 		if (!dungeon.graph) throw new Error('No graph to render. This should not happen?', dungeon)
 
 		const currentNode = dungeon.graph[y][x]
-		if (!Array.isArray(currentNode.edges)) {
-			currentNode.edges = setToArray(currentNode.edges)
-		}
 
 		return html`
 			<slay-map class=${this.props.debug ? 'debug' : ''} style=${{
