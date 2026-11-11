@@ -125,6 +125,13 @@ test('dungeon navigation works after save/load cycle', (t) => {
 	t.truthy(nextTarget, 'should be able to find next move after load')
 })
 
+test('every node has edges after decode', (t) => {
+	let state = actions.createNewState()
+	state = actions.setDungeon(state)
+	const decoded = decode(encode(state))
+	t.true(decoded.dungeon.graph.flat().every((node) => Array.isArray(node.edges)))
+})
+
 // Set() serialization no longer needed - we don't use Set/Map in game state
 test.skip('can serialize Set()', (t) => {
 	const set = new Set()
