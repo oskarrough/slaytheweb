@@ -36,7 +36,7 @@ export async function init() {
 // Simple function to play a beep sound
 export function simpleBeep(frequency = 440, duration = 0.2, volume = 0.3, type = 'sine') {
 	if (!audioContext) init()
-	if (isMuted) return
+	if (isMuted || !audioContext) return
 	const oscillator = audioContext.createOscillator()
 	oscillator.type = type
 	oscillator.frequency.value = frequency
@@ -60,7 +60,7 @@ export function simpleBeep(frequency = 440, duration = 0.2, volume = 0.3, type =
  */
 export function beep(startFrequency = 440, endFrequency = 880, duration = 0.5, waveform = 'square', volume = 0.1) {
 	if (!audioContext) init()
-	if (isMuted) return
+	if (isMuted || !audioContext) return
 	const oscillator = audioContext.createOscillator()
 	oscillator.type = waveform // 'square', 'sawtooth', 'triangle', or 'sine'
 	oscillator.frequency.setValueAtTime(startFrequency, audioContext.currentTime)
@@ -104,7 +104,7 @@ export function playCoin(type, volume = 0.5) {
 
 export function simpleFilteredNoise(type = 'pink', duration = 0.3, filterFreq = 800, volume = 0.2) {
 	if (!audioContext) init()
-	if (isMuted) return
+	if (isMuted || !audioContext) return
 
 	// console.log(`Playing filtered noise: ${type}, ${duration}s, filter:${filterFreq}Hz, vol:${volume}`)
 
@@ -172,6 +172,7 @@ export function simpleFilteredNoise(type = 'pink', duration = 0.3, filterFreq = 
  */
 export function playWhoosh(duration = 1, startFreq = 200, endFreq = 800, volume = 0.2) {
 	if (!audioContext) init()
+	if (!audioContext) return
 
 	// Sine wave oscillator
 	const oscillator = audioContext.createOscillator()
